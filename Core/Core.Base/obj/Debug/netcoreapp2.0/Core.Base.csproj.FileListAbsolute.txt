@@ -83,3 +83,15 @@ D:\GitProjeleri\SSBGitHub\sinavsorubankasi\Core\Core.Base\obj\Debug\netcoreapp2.
 D:\GitProjeleri\SSBGitHub\sinavsorubankasi\Core\Core.Base\obj\Debug\netcoreapp2.0\Core.Base.AssemblyInfo.cs
 D:\GitProjeleri\SSBGitHub\sinavsorubankasi\Core\Core.Base\obj\Debug\netcoreapp2.0\Core.Base.dll
 D:\GitProjeleri\SSBGitHub\sinavsorubankasi\Core\Core.Base\obj\Debug\netcoreapp2.0\Core.Base.pdb
+D:\GitProjeleri\sinavsorubankasi\Core\Core.Base\bin\Debug\netcoreapp2.0\Properties\Resources.resx
+D:\GitProjeleri\sinavsorubankasi\Core\Core.Base\bin\Debug\netcoreapp2.0\Core.Base.deps.json
+D:\GitProjeleri\sinavsorubankasi\Core\Core.Base\bin\Debug\netcoreapp2.0\Core.Base.dll
+D:\GitProjeleri\sinavsorubankasi\Core\Core.Base\bin\Debug\netcoreapp2.0\Core.Base.pdb
+D:\GitProjeleri\sinavsorubankasi\Core\Core.Base\obj\Debug\netcoreapp2.0\Core.Base.csprojAssemblyReference.cache
+D:\GitProjeleri\sinavsorubankasi\Core\Core.Base\obj\Debug\netcoreapp2.0\Core.Base.Properties.Resources.resources
+D:\GitProjeleri\sinavsorubankasi\Core\Core.Base\obj\Debug\netcoreapp2.0\Core.Base.csproj.GenerateResource.cache
+D:\GitProjeleri\sinavsorubankasi\Core\Core.Base\obj\Debug\netcoreapp2.0\Core.Base.csproj.CoreCompileInputs.cache
+D:\GitProjeleri\sinavsorubankasi\Core\Core.Base\obj\Debug\netcoreapp2.0\Core.Base.AssemblyInfoInputs.cache
+D:\GitProjeleri\sinavsorubankasi\Core\Core.Base\obj\Debug\netcoreapp2.0\Core.Base.AssemblyInfo.cs
+D:\GitProjeleri\sinavsorubankasi\Core\Core.Base\obj\Debug\netcoreapp2.0\Core.Base.dll
+D:\GitProjeleri\sinavsorubankasi\Core\Core.Base\obj\Debug\netcoreapp2.0\Core.Base.pdb

@@ -5518,11 +5518,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\GitProjeleri\\SSBGitHub\\sinavsorubankasi\\Domains\\SoruBankasi\\SoruDeposu\\SoruDeposu.DataAccess\\SoruDeposu.DataAccess.csproj",
+      "projectUniqueName": "D:\\GitProjeleri\\sinavsorubankasi\\Domains\\SoruBankasi\\SoruDeposu\\SoruDeposu.DataAccess\\SoruDeposu.DataAccess.csproj",
       "projectName": "SoruDeposu.DataAccess",
-      "projectPath": "D:\\GitProjeleri\\SSBGitHub\\sinavsorubankasi\\Domains\\SoruBankasi\\SoruDeposu\\SoruDeposu.DataAccess\\SoruDeposu.DataAccess.csproj",
+      "projectPath": "D:\\GitProjeleri\\sinavsorubankasi\\Domains\\SoruBankasi\\SoruDeposu\\SoruDeposu.DataAccess\\SoruDeposu.DataAccess.csproj",
       "packagesPath": "C:\\Users\\mturhan\\.nuget\\packages\\",
-      "outputPath": "D:\\GitProjeleri\\SSBGitHub\\sinavsorubankasi\\Domains\\SoruBankasi\\SoruDeposu\\SoruDeposu.DataAccess\\obj\\",
+      "outputPath": "D:\\GitProjeleri\\sinavsorubankasi\\Domains\\SoruBankasi\\SoruDeposu\\SoruDeposu.DataAccess\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -5541,8 +5541,8 @@
       "frameworks": {
         "netcoreapp2.0": {
           "projectReferences": {
-            "D:\\GitProjeleri\\SSBGitHub\\sinavsorubankasi\\Core\\Core.EntityFramework\\Core.EntityFramework.csproj": {
-              "projectPath": "D:\\GitProjeleri\\SSBGitHub\\sinavsorubankasi\\Core\\Core.EntityFramework\\Core.EntityFramework.csproj"
+            "D:\\GitProjeleri\\sinavsorubankasi\\Core\\Core.EntityFramework\\Core.EntityFramework.csproj": {
+              "projectPath": "D:\\GitProjeleri\\sinavsorubankasi\\Core\\Core.EntityFramework\\Core.EntityFramework.csproj"
             }
           }
         }

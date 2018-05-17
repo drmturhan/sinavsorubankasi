@@ -831,11 +831,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\GitProjeleri\\SSBGitHub\\sinavsorubankasi\\Core\\Core.KisaMesajServisi\\Core.KisaMesajServisi.csproj",
+      "projectUniqueName": "D:\\GitProjeleri\\sinavsorubankasi\\Core\\Core.KisaMesajServisi\\Core.KisaMesajServisi.csproj",
       "projectName": "Core.KisaMesajServisi",
-      "projectPath": "D:\\GitProjeleri\\SSBGitHub\\sinavsorubankasi\\Core\\Core.KisaMesajServisi\\Core.KisaMesajServisi.csproj",
+      "projectPath": "D:\\GitProjeleri\\sinavsorubankasi\\Core\\Core.KisaMesajServisi\\Core.KisaMesajServisi.csproj",
       "packagesPath": "C:\\Users\\mturhan\\.nuget\\packages\\",
-      "outputPath": "D:\\GitProjeleri\\SSBGitHub\\sinavsorubankasi\\Core\\Core.KisaMesajServisi\\obj\\",
+      "outputPath": "D:\\GitProjeleri\\sinavsorubankasi\\Core\\Core.KisaMesajServisi\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -854,8 +854,8 @@
       "frameworks": {
         "netcoreapp2.0": {
           "projectReferences": {
-            "D:\\GitProjeleri\\SSBGitHub\\sinavsorubankasi\\Core\\Core.Base\\Core.Base.csproj": {
-              "projectPath": "D:\\GitProjeleri\\SSBGitHub\\sinavsorubankasi\\Core\\Core.Base\\Core.Base.csproj"
+            "D:\\GitProjeleri\\sinavsorubankasi\\Core\\Core.Base\\Core.Base.csproj": {
+              "projectPath": "D:\\GitProjeleri\\sinavsorubankasi\\Core\\Core.Base\\Core.Base.csproj"
             }
           }
         }

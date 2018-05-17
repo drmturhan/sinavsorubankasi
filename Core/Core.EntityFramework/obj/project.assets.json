@@ -3932,11 +3932,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\GitProjeleri\\SSBGitHub\\sinavsorubankasi\\Core\\Core.EntityFramework\\Core.EntityFramework.csproj",
+      "projectUniqueName": "D:\\GitProjeleri\\sinavsorubankasi\\Core\\Core.EntityFramework\\Core.EntityFramework.csproj",
       "projectName": "Core.EntityFramework",
-      "projectPath": "D:\\GitProjeleri\\SSBGitHub\\sinavsorubankasi\\Core\\Core.EntityFramework\\Core.EntityFramework.csproj",
+      "projectPath": "D:\\GitProjeleri\\sinavsorubankasi\\Core\\Core.EntityFramework\\Core.EntityFramework.csproj",
       "packagesPath": "C:\\Users\\mturhan\\.nuget\\packages\\",
-      "outputPath": "D:\\GitProjeleri\\SSBGitHub\\sinavsorubankasi\\Core\\Core.EntityFramework\\obj\\",
+      "outputPath": "D:\\GitProjeleri\\sinavsorubankasi\\Core\\Core.EntityFramework\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -3955,8 +3955,8 @@
       "frameworks": {
         "netcoreapp2.0": {
           "projectReferences": {
-            "D:\\GitProjeleri\\SSBGitHub\\sinavsorubankasi\\Core\\Core.Base\\Core.Base.csproj": {
-              "projectPath": "D:\\GitProjeleri\\SSBGitHub\\sinavsorubankasi\\Core\\Core.Base\\Core.Base.csproj"
+            "D:\\GitProjeleri\\sinavsorubankasi\\Core\\Core.Base\\Core.Base.csproj": {
+              "projectPath": "D:\\GitProjeleri\\sinavsorubankasi\\Core\\Core.Base\\Core.Base.csproj"
             }
           }
         }

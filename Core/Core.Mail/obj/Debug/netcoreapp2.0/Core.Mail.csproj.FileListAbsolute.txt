@@ -24,3 +24,16 @@ D:\GitProjeleri\SSBGitHub\sinavsorubankasi\Core\Core.Mail\obj\Debug\netcoreapp2.
 D:\GitProjeleri\SSBGitHub\sinavsorubankasi\Core\Core.Mail\obj\Debug\netcoreapp2.0\Core.Mail.csproj.CopyComplete
 D:\GitProjeleri\SSBGitHub\sinavsorubankasi\Core\Core.Mail\obj\Debug\netcoreapp2.0\Core.Mail.dll
 D:\GitProjeleri\SSBGitHub\sinavsorubankasi\Core\Core.Mail\obj\Debug\netcoreapp2.0\Core.Mail.pdb
+D:\GitProjeleri\sinavsorubankasi\Core\Core.Mail\bin\Debug\netcoreapp2.0\Properties\Resources.resx
+D:\GitProjeleri\sinavsorubankasi\Core\Core.Mail\bin\Debug\netcoreapp2.0\Core.Mail.deps.json
+D:\GitProjeleri\sinavsorubankasi\Core\Core.Mail\bin\Debug\netcoreapp2.0\Core.Mail.dll
+D:\GitProjeleri\sinavsorubankasi\Core\Core.Mail\bin\Debug\netcoreapp2.0\Core.Mail.pdb
+D:\GitProjeleri\sinavsorubankasi\Core\Core.Mail\bin\Debug\netcoreapp2.0\Core.Base.dll
+D:\GitProjeleri\sinavsorubankasi\Core\Core.Mail\bin\Debug\netcoreapp2.0\Core.Base.pdb
+D:\GitProjeleri\sinavsorubankasi\Core\Core.Mail\obj\Debug\netcoreapp2.0\Core.Mail.csprojAssemblyReference.cache
+D:\GitProjeleri\sinavsorubankasi\Core\Core.Mail\obj\Debug\netcoreapp2.0\Core.Mail.csproj.CoreCompileInputs.cache
+D:\GitProjeleri\sinavsorubankasi\Core\Core.Mail\obj\Debug\netcoreapp2.0\Core.Mail.AssemblyInfoInputs.cache
+D:\GitProjeleri\sinavsorubankasi\Core\Core.Mail\obj\Debug\netcoreapp2.0\Core.Mail.AssemblyInfo.cs
+D:\GitProjeleri\sinavsorubankasi\Core\Core.Mail\obj\Debug\netcoreapp2.0\Core.Mail.csproj.CopyComplete
+D:\GitProjeleri\sinavsorubankasi\Core\Core.Mail\obj\Debug\netcoreapp2.0\Core.Mail.dll
+D:\GitProjeleri\sinavsorubankasi\Core\Core.Mail\obj\Debug\netcoreapp2.0\Core.Mail.pdb

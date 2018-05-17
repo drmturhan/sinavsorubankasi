@@ -813,11 +813,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\GitProjeleri\\SSBGitHub\\sinavsorubankasi\\Core\\Core.Base\\Core.Base.csproj",
+      "projectUniqueName": "D:\\GitProjeleri\\sinavsorubankasi\\Core\\Core.Base\\Core.Base.csproj",
       "projectName": "Core.Base",
-      "projectPath": "D:\\GitProjeleri\\SSBGitHub\\sinavsorubankasi\\Core\\Core.Base\\Core.Base.csproj",
+      "projectPath": "D:\\GitProjeleri\\sinavsorubankasi\\Core\\Core.Base\\Core.Base.csproj",
       "packagesPath": "C:\\Users\\mturhan\\.nuget\\packages\\",
-      "outputPath": "D:\\GitProjeleri\\SSBGitHub\\sinavsorubankasi\\Core\\Core.Base\\obj\\",
+      "outputPath": "D:\\GitProjeleri\\sinavsorubankasi\\Core\\Core.Base\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
