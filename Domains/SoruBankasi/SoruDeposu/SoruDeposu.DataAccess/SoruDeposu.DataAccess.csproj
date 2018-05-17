@@ -1,0 +1,44 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Migrations\SoruDepo\20180325120846_SoruDepo_ProgramAkademikTablosu_Duzeltildi.cs" />
+    <Compile Remove="Migrations\SoruDepo\20180325164433_SoruDepo_Ciddi_DegisiklikVar.cs" />
+    <Compile Remove="Migrations\SoruDepo\20180331195615_SoruZorlukTablosuEklendi.cs" />
+    <Compile Remove="Migrations\SoruDepo\20180404071256_KabulEdilebilirlikIndeksi_DecimalOldu.cs" />
+    <Compile Remove="Migrations\SoruDepo\20180420133509_SoruKontrolleri_RevizEdildi_Koklu.cs" />
+    <Compile Remove="Migrations\SoruDepo\20180420133728_SoruKontrolleri_Eklendi.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="appsettings.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="JsonVeriler\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="6.2.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="2.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Core\Core.EntityFramework\Core.EntityFramework.csproj" />
+  </ItemGroup>
+
+</Project>

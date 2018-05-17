@@ -1,0 +1,19 @@
+﻿[
+  {
+    "Name": "Hoca",
+    "Description": "Hasta bilgilerine ulaşır. Randevu verir. Randevu iptal eder. Ameliyat notu yazar. Hastalar ile mesajlaşabilir."
+  },
+  {
+    "Name": "Asistan",
+    "Description": "Hasta bilgilerine ulaşır. Randevu verir. Randevu iptal eder. Ameliyat notu yazar. Hastalar ile mesajlaşabilir."
+  },
+  {
+    "Name": "Sekreter",
+    "Description": "Hasta bilgilerine ulaşır. Randevu verir. Randevu iptal eder. Hastalar ile mesajlaşabilir."
+  },
+  {
+    "Name": "Hasta",
+    "Description": "Kendi bilgilerine ulaşabilir. Randevu alabilir, iptal edebilir. Sistem yöneticileri ve diğer hastalar ile mesajlaşabilir."
+  }
+
+]

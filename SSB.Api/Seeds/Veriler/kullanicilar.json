@@ -1,0 +1,26 @@
+﻿[
+  {
+    "KullaniciAdi": "mturhan",
+    "Sifre": "akd3463",
+    "KisiBilgisi": {
+      "Unvan": "Doç.Dr.",
+      "Ad": "Murat",
+      "DigerAd": null,
+      "Soyad": "Turhan",
+      "DogumTarihi": "1970-11-15",
+      "CinsiyetNo": 1
+    },
+    "Eposta": "drmturhan@hotmail.com",
+    "TelefonNumarasi": "5057271818",
+    "Fotograflari": [
+      {
+        "url": "http://res.cloudinary.com/drmturhan/image/upload/v1515951404/pzttedocsm6ccl9fx8ct.jpg",
+        "publicId": "pzttedocsm6ccl9fx8ct.jpg",
+        "aciklma": "Akdeniz Üniversitesi Tıp Fakültesi KBB Anabilim Dalı",
+        "eklenmeTarihi": "2018-1-10",
+        "profilFotografi": true
+      }
+    ]
+
+  }
+]

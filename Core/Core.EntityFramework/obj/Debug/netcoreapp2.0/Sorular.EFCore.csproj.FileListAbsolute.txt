@@ -1,0 +1,12 @@
+C:\SoruBank2018\Servers\Domains\Sorular.EFCore\bin\Debug\netcoreapp2.0\Sorular.EFCore.deps.json
+C:\SoruBank2018\Servers\Domains\Sorular.EFCore\bin\Debug\netcoreapp2.0\Sorular.EFCore.dll
+C:\SoruBank2018\Servers\Domains\Sorular.EFCore\obj\Debug\netcoreapp2.0\Sorular.EFCore.csproj.CoreCompileInputs.cache
+C:\SoruBank2018\Servers\Domains\Sorular.EFCore\obj\Debug\netcoreapp2.0\Sorular.EFCore.AssemblyInfoInputs.cache
+C:\SoruBank2018\Servers\Domains\Sorular.EFCore\obj\Debug\netcoreapp2.0\Sorular.EFCore.AssemblyInfo.cs
+C:\SoruBank2018\Servers\Domains\Sorular.EFCore\obj\Debug\netcoreapp2.0\Sorular.EFCore.csprojResolveAssemblyReference.cache
+C:\SoruBank2018\Servers\Domains\Sorular.EFCore\bin\Debug\netcoreapp2.0\Properties\Resources.resx
+C:\SoruBank2018\Servers\Domains\Sorular.EFCore\bin\Debug\netcoreapp2.0\Sorular.EFCore.pdb
+C:\SoruBank2018\Servers\Domains\Sorular.EFCore\bin\Debug\netcoreapp2.0\Core.Base.dll
+C:\SoruBank2018\Servers\Domains\Sorular.EFCore\bin\Debug\netcoreapp2.0\Core.Base.pdb
+C:\SoruBank2018\Servers\Domains\Sorular.EFCore\obj\Debug\netcoreapp2.0\Sorular.EFCore.dll
+C:\SoruBank2018\Servers\Domains\Sorular.EFCore\obj\Debug\netcoreapp2.0\Sorular.EFCore.pdb

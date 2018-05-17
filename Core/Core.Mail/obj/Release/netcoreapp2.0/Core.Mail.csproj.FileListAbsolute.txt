@@ -1,0 +1,13 @@
+D:\GitProjeleri\psg\Core\Core.Mail\bin\Release\netcoreapp2.0\Properties\Resources.resx
+D:\GitProjeleri\psg\Core\Core.Mail\bin\Release\netcoreapp2.0\Core.Mail.deps.json
+D:\GitProjeleri\psg\Core\Core.Mail\bin\Release\netcoreapp2.0\Core.Mail.dll
+D:\GitProjeleri\psg\Core\Core.Mail\bin\Release\netcoreapp2.0\Core.Mail.pdb
+D:\GitProjeleri\psg\Core\Core.Mail\bin\Release\netcoreapp2.0\Core.Base.dll
+D:\GitProjeleri\psg\Core\Core.Mail\bin\Release\netcoreapp2.0\Core.Base.pdb
+D:\GitProjeleri\psg\Core\Core.Mail\obj\Release\netcoreapp2.0\Core.Mail.csproj.CoreCompileInputs.cache
+D:\GitProjeleri\psg\Core\Core.Mail\obj\Release\netcoreapp2.0\Core.Mail.AssemblyInfoInputs.cache
+D:\GitProjeleri\psg\Core\Core.Mail\obj\Release\netcoreapp2.0\Core.Mail.AssemblyInfo.cs
+D:\GitProjeleri\psg\Core\Core.Mail\obj\Release\netcoreapp2.0\Core.Mail.dll
+D:\GitProjeleri\psg\Core\Core.Mail\obj\Release\netcoreapp2.0\Core.Mail.pdb
+D:\GitProjeleri\psg\Core\Core.Mail\obj\Release\netcoreapp2.0\Core.Mail.csproj.CopyComplete
+D:\GitProjeleri\psg\Core\Core.Mail\obj\Release\netcoreapp2.0\Core.Mail.csprojAssemblyReference.cache

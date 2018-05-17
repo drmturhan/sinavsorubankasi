@@ -1,0 +1,17 @@
+D:\GitProjeleri\psg\Core\Core.EntityFramework\bin\Release\netcoreapp2.0\Properties\Resources.resx
+D:\GitProjeleri\psg\Core\Core.EntityFramework\bin\Release\netcoreapp2.0\Core.EntityFramework.deps.json
+D:\GitProjeleri\psg\Core\Core.EntityFramework\bin\Release\netcoreapp2.0\Core.EntityFramework.dll
+D:\GitProjeleri\psg\Core\Core.EntityFramework\bin\Release\netcoreapp2.0\Core.EntityFramework.pdb
+D:\GitProjeleri\psg\Core\Core.EntityFramework\bin\Release\netcoreapp2.0\Core.Base.dll
+D:\GitProjeleri\psg\Core\Core.EntityFramework\bin\Release\netcoreapp2.0\Microsoft.AspNetCore.Mvc.Abstractions.dll
+D:\GitProjeleri\psg\Core\Core.EntityFramework\bin\Release\netcoreapp2.0\Newtonsoft.Json.dll
+D:\GitProjeleri\psg\Core\Core.EntityFramework\bin\Release\netcoreapp2.0\Core.Base.pdb
+D:\GitProjeleri\psg\Core\Core.EntityFramework\bin\Release\netcoreapp2.0\Microsoft.AspNetCore.Mvc.Abstractions.xml
+D:\GitProjeleri\psg\Core\Core.EntityFramework\bin\Release\netcoreapp2.0\Newtonsoft.Json.xml
+D:\GitProjeleri\psg\Core\Core.EntityFramework\obj\Release\netcoreapp2.0\Core.EntityFramework.csproj.CoreCompileInputs.cache
+D:\GitProjeleri\psg\Core\Core.EntityFramework\obj\Release\netcoreapp2.0\Core.EntityFramework.AssemblyInfoInputs.cache
+D:\GitProjeleri\psg\Core\Core.EntityFramework\obj\Release\netcoreapp2.0\Core.EntityFramework.AssemblyInfo.cs
+D:\GitProjeleri\psg\Core\Core.EntityFramework\obj\Release\netcoreapp2.0\Core.EntityFramework.dll
+D:\GitProjeleri\psg\Core\Core.EntityFramework\obj\Release\netcoreapp2.0\Core.EntityFramework.pdb
+D:\GitProjeleri\psg\Core\Core.EntityFramework\obj\Release\netcoreapp2.0\Core.EntityFramework.csproj.CopyComplete
+D:\GitProjeleri\psg\Core\Core.EntityFramework\obj\Release\netcoreapp2.0\Core.EntityFramework.csprojAssemblyReference.cache

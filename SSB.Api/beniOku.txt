@@ -1,0 +1,53 @@
+﻿https://www.json-generator.com/ 
+
+
+
+
+
+"SqlServerConnectionString": "Server=tcp:sb.database.windows.net,1433;Initial Catalog=SB2018Db;Persist Security Info=False;User ID=mturhan;Password=Akd34630.;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
+
+"SqlServerConnectionString": "Data Source=.;Initial Catalog=PsgDb;Integrated Security=True;Persist Security Info=False;Pooling=False;MultipleActiveResultSets=False;Encrypt=False;TrustServerCertificate=True"
+
+
+
+
+https://soru.azurewebsites.net/api
+
+
+
+// Sürüm
+
+"JwtIssuerOptions": {
+    "SecretKey": "iNivDmHLpUA223sqsfhqGbMRdRj1PVkH",
+    "Issuer": "psg.api",
+    "Token": "muratturhangizlianahtar",
+    "Audience": "https://soru.azurewebsites.net/",
+    "JwtKey": "muratturhangizlianahtar",
+    "JwtIssuer": "https://soru.azurewebsites.net/",
+    "JwtExpireDays": 1,
+    "ValidFor": 1
+  },
+
+
+  // Debug
+
+
+   "JwtIssuerOptions": {
+    "SecretKey": "iNivDmHLpUA223sqsfhqGbMRdRj1PVkH",
+    "Issuer": "psg.api",
+    "Token": "muratturhangizlianahtar",
+    "Audience": "https://localhost:44366/",
+    "JwtKey": "muratturhangizlianahtar",
+    "JwtIssuer": "http://localhost:50000/",
+    "JwtExpireDays": 1,
+    "ValidFor": 1
+  },
+
+
+
+
+  DİKKAT EDİLECEK HUSUSLAR
+
+
+   1. Release yaparken   routes.MapSpaFallbackRoute(name: "spa-fallback", defaults: new { controller = "AnaSayfa", action = "giris" }); çalışmalı
+   bilgi@drmturhan.com "Sifre": "!9Kasim2001gozde",
