@@ -1,0 +1,44 @@
+<div id="forgot-password" fxLayout="column" fusePerfectScrollbar>
+
+    <div id="forgot-password-form-wrapper" fxLayout="column" fxLayoutAlign="center center" *fuseIfOnDom [@animate]="{value:'*',params:{duration:'300ms',y:'100px'}}">
+
+        <div id="forgot-password-form">
+
+            <div class="logo">
+                <img src="assets/images/logos/fuse.svg">
+            </div>
+
+            <div class="title">ŞİFRENİZİ KURTARIN</div>
+            <fuse-yukleniyor [yukleniyor]="kurtarmaBasladi">
+                <form name="forgotPasswordForm" [formGroup]="forgotPasswordForm" novalidate (submit)="sifreKurtarmayiBaslat()">
+
+                    <mat-form-field>
+                        <input matInput placeholder="Eposta" formControlName="email">
+                        <mat-error *ngIf="forgotPasswordFormErrors.email.required">
+                            Eposta adresi gerekli.
+                        </mat-error>
+                        <mat-hint *ngIf="!this.forgotPasswordForm.valid">Lütfen hesabınızda kullandığınız eposta adresini yazın.</mat-hint>
+                        <mat-error *ngIf="!forgotPasswordFormErrors.email.required && forgotPasswordFormErrors.email.email">
+                            Eposta adresi yanlış. Lütfen geçerli bir adres girin.
+                        </mat-error>
+                    </mat-form-field>
+
+
+                    <button *ngIf="!kurtarmaBasladi" mat-raised-button class="submit-button" color="accent" aria-label="SEND RESET LINK" [disabled]="forgotPasswordForm.invalid">
+                        KURTARMA LİNKİ GÖNDER
+                    </button>
+
+                </form>
+            </fuse-yukleniyor>
+            <div *ngIf="!kurtarmaBasladi" class="login" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="20px">
+                <button mat-button type="button" (click)="girisEkraniniAc()">
+                    Giriş Yap
+                </button>
+                <button mat-button type="button" (click)="girisEkraniniAc()">
+                    Ana Sayfa
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>

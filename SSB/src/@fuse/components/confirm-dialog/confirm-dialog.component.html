@@ -1,0 +1,14 @@
+<h1 *ngIf="!data.onaybasligi" matDialogTitle>Onay</h1>
+<h1 *ngIf="data.onaybasligi" matDialogTitle>{{data.onaybasligi}}</h1>
+
+<div *ngIf="data.onaymesaji" mat-dialog-content class="mesaj">
+    <div class="mesaj" [innerHTML]="data.onaymesaji">
+    </div>
+</div>
+<div *ngIf="!data.onaymesaji" mat-dialog-content class="mesaj">Emin misiniz?</div>
+<div mat-dialog-actions class="pt-24" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="30px">
+    <button *ngIf="data.olumsuzButonYazisi" mat-button (click)="dialogRef.close(false)">{{data.olumsuzButonYazisi}}</button>
+    <button *ngIf="!data.olumsuzButonYazisi" mat-button (click)="dialogRef.close(false)">Hayır</button>
+    <button *ngIf="!data.olumluButonYazisi" mat-raised-button class="mat-warn mr-16" (click)="dialogRef.close(true)">Evet</button>
+    <button *ngIf="data.olumluButonYazisi" mat-raised-button class="mat-warn mr-16" (click)="dialogRef.close(true)">{{data.olumluButonYazisi}}</button>
+</div>

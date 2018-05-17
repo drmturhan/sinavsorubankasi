@@ -1,0 +1,65 @@
+@import "src/@fuse/scss/fuse";
+
+
+:host {
+
+    #register {
+        width: 100%;
+        overflow: hidden;
+        background: url('/assets/images/backgrounds/dark-material-bg.jpg') no-repeat;
+        background-size: cover;
+
+        #register-intro {
+            padding: 128px;
+            color: white;
+
+            @include media-breakpoint('sm') {
+                padding: 128px 64px;
+            }
+            .baslik-paneli{
+                width: 100%;
+            }
+
+            .logo {
+                float: left;
+                width: 128px;
+                margin-bottom: 32px;
+            }
+            
+            .title {
+                vertical-align: bottom;
+                font-weight: 700;
+                float: none;
+                margin-top: 250;
+                margin-left: 200;
+                font-size: 42px;
+                font-weight: 300;
+                line-height: 3;
+            }
+
+            .description {
+                display: block;
+                margin-top:50px;
+                padding-top: 24px;
+                font-size: 20px;
+                
+            }
+            .tamam {
+                color:yellowgreen;
+                font-size: 1.5em;
+                
+            }
+            .bekleniyor{
+                color:yellow;
+                font-size: 1.5em;
+                
+            }
+            .description li {
+            color:white;
+            }
+           
+        }
+
+        
+    }
+}

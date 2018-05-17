@@ -1,0 +1,171 @@
+
+<div id="register" fxLayout="row" fxLayoutAlign="start">
+  <div id="register-intro" fxFlex fxHide fxShow.gt-xs>
+    <div class="logo" *fuseIfOnDom [@animate]="{value:'*',params:{scale:'0.2'}}">
+      <img src="assets/images/logos/fuse.svg">
+    </div>
+    <div class="title" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'50ms',y:'25px'}}">
+      SINAV SORU BANK'A HOŞGELDİNİZ
+    </div>
+    <div class="description" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'100ms',y:'25px'}}">
+      Sınav Soru Bank'ı kullanabilmeniz için hesap oluşturmanız gereklidir. Hesap oluşturma işlemleri güvenlik nedeniyle bir kaç
+      aşamalıdır. Lütfen her aşamada size sununlan yönergeleri takip ediniz.
+    </div>
+  </div>
+
+
+  <div id="register-form-wrapper"  fusePerfectScrollbar *fuseIfOnDom [@animate]="{value:'*',params:{delay:'300ms',x:'100%'}}">
+
+    <div id="register-form">
+
+      <div class="logo" fxHide.gt-xs>
+        <span matTooltip="Sınav Soru Bankası">SSB</span>
+      </div>
+
+      <div class="title">YENİ HESAP YARATILIYOR</div>
+
+      <form name="uyelikFormu" [formGroup]="uyelikFormu" novalidate (ngSubmit)="uyeol()">
+
+        <mat-form-field>
+          <mat-icon matPrefix matTooltip="Prof.Dr., Doç.Dr. vb." matTooltipPosition="right">info</mat-icon>
+          <input matInput formControlName="unvan" [matAutocomplete]="auto">
+          <mat-placeholder>
+            Ünvan</mat-placeholder>
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let unvanStr of unvanlarFiltrelenmis$ | async" [value]="unvanStr">
+              <span>{{ unvanStr }}</span>
+            </mat-option>
+          </mat-autocomplete>
+          <mat-error align="end" *ngIf="displayMessage.unvan">
+            {{displayMessage.unvan}}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput placeholder="Ad" formControlName="ad">
+          <mat-icon matPrefix matTooltip="Adınız varsa ikinci adınızla beraber" matTooltipPosition="right">info</mat-icon>
+          <mat-error align="end" *ngIf="displayMessage.ad">
+            {{displayMessage.ad}}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput placeholder="Soyad" formControlName="soyad">
+          <mat-icon matPrefix matTooltip="Soyadınız" matTooltipPosition="right">info</mat-icon>
+          <mat-error align="end" *ngIf="displayMessage.soyad">
+            {{displayMessage.soyad}}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="dogumTarihiSecici" placeholder="{{'GENEL.DOGUM_TARIHI'|translate}}"
+            formControlName='dogumTarihi'>
+          <mat-icon matPrefix matTooltip="Doğum tarihini gün.ay.yıl olarak yazın veya takvimden seçin." matTooltipPosition="right">info</mat-icon>
+          <mat-datepicker-toggle matSuffix [for]="dogumTarihiSecici"></mat-datepicker-toggle>
+          <mat-datepicker #dogumTarihiSecici touchUi="platform.ANDROID || platform.IOS"></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-select placeholder="Cinsiyet" formControlName="cinsiyetNo">
+            <mat-option>Cinsiyet seçin</mat-option>
+            <mat-option *ngFor="let cinsiyet of cinsiyetListesi" [value]="cinsiyet.cinsiyetId">
+              {{cinsiyet.cinsiyetAdi}}
+            </mat-option>
+          </mat-select>
+          <mat-icon matPrefix matTooltip="Listeden cinsiyetinizi seçin" matTooltipPosition="right">info</mat-icon>
+          <mat-error align="end" *ngIf="displayMessage.cinsiyetNo">{{displayMessage.cinsiyetNo}}</mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput placeholder="Kullanıcı Adı" formControlName="kullaniciAdi">
+          <mat-icon matPrefix matTooltip="Kullanıcı adı türkçe harf ve boşluk içermemelir. Rakam ve alt çizgi içerebilir. " matTooltipPosition="right">info</mat-icon>
+          <mat-error align="end" *ngIf="displayMessage.kullaniciAdi">
+            {{displayMessage.kullaniciAdi}}
+          </mat-error>
+          <mat-hint align="end" class="async-kontrol" *ngIf="uyelikFormu.get('kullaniciAdi').pending ">Kontrol ediliyor</mat-hint>
+          <mat-hint align="end" class="hata" *ngIf="uyelikFormu.get('kullaniciAdi')?.hasError('kullaniciAdiKullaniliyor')">
+            Kullanıcı adı kullanılıyor! Lütfen başka deneyin...
+          </mat-hint>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput placeholder="Eposta" formControlName="ePosta">
+          <mat-icon matPrefix matTooltip="Epostanızı doğru yazmaya dikkat edin. Hesabınız ile ilgili güvenlik işlemlerinde kullanılacaktır."
+            matTooltipPosition="right">info</mat-icon>
+          <mat-error align="end" *ngIf="displayMessage.ePosta">
+            {{displayMessage.ePosta}}
+          </mat-error>
+          <mat-hint class="async-kontrol" align="end" *ngIf="uyelikFormu.get('ePosta').pending ">Kontrol ediliyor</mat-hint>
+          <mat-hint align="end" class="hata" *ngIf="uyelikFormu.get('ePosta')?.hasError('epostaKullaniliyor')">
+            Eposta kullanılıyor! Lütfen başka deneyin...
+          </mat-hint>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput placeholder="Telefon numarası" formControlName="telefonNumarasi">
+          <mat-icon matPrefix matTooltip="Lütfen SMS özelliği olan bir numara girin. Telefon numaranızı başında 0 olmadan alan kodu ile beraber girin."
+            matTooltipPosition="right">info</mat-icon>
+          <mat-error align="end" *ngIf="displayMessage.telefonNumarasi">
+            {{displayMessage.telefonNumarasi}}
+          </mat-error>
+          <mat-hint class="async-kontrol" align="end" *ngIf="uyelikFormu.get('telefonNumarasi').pending ">Kontrol ediliyor...</mat-hint>
+          <mat-hint align="end" class="hata" *ngIf="uyelikFormu.get('telefonNumarasi')?.hasError('telefonKullaniliyor')">
+            Telefon numarası kullanılıyor. Lütfen kendi telefon numaranızı girin.
+          </mat-hint>
+        </mat-form-field>
+
+        <div formGroupName="sifreGrup">
+          <mat-form-field style="height:80px">
+            <input matInput type="password" placeholder="Şifre" formControlName="sifre">
+            <mat-icon matPrefix matTooltip="Şifreniz en 6 en fazla 18 karakterden oluşabilir. Şifrenizde en az  bir büyük harf, bir küçük harf, bir rakam ve bir alfa nümetik olmayan (?.$ gibi) bir karakter olmalıdır."
+              matTooltipPosition="right">info</mat-icon>
+            <mat-error align="end" *ngIf="displayMessage.sifre">
+              {{displayMessage.sifre}}
+            </mat-error>
+          </mat-form-field>
+
+
+          <mat-form-field>
+            <input matInput type="password" placeholder="Şifre kontrol" formControlName="sifreKontrol">
+            <mat-icon matPrefix matTooltip="Şifre hatalarını azaltmak için şifrenizin aynısını bir kez daha bu alana yazın. " matTooltipPosition="right">info</mat-icon>
+            <mat-error align="end" *ngIf="displayMessage.sifreKontrol">
+              {{displayMessage.sifreKontrol}}
+            </mat-error>
+          </mat-form-field>
+
+          <mat-error align="end" *ngIf="displayMessage.sifreGrup">
+            {{displayMessage.sifreGrup}}
+          </mat-error>
+
+        </div>
+
+        <mat-checkbox aria-label="Accept" formControlName='sartlariKabulEdiyorum' class="sartlar" fxLayout="column" fxLayoutAlign="start start">
+          <span>Sınav Soru Bank'ın</span>
+          <a href="#"> kullanım şarlarını </a>
+          <span>kabul ediyorum</span>
+        </mat-checkbox>
+        <fuse-yukleniyor [yukleniyor]="yukleniyor">
+
+        </fuse-yukleniyor>
+
+        <div align="center" style="margin-top:20px">
+          <button mat-raised-button type="button" class="iptal" [routerLink]="['/']" [disabled]="kayitIstegiBasladi===true">
+            <mat-icon matTooltip="Aan sayfaya git.">home</mat-icon>
+            <span fxHide.lt-md> Ana Sayfa</span>
+          </button>
+          <button *ngIf="kayitIstegiBasladi!==true" mat-raised-button color="accent" class="tamam" aria-label="HESAP YARAT" [disabled]="uyelikFormu.invalid">
+            <mat-icon style="color:white" matTooltip="Hesap oluştur">done</mat-icon>
+            <span fxHide.lt-md>Hesap Oluştur </span>
+          </button>
+
+        </div>
+
+      </form>
+
+      <div class="register" style="margin-top: 10px" fxLayout="column" fxLayoutAlign="center center">
+        <button mat-raised-button color="primary" style="margin-top:10px" type="button" (click)="girisiBaslat()" [disabled]="kayitIstegiBasladi===true">Giriş</button>
+      </div>
+    </div>
+  </div>
+
+</div>

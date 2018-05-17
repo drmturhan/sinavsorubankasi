@@ -1,0 +1,69 @@
+<div id="reset-password" fxLayout="column" fusePerfectScrollbar>
+
+  <div id="reset-password-form-wrapper" fxLayout="column" fxLayoutAlign="center center" *fuseIfOnDom [@animate]="{value:'*',params:{duration:'300ms',y:'100px'}}">
+
+    <div id="reset-password-form">
+
+      <div class="logo">
+        <img src="assets/images/logos/fuse.svg">
+      </div>
+      
+      <fuse-yukleniyor [yukleniyor]="yukleniyor">
+        <div *ngIf="!istekGonderildi">
+
+
+          <div class="title">AKTİVASYON POSTASI GÖNDER</div>
+          <form name="resetPasswordForm" [formGroup]="ePostaForm" novalidate (ngSubmit)="yenidenAktivasyonKoduPostala()">
+            <mat-form-field>
+              <input matInput placeholder="Eposta adresi" formControlName="email">
+              <mat-error *ngIf="resetPasswordFormErrors.email.required">
+                Eposta gerekli
+              </mat-error>
+              <mat-error *ngIf="!resetPasswordFormErrors.email.required && resetPasswordFormErrors.email.email">
+                Eposta adresi yanlış. Lütfen geçerli bir adres girin.
+              </mat-error>
+            </mat-form-field>
+
+            <button mat-raised-button class="submit-button" color="accent" aria-label="RESET MY PASSWORD" [disabled]="ePostaForm.invalid">
+              GÖNDER
+            </button>
+
+          </form>
+
+
+          <div class="login" fxLayout="row" fxLayoutAlign="center center">
+
+            <button mat-button color="accent" type="button" (click)="girisEkraniniAc()">
+              Giriş
+            </button>
+            <button mat-button color="accent" type="button" (click)="anaSayfayaGit()">
+              Ana Sayfa
+            </button>
+
+          </div>
+
+        </div>
+        <div *ngIf="istekGonderildi">
+          <h1>Aktivasyon linki gönderildi.</h1>
+          <ul>
+            <li>
+              Lüfen posta kutunuzu kontrol edin.
+            </li>
+            <li>
+              Size gönderilen epostayı bulun.
+            </li>
+            <li>
+              Size gönderilen epostadaki aktivasyon kısayolunu tıklayın.
+            </li>
+            <li>
+              Daha sonra sisteme giriş yapabilirsiniz.
+            </li>
+          </ul>
+          <button mat-button color="accent" type="button" (click)="anaSayfayaGit()">
+            Ana Sayfa
+          </button>
+        </div>
+      </fuse-yukleniyor>
+    </div>
+  </div>
+</div>

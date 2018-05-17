@@ -1,0 +1,65 @@
+<mat-card class="example-card">
+  <fuse-yukleniyor [yukleniyor]="kaydediliyor">
+    <mat-card-content>
+
+      <form id="profilimFormu" [formGroup]="profilimFormu" novalidate>
+        <div fxLayout="column" fxLayoutAlign="star start">
+          <mat-form-field>
+            <input matInput formControlName="unvan" [matAutocomplete]="auto">
+            <mat-placeholder>
+              Ünvan</mat-placeholder>
+            <mat-autocomplete #auto="matAutocomplete">
+              <mat-option *ngFor="let unvanStr of unvanlarFiltrelenmis$ | async" [value]="unvanStr">
+                <span>{{ unvanStr }}</span>
+              </mat-option>
+            </mat-autocomplete>
+            <mat-error align="end" *ngIf="displayMessage.unvan">
+              {{displayMessage.unvan}}
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput placeholder="Ad" formControlName="ad">
+            <mat-error align="end" *ngIf="displayMessage.ad">
+              {{displayMessage.ad}}
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput placeholder="Soyadı" formControlName="soyad">
+
+            <mat-error align="end" *ngIf="displayMessage.soyad">
+              {{displayMessage.soyad}}
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field>
+            <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="dogumTarihiSecici" placeholder="Doğum tarihi" formControlName='dogumTarihi'>
+
+            <mat-datepicker-toggle matSuffix [for]="dogumTarihiSecici"></mat-datepicker-toggle>
+            <mat-datepicker #dogumTarihiSecici touchUi="platform.ANDROID || platform.IOS"></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-select placeholder="Cinsiyeti" formControlName="cinsiyetNo">
+              <mat-option>Cinsiyeti</mat-option>
+              <mat-option *ngFor="let cinsiyet of cinsiyetler" [value]="cinsiyet.cinsiyetId">
+                {{cinsiyet.cinsiyetAdi}}
+              </mat-option>
+            </mat-select>
+
+            <mat-error align="end" *ngIf="displayMessage.cinsiyetNo">{{displayMessage.cinsiyetNo}}</mat-error>
+            <!-- <mat-hint>{{uyelikFormu.cinsiyetNo.value. value?.sound}}</mat-hint> -->
+          </mat-form-field>
+
+
+        </div>
+      </form>
+
+
+    </mat-card-content>
+    <mat-card-actions fxLayout="row" fxLayoutAlign="end center">
+      <button *ngIf="kayitIstegiBasladi!==true" mat-button color="accent" class="tamam" [disabled]="profilimFormu.invalid" (click)="kaydedilsin()">
+        <span fxHide.lt-md>Kaydet </span>
+      </button>
+    </mat-card-actions>
+  </fuse-yukleniyor>
+</mat-card>

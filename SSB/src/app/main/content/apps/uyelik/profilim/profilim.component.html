@@ -1,0 +1,35 @@
+<div id="profile" class="page-layout simple tabbed" fusePerfectScrollbar>
+    <!-- HEADER -->
+    <div *ngIf="kullanici" class="p-24" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="space-between end">
+        <div class="user-info" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="start center">
+            <img class="profile-image avatar huge" src="{{profilFotoUrl}}" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+            <div class="name" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">{{kullanici.tamAdi}}
+            </div>
+        </div>
+        <div class="actions" fxLayout="row" fxLayoutAlign="end center" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'200ms'}}">
+
+        </div>
+
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT -->
+    <div class="content">
+
+
+        <mat-tab-group dynamicHeight="true">
+            <mat-tab *ngIf="kullanici" label="Bilgilerim">
+                <fuse-profilim-degistir [kullanici]="kullanici" [kaydediliyor]="kaydediliyor"  [cinsiyetler]="cinsiyetListesi" (kaydet)="profilimKaydedilsin($event)"> </fuse-profilim-degistir>
+            </mat-tab>
+
+            <mat-tab *ngIf="kullanici" label="Fotoğraflarım">
+                <fuse-kullanici-fotograflari [(url)]="saveUrl" [fotograflar]="kullanici.fotograflari" (profilFotografiYap)="profilFotografiYap($event)"
+                    (fotoSil)="fotografSil($event)" (fotografKaydedildi)="fotografKaydedildi($event)"> </fuse-kullanici-fotograflari>
+            </mat-tab>
+
+        </mat-tab-group>
+        <!-- </div>
+  </div> -->
+        <!-- / CONTENT -->
+
+    </div>

@@ -1,0 +1,77 @@
+<fuse-yukleniyor [yukleniyor]="yukleniyor">
+  <div id="login-form-wrapper">
+    <div fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+      <span class="title">Hesap Girişi</span>
+      <button mat-button class="mat-icon-button" (click)="kapat()" matTooltip="Kapat">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+
+    <div id="login-form" *fuseIfOnDom [@animate]="{value:'*',params:{duration:'300ms',y:'100px'}}" fxFlex="1 0 auto" fxLayout="column"
+      fxLayoutAlign="center center">
+
+      <div class="logo">
+        <img src="assets/images/logos/fuse.svg">
+      </div>
+
+      <div class="title">KULLANICI GİRİŞİ</div>
+
+      <form name="loginForm" [formGroup]="loginForm" novalidate (ngSubmit)="girisiBaslat()">
+        <mat-form-field>
+          <input matInput placeholder="Kullanıcı adı" formControlName="kullaniciAdi">
+          <mat-error *ngIf="loginFormErrors.kullaniciAdi?.required">
+            Kullanıcı adı gerekli.
+          </mat-error>
+          <mat-error *ngIf="loginFormErrors.kullaniciAdi?.minlength">
+            Kullanıcı adı en az 3 karakterden oluşmalıdır.
+          </mat-error>
+          <mat-error *ngIf="loginFormErrors.kullaniciAdi?.maxlength">
+            Kullanıcı adı en fazla 20 karakterden oluşmalıdır.
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput type="password" placeholder="Şifre" formControlName="sifre">
+          <mat-error *ngIf="loginFormErrors.sifre?.required">
+            Şifre gerekli.
+          </mat-error>
+        </mat-form-field>
+
+        <div class="remember-forgot-password" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between center">
+
+          <mat-checkbox class="remember-me" aria-label="Remember Me">
+            Beni Hatırla
+          </mat-checkbox>
+
+          <button mat-button class="forgot-password" type="button" (click)="sifreKurtarmayiBaslat()">
+            Şifrenizi mi unuttunuz?
+          </button>
+        </div>
+
+
+        <button mat-raised-button class="submit-button" color="accent" type="submit" [disabled]="loginForm.invalid || girisKitli==true">
+          <mat-icon>lock_open</mat-icon>
+          Giriş
+        </button>
+
+
+      </form>
+
+      <!-- <div class="separator">
+      <span class="text">YA DA</span>
+    </div>
+
+    <button mat-raised-button class="facebook">
+      Facebook
+    </button> -->
+
+      <div class="register" fxLayout="row" fxLayoutAlign="center center">
+        <span class="text">Hesabınız yok mu?</span>
+        <button mat-button class="submit-button" color="accent" type="button" (click)="uyelikBasvurusunuAc()">
+          <mat-icon>lock_open</mat-icon>
+          Hesap Yaratın
+        </button>
+      </div>
+    </div>
+  </div>
+</fuse-yukleniyor>

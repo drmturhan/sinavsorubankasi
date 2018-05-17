@@ -1,1 +1,17 @@
-/* You can add global styles to this file, and also import other style files */
+// Import Fuse core library
+@import "@fuse/scss/core";
+.snack-basari {
+    background-color: #739C39;
+}
+
+.style-basari .mat-simple-snackbar-action {
+    color:#C7DC61;
+}
+
+.snack-hata {
+    background-color: #A7244D;
+}
+
+.snack-hata .mat-simple-snackbar-action {
+    color: #EDB860;
+}

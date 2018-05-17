@@ -1,0 +1,43 @@
+<div id="register" fxLayout="row" fxLayoutAlign="start">
+
+  <div id="register-intro" fxFlex fxHide fxShow.gt-xs>
+    <div class="baslik-paneli">
+      <div class="logo" *fuseIfOnDom [@animate]="{value:'*',params:{scale:'0.2'}}">
+        <img src="assets/images/logos/fuse.svg">
+      </div>
+      <div class="title" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'50ms',y:'25px'}}">
+        SINAV SORU BANKASI
+      </div>
+    </div>
+
+    <div class="description" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'50ms',y:'25px'}}">
+      <h1>Üyelik süreci başladı!</h1>
+      <h2> Sınav soru bankası üyelik süreci aşağıdaki gibidir.</h2>
+      <ul>
+        <li>
+          Üyelik kaydı (yapıldı).
+        </li>
+        <li>
+          Üyelik sonrası kullanıcı hesabının doğrulanması. <mat-icon class="tamam">check_circle</mat-icon>
+        </li>
+        <li>
+          Üyelik sırasında sisteme girdiğiniz eposta adresine hesap doğrulama linki gönderildi.<mat-icon class="tamam">check_circle</mat-icon>
+        </li>
+        <li>
+          Lütfen posta kutunuzdan size gönderilen epostayı açın ve talimatlara uyun.<mat-icon class="bekleniyor">hourglass_empty</mat-icon>
+        </li>
+        <li>
+          Hesabınız doğrulandıktan sonra, kurum, personel ve ders tanımlama bilgileriniz için sizlere yeniden bir eposta gönderilecektir.<mat-icon class="bekleniyor">hourglass_empty</mat-icon>
+        </li>
+      </ul>
+    </div>
+
+    <div class="btn-anasayfa">
+      <button mat-raised-button type="button" class="iptal-button" [routerLink]="['/']">
+        Ana Sayfa
+      </button>
+    </div>
+
+  </div>
+
+</div>

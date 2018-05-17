@@ -1,0 +1,184 @@
+@import "src/@fuse/scss/fuse";
+
+
+:host {
+
+    #register {
+        width: 100%;
+        overflow: hidden;
+        background: url('/assets/images/backgrounds/dark-material-bg.jpg') no-repeat;
+        background-size: cover;
+
+        #register-intro {
+            padding: 64px;
+            color: white;
+
+            @include media-breakpoint('sm') {
+                padding:32px 32px;
+            }
+
+            .logo {
+                width: 128px;
+                margin-bottom: 32px;
+            }
+
+            .title {
+                font-size: 32px;
+                font-weight: 400;
+                line-height: 1;
+            }
+
+            .description {
+                padding-top: 16px;
+                font-size: 26px;
+                max-width: 400px;
+                color: rgba(255, 255, 255, 0.54);
+            }
+        }
+
+        #register-form-wrapper {
+            overflow: auto;
+            width: 600px;
+            background: #FFFFFF;
+            @include mat-elevation(16);
+
+            @include media-breakpoint('xs') {
+                width: 100%;
+            }
+
+            #register-form {
+                padding:32px 8px 8px 8px;
+
+                @include media-breakpoint('xs') {
+                    text-align: center;
+                    padding: 8px;
+                }
+
+                .logo {
+                    width: 128px;
+                    height: 128px;
+                    line-height: 128px;
+                    font-size: 47px;
+                    font-weight: 700;
+                    text-align: center;
+                    margin: 32px auto;
+                    color: #FFFFFF;
+                    border-radius: 2px;
+                    background: mat-color($accent);
+                }
+
+                .title {
+                    font-size: 18px;
+                }
+
+                .description {
+                    padding-top: 12px;
+                }
+
+                form {
+                    width: 100%;
+                    padding-top: 16px;
+
+                    mat-form-field {
+                        width: 100%;
+                        @include media-breakpoint('xs') {
+                            width: 100%;
+                            height: 6em;
+                        }
+                    }
+                    mat-icon{
+                        margin-right: 3px;
+                        font-size: 1em;
+                        color:rgba(0, 150, 0, 0.3);
+                        
+                    }
+                    .sartlar{
+                        width: 90%;
+                        margin-left:10px;
+                        margin-top:10px;
+                        font-size: 12px;
+                        
+                    }
+
+                    // .terms {
+                    //     margin: 16px 0 16px 0;
+                    //     a {
+                    //         font-size: 16px;
+                    //         margin-left: 4px;
+                    //     }
+                        
+                    //     @include media-breakpoint('md') {
+                    //         overflow: auto;
+                    //         font-size: 8px;
+                    //         margin-left: 4px;
+                    //     }
+                    // }
+                   
+                    
+                }
+                // .separator {
+                //     font-size: 15px;
+                //     font-weight: 600;
+                //     margin: 24px auto;
+                //     position: relative;
+                //     overflow: hidden;
+                //     width: 100px;
+                //     text-align: center;
+                //     color: rgba(0, 0, 0, 0.54);
+
+                //     .text {
+                //         display: inline-flex;
+                //         position: relative;
+                //         padding: 0 8px;
+                //         z-index: 9999;
+
+                //         &:before, &:after {
+                //             content: '';
+                //             display: block;
+                //             width: 30px;
+                //             position: absolute;
+                //             top: 10px;
+                //             border-top: 1px solid rgba(0, 0, 0, 0.12);
+                //         }
+
+                //         &:before {
+                //             right: 100%;
+                //         }
+
+                //         &:after {
+                //             left: 100%;
+                //         }
+                //     }
+                // }
+
+                button {
+                    mat-icon{
+                        margin-right: 3px;
+                        font-size: 2em;
+                    }
+                    &.iptal,
+                    &.tamam {
+                        width: 40%;
+                        text-transform: none;
+                        color: #FFFFFF;
+                        font-size: 13px;
+                        margin-left: 12px;
+                        mat-icon {
+                            color: #FFFFFF;
+                            margin: 0 8px 0 0;
+                        }
+                    }
+
+                    &.iptal {
+                        background-color: #D73D32;
+                        margin-bottom: 8px;
+                    }
+
+                    &.tamam {
+                        background-color: rgb(63, 92, 154);
+                    }
+                }
+            }
+        }
+    }
+}

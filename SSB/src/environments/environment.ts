@@ -3,9 +3,15 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+    production: false,
+    hmr: false,
+    uygulamaAdi: 'SORU BANK',
+    apiUrl: 'https://localhost:44366/api',
+    bosFotoUrl: '../assets/images/avatars/profile.jpg',
+    whitelistedDomains: ['localhost:44366', 'res.cloudinary.com'],
+    gorevKontrolSuresi: 5000,
+    fbRedirectUri: 'http://localhost:50000'
 };
-
 /*
  * In development mode, to ignore zone related error stack frames such as
  * `zone.run`, `zoneDelegate.invokeTask` for easier debugging, you can
