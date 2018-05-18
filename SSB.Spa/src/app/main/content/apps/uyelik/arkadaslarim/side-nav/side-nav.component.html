@@ -1,0 +1,70 @@
+<div class="sidenav-content">
+
+  <div class="card">
+    <!-- SIDENAV HEADER -->
+    <div *ngIf="profilimService.kb" class="header p-24" fxLayout="column" fxLayoutAlign="start center">
+
+      <!-- USER -->
+
+      <img [src]="profilimService.kb.profilFotoUrl" class="avatar m-8" [alt]="profilimService.kb.tamAdi" />
+      <span class="h5" style="color:#C66D9E;font-size:12px">{{profilimService.kb.tamAdi}}</span>
+
+      <!-- / USER -->
+
+    </div>
+    <!-- / SIDENAV HEADER -->
+
+    <!-- SIDENAV CONTENT -->
+    <div class="content py-16" fusePerfectScrollbar>
+
+      <div class="nav">
+
+        <div class="nav-item">
+          <a class="nav-link" matRipple>
+            <span class="title" style="color:#C66D9E;font-weight: 500">Filtreler</span>
+          </a>
+        </div>
+
+        <div class="nav-item">
+          <a class="nav-link" matRipple (click)="changeFilter('hepsi')" [ngClass]="{'active':sorgu.filtreCumlesi ==='hepsi'}">
+            <span class="title">Hepsi</span>
+          </a>
+        </div>
+
+        <div class="nav-item">
+          <a class="nav-link" matRipple (click)="changeFilter('tekliflerim')" [ngClass]="{'active':sorgu.filtreCumlesi ==='tekliflerim'}">
+            <span class="title">Arkadaşlık isteklerim</span>
+          </a>
+        </div>
+
+        <div class="nav-item" (click)="changeFilter('aldigimTeklifler')">
+          <a class="nav-link" matRipple [ngClass]="{'active':sorgu.filtreCumlesi ==='aldigimTeklifler'}">
+            <div class="title">Gelen istekler</div>
+          </a>
+        </div>
+
+        <div class="nav-item" (click)="changeFilter('kabuledilenler')">
+          <a class="nav-link" matRipple [ngClass]="{'active':sorgu.filtreCumlesi ==='kabuledilenler'}">
+            <div class="title">Kabul edilen istekler</div>
+          </a>
+        </div>
+        <div class="nav-item" (click)="changeFilter('cevapbekleyenler')">
+          <a class="nav-link" matRipple [ngClass]="{'active':sorgu.filtreCumlesi ==='cevapbekleyenler'}">
+            <div class="title">Cevap bekleyen istekler</div>
+          </a>
+        </div>
+        <div class="nav-item" (click)="changeFilter('cevaplananlar')">
+          <a class="nav-link" matRipple [ngClass]="{'active':sorgu.filtreCumlesi ==='cevaplananlar'}">
+            <div class="title">Sonuçlanan istekler</div>
+          </a>
+        </div>
+        <div class="nav-item" (click)="changeFilter('silinenler')">
+          <a class="nav-link" matRipple [ngClass]="{'active':sorgu.filtreCumlesi ==='silinenler'}">
+            <div class="title">İptal Edilenler</div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- / SIDENAV CONTENT -->

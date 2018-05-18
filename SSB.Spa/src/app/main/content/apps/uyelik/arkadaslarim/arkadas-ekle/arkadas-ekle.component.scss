@@ -1,0 +1,35 @@
+@import "src/@fuse/scss/fuse";
+.erkadas-ekle-dialog {
+    @include media-breakpoint('xs') {
+        width: 100%;
+    }
+    @include media-breakpoint-up('xs') {
+        width: 400px;
+    }
+    .mat-dialog-container {
+        padding: 0;
+        overflow: hidden;
+        .mat-toolbar {
+            flex: 1 0 auto;
+            min-height: initial;
+        }
+        .toolbar-bottom {
+            height: auto;
+        }
+    }
+    .dialog-content-wrapper {
+        max-height: 85vh;
+        display: flex;
+        flex-direction: column;
+        background-color: #E9DFE0;
+    }
+    .mat-toolbar {
+        background-color: #CFA4B7;
+    }
+    .save-button {
+        background-color: #8AA6CC;
+    }
+    .search-input-wrapper {
+        align-items: end;
+    }
+}

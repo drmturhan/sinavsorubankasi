@@ -244,6 +244,6 @@ export class FuseToolbarComponent implements OnInit, AfterViewInit {
 
     }
     arkadaslarimaGit() {
-        this.router.navigate(['profilim/arkadaslarim']);
+        this.router.navigate(['uyelik/arkadaslarim']);
     }
 }

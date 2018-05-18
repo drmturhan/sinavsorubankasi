@@ -1,0 +1,52 @@
+@import "src/@fuse/scss/fuse";
+
+
+fuse-kullanici-secim-listesi {
+    flex: 1;
+    .mat-table {
+        width: 100%;
+        background: transparent;
+        box-shadow: none;
+        background-color: #E9DFE0;
+        .mat-column-checkbox {
+            flex: 0 1 48px;
+            .mat-checkbox-ripple {
+                display: none !important; //fix for broken rendering
+            }
+        }
+        .mat-column-avatar {
+            flex: 0 1 64px;
+            margin-right:8px;
+        }
+        .mat-column-butonlar {
+            flex: 0 1 48px;
+            margin-bottom: 8px;
+        }
+        .mat-row {
+            position: relative;
+            cursor: pointer;
+            padding: 8px 8px 8px 24px;
+            .mat-cell {
+                min-width: 0;
+                color: #8AA6CC;
+                &.mat-column-detail-button {
+                    flex: 0 1 auto;
+                    padding: 0 24px 0 0;
+
+                    @include media-breakpoint('gt-md') {
+                        display: none;
+                    }
+                }
+            }
+        }
+        .mat-header-cell {
+            
+            color: #C66D9E;
+            font-size: 1em;
+            font-weight: bold;
+        }
+    }
+    .liste {
+        background-color: #E9DFE0;
+    }
+}

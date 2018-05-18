@@ -1,0 +1,82 @@
+<div id="contacts" class="page-layout simple left-sidenav inner-sidenav">
+
+    <!-- HEADER -->
+    <div class="p-16 p-sm-24 baslik" fxLayout="column" fxLayoutAlign="start start" fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center">
+
+        <!-- APP TITLE -->
+        <div  fxLayout="row" fxLayoutAlign="start center">
+
+            <button mat-button class="mat-icon-button sidenav-toggle mr-12" fuseMatSidenavToggler="contacts-main-sidenav" fxHide.gt-md>
+                <mat-icon>menu</mat-icon>
+            </button>
+            
+            <button mat-button class="mat-icon-button sidenav-toggle mr-12"  (click)="yenile()">
+                <mat-icon matTooltip="Listeyi yeniden yaratır">sync</mat-icon>
+            </button>
+            <div   class="logo" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon mr-16" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box</mat-icon>
+                <span class="logo-text h1" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Arkadaşlarım</span>
+            </div>
+
+        </div>
+        <!-- / APP TITLE -->
+
+        <!-- SEARCH -->
+        <div  *ngIf="mobilplatform===false" class="search-input-wrapper mt-16 ml-8 m-sm-0" fxLayout="row" fxLayoutAlign="start center">
+            <label for="search" class="mr-8" >
+                <mat-icon  style="color:#E9DFE0" >search</mat-icon>
+            </label>
+            <mat-form-field mat-no-float class="m-0" floatPlaceholder="never" >
+                <input matInput [formControl]="searchInput" id="search" placeholder="Arkadaş ara" matTooltip="Arama cümlesi boş veya ikiden fazla harfden oluşmalı.">
+            </mat-form-field>
+        </div>
+        <!-- / SEARCH -->
+
+    </div>
+    <!-- / HEADER -->
+
+    <!-- SELECTED BAR -->
+    <!-- <fuse-selected-bar class="mat-accent-600-bg" *ngIf="hasSelectedContacts" [@slideInTop]></fuse-selected-bar> -->
+    <fuse-secildi-panosu  *ngIf="teklifSecilmis" [@slideInTop]></fuse-secildi-panosu>
+    <!-- / SELECTED BAR -->
+
+    <mat-sidenav-container>
+
+        <!-- SIDENAV -->
+        <mat-sidenav class="sidenav" align="start" opened="true" mode="side" fuseMatSidenavHelper="contacts-main-sidenav" mat-is-locked-open="gt-sm">
+
+            <fuse-side-nav *fuseIfOnDom [@animate]="{value:'*'}"></fuse-side-nav>
+
+        </mat-sidenav>
+        <!-- / SIDENAV -->
+
+        <!-- CENTER -->
+        <div class="center p-24 pb-56 pr-sm-92" >
+            <!-- CONTENT -->
+            <div class="content mat-elevation-z4" fxLayout="column">
+                    <div *ngIf="mobilplatform===true" class="search-input-wrapper m-8" fxLayout="row" fxLayoutAlign="center stretch">
+                        <label *ngIf="mobilplatform===false" for="search" class="mr-8">
+                            <mat-icon style="color:#E9DFE0">search</mat-icon>
+                        </label>
+                        <mat-form-field mat-no-float class="m-0" floatPlaceholder="never">
+                            <input matInput [formControl]="searchInput" id="search" placeholder="Arkadaş ara" matTooltip="Arama cümlesi boş veya ikiden fazla harfden oluşmalı.">
+                        </mat-form-field>
+                    </div>
+                    <fuse-yukleniyor [yukleniyor]="yukleniyor">
+                        <fuse-arkadas-listesi [kullaniciNo]="uyelikService.kb.id"></fuse-arkadas-listesi>
+                    </fuse-yukleniyor>
+                </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CENTER -->
+
+    </mat-sidenav-container>
+
+</div>
+
+<!-- ADD CONTACT BUTTON -->
+<button mat-fab  id="add-contact-button"  *fuseIfOnDom [@animate]="{value:'*', params:{delay:'300ms',scale:'.2'}}" (click)="arkadasBul()">
+    <mat-icon>person_add</mat-icon>
+</button>
+<!-- / ADD CONTACT BUTTON -->

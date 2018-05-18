@@ -1,0 +1,25 @@
+#contacts {
+    .baslik {
+        background-color: #CFA4B7;
+        color: #E9DFE0;
+    }
+    .mat-form-field {
+        color: #C7CBDF;
+    }
+    mat-sidenav-container {
+        background-color: #E9DFE0;
+        .center {
+            background-color: #E9DFE0;
+        }
+    }
+    .content {
+        overflow: hidden;
+        fuse-yukleniyor {
+            min-width: 100%;
+        }
+    }
+    
+}
+#add-contact-button {
+    background-color: #8AA6CC;
+}

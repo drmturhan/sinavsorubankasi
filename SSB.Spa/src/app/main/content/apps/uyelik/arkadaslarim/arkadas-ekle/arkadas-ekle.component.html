@@ -1,0 +1,49 @@
+<div class="dialog-content-wrapper">
+  <mat-toolbar matDialogTitle class="liste">
+    <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+      <span class="title dialog-title">{{dialogTitle}}</span>
+      <button mat-button class="mat-icon-button" (click)="dialogRef.close()" aria-label="Close dialog">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-toolbar-row>
+
+    <mat-toolbar-row class="toolbar-bottom py-8 py-sm-16" fxLayout="row" fxLayoutAlign="center center">
+      <img [src]="data.kb.profilFotoUrl" class=" avatar contact-avatar " [alt]="data.kb.tamAdi" />
+      <div class="contact-name">{{data.kb.tamAdi}}</div>
+    </mat-toolbar-row>
+  </mat-toolbar>
+  <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
+    <div class="header p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start start" >
+      <!-- SEARCH -->
+      <div class="search-input-wrapper my-16 " fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" >
+        <label for="search" class="mr-8">
+          <mat-icon>search</mat-icon>
+        </label>
+        <mat-form-field  class="m-0" >
+          <input matInput [formControl]="searchInput" id="search" placeholder="Anahtar kelime yazın..." matTooltip="Arama cümlesi boş veya ikiden fazla harfden oluşmalı.">
+        </mat-form-field>
+      </div>
+      <!-- / SEARCH -->
+    </div>
+
+    <fuse-yukleniyor [yukleniyor]="yukleniyor">
+      <div class="center">
+        <!-- CONTENT -->
+        <div class="content mat-elevation-z4">
+
+          <fuse-kullanici-secim-listesi (sayfaDegissin)="sayfaDegistir($event)"  [kullaniciNo]="data.kb?data.kb.id:0">
+          </fuse-kullanici-secim-listesi>
+
+        </div>
+        <!-- / CONTENT -->
+      </div>
+    </fuse-yukleniyor>
+  </div>
+
+  <div mat-dialog-actions class="m-0 py-8 pr-24" fxLayout="row" fxLayoutAlign="end center">
+    <button  matTooltip="Arkadaş arama ekranını kapatır." mat-raised-button (click)="dialogRef.close()" color="accent" aria-label="SAVE">
+      <mat-icon>close</mat-icon>  
+      KAPAT
+    </button>
+  </div>
+</div>

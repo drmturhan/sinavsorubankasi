@@ -21,6 +21,14 @@ import { KullaniciFotograflariComponent } from './profilim/kullanici-fotograflar
 import { FileUploadModule } from 'ng2-file-upload';
 import { ProfilimDegistirComponent } from './profilim/profilim-degistir/profilim-degistir.component';
 import { ProfilimResolver } from './profilim/profilim-resolver';
+import { ArkadasEkleComponent } from './arkadaslarim/arkadas-ekle/arkadas-ekle.component';
+import { ArkadaslarimComponent } from './arkadaslarim/arkadaslarim.component';
+import { SecildiPanosuComponent } from './arkadaslarim/secildi-panosu/secildi-panosu.component';
+import { ArkadaslarimSideNavComponent } from './arkadaslarim/side-nav/side-nav.component';
+import { ArkadasListesiComponent } from './arkadaslarim/arkadas-listesi/arkadas-listesi.component';
+import { ArkadaslarimGuard } from './arkadaslarim/arkadaslarim.guard';
+import { KullaniciSecimListesiComponent } from './arkadaslarim/arkadas-ekle/kullanici-secim-listesi/kullanici-secim-listesi.component';
+
 
 
 const routes = [
@@ -47,6 +55,11 @@ const routes = [
         path: 'profilim',
         component: ProfilimComponent,
         resolve: { data: ProfilimResolver }
+    },
+    {
+        path: 'arkadaslarim',
+        component: ArkadaslarimComponent,
+        canActivate: [ArkadaslarimGuard]
     }
 
 ];
@@ -59,7 +72,13 @@ const routes = [
         SifreSifirlaComponent,
         ProfilimComponent,
         KullaniciFotograflariComponent,
-        ProfilimDegistirComponent
+        ProfilimDegistirComponent,
+        ArkadaslarimComponent,
+        ArkadasListesiComponent,
+        ArkadaslarimSideNavComponent,
+        ArkadasEkleComponent,
+        SecildiPanosuComponent,
+        KullaniciSecimListesiComponent
     ],
     imports: [
         CommonModule,
@@ -77,8 +96,10 @@ const routes = [
         UyelikService,
         UyelikBasvuruResolver,
         ProfilimResolver,
+        ArkadaslarimGuard,
         UyelikValidatorleri
-    ]
+    ],
+    entryComponents: [ArkadasEkleComponent]
 
 })
 export class UyelikModule {

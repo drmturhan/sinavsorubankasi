@@ -1,0 +1,71 @@
+@import "src/@fuse/scss/fuse";
+fuse-arkadas-listesi {
+    background-color: #E9DFE0;
+    flex: 1;
+    .liste {
+        background-color: #E9DFE0;
+    }
+    .mat-table {
+        background: transparent;
+        box-shadow: none;
+        background-color: #E9DFE0;
+        .mat-column-checkbox {
+            flex: 0 1 48px;
+            padding-top: 8px;
+            margin-right: 16px;
+            .mat-checkbox-ripple {
+                display: none !important; //fix for broken rendering
+            }
+        }
+        .mat-column-avatar {
+            flex: 0 1 64px;
+            margin-right: 12px;
+        }
+        .mat-column-ad {
+            display: block;
+        }
+        .mat-column-durum {
+            flex: 0 1 48px;
+        }
+        .mat-column-iptal {
+            flex: 0 1 48px;
+        }
+        .mat-column-butonlar {
+            flex: 0 1 48px;
+            margin-bottom: 8px;
+        }
+        .mat-row {
+            position: relative;
+            cursor: pointer;
+            padding: 8px 8px 8px 24px;
+            .mat-cell {
+                color: #8AA6CC;
+                display: block;
+                min-width: 0;
+                &.mat-column-detail-button {
+                    flex: 0 1 auto;
+                    padding: 0 24px 0 0;
+                    @include media-breakpoint('gt-md') {
+                        display: none;
+                    }
+                }
+            }
+            
+        }
+        .mat-header-cell {
+            padding: 8px;
+            color: #C66D9E;
+            font-size: 1em;
+            
+            
+        }
+    }
+}
+
+#add-contact-button {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    padding: 0;
+    z-index: 99;
+}

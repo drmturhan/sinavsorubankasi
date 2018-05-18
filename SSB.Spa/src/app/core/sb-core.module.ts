@@ -3,19 +3,30 @@ import { YukleniyorComponent } from './components/yukleniyor/yukleniyor.componen
 import { FuseSharedModule } from '@fuse/shared.module';
 import { LutfenBekleyinComponent } from './components/lutfen-bekleyin/lutfen-bekleyin.component';
 import { TokenInterceptorProvider } from './interceptors/token.interceptor';
+import { CoreModule } from '@angular/flex-layout';
+import { SubmitIfValidDirective } from './directives/submit-if-valid.directive';
+import { OzetPipe } from './pipes/ozet.pipe';
+import { TimeAgoPipe } from './pipes/time-ago.pipe';
 
 
 @NgModule({
     imports: [
+        CoreModule,
         FuseSharedModule
     ],
     declarations: [
         YukleniyorComponent,
-        LutfenBekleyinComponent
+        LutfenBekleyinComponent,
+        SubmitIfValidDirective,
+        OzetPipe,
+        TimeAgoPipe
     ],
     exports: [
         YukleniyorComponent,
-        LutfenBekleyinComponent
+        LutfenBekleyinComponent,
+        SubmitIfValidDirective,
+        OzetPipe,
+        TimeAgoPipe
     ],
     providers: [
         TokenInterceptorProvider

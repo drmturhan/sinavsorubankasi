@@ -3,6 +3,7 @@ import {
     RouterStateSnapshot,
     Params
 } from '@angular/router';
+import * as fromArkadaslar from './arkadaslar.reducer';
 import { createFeatureSelector, ActionReducerMap } from '@ngrx/store';
 
 import * as fromRouter from '@ngrx/router-store';
@@ -19,12 +20,14 @@ export interface State {
     routerReducer: fromRouter.RouterReducerState<RouterStateUrl>;
     ui: fromUI.UIState;
     auth: fromAuth.AuthState;
+    arkadaslar: fromArkadaslar.ArkadaslarState;
 }
 
 export const reducers: ActionReducerMap<State> = {
     routerReducer: fromRouter.routerReducer,
     ui: fromUI.uiReducer,
     auth: fromAuth.authReducer,
+    arkadaslar: fromArkadaslar.ArkadaslarReducer
 };
 
 export const getRouterState = createFeatureSelector<fromRouter.RouterReducerState<RouterStateUrl>>('routerReducer');
@@ -51,3 +54,4 @@ export class CustomSerializer implements fromRouter.RouterStateSerializer<Router
 
 export * from './ui.reducer';
 export * from './auth.reducer';
+export * from './arkadaslar.reducer';
