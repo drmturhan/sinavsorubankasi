@@ -25,6 +25,8 @@ import { SoruListesiComponent } from './soru-listesi/soru-listesi.component';
 import { SoruListesiSatiriComponent } from './soru-listesi/soru-listesi-satiri/soru-listesi-satiri.component';
 import { SoruDepoVeriService } from './soru-store/helpers/soru-depo-veri.service';
 import { SorularResolveGuard } from './soru-store/guards/sorular-resolve.guard';
+import { SoruOnizlemeComponent } from './soru-onizleme/soru-onizleme.component';
+import { CoktanSecmeliSoruValidatorleri } from './coktan-secmeli-soru/validators';
 
 
 
@@ -97,12 +99,15 @@ const routes: Routes = [
     SoruDetayComponent,
     SorularSideNavComponent,
     SoruListesiComponent,
-    SoruListesiSatiriComponent
+    SoruListesiSatiriComponent,
+    SoruOnizlemeComponent
   ],
   providers: [
     SorularEffectsService,
     SoruDepoVeriService,
     SorularService,
-    SorularResolveGuard]
+    CoktanSecmeliSoruValidatorleri,
+    SorularResolveGuard],
+  entryComponents: [SoruOnizlemeComponent, CoktanSecmeliSoruComponent]
 })
 export class SorularModule { }

@@ -22,9 +22,10 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatSelectionList, MatListOption, MatTabG
 import { FormBuilder, FormGroup, FormControlName, FormArray, FormControl, AbstractControl, Validators, NgForm } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/take';
-import 'rxjs/add/operator/switchMap';
+import { Observable, fromEvent, merge } from 'rxjs';
+
+import { take, switchMap } from 'rxjs/operators';
+
 
 import { Store } from '@ngrx/store';
 import * as fromSoruStore from '../soru-store/index';
@@ -141,9 +142,9 @@ export class CoktanSecmeliSoruComponent implements OnInit, AfterViewInit, OnDest
   }
   public ngAfterViewInit(): void {
 
-    const controlBlurs = this.formInputElements.map((formControl: ElementRef) => Observable.fromEvent(formControl.nativeElement, 'blur'));
+    const controlBlurs = this.formInputElements.map((formControl: ElementRef) => fromEvent(formControl.nativeElement, 'blur'));
     // Merge the blur event observable with the valueChanges observable
-    Observable.merge(this.coktanSecmeliSoruSecenekService.soruForm.valueChanges, ...controlBlurs)
+    merge(this.coktanSecmeliSoruSecenekService.soruForm.valueChanges, ...controlBlurs)
       .debounceTime(600)
       .subscribe(value => {
         this.displayMessage = this.genericValidator.processMessages(this.coktanSecmeliSoruSecenekService.soruForm);

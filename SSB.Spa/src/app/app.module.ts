@@ -1,4 +1,4 @@
-import { NgModule} from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
@@ -23,7 +23,13 @@ import { environment } from 'environments/environment';
 import { JwtModule } from '@auth0/angular-jwt';
 import { SbCoreModule } from './core/sb-core.module';
 
+import localeTr from '@angular/common/locales/tr';
+import localeTrExtra from '@angular/common/locales/extra/tr';
 
+import { registerLocaleData } from '@angular/common';
+
+registerLocaleData(localeTr, 'tr');
+registerLocaleData(localeTr, 'tr-TR', localeTrExtra);
 
 export function GetAccessToken(): string {
     return localStorage.getItem('access_token');
@@ -47,19 +53,19 @@ const appRoutes: Routes = [
 @NgModule({
     declarations: [
         AppComponent
-        
+
     ],
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
         HttpClientModule,
-        MaterialModule, 
+        MaterialModule,
         RouterModule.forRoot(appRoutes),
         SbCoreModule,
         JwtModule.forRoot({
             config: authConfig
         }),
-        
+
         TranslateModule.forRoot(),
         InMemoryWebApiModule.forRoot(FuseFakeDbService, {
             delay: 0,
@@ -72,9 +78,12 @@ const appRoutes: Routes = [
 
         AppStoreModule,
         FuseMainModule
-        
+
     ],
-  
+    providers: [
+        { provide: LOCALE_ID, useValue: 'tr' }
+    ],
+
     bootstrap: [
         AppComponent
     ]

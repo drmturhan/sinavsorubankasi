@@ -1,0 +1,36 @@
+@import "src/@fuse/scss/fuse";
+:host() {
+ 
+    .fuse-widget-front {
+        padding: 12px;
+        background-color: #A8D0DA !important;
+        color:#315474;
+    }
+    .metin {
+        width: 100%;
+        /deep/ .mat-input-underline {
+            color: #315474;
+        }
+        .mat-form-field {
+            width: 100%;
+            textarea {
+                font-size: 32px;
+                width: 100%;
+                min-height: 50px;
+            }
+        }
+        
+        .mat-hint {
+            color: #A8B4B4;
+        }
+        .mat-input-placeholder {
+            font-size: 24px;
+            @include media-breakpoint-down(lg) {
+                font-size: 18px;
+            }
+            @include media-breakpoint-down(md) {
+                font-size: 14px;
+            }
+        }
+    }
+}

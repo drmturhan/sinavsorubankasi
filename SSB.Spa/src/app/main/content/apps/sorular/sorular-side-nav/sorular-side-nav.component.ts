@@ -119,17 +119,17 @@ export class SorularSideNavComponent implements OnInit, AfterViewChecked {
       this.store.dispatch(new fromSorularStore.GetSorular());
       if (ders.konulari.length > 0) {
         this.store.dispatch(new fromSorularStore.SecAktifKonu({ ders: ders, konu: ders.konulari[0] }));
-        this.router.navigate([`moduller/sorudeposu/ders/${ders.dersId}/konu/${ders.konulari[0].konuId}`]);
+        this.router.navigate([`sorudeposu/ders/${ders.dersId}/konu/${ders.konulari[0].konuId}`]);
       } else {
         this.store.dispatch(new fromSorularStore.SecAktifKonu(null));
-        this.router.navigate(['moduller/sorudeposu/ders/', ders.dersId]);
+        this.router.navigate(['sorudeposu/ders/', ders.dersId]);
       }
 
     } else {
       this.store.dispatch(new fromSorularStore.SecAktifDers(null));
       this.store.dispatch(new fromSorularStore.SecAktifKonu(null));
       this.store.dispatch(new fromSorularStore.GetSorular());
-      this.router.navigate(['moduller/sorudeposu/']);
+      this.router.navigate(['sorudeposu/']);
     }
 
   }

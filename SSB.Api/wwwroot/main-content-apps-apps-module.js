@@ -30,8 +30,12 @@ var routes = [
         loadChildren: './dashboards/analytics/analytics.module#FuseAnalyticsDashboardModule'
     },
     {
-        path: 'sorudeposu',
+        path: 'mail',
         loadChildren: './mail-ngrx/mail.module#FuseMailNgrxModule'
+    },
+    {
+        path: 'sorudeposu',
+        loadChildren: './sorular/sorular.module#SorularModule'
     },
     {
         path: 'uyelik',

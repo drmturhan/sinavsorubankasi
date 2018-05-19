@@ -20,43 +20,43 @@ import { FuseMailNgrxComposeDialogComponent } from './dialogs/compose/compose.co
 
 const routes: Routes = [
     {
-        path       : 'label/:labelHandle',
-        component  : FuseMailNgrxComponent,
-        canActivate: [fromGuards.ResolveGuard]
-    },
-    {
-        path       : 'label/:labelHandle/:mailId',
-        component  : FuseMailNgrxComponent,
-        canActivate: [fromGuards.ResolveGuard]
-    },
-    {
-        path     : 'filter/:filterHandle',
+        path: 'label/:labelHandle',
         component: FuseMailNgrxComponent,
         canActivate: [fromGuards.ResolveGuard]
     },
     {
-        path     : 'filter/:filterHandle/:mailId',
+        path: 'label/:labelHandle/:mailId',
         component: FuseMailNgrxComponent,
         canActivate: [fromGuards.ResolveGuard]
     },
     {
-        path     : ':folderHandle',
+        path: 'filter/:filterHandle',
         component: FuseMailNgrxComponent,
         canActivate: [fromGuards.ResolveGuard]
     },
     {
-        path     : ':folderHandle/:mailId',
+        path: 'filter/:filterHandle/:mailId',
         component: FuseMailNgrxComponent,
         canActivate: [fromGuards.ResolveGuard]
     },
     {
-        path      : '**',
+        path: ':folderHandle',
+        component: FuseMailNgrxComponent,
+        canActivate: [fromGuards.ResolveGuard]
+    },
+    {
+        path: ':folderHandle/:mailId',
+        component: FuseMailNgrxComponent,
+        canActivate: [fromGuards.ResolveGuard]
+    },
+    {
+        path: '**',
         redirectTo: 'inbox'
     }
 ];
 
 @NgModule({
-    declarations   : [
+    declarations: [
         FuseMailNgrxComponent,
         FuseMailNgrxListComponent,
         FuseMailNgrxListItemComponent,
@@ -64,7 +64,7 @@ const routes: Routes = [
         FuseMailNgrxMainSidenavComponent,
         FuseMailNgrxComposeDialogComponent
     ],
-    imports        : [
+    imports: [
         RouterModule.forChild(routes),
 
         MatButtonModule,
@@ -85,12 +85,11 @@ const routes: Routes = [
 
         MailAppStoreModule
     ],
-    providers      : [
+    providers: [
         MailNgrxService,
         fromGuards.ResolveGuard
     ],
     entryComponents: [FuseMailNgrxComposeDialogComponent]
 })
-export class FuseMailNgrxModule
-{
+export class FuseMailNgrxModule {
 }

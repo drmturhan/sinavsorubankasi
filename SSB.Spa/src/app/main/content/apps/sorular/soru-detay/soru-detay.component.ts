@@ -15,6 +15,7 @@ import { SbMesajService } from '../../../../../core/services/sb-mesaj.service';
 import { CoktanSecmeliSoruComponent } from '../coktan-secmeli-soru/coktan-secmeli-soru.component';
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
 import { KayitSonuc } from '../../../../../models/sonuclar';
+import { SoruOnizlemeComponent } from '../soru-onizleme/soru-onizleme.component';
 
 @Component({
   selector: 'fuse-soru-detay',
@@ -205,23 +206,23 @@ export class SoruDetayComponent implements OnInit, OnChanges {
 
   soruOnIzlemeGoster() {
 
-    //   let en = '100vw';
-    //   let boy = '10 0vh';
-    //   let sinif = 'popup-masaustu';
-    //   if (this.platform.ANDROID || this.platform.IOS) {
-    //     en = '600px';
-    //     boy = '960px';
-    //     sinif = 'popup-mobil';
-    //   }
-    //   const dialogRef = this.dialog.open(SoruSayfaComponent, {
-    //      height: boy,
-    //      width: en,
-    //     panelClass: sinif,
-    //     data: {
-    //       soru: this.soru,
-    //       ders: this.ders,
-    //       konu: this.getKonu(this.soru.konuNo)
-    //     }
-    //   });
+      let en = '100vw';
+      let boy = '10 0vh';
+      let sinif = 'popup-masaustu';
+      if (this.platform.ANDROID || this.platform.IOS) {
+        en = '600px';
+        boy = '960px';
+        sinif = 'popup-mobil';
+      }
+      const dialogRef = this.dialog.open(SoruOnizlemeComponent, {
+         height: boy,
+         width: en,
+        panelClass: sinif,
+        data: {
+          soru: this.soru,
+          ders: this.ders,
+          konu: this.getKonu(this.soru.konuNo)
+        }
+      });
   }
 }

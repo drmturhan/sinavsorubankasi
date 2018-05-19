@@ -300,8 +300,14 @@ var map = {
 		"./src/app/main/content/apps/apps.module.ts",
 		"main-content-apps-apps-module"
 	],
+	"./sorular/sorular.module": [
+		"./src/app/main/content/apps/sorular/sorular.module.ts",
+		"common",
+		"sorular-sorular-module"
+	],
 	"./uyelik/uyelik.module": [
 		"./src/app/main/content/apps/uyelik/uyelik.module.ts",
+		"common",
 		"uyelik-uyelik-module"
 	]
 };
@@ -314,7 +320,7 @@ function webpackAsyncContext(req) {
 			throw e;
 		});
 	}
-	return __webpack_require__.e(ids[1]).then(function() {
+	return Promise.all(ids.slice(1).map(__webpack_require__.e)).then(function() {
 		var module = __webpack_require__(ids[0]);
 		return module;
 	});
@@ -20276,7 +20282,8 @@ var navigation = [
                 'title': 'Soru Deposu',
                 'type': 'collapse',
                 'icon': 'dashboard',
-                'children': [{
+                'children': [
+                    {
                         'id': 'sorularim',
                         'title': 'Sorularım',
                         'type': 'item',
@@ -20287,7 +20294,20 @@ var navigation = [
                             'bg': '#EC0C8E',
                             'fg': '#FFFFFF'
                         }
-                    }]
+                    },
+                    {
+                        'id': 'ngrxmail',
+                        'title': 'Mails',
+                        'type': 'item',
+                        'icon': 'email',
+                        'url': 'mail',
+                        'badge': {
+                            'title': 13,
+                            'bg': '#EC0C8E',
+                            'fg': '#FFFFFF'
+                        }
+                    }
+                ]
             }
         ]
     }

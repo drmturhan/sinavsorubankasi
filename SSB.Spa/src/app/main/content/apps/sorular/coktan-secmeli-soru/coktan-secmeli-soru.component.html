@@ -77,7 +77,7 @@
                   <mat-icon fxHide.gt-sm matTooltip="Soru metni ve seçenekleri tanımlamak için seçin.">edit</mat-icon>
                 </ng-template>
                 <div class="soru-tanim-sayfa-icerik">
-                  <fuse-sb-html-editor id="soru-metni" [secenekFormu]="coktanSecmeliSoruSecenekService.soruForm" parentFormControlName="soruMetni"></fuse-sb-html-editor>
+                  <fuse-sb-html-editor id="soru-metni" [parentForm]="coktanSecmeliSoruSecenekService.soruForm" parentFormControlName="soruMetni"></fuse-sb-html-editor>
                   <fuse-tek-dogrulu-secenek class="doldur"></fuse-tek-dogrulu-secenek>
                 </div>
               </mat-tab>

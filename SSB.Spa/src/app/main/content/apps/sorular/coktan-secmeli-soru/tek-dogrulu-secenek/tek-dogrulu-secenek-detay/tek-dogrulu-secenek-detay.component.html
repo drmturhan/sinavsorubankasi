@@ -22,7 +22,7 @@
     </div>
     <div class="todo-content">
       <form [formGroup]="secenekFormu">
-        <fuse-sb-html-editor [secenekFormu]="secenekFormu"></fuse-sb-html-editor>
+        <fuse-sb-html-editor [parentForm]="secenekFormu"></fuse-sb-html-editor>
         
         <div class="secenek-ozellik-listesi" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px">
           <mat-checkbox formControlName="dogruSecenek">

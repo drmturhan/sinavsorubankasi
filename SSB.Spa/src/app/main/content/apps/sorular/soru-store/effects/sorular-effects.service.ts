@@ -5,7 +5,9 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'environments/environment';
 import { SoruListe, SoruYarat, SoruDegistir } from '../../models/soru';
 import { KayitSonuc, Sonuc } from '../../../../../../models/sonuclar';
-import { SorularService } from '../../sorular.service';
+import * as fromRootStore from '../../../../../../store/index';
+import { KullaniciBilgi } from '../../../../../../models/kullanici';
+import { Store } from '@ngrx/store';
 
 
 @Injectable({
@@ -17,10 +19,13 @@ export class SorularEffectsService {
   dersanlatanHocalarUrl = 'dersanlatanhocalar';
   soruTipleriUrl = 'sorutipleri';
   bilisselDuzeylerUrl = 'bilisselduzeyler';
+  kb: KullaniciBilgi;
   constructor(
     private http: HttpClient,
-    private sorularService: SorularService
-  ) { }
+    private rootStore: Store<fromRootStore.AuthState>
+  ) {
+    rootStore.subscribe(authState => this.kb = authState.kullaniciBilgi);
+  }
   getKullanicininAnlattigiDersler(): Observable<SoruBirimItem[]> {
     const adres = `${this.baseUrl}/${this.dersanlatanHocalarUrl}/kullanicininanlattigiderslervekonular/`;
     return this.http.get<SoruBirimItem[]>(adres);
@@ -36,7 +41,7 @@ export class SorularEffectsService {
   }
 
   updateSoru(soru): Observable<KayitSonuc<SoruListe>> {
-    const kaydedilecekSoru = Object.assign({}, soru, { personelNo: this.sorularService.kb.personelNo });
+    const kaydedilecekSoru = Object.assign({}, soru, { personelNo: this.kb.personelNo });
     delete kaydedilecekSoru['gecerlilik'];
     console.log(kaydedilecekSoru);
 

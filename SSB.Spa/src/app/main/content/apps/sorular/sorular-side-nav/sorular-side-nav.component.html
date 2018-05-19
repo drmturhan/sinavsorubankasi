@@ -55,12 +55,12 @@
                         <div *ngFor="let dersGrubu of donem.dersGruplari">
                             <div class="nav-item" *ngFor="let ders of dersGrubu.dersleri">
                                 <a class="nav-link ders" matRipple  
-                                 [routerLink]="'/moduller/sorudeposu/ders/' + ders.dersId" routerLinkActive="active" (click)="$event.stopPropagation()">
+                                 [routerLink]="'/sorudeposu/ders/' + ders.dersId" routerLinkActive="active" (click)="$event.stopPropagation()">
                                     <mat-icon class="nav-link-icon" matTooltip="{{program.programAdi}} - {{donem.donemAdi}}:{{dersGrubu.dersGrubuAdi}} dersi">import_contacts</mat-icon>
                                     <span matTooltip="{{ders.dersAdi}}">{{ders.dersAdi|ozet}}</span>
                                 </a>
                                 <div class="nav-item konu" *ngFor="let konu of ders.konulari">
-                                    <a class="nav-link" matRipple [routerLink]="'/moduller/sorudeposu/ders/' + ders.dersId+'/konu/'+konu.konuId" routerLinkActive="active"
+                                    <a class="nav-link" matRipple [routerLink]="'/sorudeposu/ders/' + ders.dersId+'/konu/'+konu.konuId" routerLinkActive="active"
                                         (click)="$event.stopPropagation()"  >
                                         <mat-icon class="nav-link-icon" matTooltip="{{program.programAdi}} - {{donem.donemAdi}} : {{dersGrubu.dersGrubuAdi}} - {{ders.dersAdi}} konusu">label</mat-icon>
                                         <span matTooltip="{{konu.konuAdi}}">{{konu.konuAdi|ozet}}</span>

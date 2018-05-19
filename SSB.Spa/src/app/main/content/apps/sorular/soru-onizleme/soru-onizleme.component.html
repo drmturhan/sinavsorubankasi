@@ -1,0 +1,145 @@
+<div id="invoice" class="modern page-layout blank" fxLayout="row" fusePerfectScrollbar>
+
+  <div class="invoice-container">
+
+    <!-- INVOICE -->
+    <div class="card">
+
+      <div class="header" fxLayout="row" fxLayoutAlign="space-between start">
+
+        <div class="ids" fxLayout="column" fxFlex="70%">
+
+          <div fxLayout="row" class="seller" fxLayoutAlign="start center">
+
+            <div class="detail">
+              <div class="title">
+                <span>Soru Adı:</span>
+                {{data.soru.soruAdi}}</div>
+              <div class="address">
+                <span>Soru Açıklaması:</span>
+                {{data.soru.aciklama}}
+              </div>
+              <div *ngIf="data.ders" class="website">
+                {{data.ders.birimAdi}} {{','+data.ders.programAdi+' programı'}}
+              </div>
+              <div *ngIf="data.ders" class="website">
+                {{data.ders.donemAdi}}
+              </div>
+              <div *ngIf="data.ders" class="phone">
+                <span>Ders:</span>
+                {{data.ders.dersAdi}}
+              </div>
+              <div *ngIf="data.konu">
+                <span>Konu:</span>
+                {{data.konu.konuAdi}}
+              </div>
+
+            </div>
+          </div>
+
+          <div fxLayout="row" class="client" fxLayoutAlign="start center">
+            <div class="label" fxLayout="row" fxLayoutAlign="end center">
+              <div *ngIf="!data.konu">Ders Anlatan Hocalar</div>
+              <div *ngIf="data.konu">Konu Anlatan Hocalar</div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div *ngIf="!data.konu" class="detail">
+              <div class="title" *ngFor="let hoca of data.ders.anlatanHocalar">
+                {{hoca.unvanAdSoyad}}
+              </div>
+             
+            </div>
+            <div *ngIf="data.konu" class="detail">
+              <div class="title" *ngFor="let hoca of data.konu.anlatanHocalar">
+                  {{hoca.unvanAdSoyad}}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <table class="summary" fxFlex="30%">
+          <tr class="code">
+            <td class="label">SORU</td>
+            <td class="value">{{data.soru.soruId}}</td>
+          </tr>
+
+          <tr>
+            <td class="label">Başlangıç</td>
+            <td class="value">{{data.soru.baslangic| date: 'MMMM yyyy'}}</td>
+          </tr>
+
+          <tr>
+            <td class="label">Bitiş</td>
+            <td class="value">{{data.soru.bitis| date: 'MMMM yyyy'}}</td>
+          </tr>
+
+          <tr>
+            <td class="label">KEI</td>
+            <td class="value">{{data.soru.kabulEdilebilirlikIndeksi}}</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="content">
+
+        <div>{{data.soru.soruMetni}}</div>
+        <ol type="a">
+          <li *ngFor="let secenek of data.soru.tekDogruluSecenekleri ">
+            <div [innerHTML]="secenek.secenekMetni"></div>
+          </li>
+        </ol>
+      </div>
+      <div class="footer">
+        <div class="note">Yukarıdaki çerçeve içinde soruyu görmektesiniz. Buraya bakarak sorunun sınavda nasıl çıkacağı konusunda yaklaşık
+          bilgi elde edebilirsiniz.</div>
+        <div fxLayout="row" fxLayoutAlign="start start">
+          <div class="small-note">
+            Lütfen siyah çerçeve içinde sorunun görünüşüne dikkat edin. Buradaki problemleri varsa görüp soru düzeltme kısmından gerekli
+            değişiklikleri yaptıktan sonra soruyu kaydedin. Sonra tekrar bu ekrana gelip sorunun son görünüşüne bakın.
+          </div>
+        </div>
+      </div>
+
+      <!--
+
+          Use the following elements to add breaks to your pages. This will make sure that the section in between
+          these elements will be printed on a new page. The following two elements must be used before and after the
+          page content that you want to show as a new page. So, you have to wrap your content with them.
+
+          Elements:
+          ---------
+          <div class="page-break-after"></div>
+          <div class="page-break-before"></div>
+
+          -->
+
+      <!--
+
+          Example:
+          --------
+
+          Initial page content!
+
+          <div class="page-break-after"></div>
+          <div class="page-break-before"></div>
+
+          This is the second page!
+
+          <div class="page-break-after"></div>
+          <div class="page-break-before"></div>
+
+          This is the third page!
+
+          <div class="page-break-after"></div>
+          <div class="page-break-before"></div>
+
+          -->
+
+    </div>
+    <!-- / INVOICE -->
+
+  </div>
+
+</div>
