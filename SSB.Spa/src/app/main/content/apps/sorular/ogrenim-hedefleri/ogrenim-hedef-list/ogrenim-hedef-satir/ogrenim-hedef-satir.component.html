@@ -1,0 +1,19 @@
+<div fxLayout="row" fxLayoutAlign="start center">
+
+    <mat-checkbox [(ngModel)]="selected" (ngModelChange)="onSelectedChange()" class="mr-16" fxFlex="0 1 auto" (click)="$event.stopPropagation()">
+    </mat-checkbox>
+
+    <div fxLayout="row" fxLayoutAlign="start center" fxFlex>
+
+        <div class="info" fxFlex fxFlexLayout="column">
+            <div class="notes">
+                {{hedef.ogrenimHedefAdi}}
+            </div>
+
+        </div>
+        <div class="actions" fxLayout="row" fxLayoutAlign="start center">
+        </div>
+
+    </div>
+
+</div>

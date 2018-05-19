@@ -14,6 +14,8 @@ export class KullaniciBilgi {
     profilFotoUrl?: string;
     yonetici?: boolean;
     sonrakiKontrolTarihi?: Date;
+    personelNo?: number;
+    kisiNo?: number;
 }
 export class KisiFoto {
     id?: number;
@@ -65,9 +67,9 @@ export class KullaniciYaz {
     fotograflari?: KisiFoto[];
 }
 
-export class ProfilKaydet{
+export class ProfilKaydet {
     id?: number;
-    
+
     unvan?: string;
     ad?: string;
     digerAd?: string;
@@ -95,7 +97,7 @@ export class SifreKurtarBilgi {
 }
 
 export class KullaniciSorgusu extends SorguBase {
-  
+
     constructor() {
         super();
         this.sayfa = 1;

@@ -1,0 +1,8 @@
+<div *ngIf="sorular.length === 0 && !yukleniyor" fxLayout="column" fxLayoutAlign="center center" fxFlexFill>
+    <span class="no-messages-text hint-text">SORU LİSTESİ BOŞ</span>
+  </div>
+  <fuse-yukleniyor [yukleniyor]="yukleniyor">
+    <div class="mail-list">
+      <fuse-soru-listesi-satiri matRipple *ngFor="let soru of sorular" [soru]="soru" (click)="readSoru(soru)" [ngClass]="{'current-mail':soru?.soruId == aktifSoru?.soruId}"></fuse-soru-listesi-satiri>
+    </div>
+  </fuse-yukleniyor>

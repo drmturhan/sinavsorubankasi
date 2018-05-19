@@ -1,0 +1,8 @@
+<div *ngIf="secilebilirOgrenimHedefleri?.length === 0" fxLayout="column" fxLayoutAlign="center center" fxFlexFill>
+    <span class="no-todos-text  hint-text">Seçilecek öğrenim hedefi yok!</span>
+  </div>
+  <div class="todo-list"  *fuseIfOnDom [@animateStagger]="{value:'50'}" >
+    <fuse-ogrenim-hedef-satir class="todo-list-item" *ngFor="let hedef of secilebilirOgrenimHedefleri let i=index" [indeks]="i" [hedef]="hedef"
+      matRipple   [@animate]="{value:'*',params:{y:'100%'}}"></fuse-ogrenim-hedef-satir>
+    
+  </div>

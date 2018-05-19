@@ -1,0 +1,110 @@
+<div id="soru" class="page-layout carded left-sidenav" fusePerfectScrollbar>
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <mat-sidenav-container>
+        <!-- SIDENAV -->
+        <mat-sidenav class="sidenav" align="start" mode="side" opened="true" fuseMatSidenavHelper="carded-left-sidenav" mat-is-locked-open="gt-md">
+            <fuse-sorular-side-nav></fuse-sorular-side-nav>
+
+        </mat-sidenav>
+
+        <div class="center">
+            <!-- CONTENT HEADER -->
+
+            <div class="header" fxLayout="row" fxLayoutAlign="start center">
+
+                <div class="search-wrapper" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                    <button mat-button class="mat-icon-button sidenav-toggle" fuseMatSidenavToggler="carded-left-sidenav" fxHide.gt-md aria-label="Toggle Sidenav">
+                        <mat-icon>menu</mat-icon>
+                    </button>
+
+                    <div class="search" flex fxLayout="row" fxLayoutAlign="start center">
+                        <mat-icon style="color:#2F3A57">home</mat-icon>
+                        <div class="baslik">
+                            {{baslik}}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- / CONTENT HEADER -->
+
+
+            <!-- CONTENT CARD -->
+            <div class="content-card" style="background-color:#A8D0DA" [ngClass]="{'current-mail-selected':aktifSoru$ | async}">
+
+                <!-- CONTENT TOOLBAR -->
+                <div class="toolbar px-24 py-8">
+                    <div class="mail-selection" fxFlex="row" fxLayoutAlign="start center">
+
+                        <mat-checkbox (click)="toggleSelectAll($event)" [checked]="hasSelectedSorular" [indeterminate]="isIndeterminate">
+                        </mat-checkbox>
+
+                        <button mat-icon-button [matMenuTriggerFor]="selectMenu">
+                            <mat-icon>arrow_drop_down</mat-icon>
+                        </button>
+                        <mat-menu #selectMenu="matMenu">
+                            <button mat-menu-item (click)="tumSorulariSec()">Tümü</button>
+                            <button mat-menu-item (click)="hicSoruSecilmesin()">Hiçbiri</button>
+                            <!-- <button mat-menu-item (click)="selectMailsByParameter('read', true)">Read</button>
+                            <button mat-menu-item (click)="selectMailsByParameter('read', false)">Unread</button>
+                            <button mat-menu-item (click)="selectMailsByParameter('starred', true)">Starred</button>
+                            <button mat-menu-item (click)="selectMailsByParameter('starred', false)">Unstarred</button>
+                            <button mat-menu-item (click)="selectMailsByParameter('important', true)">Important</button>
+                            <button mat-menu-item (click)="selectMailsByParameter('important', false)">Unimportant</button> -->
+                        </mat-menu>
+
+                        <div class="toolbar-separator" *ngIf="hasSelectedSorular"></div>
+
+                        <button mat-button class="mat-icon-button" (click)="seciliSorulariSil()" *ngIf="hasSelectedSorular">
+                            <mat-icon matTooltip="Seçilmiş {{selectedSorularIds.length}} soruyu siler.">delete</mat-icon>
+                        </button>
+
+                        <span *ngIf="hasSelectedSorular">{{selectedSorularIds.length}} soru seçildi.</span>
+
+                        <!-- <button mat-icon-button [matMenuTriggerFor]="folderMenu" *ngIf="hasSelectedSorular">
+                            <mat-icon>folder</mat-icon>
+                        </button> -->
+                        <!-- <mat-menu #folderMenu="matMenu">
+                            <button mat-menu-item *ngFor="let folder of folders$ | async"
+                                    (click)="setFolderOnSelectedMails(folder.id)">{{folder.title}}
+                            </button>
+                        </mat-menu> -->
+
+                        <!-- <button mat-icon-button [matMenuTriggerFor]="labelMenu" *ngIf="hasSelectedSorular">
+                            <mat-icon>label</mat-icon>
+                        </button>
+                        <mat-menu #labelMenu="matMenu">
+                            <button mat-menu-item *ngFor="let label of labels$ | async"
+                                    (click)="toggleLabelOnSelectedMails(label.id)">{{label.title}}
+                            </button>
+                        </mat-menu> -->
+                    </div>
+
+                    <div *ngIf="aktifSoru$ | async" fxHide.gt-xs>
+                        <button mat-icon-button (click)="aktifSoruyuBosYap()">
+                            <mat-icon>arrow_back</mat-icon>
+                        </button>
+                    </div>
+
+                </div>
+
+                <!-- / CONTENT TOOLBAR -->
+                <!-- CONTENT -->
+                <div class="content" fxLayoutAlign="row">
+                    
+                        <fuse-soru-listesi fusePerfectScrollbar fxFlex [sorular]="sorular$ | async" [aktifSoru]="aktifSoru$|async" (sorudegisti)="soruGoster($event)"></fuse-soru-listesi>
+                        <fuse-soru-detay [soru]="aktifSoru$|async" fusePerfectScrollbar fxflex> </fuse-soru-detay>
+                    
+                </div>
+                <!-- / CONTENT -->
+
+            </div>
+            <!-- / CONTENT CARD -->
+
+        </div>
+        <!-- / SIDENAV -->
+    </mat-sidenav-container>
+</div>

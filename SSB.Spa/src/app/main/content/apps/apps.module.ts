@@ -12,8 +12,12 @@ const routes: Routes = [
     },
 
     {
-        path: 'sorudeposu',
+        path: 'mail',
         loadChildren: './mail-ngrx/mail.module#FuseMailNgrxModule'
+    },
+    {
+        path: 'sorudeposu',
+        loadChildren: './sorular/sorular.module#SorularModule'
     },
     {
         path: 'uyelik',

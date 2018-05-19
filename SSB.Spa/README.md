@@ -32,3 +32,46 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
 
+
+
+
+# master dalını aktif hale getirin
+git checkout master 
+# Dalı silin
+git branch -d <dalınızın adı>
+git branch shows the branches being worked on locally.
+git pull
+git push
+# Deponuzun durumunu inceleyin
+
+git status
+# "feature_x" adıyla yeni bir dal oluşturup o dala geçmek için
+git checkout -b feature_x
+
+#master'a geri geçmek için
+git checkout master
+
+
+#oluşturduğumuz dalı silmek için
+git branch -d feature_x
+
+bir dalı uzak deponuza göndermedikçe
+başkaları tarafından kullanılabilir olmaz
+#git push origin <dal>
+
+
+
+# create a new branch to store any new changes
+git branch soru-deposu lokal dal yarattı
+git checkout my-branch lokal dalı aktive etti
+git branch aktif olan branch yeşil
+
+# take a snapshot of the staging area (anything that's been added)
+git commit -m "my snapshot"
+
+
+git push --set-upstream origin soru-deposu 
+
+
+https://guides.github.com/introduction/git-handbook/ 
+

@@ -1,0 +1,52 @@
+<div *ngIf="!secenekFormu" fxLayout="column" fxLayoutAlign="center center" fxFlex>
+    <mat-icon class="s-120 mb-12 select-todo-icon" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'300ms',scale:'0.2'}}">check_box
+    </mat-icon>
+    <span class="hint-text mat-h1 select-todo-text" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'400ms'}}">Seçenek seç
+    </span>
+  </div>
+  
+  <div *ngIf="secenekFormu">
+    <div class="todo-header" fxLayout="row" fxLayoutAlign="space-between center">
+     
+      <div class="actions" fxLayout="row" fxLayoutAlign="start center">
+  
+        <button mat-button class="mat-icon-button" (click)="addTekDogruluSecenek($event)" aria-label="Seçenek ekle" fxHide.lt-lg>
+          <mat-icon matTooltip="Yeni seçenek ekle" class="ekle">add_box</mat-icon>
+        </button>
+  
+        <button mat-button class="mat-icon-button" (click)="toggleSecenekSil($event)" aria-label="Toggle delete" fxHide.lt-lg>
+          <mat-icon matTooltip="Bu seçeneği sil">delete</mat-icon>
+        </button>
+  
+      </div>
+    </div>
+    <div class="todo-content">
+      <form [formGroup]="secenekFormu">
+        <fuse-sb-html-editor [secenekFormu]="secenekFormu"></fuse-sb-html-editor>
+        
+        <div class="secenek-ozellik-listesi" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px">
+          <mat-checkbox formControlName="dogruSecenek">
+            Doğru seçenek
+          </mat-checkbox>
+  
+          <mat-checkbox formControlName="hemenElenebilir">
+            İlk bakışta elenebilir seçenek.
+          </mat-checkbox>
+        </div>
+        <!-- <div class="tags m-12" fxLayout="row" fxLayoutAlign="start center" fxLayoutWrap fxHide.lt->
+  
+          <div class="tag" fxLayout="row" fxLayoutAlign="start center">
+            <div class="tag-color" [ngStyle]="{'background-color': dogruSecenek?'green':'#E2474C'}"></div>
+            <div class="tag-label">{{dogruSecenek?'Doğru Cevap':'Çeldirici'}}</div>
+          </div>
+  
+          <div class="tag" fxLayout="row" fxLayoutAlign="start center">
+            <div class="tag-color" [ngStyle]="{'background-color': hemenElenebilirSecenek?'#252D43':'#AF373A'}"></div>
+            <div class="tag-label">{{hemenElenebilirSecenek?'Hemen Elenebilir':'Hemen Elenemez'}}</div>
+          </div>
+  
+        </div> -->
+  
+      </form>
+    </div>
+  </div>

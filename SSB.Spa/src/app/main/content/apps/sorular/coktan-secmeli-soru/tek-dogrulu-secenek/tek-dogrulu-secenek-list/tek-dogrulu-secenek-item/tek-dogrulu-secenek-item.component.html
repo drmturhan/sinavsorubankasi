@@ -1,0 +1,68 @@
+<div fxLayout="row" fxLayoutAlign="start center">
+
+    <mat-checkbox [(ngModel)]="selected" (ngModelChange)="onSelectedChange()" class="mr-16" fxFlex="0 1 auto" (click)="$event.stopPropagation()">
+    </mat-checkbox>
+
+    <div fxLayout="row" fxLayoutAlign="start center" fxFlex>
+
+        <div class="info" fxFlex fxFlexLayout="column">
+            <div class="notes">
+
+                <div [innerHTML]="secenekCtrl.get('secenekMetni').value"></div>
+
+            </div>
+            <!-- <div class="notes">
+                    {{secenekCtrl.get('tekDogruluSoruSecenekId').value}}
+            </div> -->
+            <div  class="tags" fxLayout="row" fxLayoutAlign="start center" fxLayoutWrap
+                fxHide.lt-lg>
+
+                <div *ngIf="secenekCtrl.get('dogruSecenek')?.value" class="tag" fxLayout="row" fxLayoutAlign="start center">
+                    <div class="tag-color" [ngStyle]="{'background-color':'green'}"></div>
+                    <div class="tag-label">Doğru seçenek</div>
+                </div>
+
+                <div *ngIf="secenekCtrl.get('hemenElenebilir')?.value" class="tag" fxLayout="row" fxLayoutAlign="start center">
+                    <div class="tag-color" [ngStyle]="{'background-color':'#252D43'}"></div>
+                    <div class="tag-label">İlk bakışta elenebilir seçenek.</div>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="actions" fxLayout="row" fxLayoutAlign="start center">
+            <div fxHide fxShow.gt-md>
+                <button mat-button class="mat-icon-button" (click)="secenekSil($event)" aria-label="Toggle delete">
+                    <mat-icon >delete</mat-icon>
+                </button>
+            </div>
+            <button mat-button [matMenuTriggerFor]="moreMenu" aria-label="More" class="mat-icon-button" (click)="$event.stopPropagation();"
+                fxHide.xs>
+                <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #moreMenu="matMenu">
+                <button mat-menu-item aria-label="dogru secenek degistirici" (click)="toggleDogruSecenek($event)">
+                    <ng-container *ngIf="secenekCtrl.get('dogruSecenek')?.value===true">
+                        <span>Doğru seçenek olmasın</span>
+                    </ng-container>
+                    <ng-container *ngIf="!secenekCtrl.get('dogruSecenek')?.value===true">
+                        <span>Doğru seçenek yap</span>
+                    </ng-container>
+                </button>
+                <button mat-menu-item aria-label="ilk bakista elenebilir secenek degistirici" (click)="toggleHemenElenebilir($event)">
+                        <ng-container *ngIf="secenekCtrl.get('hemenElenebilir')?.value===true">
+                            <span>İlk bakışta elebilir olmasın</span>
+                        </ng-container>
+                        <ng-container *ngIf="secenekCtrl.get('hemenElenebilir')?.value===false">
+                            <span>İlk bakışta elenebilir yap</span>
+                        </ng-container>
+                    </button>
+    
+               
+            </mat-menu>
+
+        </div>
+
+    </div>
+
+</div>

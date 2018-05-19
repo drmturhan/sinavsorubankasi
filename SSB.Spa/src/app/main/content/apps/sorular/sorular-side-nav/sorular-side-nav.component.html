@@ -1,0 +1,79 @@
+<!-- SIDENAV HEADER -->
+<div fxLayout="column" fxLayoutAlign="space-between start" class="header p-24 pb-4" ngClass="kucuk-ekran" ngClass.gt-md="buyuk-ekran">
+    <div class="logo" fxFlex fxLayout="row" fxLayoutAlign="start center" matTooltip="Sayfayı tazelemek için tıklayın">
+        
+        <button class="logo">
+            <span class="logo-text">SORU DEPOSU</span>
+        </button>
+    </div>
+
+    <div class="birimler" fxLayout="column" style="color:2F3A57;font-size:16px">
+        <div >Çalıştığınız Birimler</div>
+        <mat-form-field floatPlaceholder="never" >
+            <mat-select class="account-selection" placeholder="Birim seçin" [(ngModel)]="seciliBirim" >
+                <mat-option *ngFor="let birim of (birimler$ |async)" [value]="birim">
+                    {{birim.birimAdi}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+
+</div>
+<!-- / SIDENAV HEADER -->
+
+
+<!-- SIDENAV CONTENT -->
+<div class="content"  ngClass="kucuk-ekran" ngClass.gt-md="buyuk-ekran" fusePerfectScrollbar>
+
+    <div class="p-12">
+
+        <button mat-raised-button fxFlex class="mat-accent compose-dialog-button" (click)="composeDialog()"
+            #yeniButon aria-label="Compose" [disabled]="dersNo<=0">
+            <mat-icon class="yeni-ikon">add_box </mat-icon>
+            YENİ SORU
+            <mat-icon matTooltip="Bir ders veya konu için soru yaratabilirsiniz. Lütfen ders veya konu seçiniz." *ngIf="dersNo<=0">error </mat-icon>
+        </button>
+
+    </div>
+
+    <div class="nav" ngClass="yan-acik" ngClass.gt-md="yan">
+        <div *ngIf="!seciliBirim?.programlari || seciliBirim?.programlari.length===0">
+            <span class="nav-subheader">Ders ve/veya konu yok.</span>
+        </div>
+
+        <div *ngIf="seciliBirim?.programlari && seciliBirim?.programlari?.length>0">
+            <div class="nav-subheader ders">DERSLER /
+                <span class="konu"> KONULAR</span>
+                <button  mat-icon-button matTooltip="Ders konu ağacını yeniden yükle" (click)="sayfayiTazele()">
+                        <mat-icon>loop</mat-icon>
+                    </button>
+            </div>
+            
+            <div *ngFor="let program of seciliBirim.programlari">
+                <div *ngFor="let donem of program.donemleri">                 
+                    <div *ngIf="donem.dersGruplari">
+                        <div *ngFor="let dersGrubu of donem.dersGruplari">
+                            <div class="nav-item" *ngFor="let ders of dersGrubu.dersleri">
+                                <a class="nav-link ders" matRipple  
+                                 [routerLink]="'/moduller/sorudeposu/ders/' + ders.dersId" routerLinkActive="active" (click)="$event.stopPropagation()">
+                                    <mat-icon class="nav-link-icon" matTooltip="{{program.programAdi}} - {{donem.donemAdi}}:{{dersGrubu.dersGrubuAdi}} dersi">import_contacts</mat-icon>
+                                    <span matTooltip="{{ders.dersAdi}}">{{ders.dersAdi|ozet}}</span>
+                                </a>
+                                <div class="nav-item konu" *ngFor="let konu of ders.konulari">
+                                    <a class="nav-link" matRipple [routerLink]="'/moduller/sorudeposu/ders/' + ders.dersId+'/konu/'+konu.konuId" routerLinkActive="active"
+                                        (click)="$event.stopPropagation()"  >
+                                        <mat-icon class="nav-link-icon" matTooltip="{{program.programAdi}} - {{donem.donemAdi}} : {{dersGrubu.dersGrubuAdi}} - {{ders.dersAdi}} konusu">label</mat-icon>
+                                        <span matTooltip="{{konu.konuAdi}}">{{konu.konuAdi|ozet}}</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<!-- / SIDENAV CONTENT -->

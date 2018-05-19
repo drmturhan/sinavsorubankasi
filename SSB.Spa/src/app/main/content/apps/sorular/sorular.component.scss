@@ -1,0 +1,84 @@
+@import "src/@fuse/scss/fuse";
+:host {
+    width: 100%;
+    .page-layout {
+        background-color: #A8D0DA;
+        &.carded {
+            background-color: #A8D0DA;
+            .top-bg {
+                background-color: #2F3A57;
+            }
+            .sidenav .yan-acik{
+                background-color: A8D0DA;                        
+            }    
+        }
+        
+        .center {
+            .header {
+                
+                .search-wrapper {
+                    background-color: #A8D0DA;
+                    @include mat-elevation(7);
+                    
+                    
+                    .sidenav-toggle {
+                        margin: 0;
+                        width: 56px;
+                        height: 56px;
+                        background: #E2E3DD;
+                        border-radius: 0;
+                        border-right: 1px solid rgba(0, 0, 0, .12);
+                    }
+                    .search {
+                        
+                        width: 100%;
+                        height: 56px;
+                        line-height: 56px;
+                        padding: 18px;
+                        font-weight: 700;
+                        color:#2F3A57;
+                        .baslik {
+                            height: 56px;
+                            padding-left: 32px;
+                            font-size: 1.5em;
+                            border: none;
+                            outline: none;
+                            background-color: #A8D0DA;
+                        }
+                    }
+                }
+            }
+            .content-card {
+                @include media-breakpoint(xs) {
+                    fuse-soru-listesi {
+                        border-right: none;
+                    }
+                    fuse-soru-listesi,
+                    fuse-soru-detay {
+                        flex: 1 0 100%;
+                    }
+                    fuse-soru-detay {
+                        display: none !important;
+                    }
+                    &.current-mail-selected {
+                        .toolbar {
+                            padding-left: 16px !important;
+                            .mail-selection {
+                                display: none !important;
+                            }
+                        }
+                        .content {
+                            fuse-soru-listesi {
+                                display: none !important;
+                            }
+                            fuse-soru-detay {
+                                display: flex !important;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+}

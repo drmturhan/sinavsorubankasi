@@ -2,7 +2,7 @@ export const navigation = [
     {
         'id': 'uygulamalar',
         'title': 'Uygulamalar',
-        
+
         'type': 'group',
         'icon': 'apps',
         'children': [
@@ -19,18 +19,32 @@ export const navigation = [
                 'title': 'Soru Deposu',
                 'type': 'collapse',
                 'icon': 'dashboard',
-                'children': [{
-                    'id': 'sorularim',
-                    'title': 'Sorularım',
-                    'type': 'item',
-                    'icon': 'email',
-                    'url': 'sorudeposu',
-                    'badge': {
-                        'title': 13,
-                        'bg': '#EC0C8E',
-                        'fg': '#FFFFFF'
+                'children': [
+                    {
+                        'id': 'sorularim',
+                        'title': 'Sorularım',
+                        'type': 'item',
+                        'icon': 'email',
+                        'url': 'sorudeposu',
+                        'badge': {
+                            'title': 13,
+                            'bg': '#EC0C8E',
+                            'fg': '#FFFFFF'
+                        }
+                    },
+                    {
+                        'id': 'ngrxmail',
+                        'title': 'Mails',
+                        'type': 'item',
+                        'icon': 'email',
+                        'url': 'mail',
+                        'badge': {
+                            'title': 13,
+                            'bg': '#EC0C8E',
+                            'fg': '#FFFFFF'
+                        }
                     }
-                }]
+                ]
             }
         ]
     }

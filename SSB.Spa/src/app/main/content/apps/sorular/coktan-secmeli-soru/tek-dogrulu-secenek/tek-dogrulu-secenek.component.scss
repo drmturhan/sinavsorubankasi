@@ -1,0 +1,88 @@
+@import "src/@fuse/scss/fuse";
+:host {
+    width: 100%;
+    .center {
+        .header {
+            .search-wrapper {
+                @include mat-elevation(7);
+                .sidenav-toggle {
+                    margin: 0;
+                    width: 56px;
+                    height: 56px;
+                    border-radius: 0;
+                    border-right: 1px solid rgba(0, 0, 0, .12);
+                }
+                .search {
+                    width: 100%;
+                    height: 56px;
+                    line-height: 56px;
+                    padding: 18px;
+                    input {
+                        height: 56px;
+                        padding-left: 16px;
+                        color: rgba(0, 0, 0, 0.54);
+                        border: none;
+                        outline: none;
+                    }
+                }
+            }
+        }
+        .content-card {
+            .content {
+                
+                background-color: #A8D0DA;
+                border-radius: 2px;
+                box-shadow: 0 3px 1px -2px rgba(0, 0, 0, .2), 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12);
+                transition: box-shadow 280ms cubic-bezier(.4, 0, .2, 1);
+                margin: 12px;
+            }
+            .toolbar {
+                background-color: #A8D0DA;
+                color: #2F3A57;
+                border-radius: 2px;
+                box-shadow: 0 3px 1px -2px rgba(0, 0, 0, .2), 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12);
+                transition: box-shadow 280ms cubic-bezier(.4, 0, .2, 1);
+                padding: 24px;
+                padding-top:8px;
+                padding-bottom:8px;
+                margin: 12px;
+            }
+            @include media-breakpoint-down(md) {
+                @include media-breakpoint-down(md) {
+                    fuse-tek-dogrulu-secenek-list {
+                        border-right: 0;
+                    }
+                    fuse-tek-dogrulu-secenek-list,
+                    fuse-tek-dogrulu-secenek-detay {
+                        flex: 1 0 100%;
+                    }
+                    fuse-tek-dogrulu-secenek-detay {
+                        display: none !important;
+                    }
+                    &.aktif-secenek-var {
+                        .toolbar {
+                            padding-left: 16px !important;
+                            .todo-selection {
+                                display: none !important;
+                            }
+                        }
+                        .content {
+                            fuse-tek-dogrulu-secenek-list {
+                                display: none !important;
+                            }
+                            fuse-tek-dogrulu-secenek-detay {
+                                display: flex !important;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        .ekle {
+            color: #406D95 !important;
+        }
+        .sil {
+            color: #AF373A !important;
+        }
+    }
+}

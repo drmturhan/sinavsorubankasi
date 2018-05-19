@@ -4604,6 +4604,22 @@ exports.FileUploadModule = file_upload_module_1.FileUploadModule;
 
 /***/ }),
 
+/***/ "./node_modules/rxjs-compat/_esm5/add/observable/forkJoin.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/rxjs-compat/_esm5/add/observable/forkJoin.js ***!
+  \*******************************************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+
+rxjs__WEBPACK_IMPORTED_MODULE_0__["Observable"].forkJoin = rxjs__WEBPACK_IMPORTED_MODULE_0__["forkJoin"];
+//# sourceMappingURL=forkJoin.js.map
+
+/***/ }),
+
 /***/ "./node_modules/rxjs-compat/_esm5/add/observable/fromEvent.js":
 /*!********************************************************************!*\
   !*** ./node_modules/rxjs-compat/_esm5/add/observable/fromEvent.js ***!
@@ -4617,6 +4633,22 @@ __webpack_require__.r(__webpack_exports__);
 
 rxjs__WEBPACK_IMPORTED_MODULE_0__["Observable"].fromEvent = rxjs__WEBPACK_IMPORTED_MODULE_0__["fromEvent"];
 //# sourceMappingURL=fromEvent.js.map
+
+/***/ }),
+
+/***/ "./node_modules/rxjs-compat/_esm5/add/observable/interval.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/rxjs-compat/_esm5/add/observable/interval.js ***!
+  \*******************************************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+
+rxjs__WEBPACK_IMPORTED_MODULE_0__["Observable"].interval = rxjs__WEBPACK_IMPORTED_MODULE_0__["interval"];
+//# sourceMappingURL=interval.js.map
 
 /***/ }),
 
@@ -4636,22 +4668,19 @@ rxjs__WEBPACK_IMPORTED_MODULE_0__["Observable"].merge = rxjs__WEBPACK_IMPORTED_M
 
 /***/ }),
 
-/***/ "./node_modules/rxjs-compat/_esm5/add/operator/catch.js":
-/*!**************************************************************!*\
-  !*** ./node_modules/rxjs-compat/_esm5/add/operator/catch.js ***!
-  \**************************************************************/
+/***/ "./node_modules/rxjs-compat/_esm5/add/observable/of.js":
+/*!*************************************************************!*\
+  !*** ./node_modules/rxjs-compat/_esm5/add/observable/of.js ***!
+  \*************************************************************/
 /*! no exports provided */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
-/* harmony import */ var _operator_catch__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../operator/catch */ "./node_modules/rxjs-compat/_esm5/operator/catch.js");
 
-
-rxjs__WEBPACK_IMPORTED_MODULE_0__["Observable"].prototype.catch = _operator_catch__WEBPACK_IMPORTED_MODULE_1__["_catch"];
-rxjs__WEBPACK_IMPORTED_MODULE_0__["Observable"].prototype._catch = _operator_catch__WEBPACK_IMPORTED_MODULE_1__["_catch"];
-//# sourceMappingURL=catch.js.map
+rxjs__WEBPACK_IMPORTED_MODULE_0__["Observable"].of = rxjs__WEBPACK_IMPORTED_MODULE_0__["of"];
+//# sourceMappingURL=of.js.map
 
 /***/ }),
 
@@ -4673,21 +4702,40 @@ rxjs__WEBPACK_IMPORTED_MODULE_0__["Observable"].prototype.debounceTime = _operat
 
 /***/ }),
 
-/***/ "./node_modules/rxjs-compat/_esm5/add/operator/map.js":
-/*!************************************************************!*\
-  !*** ./node_modules/rxjs-compat/_esm5/add/operator/map.js ***!
-  \************************************************************/
+/***/ "./node_modules/rxjs-compat/_esm5/add/operator/distinctUntilChanged.js":
+/*!*****************************************************************************!*\
+  !*** ./node_modules/rxjs-compat/_esm5/add/operator/distinctUntilChanged.js ***!
+  \*****************************************************************************/
 /*! no exports provided */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
-/* harmony import */ var _operator_map__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../operator/map */ "./node_modules/rxjs-compat/_esm5/operator/map.js");
+/* harmony import */ var _operator_distinctUntilChanged__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../operator/distinctUntilChanged */ "./node_modules/rxjs-compat/_esm5/operator/distinctUntilChanged.js");
 
 
-rxjs__WEBPACK_IMPORTED_MODULE_0__["Observable"].prototype.map = _operator_map__WEBPACK_IMPORTED_MODULE_1__["map"];
-//# sourceMappingURL=map.js.map
+rxjs__WEBPACK_IMPORTED_MODULE_0__["Observable"].prototype.distinctUntilChanged = _operator_distinctUntilChanged__WEBPACK_IMPORTED_MODULE_1__["distinctUntilChanged"];
+//# sourceMappingURL=distinctUntilChanged.js.map
+
+/***/ }),
+
+/***/ "./node_modules/rxjs-compat/_esm5/add/operator/mergeMap.js":
+/*!*****************************************************************!*\
+  !*** ./node_modules/rxjs-compat/_esm5/add/operator/mergeMap.js ***!
+  \*****************************************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var _operator_mergeMap__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../operator/mergeMap */ "./node_modules/rxjs-compat/_esm5/operator/mergeMap.js");
+
+
+rxjs__WEBPACK_IMPORTED_MODULE_0__["Observable"].prototype.mergeMap = _operator_mergeMap__WEBPACK_IMPORTED_MODULE_1__["mergeMap"];
+rxjs__WEBPACK_IMPORTED_MODULE_0__["Observable"].prototype.flatMap = _operator_mergeMap__WEBPACK_IMPORTED_MODULE_1__["mergeMap"];
+//# sourceMappingURL=mergeMap.js.map
 
 /***/ }),
 
@@ -4709,16 +4757,39 @@ rxjs__WEBPACK_IMPORTED_MODULE_0__["Observable"].prototype.startWith = _operator_
 
 /***/ }),
 
-/***/ "./node_modules/rxjs-compat/_esm5/add/operator/toPromise.js":
+/***/ "./node_modules/rxjs-compat/_esm5/add/operator/switchMap.js":
 /*!******************************************************************!*\
-  !*** ./node_modules/rxjs-compat/_esm5/add/operator/toPromise.js ***!
+  !*** ./node_modules/rxjs-compat/_esm5/add/operator/switchMap.js ***!
   \******************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-// HACK: does nothing, because `toPromise` now lives on the `Observable` itself.
-// leaving this module here to prevent breakage.
-//# sourceMappingURL=toPromise.js.map
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var _operator_switchMap__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../operator/switchMap */ "./node_modules/rxjs-compat/_esm5/operator/switchMap.js");
+
+
+rxjs__WEBPACK_IMPORTED_MODULE_0__["Observable"].prototype.switchMap = _operator_switchMap__WEBPACK_IMPORTED_MODULE_1__["switchMap"];
+//# sourceMappingURL=switchMap.js.map
+
+/***/ }),
+
+/***/ "./node_modules/rxjs-compat/_esm5/add/operator/take.js":
+/*!*************************************************************!*\
+  !*** ./node_modules/rxjs-compat/_esm5/add/operator/take.js ***!
+  \*************************************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var _operator_take__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../operator/take */ "./node_modules/rxjs-compat/_esm5/operator/take.js");
+
+
+rxjs__WEBPACK_IMPORTED_MODULE_0__["Observable"].prototype.take = _operator_take__WEBPACK_IMPORTED_MODULE_1__["take"];
+//# sourceMappingURL=take.js.map
 
 /***/ }),
 
@@ -4736,84 +4807,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 //# sourceMappingURL=forkJoin.js.map
-
-/***/ }),
-
-/***/ "./node_modules/rxjs-compat/_esm5/operator/catch.js":
-/*!**********************************************************!*\
-  !*** ./node_modules/rxjs-compat/_esm5/operator/catch.js ***!
-  \**********************************************************/
-/*! exports provided: _catch */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_catch", function() { return _catch; });
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
-
-/**
- * Catches errors on the observable to be handled by returning a new observable or throwing an error.
- *
- * <img src="./img/catch.png" width="100%">
- *
- * @example <caption>Continues with a different Observable when there's an error</caption>
- *
- * Observable.of(1, 2, 3, 4, 5)
- *   .map(n => {
- * 	   if (n == 4) {
- * 	     throw 'four!';
- *     }
- *	   return n;
- *   })
- *   .catch(err => Observable.of('I', 'II', 'III', 'IV', 'V'))
- *   .subscribe(x => console.log(x));
- *   // 1, 2, 3, I, II, III, IV, V
- *
- * @example <caption>Retries the caught source Observable again in case of error, similar to retry() operator</caption>
- *
- * Observable.of(1, 2, 3, 4, 5)
- *   .map(n => {
- * 	   if (n === 4) {
- * 	     throw 'four!';
- *     }
- * 	   return n;
- *   })
- *   .catch((err, caught) => caught)
- *   .take(30)
- *   .subscribe(x => console.log(x));
- *   // 1, 2, 3, 1, 2, 3, ...
- *
- * @example <caption>Throws a new error when the source Observable throws an error</caption>
- *
- * Observable.of(1, 2, 3, 4, 5)
- *   .map(n => {
- *     if (n == 4) {
- *       throw 'four!';
- *     }
- *     return n;
- *   })
- *   .catch(err => {
- *     throw 'error in source. Details: ' + err;
- *   })
- *   .subscribe(
- *     x => console.log(x),
- *     err => console.log(err)
- *   );
- *   // 1, 2, 3, error in source. Details: four!
- *
- * @param {function} selector a function that takes as arguments `err`, which is the error, and `caught`, which
- *  is the source observable, in case you'd like to "retry" that observable by returning it again. Whatever observable
- *  is returned by the `selector` will be used to continue the observable chain.
- * @return {Observable} An observable that originates from either the source or the observable returned by the
- *  catch `selector` function.
- * @method catch
- * @name catch
- * @owner Observable
- */
-function _catch(selector) {
-    return Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["catchError"])(selector)(this);
-}
-//# sourceMappingURL=catch.js.map
 
 /***/ }),
 
@@ -4885,55 +4878,132 @@ function debounceTime(dueTime, scheduler) {
 
 /***/ }),
 
-/***/ "./node_modules/rxjs-compat/_esm5/operator/map.js":
-/*!********************************************************!*\
-  !*** ./node_modules/rxjs-compat/_esm5/operator/map.js ***!
-  \********************************************************/
-/*! exports provided: map */
+/***/ "./node_modules/rxjs-compat/_esm5/operator/distinctUntilChanged.js":
+/*!*************************************************************************!*\
+  !*** ./node_modules/rxjs-compat/_esm5/operator/distinctUntilChanged.js ***!
+  \*************************************************************************/
+/*! exports provided: distinctUntilChanged */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "map", function() { return map; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "distinctUntilChanged", function() { return distinctUntilChanged; });
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+
+/* tslint:enable:max-line-length */
+/**
+ * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from the previous item.
+ *
+ * If a comparator function is provided, then it will be called for each item to test for whether or not that value should be emitted.
+ *
+ * If a comparator function is not provided, an equality check is used by default.
+ *
+ * @example <caption>A simple example with numbers</caption>
+ * Observable.of(1, 1, 2, 2, 2, 1, 1, 2, 3, 3, 4)
+ *   .distinctUntilChanged()
+ *   .subscribe(x => console.log(x)); // 1, 2, 1, 2, 3, 4
+ *
+ * @example <caption>An example using a compare function</caption>
+ * interface Person {
+ *    age: number,
+ *    name: string
+ * }
+ *
+ * Observable.of<Person>(
+ *     { age: 4, name: 'Foo'},
+ *     { age: 7, name: 'Bar'},
+ *     { age: 5, name: 'Foo'})
+ *     { age: 6, name: 'Foo'})
+ *     .distinctUntilChanged((p: Person, q: Person) => p.name === q.name)
+ *     .subscribe(x => console.log(x));
+ *
+ * // displays:
+ * // { age: 4, name: 'Foo' }
+ * // { age: 7, name: 'Bar' }
+ * // { age: 5, name: 'Foo' }
+ *
+ * @see {@link distinct}
+ * @see {@link distinctUntilKeyChanged}
+ *
+ * @param {function} [compare] Optional comparison function called to test if an item is distinct from the previous item in the source.
+ * @return {Observable} An Observable that emits items from the source Observable with distinct values.
+ * @method distinctUntilChanged
+ * @owner Observable
+ */
+function distinctUntilChanged(compare, keySelector) {
+    return Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["distinctUntilChanged"])(compare, keySelector)(this);
+}
+//# sourceMappingURL=distinctUntilChanged.js.map
+
+/***/ }),
+
+/***/ "./node_modules/rxjs-compat/_esm5/operator/mergeMap.js":
+/*!*************************************************************!*\
+  !*** ./node_modules/rxjs-compat/_esm5/operator/mergeMap.js ***!
+  \*************************************************************/
+/*! exports provided: mergeMap */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mergeMap", function() { return mergeMap; });
 /* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
 
 /**
- * Applies a given `project` function to each value emitted by the source
- * Observable, and emits the resulting values as an Observable.
- *
- * <span class="informal">Like [Array.prototype.map()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map),
- * it passes each source value through a transformation function to get
- * corresponding output values.</span>
- *
- * <img src="./img/map.png" width="100%">
- *
- * Similar to the well known `Array.prototype.map` function, this operator
- * applies a projection to each value and emits that projection in the output
+ * Projects each source value to an Observable which is merged in the output
  * Observable.
  *
- * @example <caption>Map every click to the clientX position of that click</caption>
- * var clicks = Rx.Observable.fromEvent(document, 'click');
- * var positions = clicks.map(ev => ev.clientX);
- * positions.subscribe(x => console.log(x));
+ * <span class="informal">Maps each value to an Observable, then flattens all of
+ * these inner Observables using {@link mergeAll}.</span>
  *
- * @see {@link mapTo}
- * @see {@link pluck}
+ * <img src="./img/mergeMap.png" width="100%">
  *
- * @param {function(value: T, index: number): R} project The function to apply
- * to each `value` emitted by the source Observable. The `index` parameter is
- * the number `i` for the i-th emission that has happened since the
- * subscription, starting from the number `0`.
- * @param {any} [thisArg] An optional argument to define what `this` is in the
- * `project` function.
- * @return {Observable<R>} An Observable that emits the values from the source
- * Observable transformed by the given `project` function.
- * @method map
+ * Returns an Observable that emits items based on applying a function that you
+ * supply to each item emitted by the source Observable, where that function
+ * returns an Observable, and then merging those resulting Observables and
+ * emitting the results of this merger.
+ *
+ * @example <caption>Map and flatten each letter to an Observable ticking every 1 second</caption>
+ * var letters = Rx.Observable.of('a', 'b', 'c');
+ * var result = letters.mergeMap(x =>
+ *   Rx.Observable.interval(1000).map(i => x+i)
+ * );
+ * result.subscribe(x => console.log(x));
+ *
+ * // Results in the following:
+ * // a0
+ * // b0
+ * // c0
+ * // a1
+ * // b1
+ * // c1
+ * // continues to list a,b,c with respective ascending integers
+ *
+ * @see {@link concatMap}
+ * @see {@link exhaustMap}
+ * @see {@link merge}
+ * @see {@link mergeAll}
+ * @see {@link mergeMapTo}
+ * @see {@link mergeScan}
+ * @see {@link switchMap}
+ *
+ * @param {function(value: T, ?index: number): ObservableInput} project A function
+ * that, when applied to an item emitted by the source Observable, returns an
+ * Observable.
+ * @param {number} [concurrent=Number.POSITIVE_INFINITY] Maximum number of input
+ * Observables being subscribed to concurrently.
+ * @return {Observable} An Observable that emits the result of applying the
+ * projection function (and the optional `resultSelector`) to each item emitted
+ * by the source Observable and merging the results of the Observables obtained
+ * from this transformation.
+ * @method mergeMap
  * @owner Observable
  */
-function map(project, thisArg) {
-    return Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(project, thisArg)(this);
+function mergeMap(project, concurrent) {
+    if (concurrent === void 0) { concurrent = Number.POSITIVE_INFINITY; }
+    return Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["mergeMap"])(project, concurrent)(this);
 }
-//# sourceMappingURL=map.js.map
+//# sourceMappingURL=mergeMap.js.map
 
 /***/ }),
 
@@ -4975,6 +5045,116 @@ function startWith() {
 
 /***/ }),
 
+/***/ "./node_modules/rxjs-compat/_esm5/operator/switchMap.js":
+/*!**************************************************************!*\
+  !*** ./node_modules/rxjs-compat/_esm5/operator/switchMap.js ***!
+  \**************************************************************/
+/*! exports provided: switchMap */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "switchMap", function() { return switchMap; });
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+
+/**
+ * Projects each source value to an Observable which is merged in the output
+ * Observable, emitting values only from the most recently projected Observable.
+ *
+ * <span class="informal">Maps each value to an Observable, then flattens all of
+ * these inner Observables using {@link switch}.</span>
+ *
+ * <img src="./img/switchMap.png" width="100%">
+ *
+ * Returns an Observable that emits items based on applying a function that you
+ * supply to each item emitted by the source Observable, where that function
+ * returns an (so-called "inner") Observable. Each time it observes one of these
+ * inner Observables, the output Observable begins emitting the items emitted by
+ * that inner Observable. When a new inner Observable is emitted, `switchMap`
+ * stops emitting items from the earlier-emitted inner Observable and begins
+ * emitting items from the new one. It continues to behave like this for
+ * subsequent inner Observables.
+ *
+ * @example <caption>Rerun an interval Observable on every click event</caption>
+ * var clicks = Rx.Observable.fromEvent(document, 'click');
+ * var result = clicks.switchMap((ev) => Rx.Observable.interval(1000));
+ * result.subscribe(x => console.log(x));
+ *
+ * @see {@link concatMap}
+ * @see {@link exhaustMap}
+ * @see {@link mergeMap}
+ * @see {@link switch}
+ * @see {@link switchMapTo}
+ *
+ * @param {function(value: T, ?index: number): ObservableInput} project A function
+ * that, when applied to an item emitted by the source Observable, returns an
+ * Observable.
+ * @return {Observable} An Observable that emits the result of applying the
+ * projection function (and the optional `resultSelector`) to each item emitted
+ * by the source Observable and taking only the values from the most recently
+ * projected inner Observable.
+ * @method switchMap
+ * @owner Observable
+ */
+function switchMap(project) {
+    return Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["switchMap"])(project)(this);
+}
+//# sourceMappingURL=switchMap.js.map
+
+/***/ }),
+
+/***/ "./node_modules/rxjs-compat/_esm5/operator/take.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/rxjs-compat/_esm5/operator/take.js ***!
+  \*********************************************************/
+/*! exports provided: take */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "take", function() { return take; });
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+
+/**
+ * Emits only the first `count` values emitted by the source Observable.
+ *
+ * <span class="informal">Takes the first `count` values from the source, then
+ * completes.</span>
+ *
+ * <img src="./img/take.png" width="100%">
+ *
+ * `take` returns an Observable that emits only the first `count` values emitted
+ * by the source Observable. If the source emits fewer than `count` values then
+ * all of its values are emitted. After that, it completes, regardless if the
+ * source completes.
+ *
+ * @example <caption>Take the first 5 seconds of an infinite 1-second interval Observable</caption>
+ * var interval = Rx.Observable.interval(1000);
+ * var five = interval.take(5);
+ * five.subscribe(x => console.log(x));
+ *
+ * @see {@link takeLast}
+ * @see {@link takeUntil}
+ * @see {@link takeWhile}
+ * @see {@link skip}
+ *
+ * @throws {ArgumentOutOfRangeError} When using `take(i)`, it delivers an
+ * ArgumentOutOrRangeError to the Observer's `error` callback if `i < 0`.
+ *
+ * @param {number} count The maximum number of `next` values to emit.
+ * @return {Observable<T>} An Observable that emits only the first `count`
+ * values emitted by the source Observable, or all of the values from the source
+ * if the source emits fewer than `count` values.
+ * @method take
+ * @owner Observable
+ */
+function take(count) {
+    return Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["take"])(count)(this);
+}
+//# sourceMappingURL=take.js.map
+
+/***/ }),
+
 /***/ "./node_modules/rxjs-compat/add/observable/forkJoin.js":
 /*!*************************************************************!*\
   !*** ./node_modules/rxjs-compat/add/observable/forkJoin.js ***!
@@ -5003,6 +5183,368 @@ rxjs_1.Observable.forkJoin = rxjs_1.forkJoin;
 Object.defineProperty(exports, "__esModule", { value: true });
 __webpack_require__(/*! rxjs-compat/add/observable/forkJoin */ "./node_modules/rxjs-compat/add/observable/forkJoin.js");
 //# sourceMappingURL=forkJoin.js.map
+
+/***/ }),
+
+/***/ "./node_modules/rxjs/internal/BehaviorSubject.js":
+/*!*******************************************************!*\
+  !*** ./node_modules/rxjs/internal/BehaviorSubject.js ***!
+  \*******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var Subject_1 = __webpack_require__(/*! ./Subject */ "./node_modules/rxjs/internal/Subject.js");
+var ObjectUnsubscribedError_1 = __webpack_require__(/*! ./util/ObjectUnsubscribedError */ "./node_modules/rxjs/internal/util/ObjectUnsubscribedError.js");
+/**
+ * @class BehaviorSubject<T>
+ */
+var BehaviorSubject = /** @class */ (function (_super) {
+    __extends(BehaviorSubject, _super);
+    function BehaviorSubject(_value) {
+        var _this = _super.call(this) || this;
+        _this._value = _value;
+        return _this;
+    }
+    Object.defineProperty(BehaviorSubject.prototype, "value", {
+        get: function () {
+            return this.getValue();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /** @deprecated This is an internal implementation detail, do not use. */
+    BehaviorSubject.prototype._subscribe = function (subscriber) {
+        var subscription = _super.prototype._subscribe.call(this, subscriber);
+        if (subscription && !subscription.closed) {
+            subscriber.next(this._value);
+        }
+        return subscription;
+    };
+    BehaviorSubject.prototype.getValue = function () {
+        if (this.hasError) {
+            throw this.thrownError;
+        }
+        else if (this.closed) {
+            throw new ObjectUnsubscribedError_1.ObjectUnsubscribedError();
+        }
+        else {
+            return this._value;
+        }
+    };
+    BehaviorSubject.prototype.next = function (value) {
+        _super.prototype.next.call(this, this._value = value);
+    };
+    return BehaviorSubject;
+}(Subject_1.Subject));
+exports.BehaviorSubject = BehaviorSubject;
+//# sourceMappingURL=BehaviorSubject.js.map
+
+/***/ }),
+
+/***/ "./node_modules/rxjs/internal/Subject.js":
+/*!***********************************************!*\
+  !*** ./node_modules/rxjs/internal/Subject.js ***!
+  \***********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var Observable_1 = __webpack_require__(/*! ./Observable */ "./node_modules/rxjs/internal/Observable.js");
+var Subscriber_1 = __webpack_require__(/*! ./Subscriber */ "./node_modules/rxjs/internal/Subscriber.js");
+var Subscription_1 = __webpack_require__(/*! ./Subscription */ "./node_modules/rxjs/internal/Subscription.js");
+var ObjectUnsubscribedError_1 = __webpack_require__(/*! ./util/ObjectUnsubscribedError */ "./node_modules/rxjs/internal/util/ObjectUnsubscribedError.js");
+var SubjectSubscription_1 = __webpack_require__(/*! ./SubjectSubscription */ "./node_modules/rxjs/internal/SubjectSubscription.js");
+var rxSubscriber_1 = __webpack_require__(/*! ../internal/symbol/rxSubscriber */ "./node_modules/rxjs/internal/symbol/rxSubscriber.js");
+/**
+ * @class SubjectSubscriber<T>
+ */
+var SubjectSubscriber = /** @class */ (function (_super) {
+    __extends(SubjectSubscriber, _super);
+    function SubjectSubscriber(destination) {
+        var _this = _super.call(this, destination) || this;
+        _this.destination = destination;
+        return _this;
+    }
+    return SubjectSubscriber;
+}(Subscriber_1.Subscriber));
+exports.SubjectSubscriber = SubjectSubscriber;
+/**
+ * @class Subject<T>
+ */
+var Subject = /** @class */ (function (_super) {
+    __extends(Subject, _super);
+    function Subject() {
+        var _this = _super.call(this) || this;
+        _this.observers = [];
+        _this.closed = false;
+        _this.isStopped = false;
+        _this.hasError = false;
+        _this.thrownError = null;
+        return _this;
+    }
+    Subject.prototype[rxSubscriber_1.rxSubscriber] = function () {
+        return new SubjectSubscriber(this);
+    };
+    Subject.prototype.lift = function (operator) {
+        var subject = new AnonymousSubject(this, this);
+        subject.operator = operator;
+        return subject;
+    };
+    Subject.prototype.next = function (value) {
+        if (this.closed) {
+            throw new ObjectUnsubscribedError_1.ObjectUnsubscribedError();
+        }
+        if (!this.isStopped) {
+            var observers = this.observers;
+            var len = observers.length;
+            var copy = observers.slice();
+            for (var i = 0; i < len; i++) {
+                copy[i].next(value);
+            }
+        }
+    };
+    Subject.prototype.error = function (err) {
+        if (this.closed) {
+            throw new ObjectUnsubscribedError_1.ObjectUnsubscribedError();
+        }
+        this.hasError = true;
+        this.thrownError = err;
+        this.isStopped = true;
+        var observers = this.observers;
+        var len = observers.length;
+        var copy = observers.slice();
+        for (var i = 0; i < len; i++) {
+            copy[i].error(err);
+        }
+        this.observers.length = 0;
+    };
+    Subject.prototype.complete = function () {
+        if (this.closed) {
+            throw new ObjectUnsubscribedError_1.ObjectUnsubscribedError();
+        }
+        this.isStopped = true;
+        var observers = this.observers;
+        var len = observers.length;
+        var copy = observers.slice();
+        for (var i = 0; i < len; i++) {
+            copy[i].complete();
+        }
+        this.observers.length = 0;
+    };
+    Subject.prototype.unsubscribe = function () {
+        this.isStopped = true;
+        this.closed = true;
+        this.observers = null;
+    };
+    /** @deprecated This is an internal implementation detail, do not use. */
+    Subject.prototype._trySubscribe = function (subscriber) {
+        if (this.closed) {
+            throw new ObjectUnsubscribedError_1.ObjectUnsubscribedError();
+        }
+        else {
+            return _super.prototype._trySubscribe.call(this, subscriber);
+        }
+    };
+    /** @deprecated This is an internal implementation detail, do not use. */
+    Subject.prototype._subscribe = function (subscriber) {
+        if (this.closed) {
+            throw new ObjectUnsubscribedError_1.ObjectUnsubscribedError();
+        }
+        else if (this.hasError) {
+            subscriber.error(this.thrownError);
+            return Subscription_1.Subscription.EMPTY;
+        }
+        else if (this.isStopped) {
+            subscriber.complete();
+            return Subscription_1.Subscription.EMPTY;
+        }
+        else {
+            this.observers.push(subscriber);
+            return new SubjectSubscription_1.SubjectSubscription(this, subscriber);
+        }
+    };
+    Subject.prototype.asObservable = function () {
+        var observable = new Observable_1.Observable();
+        observable.source = this;
+        return observable;
+    };
+    /**@nocollapse */
+    Subject.create = function (destination, source) {
+        return new AnonymousSubject(destination, source);
+    };
+    return Subject;
+}(Observable_1.Observable));
+exports.Subject = Subject;
+/**
+ * @class AnonymousSubject<T>
+ */
+var AnonymousSubject = /** @class */ (function (_super) {
+    __extends(AnonymousSubject, _super);
+    function AnonymousSubject(destination, source) {
+        var _this = _super.call(this) || this;
+        _this.destination = destination;
+        _this.source = source;
+        return _this;
+    }
+    AnonymousSubject.prototype.next = function (value) {
+        var destination = this.destination;
+        if (destination && destination.next) {
+            destination.next(value);
+        }
+    };
+    AnonymousSubject.prototype.error = function (err) {
+        var destination = this.destination;
+        if (destination && destination.error) {
+            this.destination.error(err);
+        }
+    };
+    AnonymousSubject.prototype.complete = function () {
+        var destination = this.destination;
+        if (destination && destination.complete) {
+            this.destination.complete();
+        }
+    };
+    /** @deprecated This is an internal implementation detail, do not use. */
+    AnonymousSubject.prototype._subscribe = function (subscriber) {
+        var source = this.source;
+        if (source) {
+            return this.source.subscribe(subscriber);
+        }
+        else {
+            return Subscription_1.Subscription.EMPTY;
+        }
+    };
+    return AnonymousSubject;
+}(Subject));
+exports.AnonymousSubject = AnonymousSubject;
+//# sourceMappingURL=Subject.js.map
+
+/***/ }),
+
+/***/ "./node_modules/rxjs/internal/SubjectSubscription.js":
+/*!***********************************************************!*\
+  !*** ./node_modules/rxjs/internal/SubjectSubscription.js ***!
+  \***********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var Subscription_1 = __webpack_require__(/*! ./Subscription */ "./node_modules/rxjs/internal/Subscription.js");
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
+var SubjectSubscription = /** @class */ (function (_super) {
+    __extends(SubjectSubscription, _super);
+    function SubjectSubscription(subject, subscriber) {
+        var _this = _super.call(this) || this;
+        _this.subject = subject;
+        _this.subscriber = subscriber;
+        _this.closed = false;
+        return _this;
+    }
+    SubjectSubscription.prototype.unsubscribe = function () {
+        if (this.closed) {
+            return;
+        }
+        this.closed = true;
+        var subject = this.subject;
+        var observers = subject.observers;
+        this.subject = null;
+        if (!observers || observers.length === 0 || subject.isStopped || subject.closed) {
+            return;
+        }
+        var subscriberIndex = observers.indexOf(this.subscriber);
+        if (subscriberIndex !== -1) {
+            observers.splice(subscriberIndex, 1);
+        }
+    };
+    return SubjectSubscription;
+}(Subscription_1.Subscription));
+exports.SubjectSubscription = SubjectSubscription;
+//# sourceMappingURL=SubjectSubscription.js.map
+
+/***/ }),
+
+/***/ "./node_modules/rxjs/internal/util/ObjectUnsubscribedError.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/rxjs/internal/util/ObjectUnsubscribedError.js ***!
+  \********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+/**
+ * An error thrown when an action is invalid because the object has been
+ * unsubscribed.
+ *
+ * @see {@link Subject}
+ * @see {@link BehaviorSubject}
+ *
+ * @class ObjectUnsubscribedError
+ */
+var ObjectUnsubscribedError = /** @class */ (function (_super) {
+    __extends(ObjectUnsubscribedError, _super);
+    function ObjectUnsubscribedError() {
+        var _this = _super.call(this, 'object unsubscribed') || this;
+        _this.name = 'ObjectUnsubscribedError';
+        Object.setPrototypeOf(_this, ObjectUnsubscribedError.prototype);
+        return _this;
+    }
+    return ObjectUnsubscribedError;
+}(Error));
+exports.ObjectUnsubscribedError = ObjectUnsubscribedError;
+//# sourceMappingURL=ObjectUnsubscribedError.js.map
 
 /***/ }),
 
@@ -5095,6 +5637,896 @@ var GenericValidator = /** @class */ (function () {
         return messages;
     };
     return GenericValidator;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/main/content/apps/uyelik/arkadaslarim/arkadas-ekle/arkadas-ekle.component.html":
+/*!************************************************************************************************!*\
+  !*** ./src/app/main/content/apps/uyelik/arkadaslarim/arkadas-ekle/arkadas-ekle.component.html ***!
+  \************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"dialog-content-wrapper\">\n  <mat-toolbar matDialogTitle class=\"liste\">\n    <mat-toolbar-row fxLayout=\"row\" fxLayoutAlign=\"space-between center\">\n      <span class=\"title dialog-title\">{{dialogTitle}}</span>\n      <button mat-button class=\"mat-icon-button\" (click)=\"dialogRef.close()\" aria-label=\"Close dialog\">\n        <mat-icon>close</mat-icon>\n      </button>\n    </mat-toolbar-row>\n\n    <mat-toolbar-row class=\"toolbar-bottom py-8 py-sm-16\" fxLayout=\"row\" fxLayoutAlign=\"center center\">\n      <img [src]=\"data.kb.profilFotoUrl\" class=\" avatar contact-avatar \" [alt]=\"data.kb.tamAdi\" />\n      <div class=\"contact-name\">{{data.kb.tamAdi}}</div>\n    </mat-toolbar-row>\n  </mat-toolbar>\n  <div mat-dialog-content class=\"p-24 m-0\" fusePerfectScrollbar>\n    <div class=\"header p-16 p-sm-24\" fxLayout=\"column\" fxLayoutAlign=\"start start\" >\n      <!-- SEARCH -->\n      <div class=\"search-input-wrapper my-16 \" fxLayout=\"row\" fxLayoutAlign=\"start center\" fxFlex=\"1 0 auto\" >\n        <label for=\"search\" class=\"mr-8\">\n          <mat-icon>search</mat-icon>\n        </label>\n        <mat-form-field  class=\"m-0\" >\n          <input matInput [formControl]=\"searchInput\" id=\"search\" placeholder=\"Anahtar kelime yazın...\" matTooltip=\"Arama cümlesi boş veya ikiden fazla harfden oluşmalı.\">\n        </mat-form-field>\n      </div>\n      <!-- / SEARCH -->\n    </div>\n\n    <fuse-yukleniyor [yukleniyor]=\"yukleniyor\">\n      <div class=\"center\">\n        <!-- CONTENT -->\n        <div class=\"content mat-elevation-z4\">\n\n          <fuse-kullanici-secim-listesi (sayfaDegissin)=\"sayfaDegistir($event)\"  [kullaniciNo]=\"data.kb?data.kb.id:0\">\n          </fuse-kullanici-secim-listesi>\n\n        </div>\n        <!-- / CONTENT -->\n      </div>\n    </fuse-yukleniyor>\n  </div>\n\n  <div mat-dialog-actions class=\"m-0 py-8 pr-24\" fxLayout=\"row\" fxLayoutAlign=\"end center\">\n    <button  matTooltip=\"Arkadaş arama ekranını kapatır.\" mat-raised-button (click)=\"dialogRef.close()\" color=\"accent\" aria-label=\"SAVE\">\n      <mat-icon>close</mat-icon>  \n      KAPAT\n    </button>\n  </div>\n</div>"
+
+/***/ }),
+
+/***/ "./src/app/main/content/apps/uyelik/arkadaslarim/arkadas-ekle/arkadas-ekle.component.scss":
+/*!************************************************************************************************!*\
+  !*** ./src/app/main/content/apps/uyelik/arkadaslarim/arkadas-ekle/arkadas-ekle.component.scss ***!
+  \************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/**\n * Applies styles for users in high contrast mode. Note that this only applies\n * to Microsoft browsers. Chrome can be included by checking for the `html[hc]`\n * attribute, however Chrome handles high contrast differently.\n */\n/* Theme for the ripple elements.*/\n/* stylelint-disable material/no-prefixes */\n/* stylelint-enable */\n.erkadas-ekle-dialog {\n  width: 400px; }\n@media screen and (max-width: 599px) {\n    .erkadas-ekle-dialog {\n      width: 100%; } }\n.erkadas-ekle-dialog .mat-dialog-container {\n    padding: 0;\n    overflow: hidden; }\n.erkadas-ekle-dialog .mat-dialog-container .mat-toolbar {\n      flex: 1 0 auto;\n      min-height: initial; }\n.erkadas-ekle-dialog .mat-dialog-container .toolbar-bottom {\n      height: auto; }\n.erkadas-ekle-dialog .dialog-content-wrapper {\n    max-height: 85vh;\n    display: flex;\n    flex-direction: column;\n    background-color: #E9DFE0; }\n.erkadas-ekle-dialog .mat-toolbar {\n    background-color: #CFA4B7; }\n.erkadas-ekle-dialog .save-button {\n    background-color: #8AA6CC; }\n.erkadas-ekle-dialog .search-input-wrapper {\n    align-items: end; }\n"
+
+/***/ }),
+
+/***/ "./src/app/main/content/apps/uyelik/arkadaslarim/arkadas-ekle/arkadas-ekle.component.ts":
+/*!**********************************************************************************************!*\
+  !*** ./src/app/main/content/apps/uyelik/arkadaslarim/arkadas-ekle/arkadas-ekle.component.ts ***!
+  \**********************************************************************************************/
+/*! exports provided: ArkadasEkleComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ArkadasEkleComponent", function() { return ArkadasEkleComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
+/* harmony import */ var _models_kullanici__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../../../models/kullanici */ "./src/app/models/kullanici.ts");
+/* harmony import */ var _uyelik_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../uyelik.service */ "./src/app/main/content/apps/uyelik/uyelik.service.ts");
+/* harmony import */ var _core_services_sb_mesaj_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../../../../core/services/sb-mesaj.service */ "./src/app/core/services/sb-mesaj.service.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (undefined && undefined.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+
+
+
+
+
+
+var ArkadasEkleComponent = /** @class */ (function () {
+    function ArkadasEkleComponent(dialogRef, data, uyelikService, mesajService) {
+        var _this = this;
+        this.dialogRef = dialogRef;
+        this.data = data;
+        this.uyelikService = uyelikService;
+        this.mesajService = mesajService;
+        this.yukleniyor = false;
+        this.guncelSorgu = new _models_kullanici__WEBPACK_IMPORTED_MODULE_3__["KullaniciSorgusu"]();
+        this.searchInput = new _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormControl"]('');
+        this.dialogTitle = 'Yeni arkadaş ekleme ekranı';
+        this.searchInput.valueChanges
+            .debounceTime(800)
+            .distinctUntilChanged()
+            .subscribe(function (searchText) {
+            if (searchText.length < 3 && searchText.length > 0) {
+                return;
+            }
+            if (_this.guncelSorgu && _this.guncelSorgu.aramaCumlesi !== searchText) {
+                var yeniSorgu = Object.assign({}, _this.guncelSorgu);
+                yeniSorgu.aramaCumlesi = searchText;
+                _this.guncelSorgu = yeniSorgu;
+                _this.bul(_this.guncelSorgu);
+            }
+        });
+    }
+    ArkadasEkleComponent.prototype.bul = function (yeniSorgu) {
+        var _this = this;
+        this.yukleniyor = true;
+        this.uyelikService.listeGetirKullanicilar(yeniSorgu).subscribe(function (listeSonuc) {
+            if (listeSonuc.basarili) {
+                if (listeSonuc.kayitSayisi === 0) {
+                    _this.mesajService.goster('Hiç kayıt bulunamadı. Lütfen başka bir anahtar kelime yazın. ');
+                }
+                _this.uyelikService.onBulunanKullanicilarDegisti.next(listeSonuc);
+            }
+            else {
+                _this.mesajService.hatalar(listeSonuc.hatalar);
+            }
+        }, function () { return _this.mesajService.hataStr('Beklenmedik bir hata oluştu. Tekrar deneyin...'); }, function () { return _this.yukleniyor = false; });
+    };
+    ArkadasEkleComponent.prototype.ngOnInit = function () {
+    };
+    ArkadasEkleComponent.prototype.sayfaDegistir = function (sayfaBilgi) {
+        var yeniSorgu = Object.assign({}, this.guncelSorgu, { sayfa: sayfaBilgi.pageIndex + 1, sayfaBuyuklugu: sayfaBilgi.pageSize });
+        this.guncelSorgu = yeniSorgu;
+        this.bul(this.guncelSorgu);
+    };
+    ArkadasEkleComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'fuse-arkadas-ekle',
+            template: __webpack_require__(/*! ./arkadas-ekle.component.html */ "./src/app/main/content/apps/uyelik/arkadaslarim/arkadas-ekle/arkadas-ekle.component.html"),
+            styles: [__webpack_require__(/*! ./arkadas-ekle.component.scss */ "./src/app/main/content/apps/uyelik/arkadaslarim/arkadas-ekle/arkadas-ekle.component.scss")],
+            encapsulation: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewEncapsulation"].None
+        }),
+        __param(1, Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Inject"])(_angular_material__WEBPACK_IMPORTED_MODULE_1__["MAT_DIALOG_DATA"])),
+        __metadata("design:paramtypes", [_angular_material__WEBPACK_IMPORTED_MODULE_1__["MatDialogRef"], Object, _uyelik_service__WEBPACK_IMPORTED_MODULE_4__["UyelikService"],
+            _core_services_sb_mesaj_service__WEBPACK_IMPORTED_MODULE_5__["SbMesajService"]])
+    ], ArkadasEkleComponent);
+    return ArkadasEkleComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/main/content/apps/uyelik/arkadaslarim/arkadas-ekle/kullanici-secim-listesi/kullanici-secim-listesi.component.html":
+/*!***********************************************************************************************************************************!*\
+  !*** ./src/app/main/content/apps/uyelik/arkadaslarim/arkadas-ekle/kullanici-secim-listesi/kullanici-secim-listesi.component.html ***!
+  \***********************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<mat-table *ngIf=\"kullanicilar?.kayitSayisi>0\" #table [dataSource]=\"dataSource\" [@animateStagger]=\"{value:'50'}\" fusePerfectScrollbar>\n  <!-- Avatar Column -->\n  <ng-container cdkColumnDef=\"avatar\">\n    <mat-header-cell *cdkHeaderCellDef></mat-header-cell>\n    <mat-cell *cdkCellDef=\"let kullanici\">\n      <img class=\"avatar\" *ngIf=\"kullanici.profilFotoUrl\" [alt]=\"kullanici.tamAdi\" [src]=\"kullanici.profilFotoUrl\" />\n    </mat-cell>\n  </ng-container>\n\n  <!-- Name Column -->\n  <ng-container cdkColumnDef=\"ad\">\n    <mat-header-cell *cdkHeaderCellDef>Ad Soyad</mat-header-cell>\n    <mat-cell *cdkCellDef=\"let kullanici\">\n      <p class=\"text-truncate font-weight-600\">{{kullanici.tamAdi}}</p>\n    </mat-cell>\n  </ng-container>\n\n  <!-- Email Column -->\n  <ng-container cdkColumnDef=\"eposta\">\n    <mat-header-cell *cdkHeaderCellDef fxHide fxShow.gt-sm>Eposta</mat-header-cell>\n    <mat-cell *cdkCellDef=\"let kullanici\" fxHide fxShow.gt-sm>\n      <p class=\"email text-truncate\">\n        {{kullanici.eposta}}\n      </p>\n    </mat-cell>\n  </ng-container>\n\n  <!-- Phone Column -->\n  <ng-container cdkColumnDef=\"telefon\">\n    <mat-header-cell *cdkHeaderCellDef fxHide fxShow.gt-md>Telefon</mat-header-cell>\n    <mat-cell *cdkCellDef=\"let kullanici\" fxHide fxShow.gt-md>\n      <p class=\"phone text-truncate\">\n        {{kullanici.telefonNumarasi}}\n      </p>\n    </mat-cell>\n  </ng-container>\n\n  <!-- Buttons Column -->\n  <ng-container cdkColumnDef=\"butonlar\">\n    <mat-header-cell *cdkHeaderCellDef></mat-header-cell>\n    <mat-cell *cdkCellDef=\"let kullanici\">\n      <div fxFlex=\"row\" fxLayoutAlign=\"end center\">\n        <!-- <button mat-icon-button (click)=\"$event.stopPropagation();toggleStar(contact.id)\" aria-label=\"Toggle star\">\n          <mat-icon *ngIf=\"user.starred.includes(contact.id)\">star</mat-icon>\n          <mat-icon *ngIf=\"!user.starred.includes(contact.id)\">star_outline</mat-icon>\n        </button> -->\n\n        <button mat-icon-button [matMenuTriggerFor]=\"moreMenu\" aria-label=\"More\" (click)=\"$event.stopPropagation();\">\n          <mat-icon>more_vert</mat-icon>\n        </button>\n\n        <mat-menu #moreMenu=\"matMenu\">\n          <button mat-menu-item  (click)=\"teklifEt(kullanici)\">\n            <mat-icon>send</mat-icon>\n            <span>Teklif Et</span>\n          </button>\n        </mat-menu>\n      </div>\n\n    </mat-cell>\n  </ng-container>\n  <mat-header-row *cdkHeaderRowDef=\"gosterilenKolonlar\"></mat-header-row>\n  <mat-row *cdkRowDef=\"let kullanici; columns: gosterilenKolonlar;\" class=\"contact\" (click)=\"teklifEt(kullanici)\" matRipple\n    [@animate]=\"{value:'*',params:{y:'100%'}}\">\n  </mat-row>\n</mat-table>\n<mat-paginator class=\"liste\" *ngIf=\"kullanicilar?.kayitSayisi>0\" [pageSizeOptions]=\"[10, 25]\" showFirstLastButtons=\"true\" [pageSize]=\"kullanicilar?kullanicilar.sayfaBuyuklugu:0\"\n  [length]=\"kullanicilar?kullanicilar.kayitSayisi:0\" (page)=\"pageEvent = $event; sayfaDegisti($event)\"></mat-paginator>"
+
+/***/ }),
+
+/***/ "./src/app/main/content/apps/uyelik/arkadaslarim/arkadas-ekle/kullanici-secim-listesi/kullanici-secim-listesi.component.scss":
+/*!***********************************************************************************************************************************!*\
+  !*** ./src/app/main/content/apps/uyelik/arkadaslarim/arkadas-ekle/kullanici-secim-listesi/kullanici-secim-listesi.component.scss ***!
+  \***********************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/**\n * Applies styles for users in high contrast mode. Note that this only applies\n * to Microsoft browsers. Chrome can be included by checking for the `html[hc]`\n * attribute, however Chrome handles high contrast differently.\n */\n/* Theme for the ripple elements.*/\n/* stylelint-disable material/no-prefixes */\n/* stylelint-enable */\nfuse-kullanici-secim-listesi {\n  flex: 1; }\nfuse-kullanici-secim-listesi .mat-table {\n    width: 100%;\n    background: transparent;\n    box-shadow: none;\n    background-color: #E9DFE0; }\nfuse-kullanici-secim-listesi .mat-table .mat-column-checkbox {\n      flex: 0 1 48px; }\nfuse-kullanici-secim-listesi .mat-table .mat-column-checkbox .mat-checkbox-ripple {\n        display: none !important; }\nfuse-kullanici-secim-listesi .mat-table .mat-column-avatar {\n      flex: 0 1 64px;\n      margin-right: 8px; }\nfuse-kullanici-secim-listesi .mat-table .mat-column-butonlar {\n      flex: 0 1 48px;\n      margin-bottom: 8px; }\nfuse-kullanici-secim-listesi .mat-table .mat-row {\n      position: relative;\n      cursor: pointer;\n      padding: 8px 8px 8px 24px; }\nfuse-kullanici-secim-listesi .mat-table .mat-row .mat-cell {\n        min-width: 0;\n        color: #8AA6CC; }\nfuse-kullanici-secim-listesi .mat-table .mat-row .mat-cell.mat-column-detail-button {\n          flex: 0 1 auto;\n          padding: 0 24px 0 0; }\n@media screen and (min-width: 1280px) {\n            fuse-kullanici-secim-listesi .mat-table .mat-row .mat-cell.mat-column-detail-button {\n              display: none; } }\nfuse-kullanici-secim-listesi .mat-table .mat-header-cell {\n      color: #C66D9E;\n      font-size: 1em;\n      font-weight: bold; }\nfuse-kullanici-secim-listesi .liste {\n    background-color: #E9DFE0; }\n"
+
+/***/ }),
+
+/***/ "./src/app/main/content/apps/uyelik/arkadaslarim/arkadas-ekle/kullanici-secim-listesi/kullanici-secim-listesi.component.ts":
+/*!*********************************************************************************************************************************!*\
+  !*** ./src/app/main/content/apps/uyelik/arkadaslarim/arkadas-ekle/kullanici-secim-listesi/kullanici-secim-listesi.component.ts ***!
+  \*********************************************************************************************************************************/
+/*! exports provided: KullaniciSecimListesiComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "KullaniciSecimListesiComponent", function() { return KullaniciSecimListesiComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var _ngrx_store__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ngrx/store */ "./node_modules/@ngrx/store/fesm5/store.js");
+/* harmony import */ var _fuse_animations__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @fuse/animations */ "./src/@fuse/animations/index.ts");
+/* harmony import */ var _uyelik_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../uyelik.service */ "./src/app/main/content/apps/uyelik/uyelik.service.ts");
+/* harmony import */ var _core_services_sb_mesaj_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../../../../../core/services/sb-mesaj.service */ "./src/app/core/services/sb-mesaj.service.ts");
+/* harmony import */ var _store_actions_arkadaslar_actions__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../../../../../store/actions/arkadaslar.actions */ "./src/app/store/actions/arkadaslar.actions.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+
+var KullaniciSecimListesiComponent = /** @class */ (function () {
+    function KullaniciSecimListesiComponent(profilimService, mesajService, rootStore) {
+        var _this = this;
+        this.profilimService = profilimService;
+        this.mesajService = mesajService;
+        this.rootStore = rootStore;
+        this.sayfaDegissin = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.dataSource = new _angular_material__WEBPACK_IMPORTED_MODULE_1__["MatTableDataSource"]();
+        this.gosterilenKolonlar = ['avatar', 'ad', 'eposta', 'telefon', 'butonlar'];
+        this.onBulunanKullanicilarDegisti$ = profilimService.onBulunanKullanicilarDegisti.subscribe(function (listeSonuc) {
+            if (listeSonuc && listeSonuc.basarili) {
+                _this.kullanicilar = listeSonuc;
+                _this.dataSource.data = _this.kullanicilar.donenListe;
+            }
+        });
+    }
+    KullaniciSecimListesiComponent.prototype.ngOnInit = function () {
+    };
+    KullaniciSecimListesiComponent.prototype.ngOnDestroy = function () {
+        this.onBulunanKullanicilarDegisti$.unsubscribe();
+    };
+    KullaniciSecimListesiComponent.prototype.sayfaDegisti = function (bilgi) {
+        this.sayfaDegissin.emit(bilgi);
+    };
+    KullaniciSecimListesiComponent.prototype.teklifEt = function (kullanici) {
+        var _this = this;
+        this.profilimService.arkadaslikteklifEt(this.kullaniciNo, kullanici.id).subscribe(function (sonuc) {
+            if (sonuc.basarili) {
+                _this.mesajService.goster('Arkadaş olma isteği gönderildi. Cevap bekleyenler filtresiyle sonucu takip edebilirsiniz.');
+                _this.rootStore.dispatch(new _store_actions_arkadaslar_actions__WEBPACK_IMPORTED_MODULE_6__["ArkadaslarListesiDegisti"](sonuc.donenNesne));
+            }
+        }, function (hata) { return _this.mesajService.hataStr(hata.error); });
+    };
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])(),
+        __metadata("design:type", Number)
+    ], KullaniciSecimListesiComponent.prototype, "kullaniciNo", void 0);
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"])(),
+        __metadata("design:type", Object)
+    ], KullaniciSecimListesiComponent.prototype, "sayfaDegissin", void 0);
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"])(_angular_material__WEBPACK_IMPORTED_MODULE_1__["MatPaginator"]),
+        __metadata("design:type", _angular_material__WEBPACK_IMPORTED_MODULE_1__["MatPaginator"])
+    ], KullaniciSecimListesiComponent.prototype, "paginator", void 0);
+    KullaniciSecimListesiComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'fuse-kullanici-secim-listesi',
+            template: __webpack_require__(/*! ./kullanici-secim-listesi.component.html */ "./src/app/main/content/apps/uyelik/arkadaslarim/arkadas-ekle/kullanici-secim-listesi/kullanici-secim-listesi.component.html"),
+            styles: [__webpack_require__(/*! ./kullanici-secim-listesi.component.scss */ "./src/app/main/content/apps/uyelik/arkadaslarim/arkadas-ekle/kullanici-secim-listesi/kullanici-secim-listesi.component.scss")],
+            encapsulation: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewEncapsulation"].None,
+            animations: _fuse_animations__WEBPACK_IMPORTED_MODULE_3__["fuseAnimations"]
+        }),
+        __metadata("design:paramtypes", [_uyelik_service__WEBPACK_IMPORTED_MODULE_4__["UyelikService"],
+            _core_services_sb_mesaj_service__WEBPACK_IMPORTED_MODULE_5__["SbMesajService"],
+            _ngrx_store__WEBPACK_IMPORTED_MODULE_2__["Store"]])
+    ], KullaniciSecimListesiComponent);
+    return KullaniciSecimListesiComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/main/content/apps/uyelik/arkadaslarim/arkadas-listesi/arkadas-listesi.component.html":
+/*!******************************************************************************************************!*\
+  !*** ./src/app/main/content/apps/uyelik/arkadaslarim/arkadas-listesi/arkadas-listesi.component.html ***!
+  \******************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<mat-table #table *ngIf=\"arkadasliklar?.kayitSayisi>0\"  [dataSource]=\"dataSource\" [@animateStagger]=\"{value:'50'}\" fusePerfectScrollbar>\n  <!-- Checkbox Column -->\n  <ng-container cdkColumnDef=\"checkbox\" >\n    <mat-header-cell *cdkHeaderCellDef></mat-header-cell>\n    <mat-cell *cdkCellDef=\"let arkadaslik\">\n      <mat-checkbox [(ngModel)]=\"checkboxes[arkadaslik.id]\" (ngModelChange)=\"secimDegisti(arkadaslik)\" (click)=\"$event.stopPropagation()\">\n      </mat-checkbox>\n    </mat-cell>\n  </ng-container>\n\n  <!-- Avatar Column -->\n  <ng-container cdkColumnDef=\"avatar\">\n    <mat-header-cell *cdkHeaderCellDef></mat-header-cell>\n    <mat-cell *cdkCellDef=\"let arkadaslik\">\n      <img class=\"avatar\" *ngIf=\"arkadaslik.arkadas.profilFotoUrl\" [alt]=\"arkadaslik.arkadas.tamAdi\" [src]=\"arkadaslik.arkadas.profilFotoUrl\"\n      />\n    </mat-cell>\n  </ng-container>\n\n  <!-- Name Column -->\n  <ng-container cdkColumnDef=\"ad\">\n    <mat-header-cell *cdkHeaderCellDef>Ad Soyad</mat-header-cell>\n    <mat-cell *cdkCellDef=\"let arkadaslik\">\n      <p class=\"text-truncate\">{{arkadaslik.arkadas.tamAdi}}</p>\n    </mat-cell>\n  </ng-container>\n\n  <!-- Email Column -->\n  <ng-container cdkColumnDef=\"eposta\">\n    <mat-header-cell *cdkHeaderCellDef fxHide fxShow.gt-sm>Eposta</mat-header-cell>\n    <mat-cell *cdkCellDef=\"let arkadaslik\" fxHide fxShow.gt-sm>\n      <p class=\"email text-truncate\">\n        {{arkadaslik.arkadas.eposta}}\n      </p>\n    </mat-cell>\n  </ng-container>\n\n  <!-- Phone Column -->\n  <ng-container cdkColumnDef=\"telefon\">\n    <mat-header-cell *cdkHeaderCellDef fxHide fxShow.gt-md>Telefon</mat-header-cell>\n    <mat-cell *cdkCellDef=\"let arkadaslik\" fxHide fxShow.gt-md>\n      <p class=\"phone text-truncate\">\n        {{arkadaslik.arkadas.telefonNumarasi}}\n      </p>\n    </mat-cell>\n  </ng-container>\n\n  <!-- Phone Column -->\n  <ng-container cdkColumnDef=\"durum\">\n    <mat-header-cell *cdkHeaderCellDef fxHide fxShow.gt-sm></mat-header-cell>\n    <mat-cell *cdkCellDef=\"let arkadaslik\" fxHide fxShow.gt-sm>\n      <mat-icon *ngIf=\"arkadaslik.karar===null\" matTooltip=\"Cevap bekleniyor\">hourglass_full</mat-icon>\n      <mat-icon *ngIf=\"arkadaslik.karar===true\" matTooltip=\"Teklif kabul edildi\">thumb_up</mat-icon>\n      <mat-icon *ngIf=\"arkadaslik.karar===false\" matTooltip=\"Teklif reddedildi\">thumb_down</mat-icon>\n    </mat-cell>\n  </ng-container>\n  <ng-container cdkColumnDef=\"iptal\">\n    <mat-header-cell *cdkHeaderCellDef fxHide fxShow.gt-sm></mat-header-cell>\n    <mat-cell *cdkCellDef=\"let arkadaslik\" fxHide fxShow.gt-sm>\n      <div *ngIf=\"arkadaslik.iptalEdildi===true && arkadaslik.iptalTarihi\">\n        <mat-icon *ngIf=\"arkadaslik.iptalEdenKullaniciNo===kullaniciNo\" matTooltip=\"Teklifi siz {{arkadaslik.iptalTarihi|timeAgo}} önce iptal ettiniz.\">warning</mat-icon>\n        <mat-icon *ngIf=\"arkadaslik.iptalEdenKullaniciNo!=kullaniciNo\" matTooltip=\"Teklif {{arkadaslik.arkadas.tamAdi}}  tarafından {{arkadaslik.iptalTarihi|timeAgo}} iptal etti\">warning</mat-icon>\n      </div>\n    </mat-cell>\n  </ng-container>\n\n  <!-- Buttons Column -->\n  <ng-container cdkColumnDef=\"butonlar\">\n    <mat-header-cell *cdkHeaderCellDef></mat-header-cell>\n    <mat-cell *cdkCellDef=\"let arkadaslik\">\n      <div fxFlex=\"row\" fxLayoutAlign=\"end center\">\n        <!-- <button mat-icon-button (click)=\"$event.stopPropagation();toggleStar(contact.id)\" aria-label=\"Toggle star\">\n          <mat-icon *ngIf=\"user.starred.includes(contact.id)\">star</mat-icon>\n          <mat-icon *ngIf=\"!user.starred.includes(contact.id)\">star_outline</mat-icon>\n        </button> -->\n\n        <button mat-icon-button [matMenuTriggerFor]=\"moreMenu\" aria-label=\"More\" (click)=\"$event.stopPropagation();\">\n          <mat-icon>more_vert</mat-icon>\n        </button>\n\n        <mat-menu #moreMenu=\"matMenu\">\n          <button *ngIf=\"arkadaslik.karar!==null && arkadaslik.iptalEdildi!==true\" mat-menu-item aria-label=\"remove\" (click)=\"deleteArkadaslik(arkadaslik)\">\n            <mat-icon>delete</mat-icon>\n            <span>Sil</span>\n          </button>\n\n          <button *ngIf=\"arkadaslik.iptalEdenKullaniciNo===kullaniciNo && arkadaslik.iptalEdildi==true\" (click)=\"geriAl(arkadaslik)\"\n            mat-menu-item aria-label=\"remove\" (click)=\"geriAl(arkadaslik)\">\n            <mat-icon>undo</mat-icon>\n            <span>Geri al</span>\n          </button>\n\n          <button *ngIf=\"arkadaslik.arkadas.id===arkadaslik.teklifEdilen.id && arkadaslik.karar===null && arkadaslik.iptalEdildi!==true\"\n            mat-menu-item aria-label=\"remove\" (click)=\"deleteArkadaslik(arkadaslik)\">\n            <mat-icon>close</mat-icon>\n            <span>Vazgeç</span>\n          </button>\n          <button *ngIf=\"arkadaslik.karar===null &&  arkadaslik.arkadas.id!==arkadaslik.teklifEdilen.id\" mat-menu-item (click)=\"kabulEt(arkadaslik)\">\n            <mat-icon matTooltip=\"Size gelmiş arkadaşlık isteğini kabul eder.\">thumb_up</mat-icon>\n            <span>Kabul et</span>\n          </button>\n          <button *ngIf=\"arkadaslik.karar===null && arkadaslik.arkadas.id!==arkadaslik.teklifEdilen.id\" mat-menu-item (click)=\"kabulEt(arkadaslik)\">\n            <mat-icon matTooltip=\"Size gelmiş arkadaşlık isteğini reddeder.\">thumb_down</mat-icon>\n            <span>Reddet</span>\n          </button>\n          <button *ngIf=\"arkadaslik.karar===true\" mat-menu-item aria-label=\"remove\" (click)=\"deleteArkadaslik(arkadaslik)\">\n            <mat-icon>message</mat-icon>\n            <span>Mesajlarına Git</span>\n          </button>\n        </mat-menu>\n      </div>\n\n    </mat-cell>\n  </ng-container>\n\n  <mat-header-row *cdkHeaderRowDef=\"gosterilenKolonlar\"></mat-header-row>\n  <mat-row *cdkRowDef=\"let arkadaslik; columns: gosterilenKolonlar;\" class=\"contact\" (click)=\"degistir(arkadaslik)\" [ngClass]=\"{'mat-light-blue-50-bg':checkboxes[arkadaslik.id]}\"\n    matRipple [@animate]=\"{value:'*',params:{y:'100%'}}\">\n  </mat-row>\n</mat-table>\n<mat-paginator class=\"liste\"  *ngIf=\"arkadasliklar?.kayitSayisi>0\" [pageSizeOptions]=\"[10, 25,50, 100]\" showFirstLastButtons=\"true\" [pageSize]=\"arkadasliklar?arkadasliklar.sayfaBuyuklugu:0\"\n  [length]=\"arkadasliklar?arkadasliklar.kayitSayisi:0\" (page)=\"pageEvent = $event; sayfaDegisti($event)\"></mat-paginator>\n\n<div class=\"liste\"  *ngIf=\"arkadasliklar?.kayitSayisi===0\" fxLayout=\"column\" fxLayoutAlign=\"center center\" fxFlexFill>\n  <mat-icon class=\"s-128 m-64\">\n    announcement\n  </mat-icon>\n  <span class=\"no-messages-text hint-text\" style=\"font-size: 24px\">\n    <span>Liste boş</span>\n  </span>\n</div>"
+
+/***/ }),
+
+/***/ "./src/app/main/content/apps/uyelik/arkadaslarim/arkadas-listesi/arkadas-listesi.component.scss":
+/*!******************************************************************************************************!*\
+  !*** ./src/app/main/content/apps/uyelik/arkadaslarim/arkadas-listesi/arkadas-listesi.component.scss ***!
+  \******************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/**\n * Applies styles for users in high contrast mode. Note that this only applies\n * to Microsoft browsers. Chrome can be included by checking for the `html[hc]`\n * attribute, however Chrome handles high contrast differently.\n */\n/* Theme for the ripple elements.*/\n/* stylelint-disable material/no-prefixes */\n/* stylelint-enable */\nfuse-arkadas-listesi {\n  background-color: #E9DFE0;\n  flex: 1; }\nfuse-arkadas-listesi .liste {\n    background-color: #E9DFE0; }\nfuse-arkadas-listesi .mat-table {\n    background: transparent;\n    box-shadow: none;\n    background-color: #E9DFE0; }\nfuse-arkadas-listesi .mat-table .mat-column-checkbox {\n      flex: 0 1 48px;\n      padding-top: 8px;\n      margin-right: 16px; }\nfuse-arkadas-listesi .mat-table .mat-column-checkbox .mat-checkbox-ripple {\n        display: none !important; }\nfuse-arkadas-listesi .mat-table .mat-column-avatar {\n      flex: 0 1 64px;\n      margin-right: 12px; }\nfuse-arkadas-listesi .mat-table .mat-column-ad {\n      display: block; }\nfuse-arkadas-listesi .mat-table .mat-column-durum {\n      flex: 0 1 48px; }\nfuse-arkadas-listesi .mat-table .mat-column-iptal {\n      flex: 0 1 48px; }\nfuse-arkadas-listesi .mat-table .mat-column-butonlar {\n      flex: 0 1 48px;\n      margin-bottom: 8px; }\nfuse-arkadas-listesi .mat-table .mat-row {\n      position: relative;\n      cursor: pointer;\n      padding: 8px 8px 8px 24px; }\nfuse-arkadas-listesi .mat-table .mat-row .mat-cell {\n        color: #8AA6CC;\n        display: block;\n        min-width: 0; }\nfuse-arkadas-listesi .mat-table .mat-row .mat-cell.mat-column-detail-button {\n          flex: 0 1 auto;\n          padding: 0 24px 0 0; }\n@media screen and (min-width: 1280px) {\n            fuse-arkadas-listesi .mat-table .mat-row .mat-cell.mat-column-detail-button {\n              display: none; } }\nfuse-arkadas-listesi .mat-table .mat-header-cell {\n      padding: 8px;\n      color: #C66D9E;\n      font-size: 1em; }\n#add-contact-button {\n  position: absolute;\n  bottom: 12px;\n  right: 12px;\n  padding: 0;\n  z-index: 99; }\n"
+
+/***/ }),
+
+/***/ "./src/app/main/content/apps/uyelik/arkadaslarim/arkadas-listesi/arkadas-listesi.component.ts":
+/*!****************************************************************************************************!*\
+  !*** ./src/app/main/content/apps/uyelik/arkadaslarim/arkadas-listesi/arkadas-listesi.component.ts ***!
+  \****************************************************************************************************/
+/*! exports provided: ArkadasListesiComponent, MatPaginatorIntlTr */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ArkadasListesiComponent", function() { return ArkadasListesiComponent; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MatPaginatorIntlTr", function() { return MatPaginatorIntlTr; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _ngrx_store__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ngrx/store */ "./node_modules/@ngrx/store/fesm5/store.js");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var _fuse_animations__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @fuse/animations */ "./src/@fuse/animations/index.ts");
+/* harmony import */ var _uyelik_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../uyelik.service */ "./src/app/main/content/apps/uyelik/uyelik.service.ts");
+/* harmony import */ var _core_services_sb_mesaj_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../../../../core/services/sb-mesaj.service */ "./src/app/core/services/sb-mesaj.service.ts");
+/* harmony import */ var _store_reducers_arkadaslar_reducer__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../../../../store/reducers/arkadaslar.reducer */ "./src/app/store/reducers/arkadaslar.reducer.ts");
+/* harmony import */ var _store_actions_arkadaslar_actions__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../../../../store/actions/arkadaslar.actions */ "./src/app/store/actions/arkadaslar.actions.ts");
+/* harmony import */ var _angular_cdk_platform__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/cdk/platform */ "./node_modules/@angular/cdk/esm5/platform.es5.js");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+
+
+
+var ArkadasListesiComponent = /** @class */ (function () {
+    function ArkadasListesiComponent(store, uyelikService, mesajService, platform) {
+        var _this = this;
+        this.store = store;
+        this.uyelikService = uyelikService;
+        this.mesajService = mesajService;
+        this.platform = platform;
+        this.dataSource = new _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatTableDataSource"]();
+        this.gosterilenKolonlar = ['avatar', 'ad', 'eposta', 'telefon', 'durum', 'iptal', 'butonlar'];
+        this.mobilplatform = this.platform.ANDROID || this.platform.IOS;
+        if (this.mobilplatform) {
+            this.gosterilenKolonlar = ['avatar', 'ad', 'eposta', 'telefon', 'durum', 'iptal', 'butonlar'];
+        }
+        else {
+            this.gosterilenKolonlar = ['checkbox', 'avatar', 'ad', 'eposta', 'telefon', 'durum', 'iptal', 'butonlar'];
+        }
+        this.dataSource.paginator = this.paginator;
+        this.onArkadaslarDegisti = this.store.select(_store_reducers_arkadaslar_reducer__WEBPACK_IMPORTED_MODULE_6__["getArkadaslikTeklifleri"]).subscribe(function (listeSonuc) {
+            if (listeSonuc && listeSonuc.arkadaslarim) {
+                _this.arkadasliklar = listeSonuc.arkadaslarim;
+                // this.paginator.hidePageSize = true;
+                _this.dataSource.data = _this.arkadasliklar.donenListe;
+                _this.checkboxes = {};
+                _this.arkadasliklar.donenListe.map(function (arkadaslik) {
+                    _this.checkboxes[arkadaslik.id] = false;
+                });
+            }
+        });
+        this.store.select(_store_reducers_arkadaslar_reducer__WEBPACK_IMPORTED_MODULE_6__["getArkadaslikSorgusu"]).subscribe(function (sorgu) {
+            _this.sorgu = sorgu;
+        });
+        this.onSecimDegisti =
+            this.uyelikService.onArkadaslikSecimiDegisti.subscribe(function (secilenArkadaslar) {
+                for (var id in _this.checkboxes) {
+                    if (!_this.checkboxes.hasOwnProperty(id)) {
+                        continue;
+                    }
+                    _this.checkboxes[id] = secilenArkadaslar.includes(id);
+                }
+                _this.secilenArkadaslar = secilenArkadaslar;
+            });
+    }
+    ArkadasListesiComponent.prototype.ngOnInit = function () {
+    };
+    ArkadasListesiComponent.prototype.ngAfterViewInit = function () {
+    };
+    ArkadasListesiComponent.prototype.sayfaDegisti = function (bilgi) {
+        var yeniSorgu = Object.assign({}, this.sorgu, { sayfa: bilgi.pageIndex + 1, sayfaBuyuklugu: bilgi.pageSize });
+        this.store.dispatch(new _store_actions_arkadaslar_actions__WEBPACK_IMPORTED_MODULE_7__["ArkadaslarSorguDegistir"](yeniSorgu));
+    };
+    ArkadasListesiComponent.prototype.ngOnDestroy = function () {
+        this.onArkadaslarDegisti.unsubscribe();
+        this.onSecimDegisti.unsubscribe();
+    };
+    ArkadasListesiComponent.prototype.secimDegisti = function (teklif) {
+        this.uyelikService.toggleSelectedTeklif(teklif.id);
+    };
+    ArkadasListesiComponent.prototype.deleteArkadaslik = function (teklif) {
+        var _this = this;
+        this.uyelikService.arkadaslikTeklifiniIptalEt(teklif.teklifEden.id, teklif.teklifEdilen.id).subscribe(function (sonuc) {
+            _this.sonucIslemleri(sonuc);
+        }, function (hata) { return _this.mesajService.hataStr(hata.error); });
+    };
+    ArkadasListesiComponent.prototype.degistir = function (teklif) {
+        this.uyelikService.toggleSelectedTeklif(teklif.id);
+    };
+    ArkadasListesiComponent.prototype.kabulEt = function (teklif) {
+        this.kararVer(teklif.teklifEden.id, teklif.teklifEdilen.id, true);
+    };
+    ArkadasListesiComponent.prototype.reddet = function (teklif) {
+        this.kararVer(teklif.teklifEden.id, teklif.teklifEdilen.id, false);
+    };
+    ArkadasListesiComponent.prototype.kararVer = function (isteyen, cevaplayan, karar) {
+        var _this = this;
+        this.uyelikService.arkadaslikTeklifineKararVer(isteyen, cevaplayan, karar).subscribe(function (sonuc) {
+            _this.sonucIslemleri(sonuc);
+        }, function (hata) { return _this.mesajService.hataStr(hata.error); });
+    };
+    ArkadasListesiComponent.prototype.geriAl = function (teklif) {
+        var _this = this;
+        this.uyelikService.arkadaslikteklifEt(this.kullaniciNo, teklif.arkadas.id).subscribe(function (sonuc) {
+            _this.sonucIslemleri(sonuc);
+        }, function (hata) { return _this.mesajService.hataStr(hata.error); });
+    };
+    ArkadasListesiComponent.prototype.sonucIslemleri = function (sonuc) {
+        if (sonuc.basarili) {
+            this.store.dispatch(new _store_actions_arkadaslar_actions__WEBPACK_IMPORTED_MODULE_7__["ArkadaslarListesiDegisti"](sonuc.donenNesne));
+            this.mesajService.goster(sonuc.mesajlar[0]);
+        }
+        else {
+            this.mesajService.hatalar(sonuc.hatalar);
+        }
+    };
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])(),
+        __metadata("design:type", Number)
+    ], ArkadasListesiComponent.prototype, "kullaniciNo", void 0);
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"])(_angular_material__WEBPACK_IMPORTED_MODULE_2__["MatPaginator"]),
+        __metadata("design:type", _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatPaginator"])
+    ], ArkadasListesiComponent.prototype, "paginator", void 0);
+    ArkadasListesiComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'fuse-arkadas-listesi',
+            template: __webpack_require__(/*! ./arkadas-listesi.component.html */ "./src/app/main/content/apps/uyelik/arkadaslarim/arkadas-listesi/arkadas-listesi.component.html"),
+            styles: [__webpack_require__(/*! ./arkadas-listesi.component.scss */ "./src/app/main/content/apps/uyelik/arkadaslarim/arkadas-listesi/arkadas-listesi.component.scss")],
+            encapsulation: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewEncapsulation"].None,
+            animations: _fuse_animations__WEBPACK_IMPORTED_MODULE_3__["fuseAnimations"]
+        }),
+        __metadata("design:paramtypes", [_ngrx_store__WEBPACK_IMPORTED_MODULE_1__["Store"],
+            _uyelik_service__WEBPACK_IMPORTED_MODULE_4__["UyelikService"],
+            _core_services_sb_mesaj_service__WEBPACK_IMPORTED_MODULE_5__["SbMesajService"],
+            _angular_cdk_platform__WEBPACK_IMPORTED_MODULE_8__["Platform"]])
+    ], ArkadasListesiComponent);
+    return ArkadasListesiComponent;
+}());
+
+var MatPaginatorIntlTr = /** @class */ (function (_super) {
+    __extends(MatPaginatorIntlTr, _super);
+    function MatPaginatorIntlTr() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.itemsPerPageLabel = 'Sayfa büyüklüğü';
+        _this.nextPageLabel = 'Sonraki sayfa';
+        _this.previousPageLabel = 'Önceki sayfa';
+        _this.firstPageLabel = 'İlk sayfa';
+        _this.lastPageLabel = 'Son sayfa';
+        _this.getRangeLabel = function (page, pageSize, length) {
+            if (length === 0 || pageSize === 0) {
+                return '0 / ' + length;
+            }
+            length = Math.max(length, 0);
+            var startIndex = page * pageSize;
+            // If the start index exceeds the list length, do not try and fix the end index to the end.
+            var endIndex = startIndex < length ?
+                Math.min(startIndex + pageSize, length) :
+                startIndex + pageSize;
+            return startIndex + 1 + ' - ' + endIndex + ' / ' + length;
+        };
+        return _this;
+    }
+    return MatPaginatorIntlTr;
+}(_angular_material__WEBPACK_IMPORTED_MODULE_2__["MatPaginatorIntl"]));
+
+
+
+/***/ }),
+
+/***/ "./src/app/main/content/apps/uyelik/arkadaslarim/arkadaslarim.component.html":
+/*!***********************************************************************************!*\
+  !*** ./src/app/main/content/apps/uyelik/arkadaslarim/arkadaslarim.component.html ***!
+  \***********************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<div id=\"contacts\" class=\"page-layout simple left-sidenav inner-sidenav\">\r\n\r\n    <!-- HEADER -->\r\n    <div class=\"p-16 p-sm-24 baslik\" fxLayout=\"column\" fxLayoutAlign=\"start start\" fxLayout.gt-xs=\"row\" fxLayoutAlign.gt-xs=\"space-between center\">\r\n\r\n        <!-- APP TITLE -->\r\n        <div  fxLayout=\"row\" fxLayoutAlign=\"start center\">\r\n\r\n            <button mat-button class=\"mat-icon-button sidenav-toggle mr-12\" fuseMatSidenavToggler=\"contacts-main-sidenav\" fxHide.gt-md>\r\n                <mat-icon>menu</mat-icon>\r\n            </button>\r\n            \r\n            <button mat-button class=\"mat-icon-button sidenav-toggle mr-12\"  (click)=\"yenile()\">\r\n                <mat-icon matTooltip=\"Listeyi yeniden yaratır\">sync</mat-icon>\r\n            </button>\r\n            <div   class=\"logo\" fxLayout=\"row\" fxLayoutAlign=\"start center\">\r\n                <mat-icon class=\"logo-icon mr-16\" *fuseIfOnDom [@animate]=\"{value:'*',params:{delay:'50ms',scale:'0.2'}}\">account_box</mat-icon>\r\n                <span class=\"logo-text h1\" *fuseIfOnDom [@animate]=\"{value:'*',params:{delay:'100ms',x:'-25px'}}\">Arkadaşlarım</span>\r\n            </div>\r\n\r\n        </div>\r\n        <!-- / APP TITLE -->\r\n\r\n        <!-- SEARCH -->\r\n        <div  *ngIf=\"mobilplatform===false\" class=\"search-input-wrapper mt-16 ml-8 m-sm-0\" fxLayout=\"row\" fxLayoutAlign=\"start center\">\r\n            <label for=\"search\" class=\"mr-8\" >\r\n                <mat-icon  style=\"color:#E9DFE0\" >search</mat-icon>\r\n            </label>\r\n            <mat-form-field mat-no-float class=\"m-0\" floatPlaceholder=\"never\" >\r\n                <input matInput [formControl]=\"searchInput\" id=\"search\" placeholder=\"Arkadaş ara\" matTooltip=\"Arama cümlesi boş veya ikiden fazla harfden oluşmalı.\">\r\n            </mat-form-field>\r\n        </div>\r\n        <!-- / SEARCH -->\r\n\r\n    </div>\r\n    <!-- / HEADER -->\r\n\r\n    <!-- SELECTED BAR -->\r\n    <!-- <fuse-selected-bar class=\"mat-accent-600-bg\" *ngIf=\"hasSelectedContacts\" [@slideInTop]></fuse-selected-bar> -->\r\n    <fuse-secildi-panosu  *ngIf=\"teklifSecilmis\" [@slideInTop]></fuse-secildi-panosu>\r\n    <!-- / SELECTED BAR -->\r\n\r\n    <mat-sidenav-container>\r\n\r\n        <!-- SIDENAV -->\r\n        <mat-sidenav class=\"sidenav\" align=\"start\" opened=\"true\" mode=\"side\" fuseMatSidenavHelper=\"contacts-main-sidenav\" mat-is-locked-open=\"gt-sm\">\r\n\r\n            <fuse-side-nav *fuseIfOnDom [@animate]=\"{value:'*'}\"></fuse-side-nav>\r\n\r\n        </mat-sidenav>\r\n        <!-- / SIDENAV -->\r\n\r\n        <!-- CENTER -->\r\n        <div class=\"center p-24 pb-56 pr-sm-92\" >\r\n            <!-- CONTENT -->\r\n            <div class=\"content mat-elevation-z4\" fxLayout=\"column\">\r\n                    <div *ngIf=\"mobilplatform===true\" class=\"search-input-wrapper m-8\" fxLayout=\"row\" fxLayoutAlign=\"center stretch\">\r\n                        <label *ngIf=\"mobilplatform===false\" for=\"search\" class=\"mr-8\">\r\n                            <mat-icon style=\"color:#E9DFE0\">search</mat-icon>\r\n                        </label>\r\n                        <mat-form-field mat-no-float class=\"m-0\" floatPlaceholder=\"never\">\r\n                            <input matInput [formControl]=\"searchInput\" id=\"search\" placeholder=\"Arkadaş ara\" matTooltip=\"Arama cümlesi boş veya ikiden fazla harfden oluşmalı.\">\r\n                        </mat-form-field>\r\n                    </div>\r\n                    <fuse-yukleniyor [yukleniyor]=\"yukleniyor\">\r\n                        <fuse-arkadas-listesi [kullaniciNo]=\"uyelikService.kb.id\"></fuse-arkadas-listesi>\r\n                    </fuse-yukleniyor>\r\n                </div>\r\n            <!-- / CONTENT -->\r\n\r\n        </div>\r\n        <!-- / CENTER -->\r\n\r\n    </mat-sidenav-container>\r\n\r\n</div>\r\n\r\n<!-- ADD CONTACT BUTTON -->\r\n<button mat-fab  id=\"add-contact-button\"  *fuseIfOnDom [@animate]=\"{value:'*', params:{delay:'300ms',scale:'.2'}}\" (click)=\"arkadasBul()\">\r\n    <mat-icon>person_add</mat-icon>\r\n</button>\r\n<!-- / ADD CONTACT BUTTON -->"
+
+/***/ }),
+
+/***/ "./src/app/main/content/apps/uyelik/arkadaslarim/arkadaslarim.component.scss":
+/*!***********************************************************************************!*\
+  !*** ./src/app/main/content/apps/uyelik/arkadaslarim/arkadaslarim.component.scss ***!
+  \***********************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "#contacts .baslik {\n  background-color: #CFA4B7;\n  color: #E9DFE0; }\n\n#contacts .mat-form-field {\n  color: #C7CBDF; }\n\n#contacts mat-sidenav-container {\n  background-color: #E9DFE0; }\n\n#contacts mat-sidenav-container .center {\n    background-color: #E9DFE0; }\n\n#contacts .content {\n  overflow: hidden; }\n\n#contacts .content fuse-yukleniyor {\n    min-width: 100%; }\n\n#add-contact-button {\n  background-color: #8AA6CC; }\n"
+
+/***/ }),
+
+/***/ "./src/app/main/content/apps/uyelik/arkadaslarim/arkadaslarim.component.ts":
+/*!*********************************************************************************!*\
+  !*** ./src/app/main/content/apps/uyelik/arkadaslarim/arkadaslarim.component.ts ***!
+  \*********************************************************************************/
+/*! exports provided: ArkadaslarimComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ArkadaslarimComponent", function() { return ArkadaslarimComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var _angular_cdk_platform__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/cdk/platform */ "./node_modules/@angular/cdk/esm5/platform.es5.js");
+/* harmony import */ var rxjs_add_observable_interval__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs/add/observable/interval */ "./node_modules/rxjs-compat/_esm5/add/observable/interval.js");
+/* harmony import */ var rxjs_add_observable_of__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs/add/observable/of */ "./node_modules/rxjs-compat/_esm5/add/observable/of.js");
+/* harmony import */ var rxjs_add_operator_take__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs/add/operator/take */ "./node_modules/rxjs-compat/_esm5/add/operator/take.js");
+/* harmony import */ var rxjs_add_operator_map__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! rxjs/add/operator/map */ "./node_modules/rxjs-compat/_esm5/add/operator/map.js");
+/* harmony import */ var rxjs_add_operator_mergeMap__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! rxjs/add/operator/mergeMap */ "./node_modules/rxjs-compat/_esm5/add/operator/mergeMap.js");
+/* harmony import */ var rxjs_add_operator_switchMap__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! rxjs/add/operator/switchMap */ "./node_modules/rxjs-compat/_esm5/add/operator/switchMap.js");
+/* harmony import */ var rxjs_add_operator_debounceTime__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! rxjs/add/operator/debounceTime */ "./node_modules/rxjs-compat/_esm5/add/operator/debounceTime.js");
+/* harmony import */ var rxjs_add_operator_distinctUntilChanged__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! rxjs/add/operator/distinctUntilChanged */ "./node_modules/rxjs-compat/_esm5/add/operator/distinctUntilChanged.js");
+/* harmony import */ var _ngrx_store__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @ngrx/store */ "./node_modules/@ngrx/store/fesm5/store.js");
+/* harmony import */ var _fuse_animations__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @fuse/animations */ "./src/@fuse/animations/index.ts");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
+/* harmony import */ var _uyelik_service__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../uyelik.service */ "./src/app/main/content/apps/uyelik/uyelik.service.ts");
+/* harmony import */ var _core_services_sb_mesaj_service__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../../../../../core/services/sb-mesaj.service */ "./src/app/core/services/sb-mesaj.service.ts");
+/* harmony import */ var _store_actions_arkadaslar_actions__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../../../../../store/actions/arkadaslar.actions */ "./src/app/store/actions/arkadaslar.actions.ts");
+/* harmony import */ var _store_reducers_arkadaslar_reducer__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../../../../../store/reducers/arkadaslar.reducer */ "./src/app/store/reducers/arkadaslar.reducer.ts");
+/* harmony import */ var _arkadas_ekle_arkadas_ekle_component__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./arkadas-ekle/arkadas-ekle.component */ "./src/app/main/content/apps/uyelik/arkadaslarim/arkadas-ekle/arkadas-ekle.component.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var ArkadaslarimComponent = /** @class */ (function () {
+    function ArkadaslarimComponent(uyelikService, rootStore, mesajService, dialog, platform) {
+        this.uyelikService = uyelikService;
+        this.rootStore = rootStore;
+        this.mesajService = mesajService;
+        this.dialog = dialog;
+        this.platform = platform;
+        this.yukleniyor = true;
+        this.mobilplatform = this.platform.ANDROID || this.platform.IOS;
+        this.searchInput = new _angular_forms__WEBPACK_IMPORTED_MODULE_13__["FormControl"]('');
+    }
+    ArkadaslarimComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        // this.getArkadaslar();
+        this.onSecimDegistiSubscription =
+            this.uyelikService.onArkadaslikSecimiDegisti
+                .subscribe(function (secilenler) {
+                _this.teklifSecilmis = secilenler.length > 0;
+            });
+        this.arkadaslarLoaded$ = this.rootStore.select(_store_reducers_arkadaslar_reducer__WEBPACK_IMPORTED_MODULE_17__["getArkadaslarLoaded"]).subscribe(function (yuklendi) {
+            _this.yukleniyor = !yuklendi;
+        });
+        this.sorguDegisti$ = this.rootStore.select(_store_reducers_arkadaslar_reducer__WEBPACK_IMPORTED_MODULE_17__["getArkadaslikSorgusu"]).subscribe(function (sorgu) {
+            _this.guncelSorgu = sorgu;
+            _this.searchInput.patchValue(sorgu.aramaCumlesi);
+            _this.rootStore.dispatch(new _store_actions_arkadaslar_actions__WEBPACK_IMPORTED_MODULE_16__["ArkadaslarListeAl"](_this.guncelSorgu));
+        });
+        this.searchInput.valueChanges
+            .debounceTime(800)
+            .distinctUntilChanged()
+            .subscribe(function (searchText) {
+            if (!searchText) {
+                return;
+            }
+            if (searchText.length < 3 && searchText.length > 0) {
+                return;
+            }
+            if (_this.guncelSorgu && _this.guncelSorgu.aramaCumlesi !== searchText) {
+                var yeniSorgu = Object.assign({}, _this.guncelSorgu);
+                yeniSorgu.aramaCumlesi = searchText;
+                _this.rootStore.dispatch(new _store_actions_arkadaslar_actions__WEBPACK_IMPORTED_MODULE_16__["ArkadaslarSorguDegistir"](yeniSorgu));
+            }
+        });
+    };
+    ArkadaslarimComponent.prototype.ngOnDestroy = function () {
+        this.onSecimDegistiSubscription.unsubscribe();
+        this.arkadaslarLoaded$.unsubscribe();
+        this.sorguDegisti$.unsubscribe();
+    };
+    ArkadaslarimComponent.prototype.getArkadaslar = function () {
+        this.rootStore.dispatch(new _store_actions_arkadaslar_actions__WEBPACK_IMPORTED_MODULE_16__["ArkadaslarSorguDegistir"](this.guncelSorgu));
+    };
+    ArkadaslarimComponent.prototype.yenile = function () {
+        this.rootStore.dispatch(new _store_actions_arkadaslar_actions__WEBPACK_IMPORTED_MODULE_16__["ArkadaslarListeAl"](this.guncelSorgu));
+    };
+    ArkadaslarimComponent.prototype.arkadasBul = function () {
+        var en = '70vw';
+        var boy = '90vh';
+        var sinif = 'erkadas-ekle-dialog';
+        if (this.platform.ANDROID || this.platform.IOS) {
+            en = '99vw';
+            boy = '95vh';
+            // sinif = 'popup-mobil';
+        }
+        this.dialogRef = this.dialog.open(_arkadas_ekle_arkadas_ekle_component__WEBPACK_IMPORTED_MODULE_18__["ArkadasEkleComponent"], {
+            data: {
+                kb: this.uyelikService.kb
+            },
+            width: en,
+            panelClass: sinif
+        });
+        this.dialogRef.afterClosed()
+            .subscribe(function (response) {
+            if (!response) {
+                return;
+            }
+        });
+    };
+    ArkadaslarimComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'fuse-arkadaslarim',
+            template: __webpack_require__(/*! ./arkadaslarim.component.html */ "./src/app/main/content/apps/uyelik/arkadaslarim/arkadaslarim.component.html"),
+            styles: [__webpack_require__(/*! ./arkadaslarim.component.scss */ "./src/app/main/content/apps/uyelik/arkadaslarim/arkadaslarim.component.scss")],
+            encapsulation: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewEncapsulation"].None,
+            animations: _fuse_animations__WEBPACK_IMPORTED_MODULE_12__["fuseAnimations"]
+        }),
+        __metadata("design:paramtypes", [_uyelik_service__WEBPACK_IMPORTED_MODULE_14__["UyelikService"],
+            _ngrx_store__WEBPACK_IMPORTED_MODULE_11__["Store"],
+            _core_services_sb_mesaj_service__WEBPACK_IMPORTED_MODULE_15__["SbMesajService"],
+            _angular_material__WEBPACK_IMPORTED_MODULE_1__["MatDialog"],
+            _angular_cdk_platform__WEBPACK_IMPORTED_MODULE_2__["Platform"]])
+    ], ArkadaslarimComponent);
+    return ArkadaslarimComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/main/content/apps/uyelik/arkadaslarim/arkadaslarim.guard.ts":
+/*!*****************************************************************************!*\
+  !*** ./src/app/main/content/apps/uyelik/arkadaslarim/arkadaslarim.guard.ts ***!
+  \*****************************************************************************/
+/*! exports provided: ArkadaslarimGuard */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ArkadaslarimGuard", function() { return ArkadaslarimGuard; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _ngrx_store__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ngrx/store */ "./node_modules/@ngrx/store/fesm5/store.js");
+/* harmony import */ var rxjs_observable_of__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/observable/of */ "./node_modules/rxjs-compat/_esm5/observable/of.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var rxjs_add_observable_forkJoin__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs/add/observable/forkJoin */ "./node_modules/rxjs-compat/_esm5/add/observable/forkJoin.js");
+/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../../../store */ "./src/app/store/index.ts");
+/* harmony import */ var _uyelik_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../uyelik.service */ "./src/app/main/content/apps/uyelik/uyelik.service.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+
+var ArkadaslarimGuard = /** @class */ (function () {
+    function ArkadaslarimGuard(store, helperService) {
+        var _this = this;
+        this.store = store;
+        this.helperService = helperService;
+        this.store.select(_store__WEBPACK_IMPORTED_MODULE_5__["getRouterState"]).subscribe(function (routerState) {
+            if (routerState) {
+                _this.routerState = routerState.state;
+            }
+        });
+    }
+    ArkadaslarimGuard.prototype.canActivate = function (route, state) {
+        return this.helperService.checkArkadaslarStore().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["switchMap"])(function () { return Object(rxjs_observable_of__WEBPACK_IMPORTED_MODULE_2__["of"])(true); }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["catchError"])(function (error) {
+            return Object(rxjs_observable_of__WEBPACK_IMPORTED_MODULE_2__["of"])(error === 1);
+        }));
+    };
+    ArkadaslarimGuard = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])(),
+        __metadata("design:paramtypes", [_ngrx_store__WEBPACK_IMPORTED_MODULE_1__["Store"],
+            _uyelik_service__WEBPACK_IMPORTED_MODULE_6__["UyelikService"]])
+    ], ArkadaslarimGuard);
+    return ArkadaslarimGuard;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/main/content/apps/uyelik/arkadaslarim/secildi-panosu/secildi-panosu.component.html":
+/*!****************************************************************************************************!*\
+  !*** ./src/app/main/content/apps/uyelik/arkadaslarim/secildi-panosu/secildi-panosu.component.html ***!
+  \****************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<div fxFlex fxLayout=\"row\" fxLayoutAlign=\"start center\" class=\"p-24\">\n\n  <div class=\"close-button-wrapper\" fxFlex=\"0 1 auto\" fxFlex.gt-sm=\"220px\" (click)=\"secimiAt()\">\n      <button class=\"p-8\" mat-button fxLayout=\"row\" fxLayoutAlign=\"start center\">\n          <mat-icon class=\"mr-8\">arrow_back</mat-icon>\n          <span >SEÇİMİ SİL</span>\n      </button>\n  </div>\n\n  <div fxFlex fxLayout=\"row\" fxLayoutAlign=\"end center\" fxLayoutAlign.gt-sm=\"space-between center\">\n\n      <div>\n          <span class=\"selected-contacts-count\">\n              <span class=\"mr-4\">{{selectedContacts.length}}</span>\n              <span>kayıt seçildi</span>\n              \n          </span>\n\n          <button mat-icon-button [matMenuTriggerFor]=\"selectMenu\">\n              <mat-icon>arrow_drop_down</mat-icon>\n          </button>\n          <mat-menu #selectMenu=\"matMenu\">\n              <button mat-menu-item (click)=\"tumunuSec()\">Tümünü seç</button>\n              <button mat-menu-item (click)=\"secimiAt()\">Seçimi sil</button>\n          </mat-menu>\n\n      </div>\n\n      <div class=\"multi-select-actions\">\n          <button mat-icon-button (click)=\"secilmisTeklifleriSil()\"  matTooltip=\"Arkadaşlıkları iptal et\">\n              <mat-icon>delete</mat-icon>\n          </button>\n      </div>\n\n  </div>\n\n</div>\n"
+
+/***/ }),
+
+/***/ "./src/app/main/content/apps/uyelik/arkadaslarim/secildi-panosu/secildi-panosu.component.scss":
+/*!****************************************************************************************************!*\
+  !*** ./src/app/main/content/apps/uyelik/arkadaslarim/secildi-panosu/secildi-panosu.component.scss ***!
+  \****************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/**\n * Applies styles for users in high contrast mode. Note that this only applies\n * to Microsoft browsers. Chrome can be included by checking for the `html[hc]`\n * attribute, however Chrome handles high contrast differently.\n */\n/* Theme for the ripple elements.*/\n/* stylelint-disable material/no-prefixes */\n/* stylelint-enable */\n:host {\n  flex: 1;\n  position: absolute;\n  top: 0;\n  right: 0;\n  left: 0;\n  height: 120px;\n  z-index: 99;\n  background-color: #8AA6CC; }\n"
+
+/***/ }),
+
+/***/ "./src/app/main/content/apps/uyelik/arkadaslarim/secildi-panosu/secildi-panosu.component.ts":
+/*!**************************************************************************************************!*\
+  !*** ./src/app/main/content/apps/uyelik/arkadaslarim/secildi-panosu/secildi-panosu.component.ts ***!
+  \**************************************************************************************************/
+/*! exports provided: SecildiPanosuComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SecildiPanosuComponent", function() { return SecildiPanosuComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _uyelik_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../uyelik.service */ "./src/app/main/content/apps/uyelik/uyelik.service.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var SecildiPanosuComponent = /** @class */ (function () {
+    function SecildiPanosuComponent(temelService) {
+        var _this = this;
+        this.temelService = temelService;
+        this.temelService.onArkadaslikSecimiDegisti.subscribe(function (secilenler) {
+            _this.selectedContacts = secilenler;
+            setTimeout(function () {
+                _this.hasSelectedContacts = secilenler.length > 0;
+                _this.isIndeterminate = (secilenler.length !== _this.temelService.arkadaslarim.kayitSayisi > 0 && secilenler.length > 0);
+            }, 0);
+        });
+    }
+    SecildiPanosuComponent.prototype.ngOnInit = function () {
+    };
+    SecildiPanosuComponent.prototype.tumunuSec = function () {
+        this.temelService.teklifleriSec();
+    };
+    SecildiPanosuComponent.prototype.secimiAt = function () {
+        this.temelService.deselectTeklifler();
+    };
+    SecildiPanosuComponent.prototype.secilmisTeklifleriSil = function () {
+    };
+    SecildiPanosuComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'fuse-secildi-panosu',
+            template: __webpack_require__(/*! ./secildi-panosu.component.html */ "./src/app/main/content/apps/uyelik/arkadaslarim/secildi-panosu/secildi-panosu.component.html"),
+            styles: [__webpack_require__(/*! ./secildi-panosu.component.scss */ "./src/app/main/content/apps/uyelik/arkadaslarim/secildi-panosu/secildi-panosu.component.scss")]
+        }),
+        __metadata("design:paramtypes", [_uyelik_service__WEBPACK_IMPORTED_MODULE_1__["UyelikService"]])
+    ], SecildiPanosuComponent);
+    return SecildiPanosuComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/main/content/apps/uyelik/arkadaslarim/side-nav/side-nav.component.html":
+/*!****************************************************************************************!*\
+  !*** ./src/app/main/content/apps/uyelik/arkadaslarim/side-nav/side-nav.component.html ***!
+  \****************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"sidenav-content\">\n\n  <div class=\"card\">\n    <!-- SIDENAV HEADER -->\n    <div *ngIf=\"profilimService.kb\" class=\"header p-24\" fxLayout=\"column\" fxLayoutAlign=\"start center\">\n\n      <!-- USER -->\n\n      <img [src]=\"profilimService.kb.profilFotoUrl\" class=\"avatar m-8\" [alt]=\"profilimService.kb.tamAdi\" />\n      <span class=\"h5\" style=\"color:#C66D9E;font-size:12px\">{{profilimService.kb.tamAdi}}</span>\n\n      <!-- / USER -->\n\n    </div>\n    <!-- / SIDENAV HEADER -->\n\n    <!-- SIDENAV CONTENT -->\n    <div class=\"content py-16\" fusePerfectScrollbar>\n\n      <div class=\"nav\">\n\n        <div class=\"nav-item\">\n          <a class=\"nav-link\" matRipple>\n            <span class=\"title\" style=\"color:#C66D9E;font-weight: 500\">Filtreler</span>\n          </a>\n        </div>\n\n        <div class=\"nav-item\">\n          <a class=\"nav-link\" matRipple (click)=\"changeFilter('hepsi')\" [ngClass]=\"{'active':sorgu.filtreCumlesi ==='hepsi'}\">\n            <span class=\"title\">Hepsi</span>\n          </a>\n        </div>\n\n        <div class=\"nav-item\">\n          <a class=\"nav-link\" matRipple (click)=\"changeFilter('tekliflerim')\" [ngClass]=\"{'active':sorgu.filtreCumlesi ==='tekliflerim'}\">\n            <span class=\"title\">Arkadaşlık isteklerim</span>\n          </a>\n        </div>\n\n        <div class=\"nav-item\" (click)=\"changeFilter('aldigimTeklifler')\">\n          <a class=\"nav-link\" matRipple [ngClass]=\"{'active':sorgu.filtreCumlesi ==='aldigimTeklifler'}\">\n            <div class=\"title\">Gelen istekler</div>\n          </a>\n        </div>\n\n        <div class=\"nav-item\" (click)=\"changeFilter('kabuledilenler')\">\n          <a class=\"nav-link\" matRipple [ngClass]=\"{'active':sorgu.filtreCumlesi ==='kabuledilenler'}\">\n            <div class=\"title\">Kabul edilen istekler</div>\n          </a>\n        </div>\n        <div class=\"nav-item\" (click)=\"changeFilter('cevapbekleyenler')\">\n          <a class=\"nav-link\" matRipple [ngClass]=\"{'active':sorgu.filtreCumlesi ==='cevapbekleyenler'}\">\n            <div class=\"title\">Cevap bekleyen istekler</div>\n          </a>\n        </div>\n        <div class=\"nav-item\" (click)=\"changeFilter('cevaplananlar')\">\n          <a class=\"nav-link\" matRipple [ngClass]=\"{'active':sorgu.filtreCumlesi ==='cevaplananlar'}\">\n            <div class=\"title\">Sonuçlanan istekler</div>\n          </a>\n        </div>\n        <div class=\"nav-item\" (click)=\"changeFilter('silinenler')\">\n          <a class=\"nav-link\" matRipple [ngClass]=\"{'active':sorgu.filtreCumlesi ==='silinenler'}\">\n            <div class=\"title\">İptal Edilenler</div>\n          </a>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n<!-- / SIDENAV CONTENT -->"
+
+/***/ }),
+
+/***/ "./src/app/main/content/apps/uyelik/arkadaslarim/side-nav/side-nav.component.scss":
+/*!****************************************************************************************!*\
+  !*** ./src/app/main/content/apps/uyelik/arkadaslarim/side-nav/side-nav.component.scss ***!
+  \****************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/**\n * Applies styles for users in high contrast mode. Note that this only applies\n * to Microsoft browsers. Chrome can be included by checking for the `html[hc]`\n * attribute, however Chrome handles high contrast differently.\n */\n/* Theme for the ripple elements.*/\n/* stylelint-disable material/no-prefixes */\n/* stylelint-enable */\n:host {\n  display: flex;\n  flex-direction: column;\n  flex: 1 0 auto;\n  height: 100%; }\n:host .sidenav-content {\n    display: flex;\n    flex-direction: column;\n    padding: 0; }\n@media screen and (min-width: 960px) {\n      :host .sidenav-content {\n        padding: 24px 4px 24px 24px; } }\n:host .sidenav-content .card {\n      display: flex;\n      flex-direction: column;\n      flex: 0 1 auto;\n      padding: 0;\n      background-color: #E9DFE0; }\n@media screen and (min-width: 960px) {\n        :host .sidenav-content .card {\n          box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12); } }\n:host .sidenav-content .card > .header {\n        flex: 0 1 auto;\n        border-bottom: 1px solid rgba(0, 0, 0, 0.12); }\n:host .sidenav-content .card > .content {\n        flex: 0 1 auto; }\n:host .sidenav-content .card .nav-item a {\n        color: #CFA4B7; }\n:host .sidenav-content .card .nav-item .active {\n        background-color: #C66D9E;\n        color: white;\n        font-size: 14px; }\n"
+
+/***/ }),
+
+/***/ "./src/app/main/content/apps/uyelik/arkadaslarim/side-nav/side-nav.component.ts":
+/*!**************************************************************************************!*\
+  !*** ./src/app/main/content/apps/uyelik/arkadaslarim/side-nav/side-nav.component.ts ***!
+  \**************************************************************************************/
+/*! exports provided: ArkadaslarimSideNavComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ArkadaslarimSideNavComponent", function() { return ArkadaslarimSideNavComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _ngrx_store__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ngrx/store */ "./node_modules/@ngrx/store/fesm5/store.js");
+/* harmony import */ var _models_arkadaslik_teklif__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../../models/arkadaslik-teklif */ "./src/app/models/arkadaslik-teklif.ts");
+/* harmony import */ var _uyelik_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../uyelik.service */ "./src/app/main/content/apps/uyelik/uyelik.service.ts");
+/* harmony import */ var _store_reducers_arkadaslar_reducer__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../../../../store/reducers/arkadaslar.reducer */ "./src/app/store/reducers/arkadaslar.reducer.ts");
+/* harmony import */ var _store_actions_arkadaslar_actions__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../../../../store/actions/arkadaslar.actions */ "./src/app/store/actions/arkadaslar.actions.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+var ArkadaslarimSideNavComponent = /** @class */ (function () {
+    function ArkadaslarimSideNavComponent(store, profilimService) {
+        var _this = this;
+        this.store = store;
+        this.profilimService = profilimService;
+        store.select(_store_reducers_arkadaslar_reducer__WEBPACK_IMPORTED_MODULE_4__["getArkadaslikSorgusu"]).subscribe(function (sorgu) {
+            _this.sorgu = sorgu;
+        });
+    }
+    ArkadaslarimSideNavComponent.prototype.changeFilter = function (filter) {
+        var sorgu = this.createSorguWithFilter(filter);
+        this.store.dispatch(new _store_actions_arkadaslar_actions__WEBPACK_IMPORTED_MODULE_5__["ArkadaslarSorguDegistir"](sorgu));
+    };
+    ArkadaslarimSideNavComponent.prototype.createSorguWithFilter = function (filtre) {
+        var yeniSorgu = new _models_arkadaslik_teklif__WEBPACK_IMPORTED_MODULE_2__["ArkadaslikSorgusu"]();
+        switch (filtre) {
+            case 'tekliflerim':
+                yeniSorgu.teklifEdilenler = true;
+                break;
+            case 'aldigimTeklifler':
+                yeniSorgu.teklifEdenler = true;
+                break;
+            case 'kabuledilenler':
+                yeniSorgu.kabulEdilenler = true;
+                break;
+            case 'cevapbekleyenler':
+                yeniSorgu.cevapBeklenenler = true;
+                break;
+            case 'cevaplananlar':
+                yeniSorgu.cevaplananlar = true;
+                break;
+            case 'silinenler':
+                yeniSorgu.silinenler = true;
+                break;
+        }
+        yeniSorgu.filtreCumlesi = filtre;
+        return yeniSorgu;
+    };
+    ArkadaslarimSideNavComponent.prototype.ngOnDestroy = function () {
+        if (this.onUserDataChangedSubscription) {
+            this.onUserDataChangedSubscription.unsubscribe();
+        }
+    };
+    ArkadaslarimSideNavComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'fuse-side-nav',
+            template: __webpack_require__(/*! ./side-nav.component.html */ "./src/app/main/content/apps/uyelik/arkadaslarim/side-nav/side-nav.component.html"),
+            styles: [__webpack_require__(/*! ./side-nav.component.scss */ "./src/app/main/content/apps/uyelik/arkadaslarim/side-nav/side-nav.component.scss")]
+        }),
+        __metadata("design:paramtypes", [_ngrx_store__WEBPACK_IMPORTED_MODULE_1__["Store"], _uyelik_service__WEBPACK_IMPORTED_MODULE_3__["UyelikService"]])
+    ], ArkadaslarimSideNavComponent);
+    return ArkadaslarimSideNavComponent;
 }());
 
 
@@ -6429,12 +7861,26 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var ng2_file_upload__WEBPACK_IMPORTED_MODULE_18___default = /*#__PURE__*/__webpack_require__.n(ng2_file_upload__WEBPACK_IMPORTED_MODULE_18__);
 /* harmony import */ var _profilim_profilim_degistir_profilim_degistir_component__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./profilim/profilim-degistir/profilim-degistir.component */ "./src/app/main/content/apps/uyelik/profilim/profilim-degistir/profilim-degistir.component.ts");
 /* harmony import */ var _profilim_profilim_resolver__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./profilim/profilim-resolver */ "./src/app/main/content/apps/uyelik/profilim/profilim-resolver.ts");
+/* harmony import */ var _arkadaslarim_arkadas_ekle_arkadas_ekle_component__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./arkadaslarim/arkadas-ekle/arkadas-ekle.component */ "./src/app/main/content/apps/uyelik/arkadaslarim/arkadas-ekle/arkadas-ekle.component.ts");
+/* harmony import */ var _arkadaslarim_arkadaslarim_component__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./arkadaslarim/arkadaslarim.component */ "./src/app/main/content/apps/uyelik/arkadaslarim/arkadaslarim.component.ts");
+/* harmony import */ var _arkadaslarim_secildi_panosu_secildi_panosu_component__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./arkadaslarim/secildi-panosu/secildi-panosu.component */ "./src/app/main/content/apps/uyelik/arkadaslarim/secildi-panosu/secildi-panosu.component.ts");
+/* harmony import */ var _arkadaslarim_side_nav_side_nav_component__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./arkadaslarim/side-nav/side-nav.component */ "./src/app/main/content/apps/uyelik/arkadaslarim/side-nav/side-nav.component.ts");
+/* harmony import */ var _arkadaslarim_arkadas_listesi_arkadas_listesi_component__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./arkadaslarim/arkadas-listesi/arkadas-listesi.component */ "./src/app/main/content/apps/uyelik/arkadaslarim/arkadas-listesi/arkadas-listesi.component.ts");
+/* harmony import */ var _arkadaslarim_arkadaslarim_guard__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./arkadaslarim/arkadaslarim.guard */ "./src/app/main/content/apps/uyelik/arkadaslarim/arkadaslarim.guard.ts");
+/* harmony import */ var _arkadaslarim_arkadas_ekle_kullanici_secim_listesi_kullanici_secim_listesi_component__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./arkadaslarim/arkadas-ekle/kullanici-secim-listesi/kullanici-secim-listesi.component */ "./src/app/main/content/apps/uyelik/arkadaslarim/arkadas-ekle/kullanici-secim-listesi/kullanici-secim-listesi.component.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
+
+
+
+
+
+
 
 
 
@@ -6478,6 +7924,11 @@ var routes = [
         path: 'profilim',
         component: _profilim_profilim_component__WEBPACK_IMPORTED_MODULE_15__["ProfilimComponent"],
         resolve: { data: _profilim_profilim_resolver__WEBPACK_IMPORTED_MODULE_20__["ProfilimResolver"] }
+    },
+    {
+        path: 'arkadaslarim',
+        component: _arkadaslarim_arkadaslarim_component__WEBPACK_IMPORTED_MODULE_22__["ArkadaslarimComponent"],
+        canActivate: [_arkadaslarim_arkadaslarim_guard__WEBPACK_IMPORTED_MODULE_26__["ArkadaslarimGuard"]]
     }
 ];
 var UyelikModule = /** @class */ (function () {
@@ -6493,7 +7944,13 @@ var UyelikModule = /** @class */ (function () {
                 _sifre_sifirla_sifre_sifirla_component__WEBPACK_IMPORTED_MODULE_14__["SifreSifirlaComponent"],
                 _profilim_profilim_component__WEBPACK_IMPORTED_MODULE_15__["ProfilimComponent"],
                 _profilim_kullanici_fotograflari_kullanici_fotograflari_component__WEBPACK_IMPORTED_MODULE_17__["KullaniciFotograflariComponent"],
-                _profilim_profilim_degistir_profilim_degistir_component__WEBPACK_IMPORTED_MODULE_19__["ProfilimDegistirComponent"]
+                _profilim_profilim_degistir_profilim_degistir_component__WEBPACK_IMPORTED_MODULE_19__["ProfilimDegistirComponent"],
+                _arkadaslarim_arkadaslarim_component__WEBPACK_IMPORTED_MODULE_22__["ArkadaslarimComponent"],
+                _arkadaslarim_arkadas_listesi_arkadas_listesi_component__WEBPACK_IMPORTED_MODULE_25__["ArkadasListesiComponent"],
+                _arkadaslarim_side_nav_side_nav_component__WEBPACK_IMPORTED_MODULE_24__["ArkadaslarimSideNavComponent"],
+                _arkadaslarim_arkadas_ekle_arkadas_ekle_component__WEBPACK_IMPORTED_MODULE_21__["ArkadasEkleComponent"],
+                _arkadaslarim_secildi_panosu_secildi_panosu_component__WEBPACK_IMPORTED_MODULE_23__["SecildiPanosuComponent"],
+                _arkadaslarim_arkadas_ekle_kullanici_secim_listesi_kullanici_secim_listesi_component__WEBPACK_IMPORTED_MODULE_27__["KullaniciSecimListesiComponent"]
             ],
             imports: [
                 _angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"],
@@ -6509,8 +7966,10 @@ var UyelikModule = /** @class */ (function () {
                 _uyelik_service__WEBPACK_IMPORTED_MODULE_11__["UyelikService"],
                 _uyeol_uyelik_basvuru_resolver__WEBPACK_IMPORTED_MODULE_8__["UyelikBasvuruResolver"],
                 _profilim_profilim_resolver__WEBPACK_IMPORTED_MODULE_20__["ProfilimResolver"],
+                _arkadaslarim_arkadaslarim_guard__WEBPACK_IMPORTED_MODULE_26__["ArkadaslarimGuard"],
                 _uyeol_uyelik_validators__WEBPACK_IMPORTED_MODULE_9__["UyelikValidatorleri"]
-            ]
+            ],
+            entryComponents: [_arkadaslarim_arkadas_ekle_arkadas_ekle_component__WEBPACK_IMPORTED_MODULE_21__["ArkadasEkleComponent"]]
         })
     ], UyelikModule);
     return UyelikModule;
@@ -6532,13 +7991,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UyelikService", function() { return UyelikService; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
-/* harmony import */ var rxjs_add_operator_map__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/add/operator/map */ "./node_modules/rxjs-compat/_esm5/add/operator/map.js");
-/* harmony import */ var rxjs_add_operator_catch__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs/add/operator/catch */ "./node_modules/rxjs-compat/_esm5/add/operator/catch.js");
-/* harmony import */ var rxjs_add_operator_toPromise__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs/add/operator/toPromise */ "./node_modules/rxjs-compat/_esm5/add/operator/toPromise.js");
-/* harmony import */ var rxjs_add_operator_toPromise__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(rxjs_add_operator_toPromise__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var environments_environment__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! environments/environment */ "./src/environments/environment.ts");
-/* harmony import */ var _store_index__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../../store/index */ "./src/app/store/index.ts");
-/* harmony import */ var _ngrx_store__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @ngrx/store */ "./node_modules/@ngrx/store/fesm5/store.js");
+/* harmony import */ var rxjs_Observable__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/Observable */ "./node_modules/rxjs-compat/_esm5/Observable.js");
+/* harmony import */ var _ngrx_store__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ngrx/store */ "./node_modules/@ngrx/store/fesm5/store.js");
+/* harmony import */ var rxjs_internal_BehaviorSubject__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs/internal/BehaviorSubject */ "./node_modules/rxjs/internal/BehaviorSubject.js");
+/* harmony import */ var rxjs_internal_BehaviorSubject__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(rxjs_internal_BehaviorSubject__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var environments_environment__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! environments/environment */ "./src/environments/environment.ts");
+/* harmony import */ var _models_kullanici__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../../models/kullanici */ "./src/app/models/kullanici.ts");
+/* harmony import */ var _store_index__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../../store/index */ "./src/app/store/index.ts");
+/* harmony import */ var _store_reducers_arkadaslar_reducer__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../../../store/reducers/arkadaslar.reducer */ "./src/app/store/reducers/arkadaslar.reducer.ts");
+/* harmony import */ var _store_actions_arkadaslar_actions__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../../../store/actions/arkadaslar.actions */ "./src/app/store/actions/arkadaslar.actions.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -6556,12 +8018,15 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
+
+
 var UyelikService = /** @class */ (function () {
     function UyelikService(httpClient, store) {
         var _this = this;
         this.httpClient = httpClient;
         this.store = store;
-        this.baseUrl = environments_environment__WEBPACK_IMPORTED_MODULE_5__["environment"].apiUrl;
+        this.baseUrl = environments_environment__WEBPACK_IMPORTED_MODULE_6__["environment"].apiUrl;
         this.guvenlikUrl = 'account';
         this.profilUrl = 'profilim';
         this.hesapUrl = 'account';
@@ -6569,8 +8034,22 @@ var UyelikService = /** @class */ (function () {
         this.externalauth = 'externalauth';
         this.kullanicilarUrl = 'kullanicilar';
         this.arkadaslarUrl = 'arkadasliklarim';
-        this.store.select(_store_index__WEBPACK_IMPORTED_MODULE_6__["getAuthState"]).subscribe(function (authState) {
+        this.secilmisArkadaslar = [];
+        this.onArkadaslikSecimiDegisti = new rxjs_internal_BehaviorSubject__WEBPACK_IMPORTED_MODULE_4__["BehaviorSubject"]([]);
+        this.onBulunanKullanicilarDegisti = new rxjs_internal_BehaviorSubject__WEBPACK_IMPORTED_MODULE_4__["BehaviorSubject"](null);
+        this.store.select(_store_index__WEBPACK_IMPORTED_MODULE_8__["getAuthState"]).subscribe(function (authState) {
             _this.kb = authState.kullaniciBilgi;
+        });
+        this.store.select(_store_reducers_arkadaslar_reducer__WEBPACK_IMPORTED_MODULE_9__["getArkadaslikTeklifleri"]).subscribe(function (arkadaslar) {
+            _this.arkadaslarim = arkadaslar.arkadaslarim;
+        });
+        this.store.select(_store_index__WEBPACK_IMPORTED_MODULE_8__["getRouterState"]).subscribe(function (routerState) {
+            if (routerState) {
+                _this.routerState = routerState.state;
+            }
+        });
+        this.store.select(_store_index__WEBPACK_IMPORTED_MODULE_8__["getArkadaslikSorgusu"]).subscribe(function (sorgu) {
+            _this.sorgu = sorgu;
         });
     }
     UyelikService.prototype.listeGetirCinsiyetler = function () {
@@ -6593,13 +8072,13 @@ var UyelikService = /** @class */ (function () {
         });
     };
     UyelikService.prototype.profilBilgisiAl = function () {
-        return this.httpClient.get(environments_environment__WEBPACK_IMPORTED_MODULE_5__["environment"].apiUrl + "/" + this.profilUrl + "/" + this.kb.id + "?neden=yaz")
+        return this.httpClient.get(environments_environment__WEBPACK_IMPORTED_MODULE_6__["environment"].apiUrl + "/" + this.profilUrl + "/" + this.kb.id + "?neden=yaz")
             .map(function (response) {
             return response;
         });
     };
     UyelikService.prototype.profilKaydet = function (id, kullanici) {
-        return this.httpClient.put(environments_environment__WEBPACK_IMPORTED_MODULE_5__["environment"].apiUrl + "/" + this.kullanicilarUrl + "/" + id, kullanici);
+        return this.httpClient.put(environments_environment__WEBPACK_IMPORTED_MODULE_6__["environment"].apiUrl + "/" + this.kullanicilarUrl + "/" + id, kullanici);
     };
     UyelikService.prototype.personelBilgisiniAl = function () {
         var personelNo = 0;
@@ -6676,10 +8155,112 @@ var UyelikService = /** @class */ (function () {
             headers: new _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpHeaders"]().set('Content-Type', 'application/json')
         });
     };
+    UyelikService.prototype.arkadaslikteklifEt = function (isteyenId, cevaplayanId) {
+        return this.httpClient.post(environments_environment__WEBPACK_IMPORTED_MODULE_6__["environment"].apiUrl + "/arkadasliklarim/" + isteyenId + "/teklif/" + cevaplayanId, '');
+    };
+    UyelikService.prototype.arkadaslikTeklifiniIptalEt = function (isteyenId, cevaplayanId) {
+        return this.httpClient.post(environments_environment__WEBPACK_IMPORTED_MODULE_6__["environment"].apiUrl + "/arkadasliklarim/" + isteyenId + "/teklifiptal/" + cevaplayanId, '');
+    };
+    UyelikService.prototype.arkadaslikTeklifineKararVer = function (isteyenId, cevaplayanId, karar) {
+        return this.httpClient.post(environments_environment__WEBPACK_IMPORTED_MODULE_6__["environment"].apiUrl + "/arkadasliklarim/" + isteyenId + "/kararver/" + cevaplayanId, karar);
+    };
+    UyelikService.prototype.toggleSelectedTeklif = function (id) {
+        // First, check if we already have that todo as selected...
+        if (this.secilmisArkadaslar.length > 0) {
+            var index = this.secilmisArkadaslar.indexOf(id);
+            if (index !== -1) {
+                this.secilmisArkadaslar.splice(index, 1);
+                // Trigger the next event
+                this.onArkadaslikSecimiDegisti.next(this.secilmisArkadaslar);
+                // Return
+                return;
+            }
+        }
+        // If we don't have it, push as selected
+        this.secilmisArkadaslar.push(id);
+        // Trigger the next event
+        this.onArkadaslikSecimiDegisti.next(this.secilmisArkadaslar);
+    };
+    UyelikService.prototype.toggleSelectAll = function () {
+        if (this.secilmisArkadaslar.length > 0) {
+            this.deselectTeklifler();
+        }
+        else {
+            this.teklifleriSec();
+        }
+    };
+    UyelikService.prototype.teklifleriSec = function (filterParameter, filterValue) {
+        var _this = this;
+        this.secilmisArkadaslar = [];
+        if (!this.arkadaslarim) {
+            return;
+        }
+        // If there is no filter, select all todos
+        if (filterParameter === undefined || filterValue === undefined) {
+            this.secilmisArkadaslar = [];
+            this.arkadaslarim.donenListe.map(function (contact) {
+                _this.secilmisArkadaslar.push(contact.id);
+            });
+        }
+        else {
+            /* this.selectedContacts.push(...
+                 this.contacts.filter(todo => {
+                     return todo[filterParameter] === filterValue;
+                 })
+             );*/
+        }
+        // Trigger the next event
+        this.onArkadaslikSecimiDegisti.next(this.secilmisArkadaslar);
+    };
+    UyelikService.prototype.deselectTeklifler = function () {
+        this.secilmisArkadaslar = [];
+        // Trigger the next event
+        this.onArkadaslikSecimiDegisti.next(this.secilmisArkadaslar);
+    };
+    UyelikService.prototype.listeGetirKullanicilar = function (sorgu) {
+        if (sorgu == null) {
+            sorgu = new _models_kullanici__WEBPACK_IMPORTED_MODULE_7__["KullaniciSorgusu"]();
+            sorgu.siralamaCumlesi = 'AdSoyad';
+            sorgu.aramaCumlesi = '';
+            sorgu.sayfa = 1;
+            sorgu.sayfaBuyuklugu = 10;
+        }
+        var params = new _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpParams"]();
+        if (sorgu.aramaCumlesi != null) {
+            params = params.append('aramaCumlesi', sorgu.aramaCumlesi);
+        }
+        if (sorgu.sayfa != null) {
+            params = params.append('sayfa', sorgu.sayfa.toString());
+        }
+        if (sorgu.sayfaBuyuklugu != null) {
+            params = params.append('sayfaBuyuklugu', sorgu.sayfaBuyuklugu.toString());
+        }
+        if (sorgu.siralamaCumlesi != null) {
+            params = params.append('siralamaCumlesi', sorgu.siralamaCumlesi.toString());
+        }
+        return this.httpClient.get(environments_environment__WEBPACK_IMPORTED_MODULE_6__["environment"].apiUrl + "/kullanicilar", { params: params });
+    };
+    UyelikService.prototype.checkArkadaslarStore = function () {
+        return rxjs_Observable__WEBPACK_IMPORTED_MODULE_2__["Observable"]
+            .forkJoin(this.getArkadaslar())
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["filter"])(function (_a) {
+            var arkadaslar = _a[0];
+            return arkadaslar;
+        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["take"])(1));
+    };
+    UyelikService.prototype.getArkadaslar = function () {
+        var _this = this;
+        return this.store.select(_store_index__WEBPACK_IMPORTED_MODULE_8__["getArkadaslarLoaded"])
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["tap"])(function (loaded) {
+            if (loaded !== true) {
+                _this.store.dispatch(new _store_actions_arkadaslar_actions__WEBPACK_IMPORTED_MODULE_10__["ArkadaslarListeAl"](_this.sorgu));
+            }
+        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["filter"])(function (loaded) { return loaded; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["take"])(1));
+    };
     UyelikService = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])(),
         __metadata("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"],
-            _ngrx_store__WEBPACK_IMPORTED_MODULE_7__["Store"]])
+            _ngrx_store__WEBPACK_IMPORTED_MODULE_3__["Store"]])
     ], UyelikService);
     return UyelikService;
 }());
@@ -7521,26 +9102,6 @@ var KullaniciSorgusu = /** @class */ (function (_super) {
     }
     return KullaniciSorgusu;
 }(_sorgu_base__WEBPACK_IMPORTED_MODULE_0__["SorguBase"]));
-
-
-
-/***/ }),
-
-/***/ "./src/app/models/sorgu-base.ts":
-/*!**************************************!*\
-  !*** ./src/app/models/sorgu-base.ts ***!
-  \**************************************/
-/*! exports provided: SorguBase */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SorguBase", function() { return SorguBase; });
-var SorguBase = /** @class */ (function () {
-    function SorguBase() {
-    }
-    return SorguBase;
-}());
 
 
 

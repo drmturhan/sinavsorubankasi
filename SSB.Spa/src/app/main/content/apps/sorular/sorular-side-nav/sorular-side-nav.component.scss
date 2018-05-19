@@ -1,0 +1,77 @@
+:host {
+    display: flex;
+    flex: 1 0 auto;
+    flex-direction: column;
+    height: 100%;
+   
+    .header {
+        .logo {
+            cursor: pointer;
+            .logo-text {
+                font-size: 24px;
+                line-height: 24px;
+                font-weight: 700;
+                color: #E2E3DD;
+            }
+        }
+        .birimler {
+            width: 100%;
+            color: #E2E3DD;
+        }
+    }
+    .content {
+        background-color: #E2E3DD;
+        .compose-dialog-button {
+            background-color: #E2474C;
+            color: white;
+        }
+    }
+    .nav .nav-item .nav-link.active {
+        background-color: #E2E3DD;
+        color: #2F3A57;
+        font-weight: bolder;
+        .nav-link-icon {
+            color: #2F3A57;
+        }
+    }
+    .nav .nav-item {
+        color: #3E6A91;
+    }
+    .nav-link-icon {
+        color: #3E6A91;
+    }
+    .ders {
+        font-size: 1em;
+        color: #2F3A57;
+        font-weight: bolder;
+    }
+    .konu {
+        padding-left: 4px;
+        font-size: 0.8em;
+        
+    }
+    .yeni-ikon {
+        margin-bottom:4px; 
+        margin-right: 12px;
+        color: white;
+    }
+    .kucuk-ekran {
+        background-color: #E2474C;
+        .nav .nav-item {
+            color: #2F3A57;
+        }
+        .nav-link-icon {
+            color: #2F3A57;
+        }
+        .compose-dialog-button {
+            background-color: #406D95;
+            color: #A8D0DA;
+        }
+        .yeni-ikon {
+            color: #A8D0DA;
+        }
+    }
+    .yan-acik {
+        background-color: transparent;
+    }
+}

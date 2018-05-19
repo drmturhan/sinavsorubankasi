@@ -1,0 +1,37 @@
+<div class="araclar" fxLayout="row" fxLayoutAlign="space-between center">
+    <mat-form-field fxFlex="auto">
+      <input #akInput class="anahtar-kelime-input" matInput placeholder="Anahtar kelime" [formControl]="yeniAnahtarKelime" (keypress)="enterBasildi($event)">
+      <mat-error *ngIf="yeniAnahtarKelime.hasError('required')">
+        Anahtar kelime girmediniz.
+      </mat-error>
+      <mat-error *ngIf="yeniAnahtarKelime.hasError('minlength')">
+        En az 3 karakter olmalıdır.
+      </mat-error>
+      <mat-hint>Anahtar kelime girip ENTER a basınız.</mat-hint>
+    </mat-form-field>
+    <div>
+      <button mat-button (click)="ekle()" [disabled]="!yeniAnahtarKelime.valid" class="mat-icon-button">
+        <mat-icon class="ekle" matTooltip="Anahtar kelime ekle">add_box</mat-icon>
+      </button>
+      <button mat-button (click)="tumunuSil()" class="mat-icon-button">
+        <mat-icon matTooltip="Anahtar kelimelerin hepsini sil.">delete_sweep</mat-icon>
+      </button>
+    </div>
+  </div>
+  
+  <div class="liste">
+    <ol *ngIf="anahtarKelimelerArr">
+      <li *ngFor="let control of anahtarKelimelerArr.controls">
+        <div class="satir" fxLayout="row" fxLayoutAlign="space-between center" fxFlex="auto">
+          <div>{{control.value}}</div>
+          <button mat-button  class="sil mat-icon-button" (click)="sil(control)" matTooltip="Aktif anahtar kelimeyi sil.">
+            <mat-icon style="color:white!important">delete</mat-icon>
+          </button>
+        </div>
+      </li>
+    </ol>
+  </div>
+  
+  
+  
+  

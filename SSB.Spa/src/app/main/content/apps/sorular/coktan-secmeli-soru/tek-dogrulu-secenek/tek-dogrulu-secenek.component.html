@@ -1,0 +1,78 @@
+<div class="page-layout carded left-sidenav" fusePerfectScrollbar>
+    <!-- TOP BACKGROUND -->
+    <!-- <div class="top-bg mat-accent-bg"></div> -->
+    <!-- / TOP BACKGROUND -->
+    <!-- CENTER -->
+    <div class="center">
+        <!-- CONTENT HEADER -->
+        <!-- <div class="header" fxLayout="row" fxLayoutAlign="start center">
+            <div class="search-wrapper mat-white-bg" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                <button mat-button class="mat-icon-button sidenav-toggle" fuseMatSidenavToggler="carded-left-sidenav" fxHide.gt-md aria-label="Toggle Sidenav">
+                    <mat-icon>menu</mat-icon>
+                </button>
+                <div class="search" flex fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon>search</mat-icon>
+                    <input [formControl]="searchInput" placeholder="Aramak için kelime yazın" fxFlex>
+                </div>
+            </div>
+        </div> -->
+        <!-- / CONTENT HEADER -->
+        <!-- CONTENT CARD -->
+        <div class="content-card" [ngClass]="{'aktif-secenek-var':currentTodo}">
+            <!-- CONTENT TOOLBAR -->
+            <div class="toolbar">
+                <div class="todo-selection" fxFlex="row" fxLayoutAlign="start center">
+                    <mat-checkbox (click)="toggleSelectAll()" [checked]="hasSelectedTodos" [indeterminate]="isIndeterminate"></mat-checkbox>
+                    <button mat-icon-button [matMenuTriggerFor]="selectMenu">
+                        <mat-icon>arrow_drop_down</mat-icon>
+                    </button>
+
+                    <mat-menu #selectMenu="matMenu">
+                        <button mat-menu-item (click)="selectTodos()">Tümü</button>
+                        <button mat-menu-item (click)="deselectTodos()">Hiçbiri</button>
+                        <button mat-menu-item (click)="selectTodos('dogruSecenek', true)">Doğru olanlar</button>
+                        <button mat-menu-item (click)="selectTodos('dogruSecenek', false)">Doğru olmayanlar</button>
+                        <button mat-menu-item (click)="selectTodos('hemenElenebilir', true)">Hemen elenebilirler</button>
+                        <button mat-menu-item (click)="selectTodos('hemenElenebilir', false)">Hemen elenemezler</button>
+                    </mat-menu>
+                    <div class="toolbar-separator"></div>
+                    <button mat-button class="mat-icon-button" (click)="addTekDogruluSecenek($event)" aria-label="Seçenek ekle">
+                        <mat-icon class="ekle" matTooltip="Yeni seçenek ekle">add_box</mat-icon>
+                    </button>
+                    <div class="toolbar-separator" *ngIf="hasSelectedTodos"></div>
+                    <button mat-icon-button (click)="seciliSecenekleriSil()" *ngIf="hasSelectedTodos">
+                        <mat-icon class="sil" matTooltip="Seçili seçenekleri sil">delete_sweep</mat-icon>
+                    </button>
+                    <div class="toolbar-separator"></div>
+                    <div matTooltip="Tek seferde elenebilir soru sayısı">
+                        H.E.S.S. :{{hemenElenebilirSecenekSayisi}}
+                    </div>
+                    <div class="toolbar-separator"></div>
+                    <div matTooltip="Doğru seçenek sayısı">
+                        D.S.S.:{{dogruSeceneksayisi}}
+                    </div>
+                </div>
+                <div *ngIf="currentTodo" fxHide.gt-md>
+                    <button mat-icon-button (click)="deSelectCurrentTodo()">
+                        <mat-icon>arrow_back</mat-icon>
+                    </button>
+                    <button mat-button class="mat-icon-button" (click)="addTekDogruluSecenek($event)" aria-label="Seçenek ekle">
+                            <mat-icon matTooltip="Yeni seçenek ekle" class="ekle">add_box</mat-icon>
+                    </button>
+                    <button mat-button class="mat-icon-button" (click)="toggleSecenekSil($event)" aria-label="Toggle delete">
+                            <mat-icon class="sil" matTooltip="Bu seçeneği sil">delete</mat-icon>
+                    </button>
+                </div>
+            </div>
+            <!-- / CONTENT TOOLBAR -->
+            <!-- CONTENT -->
+            <div class="content" fxFlexAlign="row">
+                <fuse-tek-dogrulu-secenek-list fusePerfectScrollbar fxFlex></fuse-tek-dogrulu-secenek-list>
+                <fuse-tek-dogrulu-secenek-detay fusePerfectScrollbar fxFlex></fuse-tek-dogrulu-secenek-detay>
+            </div>
+            <!-- / CONTENT -->
+        </div>
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+</div>

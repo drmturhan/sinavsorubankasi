@@ -1,0 +1,11 @@
+<div *ngIf="secenekler?.controls?.length === 0" fxLayout="column" fxLayoutAlign="center center" fxFlexFill>
+    <span class="no-todos-text  hint-text">Hiç seçenek yok!</span>
+  </div>
+  
+  <div class="todo-list" *fuseIfOnDom [@animateStagger]="{value:'50'}">
+    <fuse-tek-dogrulu-secenek-item class="todo-list-item has-handle" *ngFor="let secenekCtrl of secenekler.controls let i=index"
+      [indeks]="i" [secenekCtrl]="secenekCtrl"  (click)="readTodo(secenekCtrl.get('tekDogruluSoruSecenekId'))"
+      [ngClass]="{'current-todo':secenekCtrl?.get('tekDogruluSoruSecenekId').value == currentTodo?.get('tekDogruluSoruSecenekId').value}"
+      matRipple [@animate]="{value:'*',params:{y:'100%'}}">
+    </fuse-tek-dogrulu-secenek-item>
+  </div>

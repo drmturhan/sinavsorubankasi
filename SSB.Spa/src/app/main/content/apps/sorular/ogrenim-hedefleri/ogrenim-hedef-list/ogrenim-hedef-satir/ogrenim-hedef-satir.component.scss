@@ -1,0 +1,85 @@
+@import "src/@fuse/scss/fuse";
+.todo-list-item {
+    display: block;
+    position: relative;
+    padding: 16px 16px 16px 24px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    text-transform: none;
+    cursor: pointer;
+    flex-shrink: 0;
+    background: #A8D0DA; // .handle {
+    //     height: 48px;
+    //     line-height: 48px;
+    //     cursor: move;
+    //     user-select: none;
+    // }
+    // &.move-disabled {
+    //     .handle {
+    //         display: none;
+    //     }
+    // }
+    .tags {
+        .tag {
+            font-size: 11px;
+            border-radius: 2px;
+            margin: 8px 4px 0 0;
+            padding: 3px 8px;
+            background-color: rgba(0, 0, 0, 0.08);
+            .tag-color {
+                width: 8px;
+                height: 8px;
+                margin-right: 8px;
+                border-radius: 50%;
+            }
+        }
+    } // &.yanlis {
+    //     border-right: 12px solid rgba(red, 0.54);
+    //     .title,
+    //     .notes {
+    //         color: rgba(0, 0, 0, 0.54);
+    //     }
+    // }
+    // &.dogru {
+    //     border-right: 12px solid rgba(green, 0.54);
+    //     .title,
+    //     .notes {
+    //         color: rgba(0, 0, 0, 0.54);
+    //     }
+    // }
+    &.aktif {
+        background: #A3C9D3;
+        color: #252D43;
+        .title,
+        .notes {
+            color: #252D43;
+        }
+    }
+    &.selected {
+        background: #E2474C;
+        .notes {
+            color: white;
+        }
+    }
+    .info {
+        color: #2F3A57;
+        margin: 0 16px 0 8px;
+        .title {
+            font-size: 15px;
+            font-weight: 500;
+        }
+        .notes {
+            margin-top: 4px;
+        }
+    }
+    .buttons {
+        .is-starred {
+            margin: 0 0 0 16px;
+        }
+        .is-important {
+            margin: 0;
+        }
+    }
+    .sil {
+        color: #E2474C !important;
+    }
+}

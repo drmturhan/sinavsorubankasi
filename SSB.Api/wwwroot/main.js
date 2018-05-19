@@ -6155,6 +6155,84 @@ var YukleniyorComponent = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "./src/app/core/directives/submit-if-valid.directive.ts":
+/*!**************************************************************!*\
+  !*** ./src/app/core/directives/submit-if-valid.directive.ts ***!
+  \**************************************************************/
+/*! exports provided: SubmitIfValidDirective */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SubmitIfValidDirective", function() { return SubmitIfValidDirective; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var SubmitIfValidDirective = /** @class */ (function () {
+    function SubmitIfValidDirective() {
+        this.valid = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.invalid = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+    }
+    SubmitIfValidDirective.prototype.handleClick = function () {
+        this.markFieldAsDirty();
+        this.emitIfValid();
+    };
+    SubmitIfValidDirective.prototype.markFieldAsDirty = function () {
+        var _this = this;
+        Object.keys(this.formRef.controls)
+            .forEach(function (fieldName) {
+            _this.formRef.controls[fieldName].markAsTouched();
+        });
+    };
+    SubmitIfValidDirective.prototype.emitIfValid = function () {
+        if (this.formRef.valid) {
+            this.valid.emit();
+        }
+        else {
+            this.invalid.emit();
+        }
+    };
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])('fuseSubmitIfValid'),
+        __metadata("design:type", _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormGroup"])
+    ], SubmitIfValidDirective.prototype, "formRef", void 0);
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"])(),
+        __metadata("design:type", Object)
+    ], SubmitIfValidDirective.prototype, "valid", void 0);
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"])(),
+        __metadata("design:type", Object)
+    ], SubmitIfValidDirective.prototype, "invalid", void 0);
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["HostListener"])('click'),
+        __metadata("design:type", Function),
+        __metadata("design:paramtypes", []),
+        __metadata("design:returntype", void 0)
+    ], SubmitIfValidDirective.prototype, "handleClick", null);
+    SubmitIfValidDirective = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Directive"])({
+            selector: '[fuseSubmitIfValid]'
+        }),
+        __metadata("design:paramtypes", [])
+    ], SubmitIfValidDirective);
+    return SubmitIfValidDirective;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/app/core/interceptors/token.interceptor.ts":
 /*!********************************************************!*\
   !*** ./src/app/core/interceptors/token.interceptor.ts ***!
@@ -6212,6 +6290,180 @@ var TokenInterceptorProvider = {
 
 /***/ }),
 
+/***/ "./src/app/core/pipes/ozet.pipe.ts":
+/*!*****************************************!*\
+  !*** ./src/app/core/pipes/ozet.pipe.ts ***!
+  \*****************************************/
+/*! exports provided: OzetPipe */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OzetPipe", function() { return OzetPipe; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+var OzetPipe = /** @class */ (function () {
+    function OzetPipe() {
+    }
+    OzetPipe.prototype.transform = function (value) {
+        var args = [];
+        for (var _i = 1; _i < arguments.length; _i++) {
+            args[_i - 1] = arguments[_i];
+        }
+        if (!value) {
+            return null;
+        }
+        var ozetUzunlugu;
+        if (!args || args.length === 0) {
+            ozetUzunlugu = 20;
+        }
+        else {
+            ozetUzunlugu = +args[0];
+        }
+        if (value.length <= ozetUzunlugu) {
+            return value;
+        }
+        var ozetKisim = value.substr(0, ozetUzunlugu - 3) + '...';
+        return ozetKisim;
+    };
+    OzetPipe = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Pipe"])({
+            name: 'ozet'
+        })
+    ], OzetPipe);
+    return OzetPipe;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/core/pipes/time-ago.pipe.ts":
+/*!*********************************************!*\
+  !*** ./src/app/core/pipes/time-ago.pipe.ts ***!
+  \*********************************************/
+/*! exports provided: TimeAgoPipe */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TimeAgoPipe", function() { return TimeAgoPipe; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var TimeAgoPipe = /** @class */ (function () {
+    function TimeAgoPipe(changeDetectorRef, ngZone) {
+        this.changeDetectorRef = changeDetectorRef;
+        this.ngZone = ngZone;
+    }
+    TimeAgoPipe.prototype.transform = function (value) {
+        var _this = this;
+        this.removeTimer();
+        var d = new Date(value);
+        var now = new Date();
+        var seconds = Math.round(Math.abs((now.getTime() - d.getTime()) / 1000));
+        var timeToUpdate = this.getSecondsUntilUpdate(seconds) * 1000;
+        this.timer = this.ngZone.runOutsideAngular(function () {
+            if (typeof window !== 'undefined') {
+                return window.setTimeout(function () {
+                    _this.ngZone.run(function () { return _this.changeDetectorRef.markForCheck(); });
+                }, timeToUpdate);
+            }
+            return null;
+        });
+        var minutes = Math.round(Math.abs(seconds / 60));
+        var hours = Math.round(Math.abs(minutes / 60));
+        var days = Math.round(Math.abs(hours / 24));
+        var months = Math.round(Math.abs(days / 30.416));
+        var years = Math.round(Math.abs(days / 365));
+        if (seconds <= 45) {
+            return 'bir kaç saniye önce';
+        }
+        else if (seconds <= 90) {
+            return 'bir dakika önce';
+        }
+        else if (minutes <= 45) {
+            return minutes + ' dakika önce';
+        }
+        else if (minutes <= 90) {
+            return 'bir saat önce';
+        }
+        else if (hours <= 22) {
+            return hours + ' saat önce';
+        }
+        else if (hours <= 36) {
+            return 'bir gün önce';
+        }
+        else if (days <= 25) {
+            return days + ' gün önce';
+        }
+        else if (days <= 45) {
+            return 'bir ay öcne';
+        }
+        else if (days <= 345) {
+            return months + ' ay önce';
+        }
+        else if (days <= 545) {
+            return 'bir yıl önce';
+        }
+        else {
+            return years + ' yıl önce';
+        }
+    };
+    TimeAgoPipe.prototype.ngOnDestroy = function () {
+        this.removeTimer();
+    };
+    TimeAgoPipe.prototype.removeTimer = function () {
+        if (this.timer) {
+            window.clearTimeout(this.timer);
+            this.timer = null;
+        }
+    };
+    TimeAgoPipe.prototype.getSecondsUntilUpdate = function (seconds) {
+        var min = 60;
+        var hr = min * 60;
+        var day = hr * 24;
+        if (seconds < min) {
+            return 2;
+        }
+        else if (seconds < hr) {
+            return 30;
+        }
+        else if (seconds < day) {
+            return 300;
+        }
+        else {
+            return 3600;
+        }
+    };
+    TimeAgoPipe = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Pipe"])({
+            name: 'timeAgo',
+            pure: false
+        }),
+        __metadata("design:paramtypes", [_angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectorRef"], _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgZone"]])
+    ], TimeAgoPipe);
+    return TimeAgoPipe;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/app/core/sb-core.module.ts":
 /*!****************************************!*\
   !*** ./src/app/core/sb-core.module.ts ***!
@@ -6227,6 +6479,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _fuse_shared_module__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @fuse/shared.module */ "./src/@fuse/shared.module.ts");
 /* harmony import */ var _components_lutfen_bekleyin_lutfen_bekleyin_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/lutfen-bekleyin/lutfen-bekleyin.component */ "./src/app/core/components/lutfen-bekleyin/lutfen-bekleyin.component.ts");
 /* harmony import */ var _interceptors_token_interceptor__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./interceptors/token.interceptor */ "./src/app/core/interceptors/token.interceptor.ts");
+/* harmony import */ var _angular_flex_layout__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/flex-layout */ "./node_modules/@angular/flex-layout/esm5/flex-layout.es5.js");
+/* harmony import */ var _directives_submit_if_valid_directive__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./directives/submit-if-valid.directive */ "./src/app/core/directives/submit-if-valid.directive.ts");
+/* harmony import */ var _pipes_ozet_pipe__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./pipes/ozet.pipe */ "./src/app/core/pipes/ozet.pipe.ts");
+/* harmony import */ var _pipes_time_ago_pipe__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./pipes/time-ago.pipe */ "./src/app/core/pipes/time-ago.pipe.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -6238,21 +6494,32 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 
 
 
+
+
+
+
 var SbCoreModule = /** @class */ (function () {
     function SbCoreModule() {
     }
     SbCoreModule = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"])({
             imports: [
+                _angular_flex_layout__WEBPACK_IMPORTED_MODULE_5__["CoreModule"],
                 _fuse_shared_module__WEBPACK_IMPORTED_MODULE_2__["FuseSharedModule"]
             ],
             declarations: [
                 _components_yukleniyor_yukleniyor_component__WEBPACK_IMPORTED_MODULE_1__["YukleniyorComponent"],
-                _components_lutfen_bekleyin_lutfen_bekleyin_component__WEBPACK_IMPORTED_MODULE_3__["LutfenBekleyinComponent"]
+                _components_lutfen_bekleyin_lutfen_bekleyin_component__WEBPACK_IMPORTED_MODULE_3__["LutfenBekleyinComponent"],
+                _directives_submit_if_valid_directive__WEBPACK_IMPORTED_MODULE_6__["SubmitIfValidDirective"],
+                _pipes_ozet_pipe__WEBPACK_IMPORTED_MODULE_7__["OzetPipe"],
+                _pipes_time_ago_pipe__WEBPACK_IMPORTED_MODULE_8__["TimeAgoPipe"]
             ],
             exports: [
                 _components_yukleniyor_yukleniyor_component__WEBPACK_IMPORTED_MODULE_1__["YukleniyorComponent"],
-                _components_lutfen_bekleyin_lutfen_bekleyin_component__WEBPACK_IMPORTED_MODULE_3__["LutfenBekleyinComponent"]
+                _components_lutfen_bekleyin_lutfen_bekleyin_component__WEBPACK_IMPORTED_MODULE_3__["LutfenBekleyinComponent"],
+                _directives_submit_if_valid_directive__WEBPACK_IMPORTED_MODULE_6__["SubmitIfValidDirective"],
+                _pipes_ozet_pipe__WEBPACK_IMPORTED_MODULE_7__["OzetPipe"],
+                _pipes_time_ago_pipe__WEBPACK_IMPORTED_MODULE_8__["TimeAgoPipe"]
             ],
             providers: [
                 _interceptors_token_interceptor__WEBPACK_IMPORTED_MODULE_4__["TokenInterceptorProvider"]
@@ -6280,6 +6547,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
 /* harmony import */ var _auth0_angular_jwt__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @auth0/angular-jwt */ "./node_modules/@auth0/angular-jwt/index.js");
 /* harmony import */ var environments_environment__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! environments/environment */ "./src/environments/environment.ts");
+/* harmony import */ var _models_arkadaslik_teklif__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../models/arkadaslik-teklif */ "./src/app/models/arkadaslik-teklif.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -6289,6 +6557,7 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 var __metadata = (undefined && undefined.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+
 
 
 
@@ -6336,6 +6605,50 @@ var AuthService = /** @class */ (function () {
     };
     AuthService.prototype.fotografSil = function (fotoId) {
         return this.httpClient.delete(this.baseUrl + "/" + this.profilUrl + "/fotografsil/" + fotoId);
+    };
+    AuthService.prototype.getArkadaslar = function () {
+        var adres = this.baseUrl + "/" + this.arkadaslarUrl + "/";
+        return this.httpClient.get(adres);
+    };
+    AuthService.prototype.arkadasliklariGetir = function (sorgu) {
+        if (sorgu == null) {
+            sorgu = new _models_arkadaslik_teklif__WEBPACK_IMPORTED_MODULE_4__["ArkadaslikSorgusu"]();
+            sorgu.aramaCumlesi = '';
+            sorgu.sayfa = 1;
+            sorgu.sayfaBuyuklugu = 10;
+        }
+        var params = new _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpParams"]();
+        if (sorgu.teklifEdenler != null) {
+            params = params.append('teklifEdenler', sorgu.teklifEdenler.toString());
+        }
+        if (sorgu.teklifEdilenler != null) {
+            params = params.append('teklifEdilenler', sorgu.teklifEdilenler.toString());
+        }
+        if (sorgu.cevaplananlar != null) {
+            params = params.append('cevaplananlar', sorgu.cevaplananlar.toString());
+        }
+        if (sorgu.cevapBeklenenler != null) {
+            params = params.append('cevapBeklenenler', sorgu.cevapBeklenenler.toString());
+        }
+        if (sorgu.kabulEdilenler != null) {
+            params = params.append('kabulEdilenler', sorgu.kabulEdilenler.toString());
+        }
+        if (sorgu.silinenler != null) {
+            params = params.append('silinenler', sorgu.silinenler.toString());
+        }
+        if (sorgu.sayfa != null) {
+            params = params.append('sayfa', sorgu.sayfa.toString());
+        }
+        if (sorgu.aramaCumlesi != null) {
+            params = params.append('aramaCumlesi', sorgu.aramaCumlesi.toString());
+        }
+        if (sorgu.sayfaBuyuklugu != null) {
+            params = params.append('sayfaBuyuklugu', sorgu.sayfaBuyuklugu.toString());
+        }
+        if (sorgu.siralamaCumlesi != null) {
+            params = params.append('siralamaCumlesi', sorgu.siralamaCumlesi.toString());
+        }
+        return this.httpClient.get(environments_environment__WEBPACK_IMPORTED_MODULE_3__["environment"].apiUrl + "/arkadasliklarim", { params: params });
     };
     AuthService = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({
@@ -19574,7 +19887,7 @@ var FuseToolbarComponent = /** @class */ (function () {
         this.router.navigate(['uyelik/profilim']);
     };
     FuseToolbarComponent.prototype.arkadaslarimaGit = function () {
-        this.router.navigate(['profilim/arkadaslarim']);
+        this.router.navigate(['uyelik/arkadaslarim']);
     };
     FuseToolbarComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -19783,6 +20096,79 @@ var MaterialModule = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "./src/app/models/arkadaslik-teklif.ts":
+/*!*********************************************!*\
+  !*** ./src/app/models/arkadaslik-teklif.ts ***!
+  \*********************************************/
+/*! exports provided: ArkadaslikTeklif, Arkadas, ArkadaslikSorgusu */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ArkadaslikTeklif", function() { return ArkadaslikTeklif; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Arkadas", function() { return Arkadas; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ArkadaslikSorgusu", function() { return ArkadaslikSorgusu; });
+/* harmony import */ var _sorgu_base__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./sorgu-base */ "./src/app/models/sorgu-base.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var ArkadaslikTeklif = /** @class */ (function () {
+    function ArkadaslikTeklif() {
+    }
+    return ArkadaslikTeklif;
+}());
+
+var Arkadas = /** @class */ (function () {
+    function Arkadas() {
+    }
+    return Arkadas;
+}());
+
+
+var ArkadaslikSorgusu = /** @class */ (function (_super) {
+    __extends(ArkadaslikSorgusu, _super);
+    function ArkadaslikSorgusu() {
+        var _this = _super.call(this) || this;
+        _this.sayfa = 1;
+        _this.sayfaBuyuklugu = 10;
+        _this.kullaniciNo = true;
+        _this.filtreCumlesi = 'hepsi';
+        return _this;
+    }
+    return ArkadaslikSorgusu;
+}(_sorgu_base__WEBPACK_IMPORTED_MODULE_0__["SorguBase"]));
+
+
+
+/***/ }),
+
+/***/ "./src/app/models/sorgu-base.ts":
+/*!**************************************!*\
+  !*** ./src/app/models/sorgu-base.ts ***!
+  \**************************************/
+/*! exports provided: SorguBase */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SorguBase", function() { return SorguBase; });
+var SorguBase = /** @class */ (function () {
+    function SorguBase() {
+    }
+    return SorguBase;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/app/navigation/i18n/en.ts":
 /*!***************************************!*\
   !*** ./src/app/navigation/i18n/en.ts ***!
@@ -19906,6 +20292,74 @@ var navigation = [
         ]
     }
 ];
+
+
+/***/ }),
+
+/***/ "./src/app/store/actions/arkadaslar.actions.ts":
+/*!*****************************************************!*\
+  !*** ./src/app/store/actions/arkadaslar.actions.ts ***!
+  \*****************************************************/
+/*! exports provided: ARKADASLAR_LISTE_AL, ARKADASLAR_LISTE_AL_TAMAM, ARKADASLAR_LISTE_AL_HATAVAR, ARKADASLAR_LISTESI_DEGISTI, ARKADASLAR_SORGU_DEGISTIR, ArkadaslarListeAl, ArkadaslarListeAlTamam, ArkadaslarListeAlHataVar, ArkadaslarSorguDegistir, ArkadaslarListesiDegisti */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ARKADASLAR_LISTE_AL", function() { return ARKADASLAR_LISTE_AL; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ARKADASLAR_LISTE_AL_TAMAM", function() { return ARKADASLAR_LISTE_AL_TAMAM; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ARKADASLAR_LISTE_AL_HATAVAR", function() { return ARKADASLAR_LISTE_AL_HATAVAR; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ARKADASLAR_LISTESI_DEGISTI", function() { return ARKADASLAR_LISTESI_DEGISTI; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ARKADASLAR_SORGU_DEGISTIR", function() { return ARKADASLAR_SORGU_DEGISTIR; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ArkadaslarListeAl", function() { return ArkadaslarListeAl; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ArkadaslarListeAlTamam", function() { return ArkadaslarListeAlTamam; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ArkadaslarListeAlHataVar", function() { return ArkadaslarListeAlHataVar; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ArkadaslarSorguDegistir", function() { return ArkadaslarSorguDegistir; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ArkadaslarListesiDegisti", function() { return ArkadaslarListesiDegisti; });
+var ARKADASLAR_LISTE_AL = '[ARKADASLAR] LISTE AL';
+var ARKADASLAR_LISTE_AL_TAMAM = '[ARKADASLAR] LISTE AL TAMAM';
+var ARKADASLAR_LISTE_AL_HATAVAR = '[ARKADASLAR] LISTE AL HATA VAR';
+var ARKADASLAR_LISTESI_DEGISTI = '[ARKADASLAR] LISTE DEGISTI';
+var ARKADASLAR_SORGU_DEGISTIR = '[ARKADASLAR] SORGU DEGISTIR';
+var ArkadaslarListeAl = /** @class */ (function () {
+    function ArkadaslarListeAl(payload) {
+        this.payload = payload;
+        this.type = ARKADASLAR_LISTE_AL;
+    }
+    return ArkadaslarListeAl;
+}());
+
+var ArkadaslarListeAlTamam = /** @class */ (function () {
+    function ArkadaslarListeAlTamam(payload) {
+        this.payload = payload;
+        this.type = ARKADASLAR_LISTE_AL_TAMAM;
+    }
+    return ArkadaslarListeAlTamam;
+}());
+
+var ArkadaslarListeAlHataVar = /** @class */ (function () {
+    function ArkadaslarListeAlHataVar(payload) {
+        this.payload = payload;
+        this.type = ARKADASLAR_LISTE_AL_HATAVAR;
+    }
+    return ArkadaslarListeAlHataVar;
+}());
+
+var ArkadaslarSorguDegistir = /** @class */ (function () {
+    function ArkadaslarSorguDegistir(payload) {
+        this.payload = payload;
+        this.type = ARKADASLAR_SORGU_DEGISTIR;
+    }
+    return ArkadaslarSorguDegistir;
+}());
+
+var ArkadaslarListesiDegisti = /** @class */ (function () {
+    function ArkadaslarListesiDegisti(payload) {
+        this.payload = payload;
+        this.type = ARKADASLAR_LISTESI_DEGISTI;
+    }
+    return ArkadaslarListesiDegisti;
+}());
+
 
 
 /***/ }),
@@ -20369,6 +20823,93 @@ var LanguageChangedFailed = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "./src/app/store/effects/arkadaslar.effects.ts":
+/*!*****************************************************!*\
+  !*** ./src/app/store/effects/arkadaslar.effects.ts ***!
+  \*****************************************************/
+/*! exports provided: ArkadaslarEffect */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ArkadaslarEffect", function() { return ArkadaslarEffect; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _ngrx_effects__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ngrx/effects */ "./node_modules/@ngrx/effects/fesm5/effects.js");
+/* harmony import */ var rxjs_Observable__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/Observable */ "./node_modules/rxjs-compat/_esm5/Observable.js");
+/* harmony import */ var rxjs_add_operator_delay__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs/add/operator/delay */ "./node_modules/rxjs-compat/_esm5/add/operator/delay.js");
+/* harmony import */ var rxjs_add_operator_map__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs/add/operator/map */ "./node_modules/rxjs-compat/_esm5/add/operator/map.js");
+/* harmony import */ var rxjs_observable_of__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs/observable/of */ "./node_modules/rxjs-compat/_esm5/observable/of.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var _actions_arkadaslar_actions__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../actions/arkadaslar.actions */ "./src/app/store/actions/arkadaslar.actions.ts");
+/* harmony import */ var _ngrx_store__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @ngrx/store */ "./node_modules/@ngrx/store/fesm5/store.js");
+/* harmony import */ var _core_services_auth_service__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../core/services/auth.service */ "./src/app/core/services/auth.service.ts");
+/* harmony import */ var environments_environment_prod__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! environments/environment.prod */ "./src/environments/environment.prod.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+
+
+
+
+
+var ArkadaslarEffect = /** @class */ (function () {
+    function ArkadaslarEffect(actions, temelService, store) {
+        var _this = this;
+        this.actions = actions;
+        this.temelService = temelService;
+        this.store = store;
+        this.getBirimler = this.actions
+            .ofType(_actions_arkadaslar_actions__WEBPACK_IMPORTED_MODULE_7__["ARKADASLAR_LISTE_AL"])
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["switchMap"])(function (action) {
+            return _this.temelService.arkadasliklariGetir(action.payload)
+                .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["tap"])(function (sonuc) {
+                console.log(sonuc);
+            }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["map"])(function (sonuc) {
+                if (sonuc.basarili) {
+                    sonuc.donenListe.forEach(function (arkadaslik) {
+                        if (!arkadaslik.arkadas.profilFotoUrl) {
+                            arkadaslik.arkadas.profilFotoUrl = environments_environment_prod__WEBPACK_IMPORTED_MODULE_10__["environment"].bosFotoUrl;
+                        }
+                    });
+                    return new _actions_arkadaslar_actions__WEBPACK_IMPORTED_MODULE_7__["ArkadaslarListeAlTamam"](sonuc);
+                }
+                else {
+                    return new _actions_arkadaslar_actions__WEBPACK_IMPORTED_MODULE_7__["ArkadaslarListeAlHataVar"](sonuc.hatalar.join('.'));
+                }
+            }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["catchError"])(function (err) {
+                return Object(rxjs_observable_of__WEBPACK_IMPORTED_MODULE_5__["of"])(new _actions_arkadaslar_actions__WEBPACK_IMPORTED_MODULE_7__["ArkadaslarListeAlHataVar"](err));
+            }));
+        }));
+    }
+    __decorate([
+        Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_1__["Effect"])(),
+        __metadata("design:type", rxjs_Observable__WEBPACK_IMPORTED_MODULE_2__["Observable"])
+    ], ArkadaslarEffect.prototype, "getBirimler", void 0);
+    ArkadaslarEffect = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])(),
+        __metadata("design:paramtypes", [_ngrx_effects__WEBPACK_IMPORTED_MODULE_1__["Actions"],
+            _core_services_auth_service__WEBPACK_IMPORTED_MODULE_9__["AuthService"],
+            _ngrx_store__WEBPACK_IMPORTED_MODULE_8__["Store"]])
+    ], ArkadaslarEffect);
+    return ArkadaslarEffect;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/app/store/effects/auth.effects.ts":
 /*!***********************************************!*\
   !*** ./src/app/store/effects/auth.effects.ts ***!
@@ -20581,6 +21122,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _router_effect__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./router.effect */ "./src/app/store/effects/router.effect.ts");
 /* harmony import */ var _auth_effects__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./auth.effects */ "./src/app/store/effects/auth.effects.ts");
 /* harmony import */ var _ui_effects__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ui.effects */ "./src/app/store/effects/ui.effects.ts");
+/* harmony import */ var _arkadaslar_effects__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./arkadaslar.effects */ "./src/app/store/effects/arkadaslar.effects.ts");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "RouterEffects", function() { return _router_effect__WEBPACK_IMPORTED_MODULE_0__["RouterEffects"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "AuthEffect", function() { return _auth_effects__WEBPACK_IMPORTED_MODULE_1__["AuthEffect"]; });
@@ -20590,7 +21132,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var effects = [_router_effect__WEBPACK_IMPORTED_MODULE_0__["RouterEffects"], _auth_effects__WEBPACK_IMPORTED_MODULE_1__["AuthEffect"], _ui_effects__WEBPACK_IMPORTED_MODULE_2__["UIEffects"]];
+
+var effects = [_router_effect__WEBPACK_IMPORTED_MODULE_0__["RouterEffects"], _auth_effects__WEBPACK_IMPORTED_MODULE_1__["AuthEffect"], _ui_effects__WEBPACK_IMPORTED_MODULE_2__["UIEffects"], _arkadaslar_effects__WEBPACK_IMPORTED_MODULE_3__["ArkadaslarEffect"]];
 
 
 
@@ -20746,7 +21289,7 @@ var UIEffects = /** @class */ (function () {
 /*!********************************!*\
   !*** ./src/app/store/index.ts ***!
   \********************************/
-/*! exports provided: reducers, getRouterState, CustomSerializer, effects, uiReducer, getUIState, authReducer, getAuthState, getGirisGerekliState, getHataliDenemeSayisi, GO, BACK, FORWARD, Go, Back, Forward, UI_START_LOADING, UI_STOP_LOADING, UI_LANGUAGE_CHANGE, UI_LANGUAGE_CHANGED, UI_LANGUAGE_CHANGED_FAILED, StartLoading, StopLoading, ChangeLanguage, LanguageChanged, LanguageChangedFailed, AUTH_LOGIN_READ, AUTH_LOGIN_CHECK, AUTH_LOGIN_REQUIRED, AUTH_LOGIN_CANCELLED, AUTH_LOGIN_RESET_COUNTER, AUTH_LOGIN_START, AUTH_LOGIN_SUCCESS, AUTH_LOGIN_FAILED, AUTH_FACEBOOK_LOGIN_START, AUTH_FACEBOOK_LOGIN_PROGRESS, AUTH_FACEBOOK_LOGIN_FAILED, AUTH_LOGOUT_START, AUTH_LOGOUT_SUCCESS, AUTH_LOGOUT_FAILED, AUTH_SIFREKURTAR_REQUIRED, AUTH_SIFREKURTAR_CANCELLED, AUTH_SIFREKURTAR_START, AUTH_SIFREKURTAR_SUCCESS, AUTH_SIFREKURTAR_FAILED, AUTH_KULLANICI_BILGI_DEGISTI, LoginRead, LoginCheck, LoginRequired, LoginCancelled, LoginResetCounter, StartLogin, LoginSuccess, LoginFailed, LogoutStart, LogoutSuccess, FacebookLoginStart, FacebookLoginProgress, FacebookLoginFailed, LogoutFailed, SifreKurtarRequired, SifreKurtarCancelled, SifreKurtarStart, SifreKurtarSuccess, SifreKurtarFailed, KullaniciBilgiDegisti, RouterEffects, AuthEffect, UIEffects */
+/*! exports provided: reducers, getRouterState, CustomSerializer, effects, uiReducer, getUIState, authReducer, getAuthState, getGirisGerekliState, getHataliDenemeSayisi, ArkadaslarInitialState, ArkadaslarReducer, getArkadaslikTeklifleri, getArkadaslarLoaded, getArkadaslikSorgusu, GO, BACK, FORWARD, Go, Back, Forward, UI_START_LOADING, UI_STOP_LOADING, UI_LANGUAGE_CHANGE, UI_LANGUAGE_CHANGED, UI_LANGUAGE_CHANGED_FAILED, StartLoading, StopLoading, ChangeLanguage, LanguageChanged, LanguageChangedFailed, AUTH_LOGIN_READ, AUTH_LOGIN_CHECK, AUTH_LOGIN_REQUIRED, AUTH_LOGIN_CANCELLED, AUTH_LOGIN_RESET_COUNTER, AUTH_LOGIN_START, AUTH_LOGIN_SUCCESS, AUTH_LOGIN_FAILED, AUTH_FACEBOOK_LOGIN_START, AUTH_FACEBOOK_LOGIN_PROGRESS, AUTH_FACEBOOK_LOGIN_FAILED, AUTH_LOGOUT_START, AUTH_LOGOUT_SUCCESS, AUTH_LOGOUT_FAILED, AUTH_SIFREKURTAR_REQUIRED, AUTH_SIFREKURTAR_CANCELLED, AUTH_SIFREKURTAR_START, AUTH_SIFREKURTAR_SUCCESS, AUTH_SIFREKURTAR_FAILED, AUTH_KULLANICI_BILGI_DEGISTI, LoginRead, LoginCheck, LoginRequired, LoginCancelled, LoginResetCounter, StartLogin, LoginSuccess, LoginFailed, LogoutStart, LogoutSuccess, FacebookLoginStart, FacebookLoginProgress, FacebookLoginFailed, LogoutFailed, SifreKurtarRequired, SifreKurtarCancelled, SifreKurtarStart, SifreKurtarSuccess, SifreKurtarFailed, KullaniciBilgiDegisti, RouterEffects, AuthEffect, UIEffects */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -20769,6 +21312,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getGirisGerekliState", function() { return _reducers__WEBPACK_IMPORTED_MODULE_0__["getGirisGerekliState"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getHataliDenemeSayisi", function() { return _reducers__WEBPACK_IMPORTED_MODULE_0__["getHataliDenemeSayisi"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ArkadaslarInitialState", function() { return _reducers__WEBPACK_IMPORTED_MODULE_0__["ArkadaslarInitialState"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ArkadaslarReducer", function() { return _reducers__WEBPACK_IMPORTED_MODULE_0__["ArkadaslarReducer"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getArkadaslikTeklifleri", function() { return _reducers__WEBPACK_IMPORTED_MODULE_0__["getArkadaslikTeklifleri"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getArkadaslarLoaded", function() { return _reducers__WEBPACK_IMPORTED_MODULE_0__["getArkadaslarLoaded"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getArkadaslikSorgusu", function() { return _reducers__WEBPACK_IMPORTED_MODULE_0__["getArkadaslikSorgusu"]; });
 
 /* harmony import */ var _actions__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./actions */ "./src/app/store/actions/index.ts");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "GO", function() { return _actions__WEBPACK_IMPORTED_MODULE_1__["GO"]; });
@@ -20899,6 +21452,106 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./src/app/store/reducers/arkadaslar.reducer.ts":
+/*!******************************************************!*\
+  !*** ./src/app/store/reducers/arkadaslar.reducer.ts ***!
+  \******************************************************/
+/*! exports provided: ArkadaslarInitialState, ArkadaslarReducer, getArkadaslikTeklifleri, getArkadaslarLoaded, getArkadaslikSorgusu */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ArkadaslarInitialState", function() { return ArkadaslarInitialState; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ArkadaslarReducer", function() { return ArkadaslarReducer; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getArkadaslikTeklifleri", function() { return getArkadaslikTeklifleri; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getArkadaslarLoaded", function() { return getArkadaslarLoaded; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getArkadaslikSorgusu", function() { return getArkadaslikSorgusu; });
+/* harmony import */ var tassign__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tassign */ "./node_modules/tassign/lib/index.js");
+/* harmony import */ var tassign__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(tassign__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _ngrx_store__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ngrx/store */ "./node_modules/@ngrx/store/fesm5/store.js");
+/* harmony import */ var _actions_arkadaslar_actions__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../actions/arkadaslar.actions */ "./src/app/store/actions/arkadaslar.actions.ts");
+/* harmony import */ var _models_arkadaslik_teklif__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../models/arkadaslik-teklif */ "./src/app/models/arkadaslik-teklif.ts");
+var __assign = (undefined && undefined.__assign) || Object.assign || function(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+            t[p] = s[p];
+    }
+    return t;
+};
+
+
+
+
+var ArkadaslarInitialState = {
+    entities: {},
+    arkadaslarim: null,
+    sorgu: new _models_arkadaslik_teklif__WEBPACK_IMPORTED_MODULE_3__["ArkadaslikSorgusu"](),
+    loading: false,
+    loaded: false
+};
+function ArkadaslarReducer(state, action) {
+    if (state === void 0) { state = ArkadaslarInitialState; }
+    switch (action.type) {
+        case _actions_arkadaslar_actions__WEBPACK_IMPORTED_MODULE_2__["ARKADASLAR_LISTE_AL"]:
+            return Object(tassign__WEBPACK_IMPORTED_MODULE_0__["tassign"])(state, {
+                loading: true,
+                loaded: false
+            });
+        case _actions_arkadaslar_actions__WEBPACK_IMPORTED_MODULE_2__["ARKADASLAR_LISTE_AL_TAMAM"]: {
+            var gelenArkadaslar = action.payload.donenListe;
+            var entities = gelenArkadaslar.reduce(function (_entities, arkadas) {
+                return __assign({}, _entities, (_a = {}, _a[arkadas.id] = arkadas, _a));
+                var _a;
+            }, {});
+            return __assign({}, state, { loading: false, loaded: true, entities: entities, arkadaslarim: action.payload });
+        }
+        case _actions_arkadaslar_actions__WEBPACK_IMPORTED_MODULE_2__["ARKADASLAR_LISTESI_DEGISTI"]: {
+            var gelen_1 = action.payload;
+            var yeniKayit = state.entities[gelen_1.id] === null;
+            var entitiler = Object.assign({}, state.entities);
+            var arkadaslarimListesi = Object.assign({}, state.arkadaslarim);
+            entitiler[gelen_1.id] = gelen_1;
+            if (yeniKayit) {
+                arkadaslarimListesi.donenListe.push(gelen_1);
+                arkadaslarimListesi.kayitSayisi++;
+            }
+            else {
+                var indeks = state.arkadaslarim.donenListe.findIndex(function (k) { return k.id === gelen_1.id; });
+                if (indeks > -1) {
+                    arkadaslarimListesi.donenListe = state.arkadaslarim.donenListe.map(function (m) {
+                        if (m.id === gelen_1.id) {
+                            return gelen_1;
+                        }
+                        else {
+                            return m;
+                        }
+                    });
+                }
+            }
+            return Object(tassign__WEBPACK_IMPORTED_MODULE_0__["tassign"])(state, { entities: entitiler, arkadaslarim: arkadaslarimListesi });
+        }
+        case _actions_arkadaslar_actions__WEBPACK_IMPORTED_MODULE_2__["ARKADASLAR_LISTE_AL_HATAVAR"]: {
+            return Object(tassign__WEBPACK_IMPORTED_MODULE_0__["tassign"])(state, {
+                loading: false,
+                loaded: false
+            });
+        }
+        case _actions_arkadaslar_actions__WEBPACK_IMPORTED_MODULE_2__["ARKADASLAR_SORGU_DEGISTIR"]: {
+            return Object(tassign__WEBPACK_IMPORTED_MODULE_0__["tassign"])(state, {
+                sorgu: action.payload
+            });
+        }
+        default: return state;
+    }
+}
+var getArkadaslikTeklifleri = function (state) { return state.arkadaslar; };
+var getArkadaslarLoaded = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_1__["createSelector"])(getArkadaslikTeklifleri, function (state) { return state.loaded; });
+var getArkadaslikSorgusu = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_1__["createSelector"])(getArkadaslikTeklifleri, function (state) { return state.sorgu; });
+
+
+/***/ }),
+
 /***/ "./src/app/store/reducers/auth.reducer.ts":
 /*!************************************************!*\
   !*** ./src/app/store/reducers/auth.reducer.ts ***!
@@ -21018,7 +21671,7 @@ var getHataliDenemeSayisi = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_1__["cre
 /*!*****************************************!*\
   !*** ./src/app/store/reducers/index.ts ***!
   \*****************************************/
-/*! exports provided: reducers, getRouterState, CustomSerializer, uiReducer, getUIState, authReducer, getAuthState, getGirisGerekliState, getHataliDenemeSayisi */
+/*! exports provided: reducers, getRouterState, CustomSerializer, uiReducer, getUIState, authReducer, getAuthState, getGirisGerekliState, getHataliDenemeSayisi, ArkadaslarInitialState, ArkadaslarReducer, getArkadaslikTeklifleri, getArkadaslarLoaded, getArkadaslikSorgusu */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -21026,32 +21679,45 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "reducers", function() { return reducers; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getRouterState", function() { return getRouterState; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CustomSerializer", function() { return CustomSerializer; });
-/* harmony import */ var _ngrx_store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ngrx/store */ "./node_modules/@ngrx/store/fesm5/store.js");
-/* harmony import */ var _ngrx_router_store__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ngrx/router-store */ "./node_modules/@ngrx/router-store/fesm5/router-store.js");
-/* harmony import */ var _ui_reducer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ui.reducer */ "./src/app/store/reducers/ui.reducer.ts");
-/* harmony import */ var _auth_reducer__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./auth.reducer */ "./src/app/store/reducers/auth.reducer.ts");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "uiReducer", function() { return _ui_reducer__WEBPACK_IMPORTED_MODULE_2__["uiReducer"]; });
+/* harmony import */ var _arkadaslar_reducer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./arkadaslar.reducer */ "./src/app/store/reducers/arkadaslar.reducer.ts");
+/* harmony import */ var _ngrx_store__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ngrx/store */ "./node_modules/@ngrx/store/fesm5/store.js");
+/* harmony import */ var _ngrx_router_store__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ngrx/router-store */ "./node_modules/@ngrx/router-store/fesm5/router-store.js");
+/* harmony import */ var _ui_reducer__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ui.reducer */ "./src/app/store/reducers/ui.reducer.ts");
+/* harmony import */ var _auth_reducer__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./auth.reducer */ "./src/app/store/reducers/auth.reducer.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "uiReducer", function() { return _ui_reducer__WEBPACK_IMPORTED_MODULE_3__["uiReducer"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getUIState", function() { return _ui_reducer__WEBPACK_IMPORTED_MODULE_2__["getUIState"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getUIState", function() { return _ui_reducer__WEBPACK_IMPORTED_MODULE_3__["getUIState"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "authReducer", function() { return _auth_reducer__WEBPACK_IMPORTED_MODULE_3__["authReducer"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "authReducer", function() { return _auth_reducer__WEBPACK_IMPORTED_MODULE_4__["authReducer"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getAuthState", function() { return _auth_reducer__WEBPACK_IMPORTED_MODULE_3__["getAuthState"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getAuthState", function() { return _auth_reducer__WEBPACK_IMPORTED_MODULE_4__["getAuthState"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getGirisGerekliState", function() { return _auth_reducer__WEBPACK_IMPORTED_MODULE_3__["getGirisGerekliState"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getGirisGerekliState", function() { return _auth_reducer__WEBPACK_IMPORTED_MODULE_4__["getGirisGerekliState"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getHataliDenemeSayisi", function() { return _auth_reducer__WEBPACK_IMPORTED_MODULE_3__["getHataliDenemeSayisi"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getHataliDenemeSayisi", function() { return _auth_reducer__WEBPACK_IMPORTED_MODULE_4__["getHataliDenemeSayisi"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ArkadaslarInitialState", function() { return _arkadaslar_reducer__WEBPACK_IMPORTED_MODULE_0__["ArkadaslarInitialState"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ArkadaslarReducer", function() { return _arkadaslar_reducer__WEBPACK_IMPORTED_MODULE_0__["ArkadaslarReducer"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getArkadaslikTeklifleri", function() { return _arkadaslar_reducer__WEBPACK_IMPORTED_MODULE_0__["getArkadaslikTeklifleri"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getArkadaslarLoaded", function() { return _arkadaslar_reducer__WEBPACK_IMPORTED_MODULE_0__["getArkadaslarLoaded"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getArkadaslikSorgusu", function() { return _arkadaslar_reducer__WEBPACK_IMPORTED_MODULE_0__["getArkadaslikSorgusu"]; });
+
 
 
 
 
 
 var reducers = {
-    routerReducer: _ngrx_router_store__WEBPACK_IMPORTED_MODULE_1__["routerReducer"],
-    ui: _ui_reducer__WEBPACK_IMPORTED_MODULE_2__["uiReducer"],
-    auth: _auth_reducer__WEBPACK_IMPORTED_MODULE_3__["authReducer"],
+    routerReducer: _ngrx_router_store__WEBPACK_IMPORTED_MODULE_2__["routerReducer"],
+    ui: _ui_reducer__WEBPACK_IMPORTED_MODULE_3__["uiReducer"],
+    auth: _auth_reducer__WEBPACK_IMPORTED_MODULE_4__["authReducer"],
+    arkadaslar: _arkadaslar_reducer__WEBPACK_IMPORTED_MODULE_0__["ArkadaslarReducer"]
 };
-var getRouterState = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createFeatureSelector"])('routerReducer');
+var getRouterState = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_1__["createFeatureSelector"])('routerReducer');
 var CustomSerializer = /** @class */ (function () {
     function CustomSerializer() {
     }
@@ -21071,6 +21737,7 @@ var CustomSerializer = /** @class */ (function () {
     };
     return CustomSerializer;
 }());
+
 
 
 
@@ -21184,6 +21851,30 @@ var AppStoreModule = /** @class */ (function () {
     return AppStoreModule;
 }());
 
+
+
+/***/ }),
+
+/***/ "./src/environments/environment.prod.ts":
+/*!**********************************************!*\
+  !*** ./src/environments/environment.prod.ts ***!
+  \**********************************************/
+/*! exports provided: environment */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "environment", function() { return environment; });
+var environment = {
+    production: true,
+    hmr: false,
+    uygulamaAdi: 'SORU BANK',
+    apiUrl: 'https://soru.azurewebsites.net/api',
+    bosFotoUrl: '../assets/images/avatars/profile.jpg',
+    whitelistedDomains: ['soru.azurewebsites.net', 'res.cloudinary.com'],
+    gorevKontrolSuresi: 5000,
+    fbRedirectUri: 'http://soru.azurewebsites.net'
+};
 
 
 /***/ }),

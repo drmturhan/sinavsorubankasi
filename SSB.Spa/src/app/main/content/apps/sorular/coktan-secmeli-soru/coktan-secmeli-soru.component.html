@@ -1,0 +1,209 @@
+<div class="sayfa" fxLayout="column">
+        <div class="sayfa-basi" fxLayout="row" fxLayoutAlign="space-between center">
+          <div class="ekran-baslik" fxFlex="1 0 auto">
+            <div *ngIf="data.yeni"> Yeni soru</div>
+            <div *ngIf="!data.yeni"> {{data.degisecekSoru.soruAdi|ozet}} : (değişiyor)</div>
+          </div>
+          <div class="ekran-baslik-kapatma-butonu" fxFlex="1 1 32px">
+            <!-- <button mat-button class="mat-icon-button" (click)="tamEkran=!tamEkran;" aria-label="Ekrani kapat" matTooltip="Formu kaydetmeden kapat">
+              <mat-icon *ngIf="!tamEkran">fullscreen</mat-icon>
+              <mat-icon *ngIf="tamEkran">fullscreen_exit</mat-icon>
+            </button> -->
+            <button mat-button class="mat-icon-button" (click)="dialogRef.close()" aria-label="Ekrani kapat" matTooltip="Formu kaydetmeden kapat">
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+        </div>
+        <form class="sayfa-ici" name="soruFormu" [formGroup]="coktanSecmeliSoruSecenekService.soruForm" fxLayout="column" fusePerfectScrollbar>
+      
+          <div class="ders-konu-paneli" fxLayout="column" fxLayout.gt-xs="row" style="overflow-y: auto">
+            <div class="ders-konu-adlari">
+              <div class="ders-sutunu" fxLayout="row" fxFlexAlign="start center">
+                <div class="ders-baslik" fxHide fxShow.gt-xs fxFlex="60px">Ders</div>
+                <div *ngIf="data.ders" class="ders" fxFill> {{' '+data.ders.dersAdi|ozet:'120'}}</div>
+              </div>
+              <div class="konu-sutunu" *ngIf="konu" fxLayout="row" fxFlexAlign="start center">
+                <div class="konu-baslik" fxHide fxShow.gt-xs fxFlex="60px">Konu</div>
+                <div *ngIf="konu" class="konu" fxFill> {{' '+konu.konuAdi|ozet:'120'}}</div>
+              </div>
+      
+            </div>
+      
+            <!-- KABUL EDILERBİLİRLİK İNDEKSİ -->
+            <fuse-widget class="widget" fxLayout="column"  style="width: 350px" fxHide.lt-md>
+      
+              <!-- Front -->
+              <div class="fuse-widget-front mat-elevation-z4" >
+                <div class="pl-16 pr-0 py-16" fxLayout="row" fxLayoutAlign="space-between center">
+                  <div  matTooltip="Kabul Edilebilirlik İndeksi">KEİ</div>
+                  <button mat-icon-button fuseWidgetToggle class="fuse-widget-flip-button" aria-label="more">
+                    <mat-icon>info</mat-icon>
+                  </button>
+                </div>
+                <div class="pt-8 pb-24" fxLayout="column" fxLayoutAlign="center center">
+                  <div class="font-size-32 line-height-32" style="color:#E2474C">
+                    {{coktanSecmeliSoruSecenekService.soruForm.get('kabulEdilebilirlikIndeksi').value|number:'0.1-2'}}
+                  </div>
+                 
+                </div>
+              </div>
+              <!-- / Front -->
+      
+              <!-- Back -->
+              <div class="fuse-widget-back p-16 pt-32 mat-white-bg mat-elevation-z2" style="overflow-y: auto!important;padding-bottom: 8px">
+                <button mat-icon-button fuseWidgetToggle class="fuse-widget-flip-button" aria-label="Flip widget">
+                  <mat-icon class="s-16">close</mat-icon>
+                </button>
+                <div>
+                  <span style="font-weight: bold"> KEİ=1/(Ns-Ne)</span>
+                  Kabul edilebilir performans düzeyi geçme ya da kalma eşiğini belirler. Değer marjinal öğrenciden (tam geçmeye yetecek kadar
+                  bilen öğrenci) beklenen performans iler belirlenir. Hesaplanması: Çoktan seçmeli sınav sorusunde seçenekler arasıdan
+                  "tam geçmeye seçenekler arasında yetecek kadar bilen öğrenci" nin, tüm seçenekler arasında (Ns) bir bakışta eleyebileceği
+                  seçenek sayısı tahmin edilir (Ne değeri). Daha sonra aşağıdaki formüle göre ilgili sorunun "Kabul edilebilirlik
+                  indeksi" hesaplanır.
+                </div>
+              </div>
+              <!-- / Back -->
+      
+            </fuse-widget>
+            <!-- / KABUL EDILERBİLİRLİK İNDEKSİ -->
+      
+          </div>
+          <div fxLayout="column">
+            <mat-tab-group dynamicHeight=false #defter>
+              <mat-tab label="Soru Tanımı">
+                <ng-template mat-tab-label>
+                  <div fxHide fxShow.gt-sm>Soru Tanımı ve Seçenekleri</div>
+                  <mat-icon fxHide.gt-sm matTooltip="Soru metni ve seçenekleri tanımlamak için seçin.">edit</mat-icon>
+                </ng-template>
+                <div class="soru-tanim-sayfa-icerik">
+                  <fuse-sb-html-editor id="soru-metni" [secenekFormu]="coktanSecmeliSoruSecenekService.soruForm" parentFormControlName="soruMetni"></fuse-sb-html-editor>
+                  <fuse-tek-dogrulu-secenek class="doldur"></fuse-tek-dogrulu-secenek>
+                </div>
+              </mat-tab>
+              <mat-tab label="Özellikleri">
+                <ng-template mat-tab-label>
+                  <div fxHide fxShow.gt-sm>Özellikler</div>
+                  <mat-icon fxHide.gt-sm matTooltip="Özellikleri ayrıntılı olarak tanımlamak için seçin">settings</mat-icon>
+                </ng-template>
+                <div class="soru-ozellik-sayfa-icerik" fxLayout="row wrap" fxLayoutAlign="row" fxLayoutGap="12px" fxFlex>
+      
+                  <div class="kart-sari" fxFlex>Soru adı ve açıklama
+                    <div class="px-12" fxLayout="column" fxLayoutAlign="start stretch">
+                      <mat-form-field>
+                        <textarea matInput matTextareaAutosize formControlName="soruAdi" placeholder="Soru adı"></textarea>
+                        <mat-error *ngIf="displayMessage.soruAdi">{{displayMessage.soruAdi}}</mat-error>
+                      </mat-form-field>
+                      <mat-form-field>
+                        <textarea matInput matTextareaAutosize formControlName="aciklama" placeholder="Soru açıklaması"></textarea>
+                        <mat-error *ngIf="displayMessage.aciklama">{{displayMessage.aciklama}}</mat-error>
+                      </mat-form-field>
+      
+                      <mat-form-field>
+                        <textarea matInput matTextareaAutosize formControlName="cevaplamaSuresi" placeholder="Cevaplama süresi"></textarea>
+                        <mat-error *ngIf="displayMessage.cevaplamaSuresi">{{displayMessage.cevaplamaSuresi}}</mat-error>
+                        <mat-hint>Cevaplama süresini saniye olarak yazın.</mat-hint>
+                      </mat-form-field>
+                    </div>
+                  </div>
+      
+                  <div class="kart-sari" fxFlex>Özellikler
+                    <div class="px-12" fxLayout="column" fxLayoutAlign="start stretch">
+                      <mat-form-field>
+                        <mat-select placeholder="Zorluk derecesi" [formControl]="coktanSecmeliSoruSecenekService.soruForm.get('soruZorlukNo')">
+                          <mat-option>Zorluk derecesini seçin</mat-option>
+                          <mat-option *ngFor="let zorluk of (soruZorluklari$|async)" [value]="zorluk.zorlukId">
+                            {{zorluk.zorlukAdi}}
+                          </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="displayMessage.soruZorlukNo">{{displayMessage.soruZorlukNo}}</mat-error>
+                      </mat-form-field>
+                      <mat-form-field>
+                        <mat-select placeholder="Soru tipi" [formControl]="coktanSecmeliSoruSecenekService.soruForm.get('soruTipNo')">
+                          <mat-option>Soru tipini seçin</mat-option>
+                          <mat-option *ngFor="let tip of (soruTipleri$|async)" [value]="tip.soruTipId">
+                            {{tip.soruTipAdi}}
+                          </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="displayMessage.soruTipNo">{{displayMessage.soruTipNo}}</mat-error>
+                      </mat-form-field>
+      
+                      <mat-form-field>
+                        <mat-select placeholder="Bilişsel düzey" [formControl]="coktanSecmeliSoruSecenekService.soruForm.get('bilisselDuzeyNo')">
+                          <mat-option>Bilişsel düzey seçin</mat-option>
+                          <mat-option *ngFor="let bd of (bilisselDuzeyler$|async)" [value]="bd.bilisselDuzeyId">
+                            {{bd.duzeyAdi}}
+                          </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="displayMessage.bilisselDuzeyId">{{displayMessage.bilisselDuzeyId}}</mat-error>
+                      </mat-form-field>
+      
+                    </div>
+                  </div>
+                  <div class="kart-sari" fxFlex>Geçerlilik süreleri
+                    <div class="px-12" fxLayout="column" fxLayoutAlign="start stretch">
+                      <mat-form-field formGroupName="gecerlilik">
+                        <input matInput #baslangic [matDatepicker]="pickerBaslangic" placeholder="Başlangıç tarihi" formControlName="baslangic">
+                        <mat-datepicker-toggle matSuffix [for]="pickerBaslangic"></mat-datepicker-toggle>
+                        <mat-datepicker #pickerBaslangic startView="year" [startAt]="onTanimBaslangicTarihi"></mat-datepicker>
+                      </mat-form-field>
+      
+                      <mat-form-field formGroupName="gecerlilik">
+                        <input matInput [matDatepicker]="pickerBitis" placeholder="Bitiş tarihi" formControlName="bitis">
+                        <mat-datepicker-toggle matSuffix [for]="pickerBitis"></mat-datepicker-toggle>
+                        <mat-datepicker #pickerBitis [startAt]="baslangic.value"></mat-datepicker>
+                      </mat-form-field>
+                      <mat-error *ngIf="displayMessage.gecerlilik">{{displayMessage.gecerlilik}}</mat-error>
+                    </div>
+                  </div>
+                </div>
+              </mat-tab>
+              <mat-tab label="Hedefleri">
+                <ng-template mat-tab-label>
+                  <div fxHide fxShow.gt-sm>Öğrenim Hedefleri</div>
+                  <mat-icon fxHide.gt-sm matTooltip="Sorunun ilişkili olduğu öğrenim hedeflerini belirlemek için seçin">my_location</mat-icon>
+                </ng-template>
+                <div class="soru-hedefler-sayfa-icerik">
+                  Öğrenim hedefleri
+                  <div class="kart" fxLayout="row" fxLayoutAlign="start center" style="padding:8px ">
+                    <!-- <mat-selection-list #ogreninhedefleri (selectionChange)="degisti(ogreninhedefleri)" fxFlex>
+                      <mat-list-option *ngFor="let hedef of SecilebilirOgrenimHedefleri" [selected]="hedef.selected" [value]="hedef">
+                        {{hedef.ogrenimHedefAdi}}
+                      </mat-list-option>
+                    </mat-selection-list> -->
+                    <fuse-ogrenim-hedefleri> </fuse-ogrenim-hedefleri>
+                  </div>
+      
+                </div>
+              </mat-tab>
+      
+              <mat-tab label="Anahtar Kelimeler">
+                <ng-template mat-tab-label>
+                  <div fxHide fxShow.gt-sm>Anahtar Kelimeler</div>
+                  <mat-icon fxHide.gt-sm matTooltip="Soruyu bulmak için kullanılacak anahtar kelimeleri tanımlamak için girin">vpn_key</mat-icon>
+                </ng-template>
+                <div class="soru-anahtar-kelimeleri-sayfa-icerik">
+                  <fuse-anahtar-kelimeler fxFlex="auto" [anahtar-kelimeler]="coktanSecmeliSoruSecenekService.soruForm.get('anahtarKelimeler')" (bosalt)="anahtarkelimeleriBosalt()">
+                  </fuse-anahtar-kelimeler>
+                </div>
+              </mat-tab>
+      
+            </mat-tab-group>
+      
+          </div>
+        </form>
+      
+        <div matDialogActions class="sayfa-sonu" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="30px">
+          <button mat-button [fuseSubmitIfValid]="this.coktanSecmeliSoruSecenekService.soruForm" (invalid)="formEksik()" (valid)="tamam()"
+            class="buton" matTooltip="Formu kaydet" aria-label="KAYDET">
+            <mat-icon class="buton">sd_storage</mat-icon>
+            Kaydet
+          </button>
+          <button mat-button (click)="dialogRef.close(['kapat',coktanSecmeliSoruSecenekService.soruForm])" aria-label="KAPAT" matTooltip="Formu kaydetmeden kapat"
+            class="buton">
+            <mat-icon class="buton">close</mat-icon>
+            Kapat
+          </button>
+        </div>
+      
+      </div>

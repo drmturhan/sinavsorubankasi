@@ -1,0 +1,37 @@
+<fuse-widget class="p-12"  class="widget" fxLayout="column">
+    <!-- Front -->
+    <div class="fuse-widget-front mat-elevation-z2 p-12">
+      <div fxLayout="row" fxLayoutAlign="space-between center">
+        <div class="h3">SEÇENEK METNİ</div>
+        <button mat-icon-button fuseWidgetToggle class="fuse-widget-flip-button" aria-label="more">
+          <mat-icon>info</mat-icon>
+        </button>
+      </div>
+      <div fxFlex="auto" class="metin">
+        <form fxFlex="auto" [formGroup]="secenekFormu">
+          <div class="metin" style="background-color: white;padding: 8px">
+            <textarea matInput #metinAlani  formControlName="secenekMetni" matTextareaAutosize matAutosizeMinRows="2"
+            matAutosizeMaxRows="10"></textarea>
+            <!-- <textarea matInput #metinAlani [froalaEditor] formControlName="secenekMetni"></textarea> -->
+            <!-- <ckeditor  [config]="{uiColor: '#cccccc'}" debounce="500">
+              </ckeditor> -->
+              <!-- <ckeditor formControlName="secenekMetni" #editorum [config]="ckeConfig" debounce="500"></ckeditor>   -->
+          </div>
+        </form>
+      </div>
+    </div>
+    <!-- / Front -->
+  
+    <!-- Back -->
+    <div class="fuse-widget-back p-16 pt-32 mat-white-bg mat-elevation-z2">
+      <button mat-icon-button fuseWidgetToggle class="fuse-widget-flip-button" aria-label="Flip widget">
+        <mat-icon class="s-16">close</mat-icon>
+      </button>
+  
+      <div>
+        Kabul edilebilirlik indeksi şudur budur.
+      </div>
+    </div>
+    <!-- / Back -->
+  
+  </fuse-widget>
