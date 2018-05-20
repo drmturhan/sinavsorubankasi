@@ -95,9 +95,8 @@
     }
     .aciklama {
         font-weight: normal;
-        font-style: italic;
         color: #406D95;
-        font-size: 0.9em;
+        font-size: 1.2em;
         @include media-breakpoint-down('sm') {
             font-size: .8em;
         }

@@ -79,8 +79,7 @@ export class TekDogruluSecenekComponent implements OnInit, OnDestroy {
           else {
             this.currentTodo = currentTodo;
           }
-          console.log(this.currentTodo);
-          console.log('gelen', currentTodo);
+          
         });
 
   }

@@ -15,7 +15,7 @@ import { OgrenimHedefSatirComponent } from './ogrenim-hedefleri/ogrenim-hedef-li
 import { TekDogruluSecenekComponent } from './coktan-secmeli-soru/tek-dogrulu-secenek/tek-dogrulu-secenek.component';
 import { TekDogruluSecenekDetayComponent } from './coktan-secmeli-soru/tek-dogrulu-secenek/tek-dogrulu-secenek-detay/tek-dogrulu-secenek-detay.component';
 import { SbHtmlEditorComponent } from './sb-html-editor/sb-html-editor.component';
-import { FuseWidgetModule } from '@fuse/components';
+import { FuseWidgetModule, FuseNavigationModule } from '@fuse/components';
 import { TekDogruluSecenekListComponent } from './coktan-secmeli-soru/tek-dogrulu-secenek/tek-dogrulu-secenek-list/tek-dogrulu-secenek-list.component';
 import { TekDogruluSecenekItemComponent } from './coktan-secmeli-soru/tek-dogrulu-secenek/tek-dogrulu-secenek-list/tek-dogrulu-secenek-item/tek-dogrulu-secenek-item.component';
 import { SoruDetayComponent } from './soru-detay/soru-detay.component';
@@ -27,6 +27,8 @@ import { SoruDepoVeriService } from './soru-store/helpers/soru-depo-veri.service
 import { SorularResolveGuard } from './soru-store/guards/sorular-resolve.guard';
 import { SoruOnizlemeComponent } from './soru-onizleme/soru-onizleme.component';
 import { CoktanSecmeliSoruValidatorleri } from './coktan-secmeli-soru/validators';
+import { YeniSoruBtnComponent } from './sorular-side-nav/yeni-soru-btn/yeni-soru-btn.component';
+import { SatPopoverModule } from '@ncstate/sat-popover';
 
 
 
@@ -43,12 +45,23 @@ const routes: Routes = [
     canActivate: [SorularResolveGuard]
   },
   {
-    path: 'ders/:dersNo',
+    path: 'program/:programNo',
     component: SorularComponent,
     canActivate: [SorularResolveGuard]
   },
   {
-    path: 'ders/:dersNo/konu/:konuNo',
+    path: 'program/:programNo/donem/:donemNo',
+    component: SorularComponent,
+    canActivate: [SorularResolveGuard]
+  },
+  {
+    path: 'program/:programNo/donem/:donemNo/ders/:dersNo',
+    
+    component: SorularComponent,
+    canActivate: [SorularResolveGuard]
+  },
+  {
+    path: 'program/:programNo/donem/:donemNo/ders/:dersNo/konu/:konuNo',
     component: SorularComponent,
     canActivate: [SorularResolveGuard]
   },
@@ -82,7 +95,9 @@ const routes: Routes = [
     MaterialModule,
     FuseSharedModule,
     SbCoreModule,
-    FuseWidgetModule
+    SatPopoverModule,
+    FuseWidgetModule,
+    FuseNavigationModule
   ],
   declarations: [
     SorularComponent,
@@ -100,7 +115,8 @@ const routes: Routes = [
     SorularSideNavComponent,
     SoruListesiComponent,
     SoruListesiSatiriComponent,
-    SoruOnizlemeComponent
+    SoruOnizlemeComponent,
+    YeniSoruBtnComponent
   ],
   providers: [
     SorularEffectsService,

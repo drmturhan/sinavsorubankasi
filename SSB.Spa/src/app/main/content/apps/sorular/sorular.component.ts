@@ -125,8 +125,9 @@ export class SorularComponent implements OnInit, OnDestroy {
     });
 
     this.store.select(fromSorularStore.getSorulardaHataVar).subscribe(mesaj => {
-      console.log(mesaj);
-
+      if (mesaj) {
+        console.log(mesaj);
+      }
     });
 
     this.searchInput = new FormControl('');

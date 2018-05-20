@@ -75,3 +75,5 @@ git push --set-upstream origin soru-deposu
 
 https://guides.github.com/introduction/git-handbook/ 
 
+
+npm install --save @ncstate/sat-popover @angular/cdk

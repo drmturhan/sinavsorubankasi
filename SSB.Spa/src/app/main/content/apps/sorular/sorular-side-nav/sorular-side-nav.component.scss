@@ -3,7 +3,6 @@
     flex: 1 0 auto;
     flex-direction: column;
     height: 100%;
-   
     .header {
         .logo {
             cursor: pointer;
@@ -24,7 +23,17 @@
         .compose-dialog-button {
             background-color: #E2474C;
             color: white;
+            width: 90%;
         }
+    }
+    .nav .nav-subheader {
+        display: block;
+        font-size: 1em;
+        
+        
+    }
+    .nav .nav-subheader :hover{
+        cursor: pointer;
     }
     .nav .nav-item .nav-link.active {
         background-color: #E2E3DD;
@@ -40,18 +49,28 @@
     .nav-link-icon {
         color: #3E6A91;
     }
-    .ders {
+    .program {
+        font-size: 1.2em;
+        color: #2F3A57;
+        font-weight: bolder;
+    }
+    .donem {
+        margin-left: 24px;
         font-size: 1em;
         color: #2F3A57;
         font-weight: bolder;
     }
+    .ders {
+        margin-left: 36px;
+        font-size: 0.9em;
+        font-weight: bolder;
+    }
     .konu {
-        padding-left: 4px;
+        margin-left: 48px;
         font-size: 0.8em;
-        
     }
     .yeni-ikon {
-        margin-bottom:4px; 
+        margin-bottom: 4px;
         margin-right: 12px;
         color: white;
     }
@@ -73,5 +92,8 @@
     }
     .yan-acik {
         background-color: transparent;
+    }
+    .navbar-content {
+        flex: 1;
     }
 }

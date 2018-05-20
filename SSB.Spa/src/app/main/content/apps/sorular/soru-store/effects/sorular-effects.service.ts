@@ -43,7 +43,7 @@ export class SorularEffectsService {
   updateSoru(soru): Observable<KayitSonuc<SoruListe>> {
     const kaydedilecekSoru = Object.assign({}, soru, { personelNo: this.kb.personelNo });
     delete kaydedilecekSoru['gecerlilik'];
-    console.log(kaydedilecekSoru);
+    
 
     if (soru && soru['soruId']) {
       return this.soruDegisiklikKaydet(kaydedilecekSoru as SoruDegistir);
@@ -96,7 +96,7 @@ export class SorularEffectsService {
 
   soruHandleYarat(routerState: any): any[] {
     const handle: any[] = [];
-    const routeParams = Observable.of('dersNo', 'konuNo', 'soruId');
+    const routeParams = Observable.of('programNo', 'donemNo', 'dersNo', 'konuNo', 'soruId');
     routeParams.subscribe(param => {
       if (routerState.params[param]) {
         handle.push({

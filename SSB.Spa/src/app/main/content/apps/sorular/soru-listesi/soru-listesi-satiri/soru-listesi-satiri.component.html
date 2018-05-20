@@ -7,11 +7,11 @@
     </button>
     <div class="info" fxFlex FlexLayout="column">
 
-        <div fxLayout="row" fxLayoutAlign="start center">
+        <!-- <div fxLayout="row" fxLayoutAlign="start center">
 
             <div class="soru-adi" fxFlex>
 
-                <span *ngIf="soru?.soruAdi">{{soru.soruAdi}}</span>
+                <span *ngIf="soru?.soruAdi">{{soru.soruMetni}}</span>
 
             </div>
             <div *ngIf="soru.baslangic" fxHide fxShow.gt-lg>
@@ -21,13 +21,20 @@
 
                 </div>
             </div>
-        </div>
+        </div> -->
 
         <div fxLayout="row" fxLayoutAlign="space-betwwen center">
-            <div class="aciklama" *ngIf="soru?.aciklama" fxFlex>
-                {{soru.aciklama | htmlToPlaintext | slice:0:180}}{{soru.aciklama.length > 250 ? '...' : ''}}
+            <div class="aciklama" *ngIf="soru?.soruMetni" fxFlex>
+                {{soru.soruMetni | htmlToPlaintext | slice:0:180}}{{soru.aciklama.length > 250 ? '...' : ''}}
+                <!-- <div *ngIf="soru.baslangic" fxHide fxShow.gt-lg>
+                        <div matTooltip="Gecerlilik başlangıç - bitiş tarihi" class="time">
+                            <span> {{soru.baslangic| date: 'MMMM yyyy'}}</span>
+                            <span *ngIf="bitisTarihiGecerli">- {{soru.bitis| date: 'MMMM yyyy'}}</span>
+        
+                        </div>
+                    </div> -->
             </div>
-
+            
 
             <div *ngIf="soru.baslangic" fxLayout="row" fxLayoutAlign="end center" fxFlex.gt-lg="1 1 150px" fxFlex="1 1 40px">
 

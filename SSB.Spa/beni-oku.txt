@@ -1,0 +1,14 @@
+Component yaratma
+
+ng g c sayfa-bulunamadi --spec false -m ../../shared.module
+
+npm install underscore --save
+npm install @types/underscore --save
+
+npm install libphonenumber-js --save
+
+npm install  @auth0/angular-jwt
+npm install tassign
+
+
+npm install --save @ncstate/sat-popover 

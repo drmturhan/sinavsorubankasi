@@ -8,6 +8,7 @@ import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { TranslateModule } from '@ngx-translate/core';
 import 'hammerjs';
 
+import { SatPopoverModule } from '@ncstate/sat-popover';
 
 import { FuseModule } from '@fuse/fuse.module';
 import { FuseSharedModule } from '@fuse/shared.module';
@@ -65,7 +66,7 @@ const appRoutes: Routes = [
         JwtModule.forRoot({
             config: authConfig
         }),
-
+        SatPopoverModule,
         TranslateModule.forRoot(),
         InMemoryWebApiModule.forRoot(FuseFakeDbService, {
             delay: 0,

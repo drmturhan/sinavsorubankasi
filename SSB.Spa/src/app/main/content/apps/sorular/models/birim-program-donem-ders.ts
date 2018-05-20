@@ -45,7 +45,7 @@ export class DersItem {
 }
 export class KonuItem {
     konuId: number;
-    konuAdi: String;
+    konuAdi: string;
     ogrenimHedefleri?: OgrenimHedefItem[];
     hocalari?: HocaItem[];
 }

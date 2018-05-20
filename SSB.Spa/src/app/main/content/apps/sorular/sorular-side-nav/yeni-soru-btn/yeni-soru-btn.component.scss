@@ -1,0 +1,30 @@
+:host {
+    display: block;
+    padding-left: 30%;
+    margin-bottom: 0px !important;
+} // Position the icon in the center so multiple
+// ones will overlap
+.mat-fab .mat-icon {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    color: white;
+}
+
+.dial {
+    margin-bottom: 8px; // Tab direction moves away from anchor
+    display: flex;
+    flex-direction: column-reverse;
+    .mat-mini-fab {
+        margin: 8px 0;
+    }
+}
+
+.tooltip {
+    padding: 4px 8px;
+    background-color: #E2474C;
+    color: white;
+    border-radius: 2px;
+    margin: 8px;
+    font-size: 12px;
+}

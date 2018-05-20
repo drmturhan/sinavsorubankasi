@@ -17,6 +17,8 @@ import { SoruDepoVeriService } from '../soru-store/helpers/soru-depo-veri.servic
 import { CoktanSecmeliSoruComponent } from '../coktan-secmeli-soru/coktan-secmeli-soru.component';
 import { SoruYarat } from '../models/soru';
 import { SorularService } from '../sorular.service';
+import { DialMenuModel } from '../../../../../models/dial-menu-model';
+import { SbNavitaionItem } from '../../../../../models/sb-navigation';
 
 
 @Component({
@@ -31,6 +33,12 @@ export class SorularSideNavComponent implements OnInit, AfterViewChecked {
   dersNo: number = null;
   konuNo: number = null;
   dialogRef: any;
+  navigation: any;
+
+  yenimenuItems: DialMenuModel[] = [
+    { name: 'basit', icon: 'add', title: 'Yeni soru' },
+    { name: 'iliskili', icon: 'attachment', title: 'Yeni ilişkili soru' }
+  ];
 
   private _seciliBirim: SoruBirimItem;
 
@@ -57,6 +65,7 @@ export class SorularSideNavComponent implements OnInit, AfterViewChecked {
     private store: Store<fromRootStore.State>,
     private mesajService: SbMesajService,
     private helperService: SoruDepoVeriService,
+
     private router: Router) {
     this.store.select(fromRootStore.getRouterState).subscribe(routerState => {
       if (routerState) {
@@ -78,6 +87,7 @@ export class SorularSideNavComponent implements OnInit, AfterViewChecked {
   ngOnInit() {
     this.seciliBirim$.subscribe(birim => {
       this._seciliBirim = birim;
+      this.navigation = this.sorularService.createNavigationTree(birim);
     });
 
   }
@@ -211,5 +221,16 @@ export class SorularSideNavComponent implements OnInit, AfterViewChecked {
   }
   refresh() {
     this.cd.markForCheck();
+  }
+  yeniSoruYarat(islem) {
+    switch (islem) {
+      case 'iliskili':
+
+        break;
+
+      default:
+        this.composeDialog();
+        break;
+    }
   }
 }

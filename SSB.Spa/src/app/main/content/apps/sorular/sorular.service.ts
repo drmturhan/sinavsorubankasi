@@ -5,12 +5,13 @@ import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
 import { FormGroup } from '@angular/forms';
 import { environment } from 'environments/environment';
-import { DersItem, SoruBirimItem, SoruTipItem, SoruZorlukItem, SoruBilisselDuzeyItem } from './models/birim-program-donem-ders';
+import { DersItem, SoruBirimItem, SoruTipItem, SoruZorlukItem, SoruBilisselDuzeyItem, ProgramDonemItem, KonuItem } from './models/birim-program-donem-ders';
 import { KayitSonuc, Sonuc } from '../../../../models/sonuclar';
 import { SoruListe, SoruDegistir, SoruYarat } from './models/soru';
 import * as fromRootStore from '../../../../store/index';
 import * as fromSorularStore from './soru-store/index';
 import { KullaniciBilgi } from '../../../../models/kullanici';
+import { SbNavitaionItem } from '../../../../models/sb-navigation';
 
 @Injectable({
   providedIn: 'root'
@@ -62,7 +63,7 @@ export class SorularService {
     let donecekDers: DersItem = null;
     if (dersNo > 0 && this.dersler.length > 0) {
       this.dersler.forEach(ders => {
-        console.log(ders.dersId, dersNo);
+        
         // tslint:disable-next-line:triple-equals
         if (ders.dersId == dersNo) {
           donecekDers = ders;
@@ -78,8 +79,73 @@ export class SorularService {
     kaydedilecekSoru.hemenElenebilirSecenekSayisi = formData.get('hemenElenebilirSecenekSayisi').value;
     kaydedilecekSoru.baslangic = formData.get('gecerlilik.baslangic').value;
     kaydedilecekSoru.bitis = formData.get('gecerlilik.bitis').value;
-    console.log('Soru kayıt bilgisi', kaydedilecekSoru);
+    
     this.store.dispatch(new fromSorularStore.UpdateSoru(kaydedilecekSoru));
 
+  }
+  createNavigationTree(seciliBirim: SoruBirimItem): any {
+
+    const navItems: SbNavitaionItem[] = [];
+    if (!seciliBirim) {
+      return navItems;
+    }
+    seciliBirim.programlari.forEach(program => {
+      const programItem = new SbNavitaionItem();
+      programItem.id = program.programId.toString();
+      programItem.title = program.programAdi;
+      programItem.type = 'group';
+      programItem.icon = 'account_balance';
+      programItem.url = `sorudeposu/program/${program.programId}`;
+      programItem.exactMatch = true;
+      programItem.children = [];
+      program.donemleri.forEach(donem => {
+        const donemItem = new SbNavitaionItem();
+        donemItem.id = donem.donemId.toString();
+        donemItem.title = `${donem.sinifi}. sınıf, ${donem.donemAdi}`;
+        donemItem.type = 'group';
+        donemItem.icon = 'event';
+        donemItem.url = `${programItem.url}+/donem/${donem.donemId}`;
+        donemItem.exactMatch = true;
+
+        donem.dersGruplari.forEach(dersGrubu => {
+          const dersGrubuItem = new SbNavitaionItem();
+          dersGrubuItem.id = dersGrubu.dersGrupId.toString();
+          dersGrubuItem.title = dersGrubu.grupAdi;
+          donemItem.type = 'group';
+          if (dersGrubu.staj || dersGrubu.dersKurulu) {
+            dersGrubuItem.icon = 'content_copy';
+          } else {
+            dersGrubuItem.icon = 'folder';
+          }
+          dersGrubuItem.url = `${donemItem.url}/dersgrubu/${dersGrubu.dersGrupId}`;
+          dersGrubu.dersleri.forEach(ders => {
+            const dersItem = new SbNavitaionItem();
+            dersItem.id = ders.dersId.toString();
+            dersItem.title = ders.dersAdi;
+            dersItem.icon = 'book';
+            dersItem.url = `${dersGrubuItem.url}/ders/${ders.dersId}`;
+            if (ders.konulari) {
+              dersItem.type = 'group';
+            } else {
+              dersItem.type = 'item';
+            }
+            ders.konulari.forEach(konu => {
+              const konuItem = new SbNavitaionItem();
+              konuItem.id = konu.konuId.toString();
+              konuItem.title = konu.konuAdi;
+              konuItem.type = 'item';
+              konuItem.url = `${dersItem.url}/konu/${konu.konuId}`;
+              dersItem.children.push(konuItem);
+            });
+            dersGrubuItem.children.push(dersItem);
+          });
+          donemItem.children.push(dersGrubuItem);
+        });
+
+        programItem.children.push(donemItem);
+      });
+      navItems.push(programItem);
+    });
+    
   }
 }

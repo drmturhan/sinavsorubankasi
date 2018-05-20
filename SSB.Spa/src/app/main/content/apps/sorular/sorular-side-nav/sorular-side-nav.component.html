@@ -1,16 +1,16 @@
 <!-- SIDENAV HEADER -->
 <div fxLayout="column" fxLayoutAlign="space-between start" class="header p-24 pb-4" ngClass="kucuk-ekran" ngClass.gt-md="buyuk-ekran">
     <div class="logo" fxFlex fxLayout="row" fxLayoutAlign="start center" matTooltip="Sayfayı tazelemek için tıklayın">
-        
+
         <button class="logo">
             <span class="logo-text">SORU DEPOSU</span>
         </button>
     </div>
 
     <div class="birimler" fxLayout="column" style="color:2F3A57;font-size:16px">
-        <div >Çalıştığınız Birimler</div>
-        <mat-form-field floatPlaceholder="never" >
-            <mat-select class="account-selection" placeholder="Birim seçin" [(ngModel)]="seciliBirim" >
+        <div>Çalıştığınız Birimler</div>
+        <mat-form-field floatPlaceholder="never">
+            <mat-select class="account-selection" placeholder="Birim seçin" [(ngModel)]="seciliBirim">
                 <mat-option *ngFor="let birim of (birimler$ |async)" [value]="birim">
                     {{birim.birimAdi}}
                 </mat-option>
@@ -23,47 +23,77 @@
 
 
 <!-- SIDENAV CONTENT -->
-<div class="content"  ngClass="kucuk-ekran" ngClass.gt-md="buyuk-ekran" fusePerfectScrollbar>
+<div class="content" ngClass="kucuk-ekran" ngClass.gt-md="buyuk-ekran" fusePerfectScrollbar>
 
     <div class="p-12">
+        <fuse-yeni-soru-btn [menuItems]="yenimenuItems" [gecerli]="dersNo>0" (islem)="yeniSoruYarat($event)" ipucu="Bir ders veya konu için soru yaratabilirsiniz. Lütfen ders veya konu seçiniz.">
 
-        <button mat-raised-button fxFlex class="mat-accent compose-dialog-button" (click)="composeDialog()"
-            #yeniButon aria-label="Compose" [disabled]="dersNo<=0">
-            <mat-icon class="yeni-ikon">add_box </mat-icon>
+        </fuse-yeni-soru-btn>
+        <!-- <button [matMenuTriggerFor]="yeniMenu" x-position="after"  mat-raised-button fxFlex class="compose-dialog-button" #yeniButon aria-label="Compose"
+            [disabled]="dersNo<=0">
             YENİ SORU
+            <mat-icon *ngIf="dersNo>0" class="yeni-ikon">arrow_drop_down </mat-icon>
             <mat-icon matTooltip="Bir ders veya konu için soru yaratabilirsiniz. Lütfen ders veya konu seçiniz." *ngIf="dersNo<=0">error </mat-icon>
         </button>
-
+        <mat-menu #yeniMenu="matMenu" >
+            <button mat-menu-item (click)="composeDialog()">Basit Soru</button>
+            <button mat-menu-item>İlişkili Soru</button>
+        </mat-menu> -->
     </div>
+    <div class="navbar-content" fusePerfectScrollbar>
+        <fuse-navigation [navigation]="navigation" layout="vertical"></fuse-navigation>
+    </div>
+
 
     <div class="nav" ngClass="yan-acik" ngClass.gt-md="yan">
         <div *ngIf="!seciliBirim?.programlari || seciliBirim?.programlari.length===0">
             <span class="nav-subheader">Ders ve/veya konu yok.</span>
         </div>
-
         <div *ngIf="seciliBirim?.programlari && seciliBirim?.programlari?.length>0">
-            <div class="nav-subheader ders">DERSLER /
-                <span class="konu"> KONULAR</span>
-                <button  mat-icon-button matTooltip="Ders konu ağacını yeniden yükle" (click)="sayfayiTazele()">
-                        <mat-icon>loop</mat-icon>
-                    </button>
+            <div class="nav-subheader" fxLayout="row" fxLayoutAlign="center center">
+                <span> DERSLER / KONULAR</span>
+                <button mat-icon-button matTooltip="Ders konu ağacını yeniden yükle" (click)="sayfayiTazele()">
+                    <mat-icon>loop</mat-icon>
+                </button>
             </div>
-            
-            <div *ngFor="let program of seciliBirim.programlari">
-                <div *ngFor="let donem of program.donemleri">                 
+
+            <div class="nav-item" *ngFor="let program of seciliBirim.programlari">
+                <a class="nav-link program" matRipple [routerLink]="'/sorudeposu/program/' + program.programId" (click)="$event.stopPropagation()"
+                    routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+                    <mat-icon class="nav-link-icon" matTooltip="{{seciliBirim.birimAdi +','+program.programAdi+' programı'}}">account_balance</mat-icon>
+                    <span matTooltip="{{'Program adı: '+program.programAdi}}">{{program.programAdi|ozet}}</span>
+                </a>
+                <div class="nav-item" *ngFor="let donem of program.donemleri">
+                    <a class="nav-link" matRipple [routerLink]="'/sorudeposu/program/' + program.programId+'/donem/'+donem.donemId" (click)="$event.stopPropagation()"
+                    routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+                        <div class="donem">
+                            <mat-icon class="nav-link-icon" matTooltip="{{donem.donemAdi}}">event</mat-icon>
+                            <span matTooltip="{{donem.sinifi+' .sınıf,'+ donem.donemAdi}}">{{donem.sinifi+'. Sınıf, '+donem.donemAdi|ozet}}</span>
+                        </div>
+                    </a>
                     <div *ngIf="donem.dersGruplari">
                         <div *ngFor="let dersGrubu of donem.dersGruplari">
                             <div class="nav-item" *ngFor="let ders of dersGrubu.dersleri">
-                                <a class="nav-link ders" matRipple  
-                                 [routerLink]="'/sorudeposu/ders/' + ders.dersId" routerLinkActive="active" (click)="$event.stopPropagation()">
-                                    <mat-icon class="nav-link-icon" matTooltip="{{program.programAdi}} - {{donem.donemAdi}}:{{dersGrubu.dersGrubuAdi}} dersi">import_contacts</mat-icon>
-                                    <span matTooltip="{{ders.dersAdi}}">{{ders.dersAdi|ozet}}</span>
+                                <a  class="nav-link" matRipple [routerLink]="'/sorudeposu/program/'+program.programId+'/donem/'+donem.donemId+'/ders/' + ders.dersId"
+                                    routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" (click)="$event.stopPropagation()">
+                                    <div class="ders">
+                                        <mat-icon class="nav-link-icon" matTooltip="{{program.programAdi}} - {{donem.donemAdi}}:{{dersGrubu.dersGrubuAdi}} dersi">import_contacts</mat-icon>
+                                        <span matTooltip="Ders:{{ders.dersAdi}}">{{ders.dersAdi|ozet:50}}</span>
+                                    </div>
                                 </a>
-                                <div class="nav-item konu" *ngFor="let konu of ders.konulari">
-                                    <a class="nav-link" matRipple [routerLink]="'/sorudeposu/ders/' + ders.dersId+'/konu/'+konu.konuId" routerLinkActive="active"
-                                        (click)="$event.stopPropagation()"  >
-                                        <mat-icon class="nav-link-icon" matTooltip="{{program.programAdi}} - {{donem.donemAdi}} : {{dersGrubu.dersGrubuAdi}} - {{ders.dersAdi}} konusu">label</mat-icon>
-                                        <span matTooltip="{{konu.konuAdi}}">{{konu.konuAdi|ozet}}</span>
+                                
+
+                                <div class="nav-item" *ngFor="let konu of ders.konulari">
+                                    <a class="nav-link" matRipple [routerLink]="'/sorudeposu/program/'+program.programId+'/donem/'+donem.donemId+'/ders/' + ders.dersId+'/konu/'+konu.konuId"
+                                        routerLinkActive="active" (click)="$event.stopPropagation()">
+                                        <div class="konu">
+                                            <mat-icon class="nav-link-icon" matTooltip="{{program.programAdi}} - {{donem.donemAdi}}, 
+                                        {{ders.dersAdi}} {{dersGrubu.staj?' stajı' :''}} 
+                                        {{dersGrubu.dersKurulu?' komitesi':''}}
+                                        {{!dersGrubu.staj &&  !dersGrubu.dersKurulu?' dersi':''}}
+                                         {{konu.konuAdi}} konusu">label</mat-icon>
+                                            <span matTooltip="Konu:{{konu.konuAdi}}">{{konu.konuAdi|ozet:30}}</span>
+                                        </div>
                                     </a>
                                 </div>
                             </div>
