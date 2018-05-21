@@ -533,6 +533,8 @@ namespace SoruDeposu.DataAccess.Migrations.SoruDepo
 
                     b.Property<decimal>("KabulEdilebilirlikIndeksi");
 
+                    b.Property<string>("Kaynakca");
+
                     b.Property<int?>("KonuNo");
 
                     b.Property<bool?>("Onaylandi");
@@ -546,8 +548,6 @@ namespace SoruDeposu.DataAccess.Migrations.SoruDepo
                     b.Property<bool?>("Silindi");
 
                     b.Property<bool?>("Silinemez");
-
-                    b.Property<string>("SoruAdi");
 
                     b.Property<int?>("SoruKokuNo");
 

@@ -51,7 +51,7 @@
                 </button>
                 <button mat-menu-item aria-label="ilk bakista elenebilir secenek degistirici" (click)="toggleHemenElenebilir($event)">
                         <ng-container *ngIf="secenekCtrl.get('hemenElenebilir')?.value===true">
-                            <span>İlk bakışta elebilir olmasın</span>
+                            <span>İlk bakışta elenebilir olmasın</span>
                         </ng-container>
                         <ng-container *ngIf="secenekCtrl.get('hemenElenebilir')?.value===false">
                             <span>İlk bakışta elenebilir yap</span>

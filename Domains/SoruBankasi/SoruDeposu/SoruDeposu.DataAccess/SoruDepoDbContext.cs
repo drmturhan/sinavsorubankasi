@@ -14,6 +14,7 @@ namespace SoruDeposu.DataAccess
 
         }
 
+        public DbSet<SoruKoku> SoruKokleri { get; set; }
         public DbSet<Soru> Sorular { get; set; }
         public DbSet<SoruTip> SoruTipleri { get; set; }
         //public DbSet<OgrenmeDuzey> OgrenmeDuzeyleri{ get; set; }

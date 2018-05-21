@@ -41,28 +41,16 @@ export class OgrenimHedefSatirComponent implements OnInit {
   }
 
   onSelectedChange() {
-    const indeks = this.indeksimiBul();
+    if (!this.hedef) {
+      return -1;
+    }
+    const indeks = this.tekDogruluSecenekService.ogrenimHedefIndeksiniBul(this.hedef.ogrenimHedefId);
     if (indeks >= 0) {
       (this.tekDogruluSecenekService.soruForm.get('soruHedefleri') as FormArray).removeAt(indeks);
     } else {
       (this.tekDogruluSecenekService.soruForm.get('soruHedefleri') as FormArray).push(this.fb.control(this.hedef.ogrenimHedefId));
     }
     this.tekDogruluSecenekService.soruForm.markAsDirty();
-  }
-  indeksimiBul(): number {
-    if (!this.hedef) {
-      return -1;
-    }
-    else {
-      const controller = (this.tekDogruluSecenekService.soruForm.get('soruHedefleri') as FormArray).controls;
-      for (let index = 0; index < controller.length; index++) {
-        const element = controller[index];
-        if (element.value === this.hedef.ogrenimHedefId) {
-          return this.indeks;
-        }
-      }
-      return -1;
-    }
   }
 
 }

@@ -1,13 +1,14 @@
 
 import { Component, OnInit, Input, Output, EventEmitter, ViewEncapsulation, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { FormArray, FormGroup, FormControl, Validators } from '@angular/forms';
+import { SbMesajService } from '../../../../../core/services/sb-mesaj.service';
 
 @Component({
   selector: 'fuse-anahtar-kelimeler',
   templateUrl: './anahtar-kelimeler.component.html',
   styleUrls: ['./anahtar-kelimeler.component.scss']
 })
-export class AnahtarKelimelerComponent  {
+export class AnahtarKelimelerComponent {
 
 
   // tslint:disable-next-line:no-input-rename
@@ -19,7 +20,10 @@ export class AnahtarKelimelerComponent  {
   yeniAnahtarKelime: FormControl;
   secimYapildi: boolean;
 
-  constructor(private cdRef: ChangeDetectorRef) {
+  constructor(
+    private cdRef: ChangeDetectorRef,
+    private mesajService: SbMesajService
+  ) {
     this.yeniAnahtarKelime = new FormControl('', [Validators.required, Validators.minLength(3)]);
   }
   enterBasildi(event) {
@@ -31,7 +35,12 @@ export class AnahtarKelimelerComponent  {
     }
   }
   ekle() {
+
     if (this.yeniAnahtarKelime.valid) {
+      if (this.anahtarKelimelerArr && this.anahtarKelimelerArr.length >= 5) {
+        this.mesajService.hata({ kod: '', tanim: 'En fazla 5 anahtar kelime girebilirsiniz.' });
+        return;
+      }
       this.anahtarKelimelerArr.push(new FormControl(this.yeniAnahtarKelime.value));
       this.anahtarKelimelerArr.markAsDirty();
       this.cdRef.detectChanges();

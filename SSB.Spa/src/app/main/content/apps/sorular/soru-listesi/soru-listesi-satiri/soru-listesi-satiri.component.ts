@@ -36,8 +36,9 @@ export class SoruListesiSatiriComponent implements OnInit, OnDestroy {
   ) {
     this.selectedSoruIds$ = this.store.select(fromStore.getSelectedSoruNumaralari);
     this.selected = false;
-  }
 
+  }
+  
   ngOnInit() {
     this.soru = new SoruListe(this.soru);
     this.bitisTarihiGecerli = this.soru.baslangic < this.soru.bitis;
@@ -106,7 +107,7 @@ export class SoruListesiSatiriComponent implements OnInit, OnDestroy {
             const formData: FormGroup = response[1];
             if (!formData.dirty) {
               console.log('Kaydetmeye gerek yok!');
-              console.log(formData.value);
+              
               return;
             }
             const kaydedilecekSoru: SoruDegistir = response[2];
@@ -138,6 +139,11 @@ export class SoruListesiSatiriComponent implements OnInit, OnDestroy {
   }
   soruyuAc() {
     this.store.dispatch(new fromStore.SoruAcKapa({ soruNo: this.soru.soruId, ac: true }));
+  }
+  favoriToogle() {
+    if (this.soru.favori) {
+      this.soruyuSiradanYap();
+    } else { this.soruyuFavoriYap(); }
   }
   soruyuFavoriYap() {
     this.store.dispatch(new fromStore.SoruFavoriDegistir({ soruNo: this.soru.soruId, favori: true }));

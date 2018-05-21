@@ -30,7 +30,10 @@ export class TekDogruluSecenekComponent implements OnInit, OnDestroy {
 
 
 
-  constructor(public tekDogruluSecenekService: CoktanSecmeliSoruSecenekService, private cd: ChangeDetectorRef) {
+  constructor(
+    public tekDogruluSecenekService: CoktanSecmeliSoruSecenekService,
+    private cd: ChangeDetectorRef
+  ) {
     this.searchInput = new FormControl('');
 
   }
@@ -62,7 +65,6 @@ export class TekDogruluSecenekComponent implements OnInit, OnDestroy {
         gelensayi => this.hemenElenebilirSecenekSayisi = gelensayi);
 
 
-
     this.searchInput.valueChanges
       .debounceTime(300)
       .distinctUntilChanged()
@@ -79,7 +81,7 @@ export class TekDogruluSecenekComponent implements OnInit, OnDestroy {
           else {
             this.currentTodo = currentTodo;
           }
-          
+          this.cd.detectChanges();
         });
 
   }

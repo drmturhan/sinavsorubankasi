@@ -1,74 +1,70 @@
 @import "src/@fuse/scss/fuse";
 :host {
-    padding: 5%;
-    padding-left: 10%;
-}
-
-.araclar {
-    display: flex;
-    flex-flow: row;
-    .mat-input-element {
-        color: #406D95;
+    .ekran {
+        padding: 10%;
+        padding-top: 48px;
+        height: 60vh;
     }
-    width: 80%;
-    max-width: 800px
-}
-
-.liste {
-    margin-top: 36px;
-    min-width: 150px;
-    width: 80%;
-    max-width: 600px;
-    padding-left: 24px;
-    ol {
-        counter-reset: li;
-        list-style: none;
-        *list-style: decimal;
-        font-size: 15px;
-        padding: 0;
-        margin-bottom: 4em;
-    }
-    ol ol {
-        margin: 0 0 0 2em;
-    }
-    li {
-        position: relative;
-        display: block;
-        padding: .4em .4em .4em 2em;
-        *padding: .4em;
-        margin: .5em 0;
-        background: #D8E8E9;
-        color: #406D95;
-        text-decoration: none;
-        transition: all .5s ease-in-out;
-    }
-    li:hover {
-        background: #406D95;
-        color: #D8E8E9;
-        transform: scale(1.1);
-        .sil {
-            display: block;
-            color: white;
+    .araclar {
+        .mat-input-element {
+            color: #406D95;
         }
     }
-    li:before {
-        content: counter(li);
-        counter-increment: li;
-        position: absolute;
-        left: -1.2em;
-        top: 50%;
-        margin-top: -1.2em;
-        background: #A8D0DA;
-        height: 2em;
-        width: 2em;
-        line-height: 2em;
-        text-align: center;
-        font-weight: bold;
-        color: #FFF;
+    .liste {
+        padding: 100px;
+        padding-top: 24px;
+        ol {
+            counter-reset: li;
+            list-style: none;
+            *list-style: decimal;
+            font-size: 15px;
+            padding: 0;
+            margin-bottom: 4em;
+        }
+        ol ol {
+            margin: 0 0 0 2em;
+        }
+        li {
+            position: relative;
+            display: block;
+            padding: .4em .4em .4em 2em;
+            *padding: .4em;
+            margin: .5em 0;
+            background: #D8E8E9;
+            color: #406D95;
+            text-decoration: none;
+            transition: all .5s ease-in-out;
+        }
+        li:hover {
+            background: #406D95;
+            color: #D8E8E9;
+            transform: scale(1.1);
+            .sil {
+                display: block;
+                color: white;
+            }
+        }
+        li:before {
+            content: counter(li);
+            counter-increment: li;
+            position: absolute;
+            left: -1.2em;
+            top: 50%;
+            margin-top: -1.2em;
+            background: #A8D0DA;
+            height: 2em;
+            width: 2em;
+            line-height: 2em;
+            text-align: center;
+            font-weight: bold;
+            color: #FFF;
+        }
     }
-}
-
-.sil {
-    display: none;
-    margin-right: 8px;
+    .sil {
+        display: none;
+        margin-right: 8px;
+    }
+    .mat-icon-button {
+        color: #406D95;
+    }
 }

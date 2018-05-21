@@ -19,6 +19,7 @@ namespace SoruDeposu.DataAccess.Mappers
         private void CreateEntityToResourceMap()
         {
 
+
             CreateMap<SoruTip, SoruTipDto>();
             CreateMap<SoruZorluk, SoruZorlukDto>();
 
@@ -37,7 +38,8 @@ namespace SoruDeposu.DataAccess.Mappers
                 .ForMember(d => d.SoruTipAdi, islem => islem.ResolveUsing(e => e.SoruTipi.SoruTipAdi))
                 .ForMember(d => d.SoruZorlukAdi, islem => islem.ResolveUsing(e => e.SoruZorluk.ZorlukAdi))
                 .ForMember(d => d.BilisselDuzeyAdi, islem => islem.ResolveUsing(e => e.BilisselDuzeyi != null ? e.BilisselDuzeyi.BilisselDuzyeAdi : ""))
-
+                .ForMember(d => d.SoruKokuMetni, islem => islem.ResolveUsing(e => e.SoruKoku != null ? e.SoruKoku.SoruKokuMetni : string.Empty))
+                .ForMember(d => d.SoruKokuSorulariSayisi, islem => islem.ResolveUsing(e => e.SoruKoku != null ? e.SoruKoku.Sorulari.Count : 0))
                 .AfterMap((e, d) =>
                 {
                     //foreach (var item in e.TekDogruluSecenekleri)
@@ -74,7 +76,8 @@ namespace SoruDeposu.DataAccess.Mappers
                         d.AnahtarKelimeler = e.AnahtarKelimeler.Split(';');
                 });
 
-
+            CreateMap<SoruKoku, SoruKokuListeDto>();
+            CreateMap<SoruKoku, SoruKokuDegistirDto>();
         }
 
         private void CreateResourceToEntityMap()
@@ -93,7 +96,8 @@ namespace SoruDeposu.DataAccess.Mappers
                     foreach (var secenek in d.TekDogruluSecenekleri)
                     {
                         var yeniEntity = secenek.ToEntity();
-                        if (yeniEntity.TekDogruluSoruSecenekId <=0) {
+                        if (yeniEntity.TekDogruluSoruSecenekId <= 0)
+                        {
                             yeniEntity.TekDogruluSoruSecenekId = null;
                         }
                         e.TekDogruluSecenekleri.Add(yeniEntity);
@@ -136,6 +140,10 @@ namespace SoruDeposu.DataAccess.Mappers
                         e.KonuNo = null;
                     e.SecenekSayisi = e.TekDogruluSecenekleri.Count;
                 });
+
+            CreateMap<SoruKokuListeDto, SoruKoku>();
+            CreateMap<SoruKokuYaratDto, SoruKoku>();
+            CreateMap<SoruKokuDegistirDto, SoruKoku>();
 
             CreateMap<TekDogruluSoruSecenekDto, TekDogruluSoruSecenek>();
             CreateMap<SoruTipDto, SoruTip>();

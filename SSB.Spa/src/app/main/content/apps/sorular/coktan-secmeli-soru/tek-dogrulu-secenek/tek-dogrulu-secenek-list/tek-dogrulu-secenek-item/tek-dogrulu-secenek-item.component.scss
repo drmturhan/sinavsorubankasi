@@ -25,12 +25,9 @@
     }
     &.selected {
         background: #A8D0DA;
-        
-       
     }
     &.aktif {
         background: #E2E3DD;
-        
     }
     .info {
         color: #2F3A57;
@@ -53,5 +50,8 @@
     }
     .sil {
         color: #E2474C !important;
+    }
+    .actions {
+        color:#2F3A57;
     }
 }

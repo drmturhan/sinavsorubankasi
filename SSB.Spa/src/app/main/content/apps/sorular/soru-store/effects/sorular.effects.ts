@@ -48,17 +48,18 @@ export class SorularEffect {
                     const handle: any[] = this.service.soruHandleYarat(this.routerState);
                     if (this.aktifBirim !== null && this.aktifBirim.programlari && this.aktifBirim.programlari.length > 0) {
                         handle.push({ id: 'birimNo', value: this.aktifBirim.birimId });
-                        
+                        this.store.dispatch(new fromRootStore.StartLoading());
                         return this.service.getKullanicininSorulari(handle)
                             .map((sorular: SoruListe[]) => {
-                        
+
+                                this.store.dispatch(new fromRootStore.StopLoading());
                                 this.mesajService.goster('Soru listesi alındı.');
-                                
+
                                 return new fromSorularActions.GetSorularTamam({
                                     loaded: handle,
                                     sorular: sorular
                                 });
-                                
+
                             })
                             .catch((err) => of(new fromSorularActions.GetSorularBasarisiz(err)));
                     }
@@ -85,17 +86,18 @@ export class SorularEffect {
             .ofType<fromSorularActions.UpdateSoru>(fromSorularActions.UPDATE_SORU)
             .pipe(
                 exhaustMap((action) => {
-                    
+                    this.store.dispatch(new fromRootStore.StartLoading());
                     return this.service.updateSoru(action.payload)
                         .map((sonuc: KayitSonuc<SoruListe>) => {
+                            this.store.dispatch(new fromRootStore.StopLoading());
                             if (sonuc.basarili) {
                                 this.mesajService.goster('Soru kaydedildi.');
                                 return new fromSorularActions.UpdateSoruTamam(sonuc.donenNesne);
                             } else {
                                 this.mesajService.hatalar(sonuc.hatalar);
                             }
-                            
-                        }).catch(err => of(new fromSorularActions.GetSorularBasarisiz(err)));
+
+                        }).catch(err =>  of(new fromSorularActions.GetSorularBasarisiz(err)));
                 })
             );
 
@@ -105,17 +107,17 @@ export class SorularEffect {
             .ofType<fromSorularActions.SoruAcKapa>(fromSorularActions.SORU_AC_KAPA)
             .pipe(
                 exhaustMap((action) => {
-                    
+                    this.store.dispatch(new fromRootStore.StartLoading());
                     return this.service.soruAcKapaDegistir(action.payload)
                         .map((sonuc: KayitSonuc<SoruListe>) => {
-                    
+                            this.store.dispatch(new fromRootStore.StopLoading());
                             if (sonuc.basarili) {
                                 this.mesajService.goster('İşlem başarılı');
                                 return new fromSorularActions.UpdateSoruTamam(sonuc.donenNesne);
                             } else {
                                 this.mesajService.hatalar(sonuc.hatalar);
                             }
-                            
+
                         });
                 })
             );
@@ -125,10 +127,10 @@ export class SorularEffect {
             .ofType<fromSorularActions.SoruFavoriDegistir>(fromSorularActions.SORU_FAVORI_DEGISTIR)
             .pipe(
                 exhaustMap((action) => {
-                    
+                    this.store.dispatch(new fromRootStore.StartLoading());
                     return this.service.soruFavoriDegistir(action.payload)
                         .map((sonuc: KayitSonuc<SoruListe>) => {
-                            
+                            this.store.dispatch(new fromRootStore.StopLoading());
                             if (sonuc.basarili) {
                                 this.mesajService.goster('İşlem başarılı');
 
@@ -136,7 +138,7 @@ export class SorularEffect {
                             } else {
                                 this.mesajService.hatalar(sonuc.hatalar);
                             }
-                            
+
                         });
                 })
             );
@@ -147,17 +149,17 @@ export class SorularEffect {
             .ofType<fromSorularActions.SoruSilindiIsaretle>(fromSorularActions.SORU_SIL)
             .pipe(
                 exhaustMap((action) => {
-                    
+                    this.store.dispatch(new fromRootStore.StartLoading());
                     return this.service.soruSilindiOlarakIsaretle(action.payload)
                         .map((sonuc: Sonuc) => {
-                            
+                            this.store.dispatch(new fromRootStore.StopLoading());
                             if (sonuc.basarili) {
                                 this.mesajService.goster('İşlem başarılı');
                                 return new fromSorularActions.SoruSilindi(action.payload);
                             } else {
                                 this.mesajService.hatalar(sonuc.hatalar);
                             }
-                            
+
                         });
                 })
             );

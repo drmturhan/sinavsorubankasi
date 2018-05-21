@@ -27,6 +27,12 @@ namespace SoruDeposu.DataAccess.Mappers
             return dto == null ? null : Mapper.Map<Soru>(dto);
         }
 
+        public static SoruKoku ToSoruKoku(this SoruKokuYaratDto dto)
+
+        {
+            return dto == null ? null : Mapper.Map<SoruKoku>(dto);
+        }
+
         public static void Yaz(this SoruYaratDto dto, Soru entity)
 
         {
@@ -34,6 +40,10 @@ namespace SoruDeposu.DataAccess.Mappers
         }
 
         public static void Yaz(this SoruDegistirDto dto, Soru entity)
+        {
+            Mapper.Map(dto, entity);
+        }
+        public static void Yaz(this SoruKokuDegistirDto dto, SoruKoku entity)
         {
             Mapper.Map(dto, entity);
         }
@@ -75,6 +85,11 @@ namespace SoruDeposu.DataAccess.Mappers
         {
             return entity == null ? null : Mapper.Map<SoruListeDto>(entity);
         }
+        public static SoruKokuListeDto ToListeDto(this SoruKoku entity)
+
+        {
+            return entity == null ? null : Mapper.Map<SoruKokuListeDto>(entity);
+        }
 
 
         public static SoruBirimDto ToSoruBirimDto(this Birim entity)
@@ -102,11 +117,24 @@ namespace SoruDeposu.DataAccess.Mappers
         }
 
 
-        public static SayfaliListe<SoruListeDto> ToSoruListeDto(this SayfaliListe<Soru> entitySonuc)
+        public static SayfaliListe<SoruListeDto> ToListeDto(this SayfaliListe<Soru> entitySonuc)
         {
             return entitySonuc == null ? null : Mapper.Map<SayfaliListe<SoruListeDto>>(entitySonuc);
         }
 
+        public static SayfaliListe<SoruKokuListeDto> ToListeDto(this SayfaliListe<SoruKoku> entitySonuc)
+        {
+            return entitySonuc == null ? null : Mapper.Map<SayfaliListe<SoruKokuListeDto>>(entitySonuc);
+        }
+        public static SoruKokuListeDto ToDto(this SoruKoku entity)
+        {
+            return entity == null ? null : Mapper.Map<SoruKokuListeDto>(entity);
+        }
+
+        public static SoruKokuDegistirDto ToDegistirDto(this SoruKoku entity)
+        {
+            return entity == null ? null : Mapper.Map<SoruKokuDegistirDto>(entity);
+        }
 
 
         public static SayfaliListe<SoruTipDto> ToDto(this SayfaliListe<SoruTip> entitySonuc)

@@ -39,7 +39,7 @@ namespace Psg.Api.Controllers.Api.SoruDepo
                 var sby = new StandartSayfaBilgiYaratici(sorgu, "Sorular", urlHelper);
                 Response.Headers.Add("X-Pagination", kayitlar.SayfalamaMetaDataYarat<Soru>(sby));
 
-                var sonuc = ListeSonuc<SoruListeDto>.IslemTamam(kayitlar.ToSoruListeDto());
+                var sonuc = ListeSonuc<SoruListeDto>.IslemTamam(kayitlar.ToListeDto());
 
                 return Ok(sonuc.ShapeData(sorgu.Alanlar));
             });
@@ -63,10 +63,19 @@ namespace Psg.Api.Controllers.Api.SoruDepo
                 var sby = new StandartSayfaBilgiYaratici(sorgu, "Sorular", urlHelper);
 
                 Response.Headers.Add("X-Pagination", kayitlar.SayfalamaMetaDataYarat<Soru>(sby));
+                try
+                {
+                    var sonuc = ListeSonuc<SoruListeDto>.IslemTamam(kayitlar.ToListeDto());
 
-                var sonuc = ListeSonuc<SoruListeDto>.IslemTamam(kayitlar.ToSoruListeDto());
+                    return Ok(sonuc.ShapeData(sorgu.Alanlar));
+                }
+                catch (Exception e)
+                {
 
-                return Ok(sonuc.ShapeData(sorgu.Alanlar));
+                    throw;
+                }
+                throw new InternalServerError("Soru yaratılamadı!");
+
             });
 
         }
@@ -178,7 +187,7 @@ namespace Psg.Api.Controllers.Api.SoruDepo
         [HttpDelete("{id}")]
         public async Task<IActionResult> Sil(int id)
         {
-
+            //Tamamen silme yok! Silindi olarak işaretleniyor.
             return await KullaniciVarsaCalistir<IActionResult>(async () =>
             {
 

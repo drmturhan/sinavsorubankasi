@@ -10,8 +10,11 @@ export class SoruListe {
     soruTipAdi: string | null;
     soruZorlukNo: number;
     soruZorlukAdi: string | null;
-    soruAdi: string;
+    kaynakca: string;
     soruMetni: string;
+    soruKokuMetni: String;
+    soruKokuNo: number;
+    soruKokuSorulariSayisi: number;
     tekDogruluSecenekleri: TekDogruluSoruSecenek[];
     secenekSayisi: number;
     baslangic: Date;
@@ -39,8 +42,11 @@ export class SoruListe {
         this.soruTipAdi = soru.soruTipAdi;
         this.soruZorlukNo = soru.soruZorlukNo;
         this.soruZorlukAdi = soru.soruZorlukAdi;
-        this.soruAdi = soru.soruAdi;
+        this.kaynakca = soru.kaynakca;
         this.soruMetni = soru.soruMetni;
+        this.soruKokuMetni = soru.soruKokuMetni;
+        this.soruKokuNo = soru.soruKokuNo;
+        this.soruKokuSorulariSayisi = soru.soruKokuSorulariSayisi;
         this.tekDogruluSecenekleri = soru.tekDogruluSecenekleri;
         this.secenekSayisi = soru.secenekSayisi;
         this.baslangic = soru.baslangic;
@@ -56,7 +62,7 @@ export class SoruListe {
         this.aktif = soru.aktif;
         this.onaylandi = soru.onaylandi;
         this.favori = soru.favori;
-        this.silinemez = soru.silinemez;        
+        this.silinemez = soru.silinemez;
         this.soruMetni = soru.soruMetni;
     }
 }
@@ -69,8 +75,10 @@ export class SoruYarat {
     konuNo?: number;
     soruTipNo?: number;
     soruZorlukNo?: number;
-    soruAdi: string;
+    kaynakca: string;
     soruMetni?: string;
+    soruKokuNo?: number;
+    soruKokuMetni?: string;
     aktif?: boolean;
     onaylandi?: boolean;
     secenekSayisi?: number;
@@ -85,9 +93,29 @@ export class SoruYarat {
     soruHedefleri: number[];
     tekDogruluSecenekleri: TekDogruluSoruSecenek[];
 }
+
 export class SoruDegistir extends SoruYarat {
     soruId: number;
 }
+
+
+export class IliskiliSoruListe {
+    soruKokuId: number;
+    soruKokuMetni: string;
+    sorulari: SoruListe[];
+}
+
+export class IliskiliSoruYarat {
+    soruKokuMetni: string;
+    sorulari: SoruYarat[];
+}
+
+export class IliskiliSoruDegistir {
+    soruKokuId: number;
+    soruKokuMetni: string;
+    sorulari: SoruDegistir[];
+}
+
 export class OgrenimHedef {
     ogrenimHedefNo: number;
     ogrenimHedefAdi: string;
@@ -103,7 +131,6 @@ export class TekDogruluSoruSecenek {
         this.secenekMetni = secenek.secenekMetni;
         this.dogruSecenek = secenek.dogruSecenek;
         this.hemenElenebilir = secenek.hemenElenebilir;
-
     }
     toogleDogruSecenek() {
         this.dogruSecenek = !this.dogruSecenek;

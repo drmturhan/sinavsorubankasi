@@ -4,6 +4,8 @@ using System.Text;
 
 namespace SoruDeposu.DataAccess.Dtos
 {
+
+    
     public class SoruListeDto
     {
         public int SoruId { get; set; }
@@ -17,8 +19,11 @@ namespace SoruDeposu.DataAccess.Dtos
         public int SoruZorlukNo { get; set; }
         public string SoruZorlukAdi { get; set; }
 
-        public string SoruAdi { get; set; }
+        public string Kaynakca { get; set; }
         public string SoruMetni { get; set; }
+        public int SoruKokuNo { get; set; }
+        public string SoruKokuMetni { get; set; }
+        public int SoruKokuSorulariSayisi { get; set; }
         public int? SecenekSayisi { get; set; }
         public DateTime Baslangic { get; set; }
         public DateTime? Bitis { get; set; }
@@ -50,11 +55,12 @@ namespace SoruDeposu.DataAccess.Dtos
         public int? KonuNo { get; set; }
         public int SoruTipNo { get; set; }
         public int SoruZorlukNo { get; set; }
-        public string SoruAdi { get; set; }
+        
         public string SoruMetni { get; set; }
         public DateTime Baslangic { get; set; }
         public DateTime? Bitis { get; set; }
         public string Aciklama { get; set; }
+        public string Kaynakca { get; set; }
         public string[] AnahtarKelimeler { get; set; }
         public int HemenElenebilirSecenekSayisi { get; set; }
         public decimal KabulEdilebilirlikIndeksi { get; set; }
@@ -68,6 +74,10 @@ namespace SoruDeposu.DataAccess.Dtos
         public ICollection<TekDogruluSoruSecenekDto> TekDogruluSecenekleri { get; set; } = new List<TekDogruluSoruSecenekDto>();
 
     }
+    public class SoruDegistirDto : SoruYaratDto
+    {
+        public int SoruId { get; set; }
+    }
 
     public class SoruAlanDegistirDto
     {
@@ -76,10 +86,13 @@ namespace SoruDeposu.DataAccess.Dtos
         public bool? Favori { get; set; }
         public bool? Silindi { get; set; }
     }
-    public class SoruDegistirDto : SoruYaratDto
+
+    public class SoruKokuAlanDegistirDto: SoruAlanDegistirDto
     {
-        public int SoruId { get; set; }
+        public int SoruKokuNo { get; set; }
+        
     }
+
     public class TekDogruluSoruSecenekDto
     {
         public int TekDogruluSoruSecenekId { get; set; }
@@ -179,7 +192,7 @@ namespace SoruDeposu.DataAccess.Dtos
     }
 
 
-    
+
 
     public class KontrolListeGrupTanimDto
     {

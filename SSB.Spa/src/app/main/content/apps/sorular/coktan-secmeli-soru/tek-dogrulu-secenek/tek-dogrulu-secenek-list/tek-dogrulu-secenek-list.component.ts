@@ -41,7 +41,7 @@ export class TekDogruluSecenekListComponent implements OnInit {
     this.secenekler.valueChanges.subscribe(gelenler => {
       const dogruSecenekSayisi: any[] = gelenler.filter(s => s.dogruSecenek === true);
       if (dogruSecenekSayisi && dogruSecenekSayisi.length > 1) {
-        this.mesajService.hataStr(`Bu soru için bir doğru seçenek belirlemeniz gerekli! Siz ${dogruSecenekSayisi.length} seçeneği doğrı olarak işaretlediniz.`);
+        this.mesajService.hataStr(`Bu soru için  SADECE bir doğru seçenek belirleyebilirsiniz! Siz ${dogruSecenekSayisi.length} seçeneği doğru olarak işaretlediniz!`);
       }
 
     });

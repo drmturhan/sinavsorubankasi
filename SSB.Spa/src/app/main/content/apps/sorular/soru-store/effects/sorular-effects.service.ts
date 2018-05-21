@@ -22,9 +22,11 @@ export class SorularEffectsService {
   kb: KullaniciBilgi;
   constructor(
     private http: HttpClient,
-    private rootStore: Store<fromRootStore.AuthState>
+    private rootStore: Store<fromRootStore.State>
   ) {
-    rootStore.subscribe(authState => this.kb = authState.kullaniciBilgi);
+    rootStore.select(fromRootStore.getAuthState).subscribe(
+      authState => this.kb = authState.kullaniciBilgi
+    );
   }
   getKullanicininAnlattigiDersler(): Observable<SoruBirimItem[]> {
     const adres = `${this.baseUrl}/${this.dersanlatanHocalarUrl}/kullanicininanlattigiderslervekonular/`;
@@ -43,7 +45,7 @@ export class SorularEffectsService {
   updateSoru(soru): Observable<KayitSonuc<SoruListe>> {
     const kaydedilecekSoru = Object.assign({}, soru, { personelNo: this.kb.personelNo });
     delete kaydedilecekSoru['gecerlilik'];
-    
+
 
     if (soru && soru['soruId']) {
       return this.soruDegisiklikKaydet(kaydedilecekSoru as SoruDegistir);

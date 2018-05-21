@@ -218,7 +218,62 @@ export class CoktanSecmeliSoruSecenekService {
     // Trigger the next event
     this.onSelectedTodosChanged.next(this.selectedTodos);
   }
+  oncekiSonrakiSecenegeGit(adim: number) {
+    const indeks = this.secenekIndeksiBul(this.currentTodo.get('tekDogruluSoruSecenekId').value);
+    const seceneklerArray: FormArray = <FormArray>this.soruForm.get('secenekler');
+    let sonrakiSecenek: AbstractControl;
+    if (!this.secenekIndeksiBul) { return; }
+    if (indeks === -1 || indeks + adim >= 5) {
+      sonrakiSecenek = seceneklerArray.controls[0];
+    } else {
+      if (indeks + adim < 0) {
+        sonrakiSecenek = seceneklerArray.controls[seceneklerArray.length - 1];
+      } else {
+        sonrakiSecenek = seceneklerArray.controls[indeks + adim];
+      }
+    }
+    if (sonrakiSecenek) {
+      this.currentTodo = sonrakiSecenek;
+      this.onCurrentTodoChanged.next(sonrakiSecenek);
+    }
+  }
 
+
+  ogrenimHedefIndeksiniBul(hedefId): number {
+    if (hedefId < 1) {
+      return -1;
+    }
+    else {
+      const kontroller = (this.soruForm.get('soruHedefleri') as FormArray).controls;
+      for (let index = 0; index < kontroller.length; index++) {
+        const element = kontroller[index];
+        if (element.value === hedefId) {
+          return index;
+        }
+      }
+      return -1;
+    }
+  }
+
+
+  hesaplariYap(secenekler?: FormArray): { dogruSecenekSayisi: number, hess: number, kei: number } {
+
+    if (!secenekler) { secenekler = <FormArray>this.soruForm.get('secenekler'); }
+
+    const dogruSecenekSayisi = secenekler.controls.filter(el => el.get('dogruSecenek').value === true).length;
+    const hessGuncelDegeri = secenekler.controls.filter(el => el.get('hemenElenebilir').value === true).length;
+    const kei = this.kabulEdilebilirlikIndeksiniHesapla(secenekler.length, hessGuncelDegeri);
+    this.soruForm.patchValue(
+      {
+        kabulEdilebilirlikIndeksi: kei,
+        hemenElenebilirSecenekSayisi: hessGuncelDegeri
+      });
+    this.hemenElenebilirSecenekSayisiDegisti.next(hessGuncelDegeri);
+    this.dogruSecenekSayisiDegisti.next(dogruSecenekSayisi);
+    this.kabulEdilebilirkikIndeksiDegisti.next(kei);
+    return { dogruSecenekSayisi: dogruSecenekSayisi, hess: hessGuncelDegeri, kei: kei };
+
+  }
   kabulEdilebilirlikIndeksiniHesapla(seceneksayisi: number, hemenElenebilirSecenekSayisi: number): number {
 
     if (seceneksayisi <= 0) { return 0; }
@@ -227,6 +282,6 @@ export class CoktanSecmeliSoruSecenekService {
     } else {
       return 0;
     }
-  }
 
+  }
 }

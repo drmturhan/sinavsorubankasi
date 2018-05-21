@@ -2,11 +2,11 @@
 export function CoktanSecmeliSoruValidasyonMesajlari_tr() {
     return {
 
-        soruAdi: {
-            required: 'Soru adı alanına bilgi girilmesi gerekli.',
-            minlength: 'En az 3 karakter olmalıdır.',
-            maxlength: 'En fazla 200 karakter olmalıdır.'
-        },
+        // kaynakca: {
+        //     required: 'Soru adı alanına bilgi girilmesi gerekli.',
+        //     minlength: 'En az 3 karakter olmalıdır.',
+        //     maxlength: 'En fazla 200 karakter olmalıdır.'
+        // },
         soruBelgesi: {
             required: 'Soru belgesi alanına bilgi girilmesi gerekli.',
             minlength: 'En az 3 karakter olmalıdır.'
@@ -17,11 +17,11 @@ export function CoktanSecmeliSoruValidasyonMesajlari_tr() {
         gecerlilik: {
             bitisbaslangictanonceolamaz: 'Başlangıç tarihi bitiş tarihinden sonra olamaz.'
         },
-        aciklama: {
-            required: 'Açıklama alanına bilgi girilmesi gerekli.',
-            minlength: 'En az 3 karakter olmalıdır.',
-            maxlength: 'En fazla 500 karakter olmalıdır.'
-        },
+        // aciklama: {
+        //     required: 'Açıklama alanına bilgi girilmesi gerekli.',
+        //     minlength: 'En az 3 karakter olmalıdır.',
+        //     maxlength: 'En fazla 500 karakter olmalıdır.'
+        // },
         anahtarKelimeler: {
             required: 'Anahtar kelimeler alanına bilgi girilmesi gerekli.',
         },

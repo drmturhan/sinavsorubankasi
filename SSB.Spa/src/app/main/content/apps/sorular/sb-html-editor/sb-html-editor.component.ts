@@ -1,5 +1,6 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { EventEmitter } from 'events';
 
 @Component({
   selector: 'fuse-sb-html-editor',
@@ -16,6 +17,7 @@ export class SbHtmlEditorComponent implements OnInit {
   @Input() minSatir = 2;
   @Input() maksSatir = 10;
 
+  @Output() tamam = new EventEmitter();
 
   @ViewChild('metinAlani') metinAlani;
   @ViewChild('editorum') ckeditor: any;

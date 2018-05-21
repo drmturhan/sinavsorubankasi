@@ -1,6 +1,7 @@
 import { createSelector } from '@ngrx/store';
 import { getSoruDepoAppState, SoruDepoAppState, SorularState } from '../reducers';
 import { FuseUtils } from '@fuse/utils';
+import { SoruListe } from '../../models/soru';
 
 
 export const getSorularState = createSelector(getSoruDepoAppState, (state: SoruDepoAppState) => state.sorular);
@@ -13,7 +14,7 @@ export const getSorularArr = createSelector(
     getSorular,
     getSorularAramaCumlesi,
     (entities, searchText) => {
-        const arr = Object.keys(entities).map((id) => entities[id]);
+        const arr: SoruListe[] = Object.keys(entities).map((id) => entities[id]);
         return FuseUtils.filterArrayByString(arr, searchText);
     }
 );

@@ -1,9 +1,10 @@
 
 import { Component, OnInit, OnDestroy, Input, ChangeDetectorRef } from '@angular/core';
-import { FormGroup, FormArray } from '@angular/forms';
+import { FormGroup, FormArray, FormBuilder } from '@angular/forms';
 import { Subscription } from 'rxjs/Subscription';
 import { OgrenimHedefItem } from '../models/birim-program-donem-ders';
 import { CoktanSecmeliSoruSecenekService } from '../coktan-secmeli-soru-secenek.service';
+import { MatCheckbox } from '@angular/material';
 
 @Component({
   selector: 'fuse-ogrenim-hedefleri',
@@ -12,7 +13,7 @@ import { CoktanSecmeliSoruSecenekService } from '../coktan-secmeli-soru-secenek.
 })
 export class OgrenimHedefleriComponent implements OnInit, OnDestroy {
 
-  @Input() soruForm: FormGroup;
+
   hasSelectedTodos: boolean;
   isIndeterminate: boolean;
   ogrenimHedefleri: OgrenimHedefItem[];
@@ -24,7 +25,10 @@ export class OgrenimHedefleriComponent implements OnInit, OnDestroy {
     return this.secenekService.soruForm.get('soruHedefleri') as FormArray;
 
   }
-  constructor(private secenekService: CoktanSecmeliSoruSecenekService, private cd: ChangeDetectorRef) {
+  constructor(
+    private secenekService: CoktanSecmeliSoruSecenekService,
+    private cd: ChangeDetectorRef,
+    private fb: FormBuilder) {
 
   }
 
@@ -53,24 +57,38 @@ export class OgrenimHedefleriComponent implements OnInit, OnDestroy {
 
   }
 
-  secilileriSil() {
-    // this.tekDogruluSecenekService.seciliOgrenimHedefleriniSil();
-  }
+
   ngOnDestroy() {
-    
+
     this.onSelectedOgrenimHedefleriChanged.unsubscribe();
     this.cd.detach();
   }
-  toggleSelectAll() {
-    // this.tekDogruluSecenekService.toggleOgrenimHedefleriSelectAll();
+
+  toggleselectAll(secim: MatCheckbox) {
+    if (secim.checked) {
+      this.deselectAll();
+    }
+    else { this.selectAll(); }
+  }
+  selectAll() {
+
+    let degisensayi = 0;
+    this.ogrenimHedefleri.forEach(hedef => {
+      const zatenSecili = this.secenekService.ogrenimHedefIndeksiniBul(hedef.ogrenimHedefId) >= 0;
+      if (!zatenSecili) {
+        (this.secenekService.soruForm.get('soruHedefleri') as FormArray).push(this.fb.control(hedef.ogrenimHedefId));
+        degisensayi++;
+      }
+    });
+    if (degisensayi > 0) {
+      this.secenekService.soruForm.markAsDirty();
+    }
   }
 
-  select(filterParameter?, filterValue?) {
-    // this.tekDogruluSecenekService.selectOgrenimHedefleri(filterParameter, filterValue);
-  }
-
-  deselect() {
-    // this.tekDogruluSecenekService.deselectOgrenimHedefleri();
+  deselectAll() {
+    while ((this.secenekService.soruForm.get('soruHedefleri') as FormArray).length !== 0) {
+      (this.secenekService.soruForm.get('soruHedefleri') as FormArray).removeAt(0);
+    }
   }
 
 

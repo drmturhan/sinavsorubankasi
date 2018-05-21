@@ -1,6 +1,6 @@
 <div fxLayout="row" fxLayoutAlign="start center">
 
-    <mat-checkbox [checked]="selected" (change)="onSelectedChange()" (click)="$event.stopPropagation();">
+    <mat-checkbox [checked]="selected" (change)="onSelectedChange()" (click)="$event.stopPropagation();" style="margin-right: 8px">
     </mat-checkbox>
     <button mat-button class="mat-icon-button" (click)="$event.stopPropagation()" (click)=" soruyuDegistir()">
         <mat-icon matTooltip="Düzenleme ekranını aç">edit</mat-icon>
@@ -11,7 +11,7 @@
 
             <div class="soru-adi" fxFlex>
 
-                <span *ngIf="soru?.soruAdi">{{soru.soruMetni}}</span>
+                <span *ngIf="soru?.kaynakca">{{soru.kaynakca}}</span>
 
             </div>
             <div *ngIf="soru.baslangic" fxHide fxShow.gt-lg>
@@ -24,8 +24,13 @@
         </div> -->
 
         <div fxLayout="row" fxLayoutAlign="space-betwwen center">
-            <div class="aciklama" *ngIf="soru?.soruMetni" fxFlex>
-                {{soru.soruMetni | htmlToPlaintext | slice:0:180}}{{soru.aciklama.length > 250 ? '...' : ''}}
+            <div class="aciklama" *ngIf="soru?.soruMetni" fxFlex fxLayout="row" fxLayoutAlign="star start" fxLayoutGap="10px">
+
+                <div class="mx-4">
+                    <mat-icon style="color:#E2474C" *ngIf="soru?.soruKokuSorulariSayisi>0" matTooltip="İlişkili sorudur. Yani aynı soru köküne bağlı birden fazla soru var. Bu soru da onlardan biridir.">link</mat-icon>
+                    <!-- <mat-icon style="color:#252D43" *ngIf="soru?.soruKokuSorulariSayisi===0" matTooltip="Bağlantısız soru. İlişkili olduğu soru yok. ">label_outline</mat-icon> -->
+                </div>
+                {{soru?.soruMetni | htmlToPlaintext | slice:0:500}}{{soru?.soruMetni.length > 500 ? '...' : ''}}
                 <!-- <div *ngIf="soru.baslangic" fxHide fxShow.gt-lg>
                         <div matTooltip="Gecerlilik başlangıç - bitiş tarihi" class="time">
                             <span> {{soru.baslangic| date: 'MMMM yyyy'}}</span>
@@ -34,20 +39,22 @@
                         </div>
                     </div> -->
             </div>
-            
 
-            <div *ngIf="soru.baslangic" fxLayout="row" fxLayoutAlign="end center" fxFlex.gt-lg="1 1 150px" fxFlex="1 1 40px">
+
+            <div *ngIf="soru?.baslangic" fxLayout="row" fxLayoutAlign="end center" fxFlex.gt-lg="1 1 150px" fxFlex="1 1 40px">
+
+
 
                 <button fxHide fxShow.gt-lg mat-icon-button (click)="$event.stopPropagation();" aria-label="Toggle star">
                     <mat-icon *ngIf="!bitisTarihiGecerli" matTooltip="Aksi belirtilene kadar soru geçerli.">all_inclusive</mat-icon>
                 </button>
-                <button fxHide fxShow.gt-lg mat-icon-button *ngIf="!bitisTarihiGecerli" (click)="$event.stopPropagation();" aria-label="Toggle star">
-                    <mat-icon *ngIf="soru.favori" matTooltip="Bu soru sizin favori sorunuz.">star</mat-icon>
-                    <mat-icon *ngIf="!soru.favori" matTooltip="Bu soru sizin için favori olmayan bir sorudur.">star_outline</mat-icon>
+                <button fxHide fxShow.gt-lg mat-icon-button *ngIf="!bitisTarihiGecerli" (click)="$event.stopPropagation();favoriToogle()" aria-label="Toggle star">
+                    <mat-icon *ngIf="soru?.favori" matTooltip="Bu soru sizin favori sorunuz.">star</mat-icon>
+                    <mat-icon *ngIf="!soru?.favori" matTooltip="Bu soru sizin için favori olmayan bir sorudur.">star_outline</mat-icon>
                 </button>
                 <button fxHide fxShow.gt-lg mat-button class="mat-icon-button" aria-label="Ders kurulu dersi">
-                    <mat-icon *ngIf="soru.onaylandi" matTooltip="Bu soru onaylanmış. Sınavlarda çıkabilir.">thumb_up</mat-icon>
-                    <mat-icon *ngIf="!soru.onaylandi" matTooltip="Bu soru onaysız. Sınavlarda ÇIKMAZ!.">thumb_down</mat-icon>
+                    <mat-icon *ngIf="soru?.onaylandi" matTooltip="Bu soru onaylanmış. Sınavlarda çıkabilir.">thumb_up</mat-icon>
+                    <mat-icon *ngIf="!soru?.onaylandi" matTooltip="Bu soru onaysız. Sınavlarda ÇIKMAZ!.">thumb_down</mat-icon>
                 </button>
 
                 <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More" (click)="$event.stopPropagation();">
@@ -55,12 +62,12 @@
                 </button>
 
                 <mat-menu #moreMenu="matMenu">
-                    <button *ngIf="soru.aktif" mat-menu-item aria-label="Kapat" (click)="soruyuKapat()">
+                    <button *ngIf="soru?.aktif" mat-menu-item aria-label="Kapat" (click)="soruyuKapat()">
                         <mat-icon>stop</mat-icon>
                         <span matTooltip="Soruyu inkatif yaparak sonraki sınavlarda çıkmasını önlersiniz.">İnaktif yap</span>
                     </button>
 
-                    <button *ngIf="!soru.aktif" mat-menu-item aria-label="Aç" (click)="soruyuAc()">
+                    <button *ngIf="!soru?.aktif" mat-menu-item aria-label="Aç" (click)="soruyuAc()">
                         <mat-icon>fast_forward</mat-icon>
                         <span matTooltip="Aktif yaptığınız sorular sınavlarda onaylandıktan sonra çıkabilir.">Aktif yap</span>
                     </button>
@@ -73,22 +80,22 @@
                         <span>Yazdır</span>
                     </button> -->
                     <mat-divider></mat-divider>
-                    <button *ngIf="!soru.favori" mat-menu-item aria-label="Favori yap" (click)="soruyuFavoriYap()">
+                    <button *ngIf="!soru?.favori" mat-menu-item aria-label="Favori yap" (click)="soruyuFavoriYap()">
                         <mat-icon matTooltip="Favori olarak işaretlerseniz sınavlarda çıkma olasılığı artar">star</mat-icon>
                         <span>Favori sorum olsun</span>
                     </button>
 
-                    <button *ngIf="soru.favori" mat-menu-item aria-label="Sıradan yap" (click)="soruyuSiradanYap()">
+                    <button *ngIf="soru?.favori" mat-menu-item aria-label="Sıradan yap" (click)="soruyuSiradanYap()">
                         <mat-icon matTooltip="Soruyu favori yapmazsanız, sınavlarda çıkma şansı az olur. ">star_outline</mat-icon>
                         <span>Favori sorum olmasın</span>
                     </button>
 
                     <mat-divider></mat-divider>
 
-                    <button mat-menu-item aria-label="Forward " [disabled]="soru.silinemez" (click)="soruyuSilindiYap()">
+                    <button mat-menu-item aria-label="Forward " [disabled]="soru?.silinemez" (click)="soruyuSilindiYap()">
                         <mat-icon>delete</mat-icon>
-                        <span *ngIf="!soru.silinemez " matTooltip="Soruyu sildikten sonra geri alamazsınız! ">Sil</span>
-                        <span *ngIf="soru.silinemez " matTooltip="Bu soru silinemez olarak işaretlenmiş. ">Sil</span>
+                        <span *ngIf="!soru?.silinemez " matTooltip="Soruyu sildikten sonra geri alamazsınız! ">Sil</span>
+                        <span *ngIf="soru?.silinemez " matTooltip="Bu soru silinemez olarak işaretlenmiş. ">Sil</span>
                     </button>
 
                 </mat-menu>

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, OnDestroy, HostBinding } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, HostBinding, ChangeDetectorRef } from '@angular/core';
 
 
 import { FormGroup, FormBuilder } from '@angular/forms';
@@ -8,6 +8,7 @@ import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import { fuseAnimations } from '@fuse/animations';
 import { CoktanSecmeliSoruSecenekService } from '../../../coktan-secmeli-soru-secenek.service';
+import { SbMesajService } from '../../../../../../../core/services/sb-mesaj.service';
 @Component({
   selector: 'fuse-tek-dogrulu-secenek-detay',
   templateUrl: './tek-dogrulu-secenek-detay.component.html',
@@ -32,7 +33,9 @@ export class TekDogruluSecenekDetayComponent implements OnInit, OnDestroy {
   onCurrentTodoChanged: Subscription;
 
   constructor(
-    private tekDogruluSecenekService: CoktanSecmeliSoruSecenekService,
+    public tekDogruluSecenekService: CoktanSecmeliSoruSecenekService,
+    private cd: ChangeDetectorRef,
+    private mesajService: SbMesajService,
     private formBuilder: FormBuilder
   ) {
 
@@ -42,28 +45,29 @@ export class TekDogruluSecenekDetayComponent implements OnInit, OnDestroy {
     this.onCurrentTodoChanged =
       this.tekDogruluSecenekService.onCurrentTodoChanged
         .subscribe((todo) => {
-
-          if (todo && this.secenekFormu) {
-            this.dogruSecenek = this.secenekFormu.get('dogruSecenek').value;
-            this.yanlisSecenek = !this.dogruSecenek;
-            this.hemenElenebilirSecenek = this.secenekFormu.get('hemenElenebilir').value;
-          }
           this.secenekFormu = todo;
+          this.stilSiniflariniAyarla();
+          this.cd.detectChanges();
         });
 
   }
 
-  toggleDogruSecenek(event) {
-    event.stopPropagation();
-    const dogruSecenek = this.secenekFormu.get('dogruSecenek').value;
-    this.secenekFormu.patchValue({ dogruSecenek: !dogruSecenek });
-    this.tekDogruluSecenekService.onCurrentTodoChanged.next(this.secenekFormu);
+  stilSiniflariniAyarla() {
+    if (this.secenekFormu) {
+      this.dogruSecenek = this.secenekFormu.get('dogruSecenek').value;
+      this.yanlisSecenek = !this.dogruSecenek;
+      this.hemenElenebilirSecenek = this.secenekFormu.get('hemenElenebilir').value;
+    }
   }
 
-  toggleHemenElenebilir(event) {
-    event.stopPropagation();
-    const hemenElenebilirSecenek = this.secenekFormu.get('hemenElenebilir').value;
-    this.secenekFormu.patchValue({ hemenElenebilir: !hemenElenebilirSecenek });
+  toggleDogruSecenek() {
+    this.tekDogruluSecenekService.hesaplariYap();
+    this.tekDogruluSecenekService.onCurrentTodoChanged.next(this.secenekFormu);
+
+  }
+
+  toggleHemenElenebilir() {
+    this.tekDogruluSecenekService.hesaplariYap();
     this.tekDogruluSecenekService.onCurrentTodoChanged.next(this.secenekFormu);
   }
 

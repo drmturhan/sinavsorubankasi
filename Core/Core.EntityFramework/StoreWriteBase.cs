@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Core.EntityFramework
 {
-    public class StoreWriteBase<TContext, TEntity> : StoreBase<TContext,TEntity>, IStoreWriteBase<TContext, TEntity> where TContext : DbContext where TEntity : class
+    public class StoreWriteBase<TContext, TEntity> : StoreBase<TContext, TEntity>, IStoreWriteBase<TContext, TEntity> where TContext : DbContext where TEntity : class
     {
         public StoreWriteBase(TContext context) : base(context)
         {
@@ -67,7 +67,7 @@ namespace Core.EntityFramework
         //    {
         //        throw new Exception("Veritabanı güncelleme hatası!");
         //    }
-            
+
         //    return sonuc;
         //}
         //public async virtual Task<KayitSonuc<TEntity>> SilAsync(TEntity entity, CancellationToken cancellationToken = default(CancellationToken))
@@ -90,29 +90,36 @@ namespace Core.EntityFramework
         //    {
         //        throw new Exception("Veritabanı güncelleme hatası!");
         //    }
-            
+
         //    return sonuc;
         //}
 
         public async Task<bool> KaydetAsync()
         {
-            var sonuc = await Context.SaveChangesAsync() > 0;
-            return sonuc;
+            try
+            {
+                var sonuc = await Context.SaveChangesAsync() > 0;
+                return sonuc;
+            }
+            catch (Exception e)
+            {
+                return e == null;
+            }
         }
         public async Task EkleAsync(TEntity entity)
         {
             await Context.AddAsync(entity);
         }
 
-        
+
 
         public void Sil(TEntity entity)
         {
             Context.Remove(entity);
         }
 
-        
+
     }
 
-    
+
 }

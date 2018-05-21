@@ -4,7 +4,6 @@ using System.Collections.Generic;
 namespace SoruDeposu.DataAccess
 {
 
-    
     public class SoruSorgu : SorguBase
     {
 

@@ -18,7 +18,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Platform } from '@angular/cdk/platform';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { FormattedMessageChain } from '@angular/compiler';
-import { MatDialogRef, MAT_DIALOG_DATA, MatSelectionList, MatListOption, MatTabGroup } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA, MatSelectionList, MatListOption, MatTabGroup, MatSlider } from '@angular/material';
 import { FormBuilder, FormGroup, FormControlName, FormArray, FormControl, AbstractControl, Validators, NgForm } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -40,6 +40,7 @@ import { CoktanSecmeliSoruValidatorleri } from './validators';
 import { SorularService } from '../sorular.service';
 import { CoktanSecmeliSoruValidasyonMesajlari_tr } from './validasyon.mesajlari';
 import { TekDogruluSoruSecenek } from '../models/soru';
+import { timeout } from 'q';
 
 
 @Component({
@@ -56,6 +57,7 @@ export class CoktanSecmeliSoruComponent implements OnInit, AfterViewInit, OnDest
 
   @ViewChild('hedefler') hedeflerSecimListesi: MatSelectionList;
   @ViewChild('defter') defter: MatTabGroup;
+  @ViewChild('sureSlider') sureKulagi: MatSlider;
 
   @HostBinding('class.tam-ekran') tamEkran: boolean;
   anahtarKelimeler: FormArray;
@@ -142,6 +144,7 @@ export class CoktanSecmeliSoruComponent implements OnInit, AfterViewInit, OnDest
   }
   public ngAfterViewInit(): void {
 
+
     const controlBlurs = this.formInputElements.map((formControl: ElementRef) => fromEvent(formControl.nativeElement, 'blur'));
     // Merge the blur event observable with the valueChanges observable
     merge(this.coktanSecmeliSoruSecenekService.soruForm.valueChanges, ...controlBlurs)
@@ -156,35 +159,13 @@ export class CoktanSecmeliSoruComponent implements OnInit, AfterViewInit, OnDest
           this.anahtarKelimeler = anahtarlar;
         }
       );
-      this.coktanSecmeliSoruSecenekService.soruForm.get('secenekler').valueChanges.subscribe((secenekler) => {
-        const sonuc = this.hesaplariYap(secenekler);
-        this.coktanSecmeliSoruSecenekService.soruForm.patchValue(
-          {
-            kabulEdilebilirlikIndeksi: sonuc.kei,
-            hemenElenebilirSecenekSayisi: sonuc.hess
-          }
-        );
-        this.coktanSecmeliSoruSecenekService.dogruSecenekSayisiDegisti.next(sonuc.dogruSecenekSayisi);
-        this.coktanSecmeliSoruSecenekService.hemenElenebilirSecenekSayisiDegisti.next(sonuc.hess);
-        this.coktanSecmeliSoruSecenekService.kabulEdilebilirkikIndeksiDegisti.next(sonuc.kei);
 
-      });
+
     }
 
 
   }
-  hesaplariYap(secenekler: any[]): { dogruSecenekSayisi: number, hess: number, kei: number } {
-    const dogruSecenekSayisi = secenekler.filter(el => el.dogruSecenek === true).length;
-    const hessGuncelDegeri = secenekler.filter(el => el.hemenElenebilir === true).length;
-    const kei = this.coktanSecmeliSoruSecenekService.kabulEdilebilirlikIndeksiniHesapla(secenekler.length, hessGuncelDegeri);
-    return { dogruSecenekSayisi: dogruSecenekSayisi, hess: hessGuncelDegeri, kei: kei };
-  }
-  hesaplariYapArray(secenekler: FormArray): { dogruSecenekSayisi: number, hess: number, kei: number } {
-    const dogruSecenekSayisi = secenekler.controls.filter(el => el.get('dogruSecenek').value === true).length;
-    const hessGuncelDegeri = secenekler.controls.filter(el => el.get('hemenElenebilir').value === true).length;
-    const kei = this.coktanSecmeliSoruSecenekService.kabulEdilebilirlikIndeksiniHesapla(secenekler.length, hessGuncelDegeri);
-    return { dogruSecenekSayisi: dogruSecenekSayisi, hess: hessGuncelDegeri, kei: kei }
-  }
+
   secilebilirOgrenimHedefleriniAyarla() {
     const sonuc: OgrenimHedefItem[] = [];
     const konuNumarasi = this.coktanSecmeliSoruSecenekService.soruForm.get('konuNo').value;
@@ -220,14 +201,14 @@ export class CoktanSecmeliSoruComponent implements OnInit, AfterViewInit, OnDest
       konuNo: this.data.konuNo,
       soruTipNo: [null, [Validators.required]],
       soruZorlukNo: [null, [Validators.required]],
-      soruAdi: ['', [Validators.required]],
+      kaynakca: [''],
       soruMetni: ['', [Validators.required]],
       gecerlilik: this.formBuilder.group(
         {
           baslangic: [null, [Validators.required]],
           bitis: [null]
         }, { validator: this.soruValidatorleri.BitisBaslangictanOnceOlamaz('baslangic', 'bitis') }),
-      aciklama: ['', [Validators.required]],
+      aciklama: [''],
       secenekler: this.formBuilder.array([], this.soruValidatorleri.tekDogruluCoktanSecmeliSeceneklerValidator),
       hemenElenebilirSecenekSayisi: 0,
       kabulEdilebilirlikIndeksi: [0],
@@ -249,7 +230,7 @@ export class CoktanSecmeliSoruComponent implements OnInit, AfterViewInit, OnDest
       konuNo: soruBilgi.konuNo,
       soruTipNo: soruBilgi.soruTipNo,
       sorusozNo: soruBilgi.soruZorlukNo,
-      soruAdi: soruBilgi.soruAdi,
+      kaynakca: soruBilgi.kaynakca,
       soruMetni: soruBilgi.soruMetni,
       soruZorlukNo: soruBilgi.soruZorlukNo,
       gecerlilik: {
@@ -274,7 +255,7 @@ export class CoktanSecmeliSoruComponent implements OnInit, AfterViewInit, OnDest
           hemenElenebilir: elSecenek.hemenElenebilir,
         }));
       });
-      const sonuc = this.hesaplariYapArray(secenekler);
+      const sonuc = this.coktanSecmeliSoruSecenekService.hesaplariYap(secenekler);
 
       this.coktanSecmeliSoruSecenekService.dogruSecenekSayisiDegisti.next(sonuc.dogruSecenekSayisi);
       this.coktanSecmeliSoruSecenekService.hemenElenebilirSecenekSayisiDegisti.next(sonuc.hess);
@@ -293,13 +274,13 @@ export class CoktanSecmeliSoruComponent implements OnInit, AfterViewInit, OnDest
       });
     }
 
+    this.sureKulagi.value = soruBilgi.cevaplamaSuresi;
     this.displayMessage = this.genericValidator.processMessages(this.coktanSecmeliSoruSecenekService.soruForm);
   }
   anahtarkelimeleriBosalt() {
-    while ((this.coktanSecmeliSoruSecenekService.soruForm.get('anahtarkelimeler') as FormArray).length !== 0) {
-      (this.coktanSecmeliSoruSecenekService.soruForm.get('anahtarkelimeler') as FormArray).removeAt(0);
+    while ((this.coktanSecmeliSoruSecenekService.soruForm.get('anahtarKelimeler') as FormArray).length !== 0) {
+      (this.coktanSecmeliSoruSecenekService.soruForm.get('anahtarKelimeler') as FormArray).removeAt(0);
     }
-
 
   }
 
@@ -317,7 +298,8 @@ export class CoktanSecmeliSoruComponent implements OnInit, AfterViewInit, OnDest
   }
 
   cevaplamaSuresiDegisti(deger) {
-    this.coktanSecmeliSoruSecenekService.soruForm.patchValue({ cevaplamaSuresi: deger });
+    console.log(deger);
+    this.coktanSecmeliSoruSecenekService.soruForm.patchValue({ cevaplamaSuresi: deger.value });
   }
   hessSuresiDegisti(deger) {
 
@@ -335,7 +317,7 @@ export class CoktanSecmeliSoruComponent implements OnInit, AfterViewInit, OnDest
       dersGrubuNo: this.data.ders.dersGrubuNo,
       dersNo: this.data.dersNo,
       konuNo: this.data.konuNo,
-      // soruAdi: 'Otoskleroz tanımı',
+      // kaynakca: 'Otoskleroz tanımı',
       soruTipNo: 1,
       soruMetni: 'Aşağıdakilerden hangisi .... değildir? ',
       tekDogruluSecenekleri: [{
@@ -370,7 +352,7 @@ export class CoktanSecmeliSoruComponent implements OnInit, AfterViewInit, OnDest
         'hemenElenebilir': false
       }],
       // anahtarKelimeler: ['kelime ', 'işitme kaybı', 'genetik', 'çınlama'],
-      soruAdi: '',
+      kaynakca: '',
       aciklama: '',
       bilisselDuzeyNo: 2,
       soruZorlukNo: 1,
@@ -420,10 +402,19 @@ export class CoktanSecmeliSoruComponent implements OnInit, AfterViewInit, OnDest
   }
 
   tamam() {
+    const secenekler = <FormArray>this.coktanSecmeliSoruSecenekService.soruForm.get('secenekler');
+    const seceneklerDeger: TekDogruluSoruSecenek[] = secenekler.value;
+    const hemDogruHemdeElenebilirSorular: TekDogruluSoruSecenek[] = seceneklerDeger.filter(el => el.dogruSecenek && el.hemenElenebilir);
+    if (hemDogruHemdeElenebilirSorular.length > 0) {
+      this.mesajService.hataStr('Aynı zamanda hem doğru seçenek hem de hemen elenebilir seçenek olarak işaretlenmiş seçenek var!');
+      return;
+    }
+
     this.dialogRef.close(['kaydet', this.coktanSecmeliSoruSecenekService.soruForm, this.data.degisecekSoru]);
   }
 
   formEksik() {
+
     if (this.coktanSecmeliSoruSecenekService.soruForm.get('secenekler').errors) {
 
       if (this.coktanSecmeliSoruSecenekService.soruForm.get('secenekler').errors.hicSecenekGirilmemis) {
@@ -438,7 +429,7 @@ export class CoktanSecmeliSoruComponent implements OnInit, AfterViewInit, OnDest
       }
 
       if (this.coktanSecmeliSoruSecenekService.soruForm.get('secenekler').errors.tekDogruSecenekOlabilir) {
-        this.mesajService.hataStr('Bu soru tipi için sadece tek seçenek doğru olarak işaretlenebilir');
+        this.mesajService.hataStr('Bu soru tipi için sadece tek seçenek doğru olarak işaretlenebilir!');
         this.defter.selectedIndex = 0;
         return;
       }
@@ -455,6 +446,8 @@ export class CoktanSecmeliSoruComponent implements OnInit, AfterViewInit, OnDest
       this.defter.selectedIndex = 3;
       return;
     }
+
+
 
     this.displayMessage = this.genericValidator.processMessages(this.coktanSecmeliSoruSecenekService.soruForm, true);
     this.defter.selectedIndex = 1;
@@ -476,4 +469,5 @@ export class CoktanSecmeliSoruComponent implements OnInit, AfterViewInit, OnDest
     this.cd.detach();
     this.mobileQuery.removeListener(this._mobileQueryListener);
   }
+
 }

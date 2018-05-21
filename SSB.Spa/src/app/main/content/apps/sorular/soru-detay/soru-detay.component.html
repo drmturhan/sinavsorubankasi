@@ -7,7 +7,7 @@
     </span>
 </div>
 
-<div *ngIf="soru">
+<div *ngIf="soru" style="color:#252D43">
     <div class="mail-header" fxLayout="row" fxLayoutAlign="space-between center">
         <div>
             <div class="subject" flex>{{dersKonuAdi}}</div>
@@ -23,12 +23,12 @@
             <button fxHide fxShow.gt-md mat-icon-button (click)="$event.stopPropagation();" aria-label="Toggle star">
                 <mat-icon *ngIf="!bitisTarihiGecerli" matTooltip="Aksi belirtilene kadar soru geçerli.">all_inclusive</mat-icon>
             </button>
-            <button mat-button class="mat-icon-button" aria-label="Soru aktif">
+            <button mat-button class="mat-icon-button" aria-label="Soru aktif" (click)="soruyuAcKapat()">
                 <mat-icon *ngIf="soru.aktif" matTooltip="Bu soru aktif. Aktif sorular onay yapıldıktan sonra sınavlarda çıkabilir.">fast_forward</mat-icon>
                 <mat-icon *ngIf="!soru.aktif" matTooltip="Bu soru aktif değil. Pasif sorular sınavlarda çıkmaz.">stop</mat-icon>
             </button>
 
-            <button mat-button class="mat-icon-button" aria-label="Staj dersi">
+            <button mat-button class="mat-icon-button" aria-label="Staj dersi" (click)="favoriToogle()">
                 <mat-icon *ngIf="soru.favori" matTooltip="Bu soru sizin favori sorunuz.">star</mat-icon>
                 <mat-icon *ngIf="!soru.favori" matTooltip="Bu soru sizin için favori olmayan bir sorudur.">star_outline</mat-icon>
             </button>
@@ -48,8 +48,8 @@
             <mat-icon *ngIf="soru.aktif" matTooltip="Bu soru aktif. Aktif sorular onay yapıldıktan sonra sınavlarda çıkabilir.">fast_forward</mat-icon>
             <mat-icon *ngIf="!soru.aktif" matTooltip="Bu soru aktif değil. Pasif sorular sınavlarda çıkmaz.">stop</mat-icon>
         </button>
-        <button  *ngIf="!bitisTarihiGecerli" mat-icon-button (click)="$event.stopPropagation();" aria-label="Toggle star">
-            <mat-icon  matTooltip="Aksi belirtilene kadar soru geçerli.">all_inclusive</mat-icon>
+        <button *ngIf="!bitisTarihiGecerli" mat-icon-button (click)="$event.stopPropagation();" aria-label="Toggle star">
+            <mat-icon matTooltip="Aksi belirtilene kadar soru geçerli.">all_inclusive</mat-icon>
         </button>
         <button mat-button class="mat-icon-button" aria-label="Staj dersi">
             <mat-icon *ngIf="soru.favori" matTooltip="Bu soru sizin favori sorunuz.">star</mat-icon>
@@ -64,78 +64,59 @@
     </div>
 
 
-    <div class="mail-content">
+    <div class="mail-content" fxLayout="column" fxLayoutAlign="start stretch" fxLayoutgap="16px">
 
         <div class="info" fxLayout="row" fxLayoutAlign="space-between start">
 
-            <div fxFlex fxLayout="column" fxLayoutAlign="start start">
+            <span fxFlex="auto" class="name">{{soru?.soruMetni| slice:0:100}}{{soru?.soruMetni.length > 100 ? '...' : ''}}</span>
 
-                <div fxLayout="row" fxLayoutAlign="start start">
+            <div fxFlex="80px">
+                <button mat-button class="mat-icon-button" (click)="soruyuDegistir()" matTooltip="Düzenleme ekranını aç">
+                    <mat-icon>edit</mat-icon>
+                </button>
 
+                <button mat-button [matMenuTriggerFor]="moreMenu" aria-label="More" class="mat-icon-button" (click)="$event.stopPropagation()">
+                    <mat-icon>more_vert</mat-icon>
+                </button>
 
-                    <div fxLayout="column" fxLayoutAlign="start start">
-                        <div class="name">                            
-                            {{soru.soruAdi}}
-                        </div>
+                <mat-menu #moreMenu="matMenu">
 
-                        <div class="to" fxLayout="row" fxLayoutAlign="start center">
-                            <div>{{soru.aciklama}}</div>
-                        </div>
-                    </div>
-                </div>
+                    <button *ngIf="soru.aktif" mat-menu-item aria-label="Kapat" (click)="soruyuKapat()">
+                        <mat-icon>stop</mat-icon>
+                        <span matTooltip="Soruyu inaktif yaparsanız sonraki sınavlarda çıkmasını önlersiniz.">İnaktif yap</span>
+                    </button>
 
+                    <button *ngIf="!soru.aktif" mat-menu-item aria-label="Aç" (click)="soruyuAc()">
+                        <mat-icon>fast_forward</mat-icon>
+                        <span matTooltip="Aktif yaptığınız sorular sınavlarda onaylandıktan sonra çıkabilir.">Aktif yap</span>
+                    </button>
+                    <button mat-menu-item aria-label="Reply" (click)="soruyuDegistir()" matTooltip="Düzenleme ekranını aç">
+                        <mat-icon>edit</mat-icon>
+                        <span>Düzelt</span>
+                    </button>
+                    <button mat-menu-item aria-label="Print" (click)="soruOnIzlemeGoster()" fxHide.lt-lg>
+                        <mat-icon>print</mat-icon>
+                        <span>Yazdır</span>
+                    </button>
+                    <mat-divider></mat-divider>
+                    <button *ngIf="!soru.favori" mat-menu-item aria-label="Favori yap" (click)="soruyuFavoriYap()">
+                        <mat-icon matTooltip="Favori olarak işaretlerseniz sınavlarda çıkma olasılığı artar">star</mat-icon>
+                        <span>Favori sorum olsun</span>
+                    </button>
 
+                    <button *ngIf="soru.favori" mat-menu-item aria-label="Sıradan yap" (click)="soruyuSiradanYap()">
+                        <mat-icon matTooltip=" Soruyu sıradan yaparsanız, sınavlarda çıkma şansı az olur. ">star_outline</mat-icon>
+                        <span>Favori sorum olmasın</span>
+                    </button>
+
+                    <mat-divider></mat-divider>
+                    <button mat-menu-item aria-label="Forward " [disabled]="soru.silinemez " (click)="soruyuSilindiYap()">
+                        <mat-icon>delete</mat-icon>
+                        <span *ngIf="!soru.silinemez " matTooltip="Soruyu sildikten sonra geri alamazsınız! ">Sil</span>
+                        <span *ngIf="soru.silinemez " matTooltip="Bu soru silinemez olarak işaretlenmiş. ">Sil</span>
+                    </button>
+                </mat-menu>
             </div>
-
-            <button mat-button class="mat-icon-button" (click)="soruyuDegistir()" matTooltip="Düzenleme ekranını aç">
-                    <mat-icon>edit</mat-icon>
-                </button>
-
-            <button mat-button [matMenuTriggerFor]="moreMenu" aria-label="More" class="mat-icon-button" (click)="$event.stopPropagation()">
-                <mat-icon>more_vert</mat-icon>
-            </button>
-
-            <mat-menu #moreMenu="matMenu">
-
-                <button *ngIf="soru.aktif" mat-menu-item aria-label="Kapat" (click)="soruyuKapat()">
-                    <mat-icon>stop</mat-icon>
-                    <span matTooltip="Soruyu inaktif yaparsanız sonraki sınavlarda çıkmasını önlersiniz.">İnaktif yap</span>
-                </button>
-
-                <button *ngIf="!soru.aktif" mat-menu-item aria-label="Aç" (click)="soruyuAc()">
-                    <mat-icon>fast_forward</mat-icon>
-                    <span matTooltip="Aktif yaptığınız sorular sınavlarda onaylandıktan sonra çıkabilir." >Aktif yap</span>
-                </button>
-                <button mat-menu-item aria-label="Reply" (click)="soruyuDegistir()" matTooltip="Düzenleme ekranını aç">
-                    <mat-icon>edit</mat-icon>
-                    <span>Düzelt</span>
-                </button>
-                <button mat-menu-item aria-label="Print" (click)="soruOnIzlemeGoster()" fxHide.lt-lg >
-                    <mat-icon>print</mat-icon>
-                    <span>Yazdır</span>
-                </button>
-                <mat-divider></mat-divider>
-                <button *ngIf="!soru.favori" mat-menu-item aria-label="Favori yap" (click)="soruyuFavoriYap()">
-                    <mat-icon matTooltip="Favori olarak işaretlerseniz sınavlarda çıkma olasılığı artar">star</mat-icon>
-                    <span>Favori sorum olsun</span>
-                </button>
-
-                <button *ngIf="soru.favori" mat-menu-item aria-label="Sıradan yap" (click)="soruyuSiradanYap()">
-                    <mat-icon matTooltip=" Soruyu sıradan yaparsanız, sınavlarda çıkma şansı az olur. ">star_outline</mat-icon>
-                    <span>Favori sorum olmasın</span>
-                </button>
-
-                <mat-divider></mat-divider>
-                <button mat-menu-item aria-label="Forward " [disabled]="soru.silinemez " (click)="soruyuSilindiYap()">
-                    <mat-icon>delete</mat-icon>
-                    <span *ngIf="!soru.silinemez " matTooltip="Soruyu sildikten sonra geri alamazsınız! ">Sil</span>
-                    <span *ngIf="soru.silinemez " matTooltip="Bu soru silinemez olarak işaretlenmiş. ">Sil</span>
-                </button>
-
-
-
-
-            </mat-menu>
         </div>
 
         <button class="toggle-details" mat-button (click)="detayToogle()">
@@ -172,19 +153,42 @@
 
             </div>
         </div>
-        <div class="soru-metni kart">{{soru.soruMetni}}</div>
-        <ol class="rectangle-list soru-secenekler kart ">
-            <li *ngFor="let secenek of soru.tekDogruluSecenekleri ">
-                <a [ngStyle]="{ 'border-right': secenek.dogruSecenek===true? '5px solid #5BA36F': '5px solid #E2474C'} ">
-                    <div [innerHTML]="secenek.secenekMetni"></div>
-                </a>
-            </li>
-        </ol>
-        <div *ngIf="soru.soruHedefleri.length===0">
-            <h3>Soru ile ilişkilendirilmiş öğrenim hedefi yok.</h3>
+        <div class="kart" style="background-color: #DB4549;color:#E2E3DD;" *ngIf="soru.soruKokuMetni">
+            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16px">
+                <mat-icon class="mat-18">attachment</mat-icon>
+                <h2>Soru Kökü</h2>
+            </div>
+            <mat-divider></mat-divider>
+            <div [innerHTML]="soru.soruKokuMetni" style="padding:24px;text-align: justify; "></div>
         </div>
+
+        <div class="kart">
+            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16px">
+                <mat-icon class="mat-18">library_books</mat-icon>
+                <h2>Soru metni ve seçenekler</h2>
+            </div>
+            <mat-divider></mat-divider>
+            <div class="soru-metni kart">{{soru.soruMetni}}</div>
+            <ol class="rectangle-list soru-secenekler kart ">
+                <li *ngFor="let secenek of soru.tekDogruluSecenekleri ">
+                    <a [ngStyle]="{ 'border-right': secenek.dogruSecenek===true? '5px solid #5BA36F': '5px solid #E2474C'} ">
+                        <div [innerHTML]="secenek.secenekMetni"></div>
+                    </a>
+                </li>
+            </ol>
+        </div>
+
+
         <div *ngIf="soru.soruHedefleri.length>0" id="soru-hedefleri" class="kart">
-            <h3>Sorunun ilişkilendirildiği öğrenim hedefleri</h3>
+
+            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16px">
+                <mat-icon class="mat-18">my_location</mat-icon>
+                <h2>Sorunun ilişkilendirildiği öğrenim hedefleri</h2>
+            </div>
+            <mat-divider></mat-divider>
+            <div *ngIf="soru.soruHedefleri.length===0">
+                <h2>Soru ile ilişkilendirilmiş öğrenim hedefi yok!</h2>
+            </div>
             <ol>
                 <li *ngFor="let item of soru.soruHedefleri let i=index ">
                     <p>
@@ -193,5 +197,36 @@
                 </li>
             </ol>
         </div>
+
+        <div fxLayout="column" fxLayoutAlign="start stretch">
+            <div class="kart">
+                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16px">
+                    <mat-icon class="mat-18">assignment</mat-icon>
+                    <h2>Kaynakça</h2>
+                </div>
+                <mat-divider></mat-divider>
+                <div class="name">
+                    {{soru.kaynakca|htmlToPlaintext}}
+                </div>
+                <div *ngIf="!soru.kaynakca" class="name">
+                    Kaynakça girilmemiş!
+                </div>
+            </div>
+            <div class="kart">
+
+                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16px">
+                    <mat-icon class="mat-18">lightbulb_outline</mat-icon>
+                    <h2>Cevap açıklaması</h2>
+                </div>
+                <mat-divider></mat-divider>
+                <div class="to" fxLayout="row" fxLayoutAlign="start center">
+                    <div>{{soru.aciklama|htmlToPlaintext}}</div>
+                    <div *ngIf="!soru.aciklama" class="name">
+                        Cevap açıklaması girilmemiş!
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>

@@ -66,6 +66,7 @@ export class SoruDetayComponent implements OnInit, OnChanges {
 
   }
   ngOnChanges(changes: SimpleChanges): void {
+
     if (this.soru) {
       if (this.soru.baslangic) {
         if (this.soru.bitis) {
@@ -172,17 +173,27 @@ export class SoruDetayComponent implements OnInit, OnChanges {
     this.store.dispatch(new fromStore.UpdateSoru(kaydedilecekSoru));
 
   }
+  soruyuAcKapat() {
+    if (this.soru.aktif === true) {
+      this.soruyuKapat();
+    } else { this.soruyuAc(); }
+  }
   soruyuKapat() {
     this.store.dispatch(new fromStore.SoruAcKapa({ soruNo: this.soru.soruId, ac: false }));
   }
   soruyuAc() {
     this.store.dispatch(new fromStore.SoruAcKapa({ soruNo: this.soru.soruId, ac: true }));
   }
+  favoriToogle() {
+    if (this.soru.favori) {
+      this.soruyuSiradanYap();
+    } else { this.soruyuFavoriYap(); }
+  }
   soruyuFavoriYap() {
     this.store.dispatch(new fromStore.SoruFavoriDegistir({ soruNo: this.soru.soruId, favori: true }));
   }
   soruyuSiradanYap() {
-    this.store.dispatch(new fromStore.SoruFavoriDegistir({ soruNo: this.soru.soruId, favori: true }));
+    this.store.dispatch(new fromStore.SoruFavoriDegistir({ soruNo: this.soru.soruId, favori: false }));
   }
   soruyuSilindiYap() {
 
@@ -206,23 +217,23 @@ export class SoruDetayComponent implements OnInit, OnChanges {
 
   soruOnIzlemeGoster() {
 
-      let en = '100vw';
-      let boy = '10 0vh';
-      let sinif = 'popup-masaustu';
-      if (this.platform.ANDROID || this.platform.IOS) {
-        en = '600px';
-        boy = '960px';
-        sinif = 'popup-mobil';
+    let en = '100vw';
+    let boy = '10 0vh';
+    let sinif = 'popup-masaustu';
+    if (this.platform.ANDROID || this.platform.IOS) {
+      en = '600px';
+      boy = '960px';
+      sinif = 'popup-mobil';
+    }
+    const dialogRef = this.dialog.open(SoruOnizlemeComponent, {
+      height: boy,
+      width: en,
+      panelClass: sinif,
+      data: {
+        soru: this.soru,
+        ders: this.ders,
+        konu: this.getKonu(this.soru.konuNo)
       }
-      const dialogRef = this.dialog.open(SoruOnizlemeComponent, {
-         height: boy,
-         width: en,
-        panelClass: sinif,
-        data: {
-          soru: this.soru,
-          ders: this.ders,
-          konu: this.getKonu(this.soru.konuNo)
-        }
-      });
+    });
   }
 }

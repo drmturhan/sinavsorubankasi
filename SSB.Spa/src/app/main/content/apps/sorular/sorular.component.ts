@@ -1,31 +1,29 @@
-import { Component, OnInit, ChangeDetectorRef, OnDestroy, ChangeDetectionStrategy, ViewEncapsulation } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { locale as english } from './i18n/en';
-import { locale as turkish } from './i18n/tr';
-
-import { Router } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
-import { MatDialog } from '@angular/material';
-
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { MatDialog } from '@angular/material';
+import { Router } from '@angular/router';
+import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
+import { FuseConfigService } from '@fuse/services/config.service';
+import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
-import { switchMap, catchError } from 'rxjs/operators';
+import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
-
-import * as fromSorularStore from './soru-store';
 import * as fromRootStore from '../../../../store';
 import * as fromAuthStore from '../../../../store/';
-
+import { locale as english } from './i18n/en';
+import { locale as turkish } from './i18n/tr';
+import { DersItem, KonuItem, SoruBirimItem } from './models/birim-program-donem-ders';
 import { SoruListe } from './models/soru';
-import { SorularService } from './sorular.service';
-import { SoruBirimItem, DersItem, KonuItem } from './models/birim-program-donem-ders';
-import { FuseConfigService } from '@fuse/services/config.service';
-import { SoruDepoVeriService } from './soru-store/helpers/soru-depo-veri.service';
+import * as fromSorularStore from './soru-store';
 import { SorularEffectsService } from './soru-store/effects/sorular-effects.service';
-import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
-import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
+import { SoruDepoVeriService } from './soru-store/helpers/soru-depo-veri.service';
+import { SorularService } from './sorular.service';
+
+
+
+
 
 @Component({
   selector: 'fuse-sorular',
@@ -40,7 +38,7 @@ export class SorularComponent implements OnInit, OnDestroy {
   isIndeterminate: boolean;
   searchInput: FormControl;
   baslik = '';
-  sorular$: Observable<any>;
+  sorular$: Observable<SoruListe[]>;
   aktifBirim: SoruBirimItem = null;
   aktifders: DersItem = null;
   aktifKonu: KonuItem = null;
@@ -146,9 +144,11 @@ export class SorularComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.sorular$.subscribe(sorular => {
-      this.sorular = sorular;
-    });
+    // this.sorular$.subscribe(sorular => {
+    //   this.sorular = sorular;
+    //   this.cd.detectChanges();
+    //   console.log(sorular);
+    // });
 
 
 

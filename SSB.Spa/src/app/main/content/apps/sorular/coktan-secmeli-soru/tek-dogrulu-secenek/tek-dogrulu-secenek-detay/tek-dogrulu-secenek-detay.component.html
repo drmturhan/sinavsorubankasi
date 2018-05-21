@@ -1,39 +1,47 @@
 <div *ngIf="!secenekFormu" fxLayout="column" fxLayoutAlign="center center" fxFlex>
-    <mat-icon class="s-120 mb-12 select-todo-icon" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'300ms',scale:'0.2'}}">check_box
-    </mat-icon>
-    <span class="hint-text mat-h1 select-todo-text" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'400ms'}}">Seçenek seç
-    </span>
-  </div>
-  
-  <div *ngIf="secenekFormu">
-    <div class="todo-header" fxLayout="row" fxLayoutAlign="space-between center">
-     
-      <div class="actions" fxLayout="row" fxLayoutAlign="start center">
-  
-        <button mat-button class="mat-icon-button" (click)="addTekDogruluSecenek($event)" aria-label="Seçenek ekle" fxHide.lt-lg>
-          <mat-icon matTooltip="Yeni seçenek ekle" class="ekle">add_box</mat-icon>
-        </button>
-  
-        <button mat-button class="mat-icon-button" (click)="toggleSecenekSil($event)" aria-label="Toggle delete" fxHide.lt-lg>
-          <mat-icon matTooltip="Bu seçeneği sil">delete</mat-icon>
-        </button>
-  
-      </div>
+  <mat-icon class="s-120 mb-12 select-todo-icon" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'300ms',scale:'0.2'}}">check_box
+  </mat-icon>
+  <span class="hint-text mat-h1 select-todo-text" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'400ms'}}">Seçenek seç
+  </span>
+</div>
+
+<div *ngIf="secenekFormu">
+  <div class="todo-header" fxLayout="row" fxLayoutAlign="space-between center">
+
+    <div class="actions" fxLayout="row" fxLayoutAlign="start center">
+
+      <button mat-button class="mat-icon-button" (click)="addTekDogruluSecenek($event)" aria-label="Seçenek ekle" fxHide.lt-lg>
+        <mat-icon matTooltip="Yeni seçenek ekle" class="ekle">add_box</mat-icon>
+      </button>
+
+      <button mat-button class="mat-icon-button" (click)="toggleSecenekSil($event)" aria-label="Toggle delete" fxHide.lt-lg>
+        <mat-icon matTooltip="Bu seçeneği sil">delete</mat-icon>
+      </button>
+
     </div>
-    <div class="todo-content">
-      <form [formGroup]="secenekFormu">
-        <fuse-sb-html-editor [parentForm]="secenekFormu"></fuse-sb-html-editor>
-        
-        <div class="secenek-ozellik-listesi" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px">
-          <mat-checkbox formControlName="dogruSecenek">
-            Doğru seçenek
-          </mat-checkbox>
-  
-          <mat-checkbox formControlName="hemenElenebilir">
-            İlk bakışta elenebilir seçenek.
-          </mat-checkbox>
-        </div>
-        <!-- <div class="tags m-12" fxLayout="row" fxLayoutAlign="start center" fxLayoutWrap fxHide.lt->
+    <div class="actions" fxLayout="row" fxLayoutAlign="start center">
+      <button mat-button class="mat-icon-button" (click)="tekDogruluSecenekService.oncekiSonrakiSecenegeGit(-1)" aria-label="Toggle delete">
+        <mat-icon matTooltip="Önceki seçeneğe git">navigate_before</mat-icon>
+      </button>
+      <button mat-button class="mat-icon-button" (click)="tekDogruluSecenekService.oncekiSonrakiSecenegeGit(1)" aria-label="Toggle delete">
+        <mat-icon matTooltip="Sonraki seçeneğe git">navigate_next</mat-icon>
+      </button>
+    </div>
+  </div>
+  <div class="todo-content">
+    <form [formGroup]="secenekFormu">
+      <fuse-sb-html-editor [parentForm]="secenekFormu" parentFormControlName="secenekMetni"  ></fuse-sb-html-editor>
+
+      <div class="secenek-ozellik-listesi" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px">
+        <mat-checkbox formControlName="dogruSecenek" (change)="toggleDogruSecenek($event)" [disabled]="hemenElenebilirSecenek" >
+          Doğru seçenek
+        </mat-checkbox>
+
+        <mat-checkbox formControlName="hemenElenebilir" (change)="toggleHemenElenebilir($event)" [disabled]="dogruSecenek">
+          İlk bakışta elenebilir seçenek.
+        </mat-checkbox>
+      </div>
+      <!-- <div class="tags m-12" fxLayout="row" fxLayoutAlign="start center" fxLayoutWrap fxHide.lt->
   
           <div class="tag" fxLayout="row" fxLayoutAlign="start center">
             <div class="tag-color" [ngStyle]="{'background-color': dogruSecenek?'green':'#E2474C'}"></div>
@@ -46,7 +54,7 @@
           </div>
   
         </div> -->
-  
-      </form>
-    </div>
+
+    </form>
   </div>
+</div>

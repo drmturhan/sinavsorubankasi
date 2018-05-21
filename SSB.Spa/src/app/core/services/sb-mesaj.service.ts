@@ -20,13 +20,16 @@ export class SbMesajService {
             if (sure == null) {
                 sure = 4000;
             }
-            return this.snackBar.open(mesajlar[0], action,
-                {
-                    duration: sure,
-                    verticalPosition: 'top',
-                    horizontalPosition: 'center',
-                    panelClass: ['snack-basari']
-                });
+            setTimeout(() => {
+                return this.snackBar.open(mesajlar[0], action,
+                    {
+                        duration: sure,
+                        verticalPosition: 'top',
+                        horizontalPosition: 'center',
+                        panelClass: ['snack-basari']
+                    });
+            });
+
         }
         return null;
     }
@@ -43,16 +46,16 @@ export class SbMesajService {
             sure = 4000;
         }
         if (hatalar && hatalar.length > 0) {
-            return this.snackBar.open(hatalar[0].tanim, action,
-                {
-                    duration: sure,
-                    verticalPosition: 'bottom',
-                    horizontalPosition: 'end',
-                    panelClass: ['snack-hata'],
-
-                });
+            setTimeout(() => {
+                return this.snackBar.open(hatalar[0].tanim, action,
+                    {
+                        duration: sure,
+                        verticalPosition: 'top',
+                        horizontalPosition: 'center',
+                        panelClass: ['snack-hata'],
+                    });
+            });
         }
         return null;
-
     }
 }

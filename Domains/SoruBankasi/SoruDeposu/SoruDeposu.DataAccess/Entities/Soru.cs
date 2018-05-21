@@ -28,11 +28,12 @@ namespace SoruDeposu.DataAccess.Entities
         public SoruZorluk SoruZorluk { get; set; }
         public SoruTip SoruTipi { get; set; }
 
-        public string SoruAdi { get; set; }
+
         public string SoruMetni { get; set; }
         public DateTime Baslangic { get; set; }
         public DateTime? Bitis { get; set; }
         public string Aciklama { get; set; }
+        public string Kaynakca { get; set; }
         public string AnahtarKelimeler { get; set; }
 
         public int HemenElenebilirSecenekSayisi { get; set; }
@@ -99,7 +100,7 @@ namespace SoruDeposu.DataAccess.Entities
         public KontrolListeGrupTanim Grubu { get; set; }
         public int KontrolDegerGrupTanimNo { get; set; }
         public KontrolDegerGrupTanim DegerGrubu { get; set; }
-        
+
 
     }
 
@@ -107,7 +108,7 @@ namespace SoruDeposu.DataAccess.Entities
     public class KontrolDegerGrupTanim
     {
         public int Id { get; set; }
-        public string DegerGrupAdi{ get; set; }
+        public string DegerGrupAdi { get; set; }
         public string AcikUcluDeger { get; set; }
         public ICollection<KontrolListeTanim> KontrolListesi { get; set; } = new List<KontrolListeTanim>();
         public ICollection<KontrolDegerTanim> DegerListesi { get; set; } = new List<KontrolDegerTanim>();
@@ -125,6 +126,6 @@ namespace SoruDeposu.DataAccess.Entities
 
     }
 
-  
+
 
 }

@@ -1,3 +1,51 @@
-<p>
-  ogrenim-hedefleri works!
-</p>
+<div class="" fusePerfectScrollbar>
+    <!-- TOP BACKGROUND -->
+    <!-- <div class="top-bg mat-accent-bg"></div> -->
+    <!-- / TOP BACKGROUND -->
+    <!-- CENTER -->
+    <div class="center">
+        <!-- CONTENT HEADER -->
+        <!-- <div class="header" fxLayout="row" fxLayoutAlign="start center">
+            <div class="search-wrapper mat-white-bg" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                <button mat-button class="mat-icon-button sidenav-toggle" fuseMatSidenavToggler="carded-left-sidenav" fxHide.gt-md aria-label="Toggle Sidenav">
+                    <mat-icon>menu</mat-icon>
+                </button>
+                <div class="search" flex fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon>search</mat-icon>
+                    <input [formControl]="searchInput" placeholder="Aramak için kelime yazın" fxFlex>
+                </div>
+            </div>
+        </div> -->
+        <!-- / CONTENT HEADER -->
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+            <!-- CONTENT TOOLBAR -->
+            <div class="toolbar">
+                <div class="todo-selection" fxFlex="row" fxLayoutAlign="start center">
+                    <mat-checkbox   #secim (click)="toggleselectAll(secim)" [checked]="hasSelectedTodos" [indeterminate]="isIndeterminate"></mat-checkbox>
+                    <button mat-icon-button [matMenuTriggerFor]="selectMenu">
+                        <mat-icon>arrow_drop_down</mat-icon>
+                    </button>
+
+                    <mat-menu #selectMenu="matMenu">
+                        <button mat-menu-item (click)="selectAll()">Tümü</button>
+                        <button mat-menu-item (click)="deselectAll()">Hiçbiri</button>
+                    </mat-menu>
+                    <div *ngIf="soruHedefleri?.controls.length">
+                        {{'Seçilebilir '+ogrenimHedefleri.length+' öğrenim hedefi var. '+soruHedefleri.controls.length+
+                        ' hedef seçildi.'}}
+                    </div>
+                </div>
+            </div>
+            <!-- / CONTENT TOOLBAR -->
+            <!-- CONTENT -->
+            <div class=" ontent " fxFlexAlign="row ">
+                <div *ngIf="!ogrenimHedefleri ">Seçilebilir öğrenim hedefi yok!</div>
+                <fuse-ogrenim-hedef-list *ngIf="ogrenimHedefleri " fusePerfectScrollbar fxFlex></fuse-ogrenim-hedef-list>
+            </div>
+            <!-- / CONTENT -->
+        </div>
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+</div>

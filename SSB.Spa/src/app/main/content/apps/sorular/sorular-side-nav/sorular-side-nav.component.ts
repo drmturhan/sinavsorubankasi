@@ -159,7 +159,7 @@ export class SorularSideNavComponent implements OnInit, AfterViewChecked {
     let sinif = 'popup-masaustu';
     if (this.platform.ANDROID || this.platform.IOS) {
       en = '99vw';
-      boy = '95vh';
+      boy = '99vh';
       sinif = 'popup-mobil';
     }
 

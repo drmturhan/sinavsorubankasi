@@ -24,3 +24,16 @@ D:\GitProjeleri\SSBGitHub\sinavsorubankasi\Core\Core.KisaMesajServisi\obj\Debug\
 D:\GitProjeleri\SSBGitHub\sinavsorubankasi\Core\Core.KisaMesajServisi\obj\Debug\netcoreapp2.0\Core.KisaMesajServisi.csproj.CopyComplete
 D:\GitProjeleri\SSBGitHub\sinavsorubankasi\Core\Core.KisaMesajServisi\obj\Debug\netcoreapp2.0\Core.KisaMesajServisi.dll
 D:\GitProjeleri\SSBGitHub\sinavsorubankasi\Core\Core.KisaMesajServisi\obj\Debug\netcoreapp2.0\Core.KisaMesajServisi.pdb
+D:\GitProjeleri\sinavsorubankasi\Core\Core.KisaMesajServisi\bin\Debug\netcoreapp2.0\Properties\Resources.resx
+D:\GitProjeleri\sinavsorubankasi\Core\Core.KisaMesajServisi\bin\Debug\netcoreapp2.0\Core.KisaMesajServisi.deps.json
+D:\GitProjeleri\sinavsorubankasi\Core\Core.KisaMesajServisi\bin\Debug\netcoreapp2.0\Core.KisaMesajServisi.dll
+D:\GitProjeleri\sinavsorubankasi\Core\Core.KisaMesajServisi\bin\Debug\netcoreapp2.0\Core.KisaMesajServisi.pdb
+D:\GitProjeleri\sinavsorubankasi\Core\Core.KisaMesajServisi\bin\Debug\netcoreapp2.0\Core.Base.dll
+D:\GitProjeleri\sinavsorubankasi\Core\Core.KisaMesajServisi\bin\Debug\netcoreapp2.0\Core.Base.pdb
+D:\GitProjeleri\sinavsorubankasi\Core\Core.KisaMesajServisi\obj\Debug\netcoreapp2.0\Core.KisaMesajServisi.csprojAssemblyReference.cache
+D:\GitProjeleri\sinavsorubankasi\Core\Core.KisaMesajServisi\obj\Debug\netcoreapp2.0\Core.KisaMesajServisi.csproj.CoreCompileInputs.cache
+D:\GitProjeleri\sinavsorubankasi\Core\Core.KisaMesajServisi\obj\Debug\netcoreapp2.0\Core.KisaMesajServisi.AssemblyInfoInputs.cache
+D:\GitProjeleri\sinavsorubankasi\Core\Core.KisaMesajServisi\obj\Debug\netcoreapp2.0\Core.KisaMesajServisi.AssemblyInfo.cs
+D:\GitProjeleri\sinavsorubankasi\Core\Core.KisaMesajServisi\obj\Debug\netcoreapp2.0\Core.KisaMesajServisi.csproj.CopyComplete
+D:\GitProjeleri\sinavsorubankasi\Core\Core.KisaMesajServisi\obj\Debug\netcoreapp2.0\Core.KisaMesajServisi.dll
+D:\GitProjeleri\sinavsorubankasi\Core\Core.KisaMesajServisi\obj\Debug\netcoreapp2.0\Core.KisaMesajServisi.pdb

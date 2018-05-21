@@ -29,6 +29,9 @@ import { SoruOnizlemeComponent } from './soru-onizleme/soru-onizleme.component';
 import { CoktanSecmeliSoruValidatorleri } from './coktan-secmeli-soru/validators';
 import { YeniSoruBtnComponent } from './sorular-side-nav/yeni-soru-btn/yeni-soru-btn.component';
 import { SatPopoverModule } from '@ncstate/sat-popover';
+import { CoktanSecmeliIliskiliSoruComponent } from './coktan-secmeli-iliskili-soru/coktan-secmeli-iliskili-soru.component';
+import { IliskiliSoruListesiComponent } from './coktan-secmeli-iliskili-soru/iliskili-soru-listesi/iliskili-soru-listesi.component';
+import { IliskiliSoruItemComponent } from './coktan-secmeli-iliskili-soru/iliskili-soru-listesi/iliskili-soru-item/iliskili-soru-item.component';
 
 
 
@@ -116,8 +119,11 @@ const routes: Routes = [
     SoruListesiComponent,
     SoruListesiSatiriComponent,
     SoruOnizlemeComponent,
-    YeniSoruBtnComponent
-  ],
+    YeniSoruBtnComponent,
+    CoktanSecmeliIliskiliSoruComponent,
+    IliskiliSoruListesiComponent,
+    IliskiliSoruItemComponent
+],
   providers: [
     SorularEffectsService,
     SoruDepoVeriService,
