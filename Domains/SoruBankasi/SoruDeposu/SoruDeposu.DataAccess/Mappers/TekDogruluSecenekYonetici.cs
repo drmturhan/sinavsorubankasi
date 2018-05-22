@@ -53,6 +53,7 @@ namespace SoruDeposu.DataAccess.Mappers
                 if (dbkaydi == null)
                 {
                     dbkaydi = rItem.ToEntity();
+                    dbkaydi.TekDogruluSoruSecenekId = null;
                     eklenenler.Add(dbkaydi);
                 }
                 else
