@@ -12,3 +12,5 @@ Core/Core.Base/obj/Debug/netcoreapp2.0/Core.Base.dll
 .gitignore
 SSB.Spa/package.json
 SSB.Spa/package-lock.json
+SSB.Spa/package-lock.json
+SSB.Spa/package.json
