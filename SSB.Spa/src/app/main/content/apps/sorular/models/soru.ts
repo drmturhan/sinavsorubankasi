@@ -1,5 +1,12 @@
 import { OgrenimHedefItem } from './birim-program-donem-ders';
 
+export class SoruKokuListe {
+
+    soruKokuId: number;
+    soruKokuMetni: string;
+    sorulari: SoruListe[];
+}
+
 export class SoruListe {
     soruId: number;
     birimNo: number;

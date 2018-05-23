@@ -1,3 +1,11 @@
-<p>
-  iliskili-soru-listesi works!
-</p>
+<div *ngIf="sorular.length === 0" fxLayout="column" fxLayoutAlign="center center" fxFlexFill>
+  <!-- <span class="no-messages-text hint-text">{{ 'MAIL.NO_MESSAGES' | translate }}</span> -->
+  <span class="no-messages-text hint-text">İlişkili soru listesi boş</span>
+</div>
+
+<div class="mail-list" *fuseIfOnDom [@animateStagger]="{value:'50'}">
+  <fuse-iliskili-soru-item matRipple *ngFor="let soruItem of sorular" [soru]="soruItem" (click)="soruyuOku(soruItem.soruId)"
+                       [ngClass]="{'current-mail':soruItem?.soruId == aktifSoru?.soruId}"
+                       [@animate]="{value:'*',params:{y:'100%'}}">
+  </fuse-iliskili-soru-item>
+</div>

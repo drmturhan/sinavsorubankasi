@@ -1,5 +1,318 @@
 (window["webpackJsonp"] = window["webpackJsonp"] || []).push([["sorular-sorular-module"],{
 
+/***/ "./node_modules/events/events.js":
+/*!***************************************!*\
+  !*** ./node_modules/events/events.js ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+// Copyright Joyent, Inc. and other Node contributors.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+function EventEmitter() {
+  this._events = this._events || {};
+  this._maxListeners = this._maxListeners || undefined;
+}
+module.exports = EventEmitter;
+
+// Backwards-compat with node 0.10.x
+EventEmitter.EventEmitter = EventEmitter;
+
+EventEmitter.prototype._events = undefined;
+EventEmitter.prototype._maxListeners = undefined;
+
+// By default EventEmitters will print a warning if more than 10 listeners are
+// added to it. This is a useful default which helps finding memory leaks.
+EventEmitter.defaultMaxListeners = 10;
+
+// Obviously not all Emitters should be limited to 10. This function allows
+// that to be increased. Set to zero for unlimited.
+EventEmitter.prototype.setMaxListeners = function(n) {
+  if (!isNumber(n) || n < 0 || isNaN(n))
+    throw TypeError('n must be a positive number');
+  this._maxListeners = n;
+  return this;
+};
+
+EventEmitter.prototype.emit = function(type) {
+  var er, handler, len, args, i, listeners;
+
+  if (!this._events)
+    this._events = {};
+
+  // If there is no 'error' event listener then throw.
+  if (type === 'error') {
+    if (!this._events.error ||
+        (isObject(this._events.error) && !this._events.error.length)) {
+      er = arguments[1];
+      if (er instanceof Error) {
+        throw er; // Unhandled 'error' event
+      } else {
+        // At least give some kind of context to the user
+        var err = new Error('Uncaught, unspecified "error" event. (' + er + ')');
+        err.context = er;
+        throw err;
+      }
+    }
+  }
+
+  handler = this._events[type];
+
+  if (isUndefined(handler))
+    return false;
+
+  if (isFunction(handler)) {
+    switch (arguments.length) {
+      // fast cases
+      case 1:
+        handler.call(this);
+        break;
+      case 2:
+        handler.call(this, arguments[1]);
+        break;
+      case 3:
+        handler.call(this, arguments[1], arguments[2]);
+        break;
+      // slower
+      default:
+        args = Array.prototype.slice.call(arguments, 1);
+        handler.apply(this, args);
+    }
+  } else if (isObject(handler)) {
+    args = Array.prototype.slice.call(arguments, 1);
+    listeners = handler.slice();
+    len = listeners.length;
+    for (i = 0; i < len; i++)
+      listeners[i].apply(this, args);
+  }
+
+  return true;
+};
+
+EventEmitter.prototype.addListener = function(type, listener) {
+  var m;
+
+  if (!isFunction(listener))
+    throw TypeError('listener must be a function');
+
+  if (!this._events)
+    this._events = {};
+
+  // To avoid recursion in the case that type === "newListener"! Before
+  // adding it to the listeners, first emit "newListener".
+  if (this._events.newListener)
+    this.emit('newListener', type,
+              isFunction(listener.listener) ?
+              listener.listener : listener);
+
+  if (!this._events[type])
+    // Optimize the case of one listener. Don't need the extra array object.
+    this._events[type] = listener;
+  else if (isObject(this._events[type]))
+    // If we've already got an array, just append.
+    this._events[type].push(listener);
+  else
+    // Adding the second element, need to change to array.
+    this._events[type] = [this._events[type], listener];
+
+  // Check for listener leak
+  if (isObject(this._events[type]) && !this._events[type].warned) {
+    if (!isUndefined(this._maxListeners)) {
+      m = this._maxListeners;
+    } else {
+      m = EventEmitter.defaultMaxListeners;
+    }
+
+    if (m && m > 0 && this._events[type].length > m) {
+      this._events[type].warned = true;
+      console.error('(node) warning: possible EventEmitter memory ' +
+                    'leak detected. %d listeners added. ' +
+                    'Use emitter.setMaxListeners() to increase limit.',
+                    this._events[type].length);
+      if (typeof console.trace === 'function') {
+        // not supported in IE 10
+        console.trace();
+      }
+    }
+  }
+
+  return this;
+};
+
+EventEmitter.prototype.on = EventEmitter.prototype.addListener;
+
+EventEmitter.prototype.once = function(type, listener) {
+  if (!isFunction(listener))
+    throw TypeError('listener must be a function');
+
+  var fired = false;
+
+  function g() {
+    this.removeListener(type, g);
+
+    if (!fired) {
+      fired = true;
+      listener.apply(this, arguments);
+    }
+  }
+
+  g.listener = listener;
+  this.on(type, g);
+
+  return this;
+};
+
+// emits a 'removeListener' event iff the listener was removed
+EventEmitter.prototype.removeListener = function(type, listener) {
+  var list, position, length, i;
+
+  if (!isFunction(listener))
+    throw TypeError('listener must be a function');
+
+  if (!this._events || !this._events[type])
+    return this;
+
+  list = this._events[type];
+  length = list.length;
+  position = -1;
+
+  if (list === listener ||
+      (isFunction(list.listener) && list.listener === listener)) {
+    delete this._events[type];
+    if (this._events.removeListener)
+      this.emit('removeListener', type, listener);
+
+  } else if (isObject(list)) {
+    for (i = length; i-- > 0;) {
+      if (list[i] === listener ||
+          (list[i].listener && list[i].listener === listener)) {
+        position = i;
+        break;
+      }
+    }
+
+    if (position < 0)
+      return this;
+
+    if (list.length === 1) {
+      list.length = 0;
+      delete this._events[type];
+    } else {
+      list.splice(position, 1);
+    }
+
+    if (this._events.removeListener)
+      this.emit('removeListener', type, listener);
+  }
+
+  return this;
+};
+
+EventEmitter.prototype.removeAllListeners = function(type) {
+  var key, listeners;
+
+  if (!this._events)
+    return this;
+
+  // not listening for removeListener, no need to emit
+  if (!this._events.removeListener) {
+    if (arguments.length === 0)
+      this._events = {};
+    else if (this._events[type])
+      delete this._events[type];
+    return this;
+  }
+
+  // emit removeListener for all listeners on all events
+  if (arguments.length === 0) {
+    for (key in this._events) {
+      if (key === 'removeListener') continue;
+      this.removeAllListeners(key);
+    }
+    this.removeAllListeners('removeListener');
+    this._events = {};
+    return this;
+  }
+
+  listeners = this._events[type];
+
+  if (isFunction(listeners)) {
+    this.removeListener(type, listeners);
+  } else if (listeners) {
+    // LIFO order
+    while (listeners.length)
+      this.removeListener(type, listeners[listeners.length - 1]);
+  }
+  delete this._events[type];
+
+  return this;
+};
+
+EventEmitter.prototype.listeners = function(type) {
+  var ret;
+  if (!this._events || !this._events[type])
+    ret = [];
+  else if (isFunction(this._events[type]))
+    ret = [this._events[type]];
+  else
+    ret = this._events[type].slice();
+  return ret;
+};
+
+EventEmitter.prototype.listenerCount = function(type) {
+  if (this._events) {
+    var evlistener = this._events[type];
+
+    if (isFunction(evlistener))
+      return 1;
+    else if (evlistener)
+      return evlistener.length;
+  }
+  return 0;
+};
+
+EventEmitter.listenerCount = function(emitter, type) {
+  return emitter.listenerCount(type);
+};
+
+function isFunction(arg) {
+  return typeof arg === 'function';
+}
+
+function isNumber(arg) {
+  return typeof arg === 'number';
+}
+
+function isObject(arg) {
+  return typeof arg === 'object' && arg !== null;
+}
+
+function isUndefined(arg) {
+  return arg === void 0;
+}
+
+
+/***/ }),
+
 /***/ "./node_modules/rxjs-compat/_esm5/BehaviorSubject.js":
 /*!***********************************************************!*\
   !*** ./node_modules/rxjs-compat/_esm5/BehaviorSubject.js ***!
@@ -138,7 +451,7 @@ function _catch(selector) {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"araclar\" fxLayout=\"row\" fxLayoutAlign=\"space-between center\">\n    <mat-form-field fxFlex=\"auto\">\n      <input #akInput class=\"anahtar-kelime-input\" matInput placeholder=\"Anahtar kelime\" [formControl]=\"yeniAnahtarKelime\" (keypress)=\"enterBasildi($event)\">\n      <mat-error *ngIf=\"yeniAnahtarKelime.hasError('required')\">\n        Anahtar kelime girmediniz.\n      </mat-error>\n      <mat-error *ngIf=\"yeniAnahtarKelime.hasError('minlength')\">\n        En az 3 karakter olmalıdır.\n      </mat-error>\n      <mat-hint>Anahtar kelime girip ENTER a basınız.</mat-hint>\n    </mat-form-field>\n    <div>\n      <button mat-button (click)=\"ekle()\" [disabled]=\"!yeniAnahtarKelime.valid\" class=\"mat-icon-button\">\n        <mat-icon class=\"ekle\" matTooltip=\"Anahtar kelime ekle\">add_box</mat-icon>\n      </button>\n      <button mat-button (click)=\"tumunuSil()\" class=\"mat-icon-button\">\n        <mat-icon matTooltip=\"Anahtar kelimelerin hepsini sil.\">delete_sweep</mat-icon>\n      </button>\n    </div>\n  </div>\n  \n  <div class=\"liste\">\n    <ol *ngIf=\"anahtarKelimelerArr\">\n      <li *ngFor=\"let control of anahtarKelimelerArr.controls\">\n        <div class=\"satir\" fxLayout=\"row\" fxLayoutAlign=\"space-between center\" fxFlex=\"auto\">\n          <div>{{control.value}}</div>\n          <button mat-button  class=\"sil mat-icon-button\" (click)=\"sil(control)\" matTooltip=\"Aktif anahtar kelimeyi sil.\">\n            <mat-icon style=\"color:white!important\">delete</mat-icon>\n          </button>\n        </div>\n      </li>\n    </ol>\n  </div>\n  \n  \n  \n  "
+module.exports = "<div class=\"ekran\" fxLayout=\"column\" fxLayoutAlign=\"start stretch\" fxLayoutGap=\"20px\" fxFlex=\"1 1 auto\">\n  <div class=\"araclar\" fxLayout=\"row\" fxLayoutAlign=\"space-between center\">\n    <mat-form-field fxFlex=\"auto\">\n      <input #akInput class=\"anahtar-kelime-input\" matInput placeholder=\"Anahtar kelime\" [formControl]=\"yeniAnahtarKelime\" (keypress)=\"enterBasildi($event)\">\n      <mat-error *ngIf=\"yeniAnahtarKelime.hasError('required')\">\n        Anahtar kelime girmediniz.\n      </mat-error>\n      <mat-error *ngIf=\"yeniAnahtarKelime.hasError('minlength')\">\n        En az 3 karakter olmalıdır.\n      </mat-error>\n      <mat-hint>Anahtar kelime girip ENTER a basınız.</mat-hint>\n    </mat-form-field>\n    <div fxFlex=\"100px\">\n      <button mat-button (click)=\"ekle()\" [disabled]=\"!yeniAnahtarKelime.valid\" class=\"mat-icon-button\">\n        <mat-icon matTooltip=\"Anahtar kelime ekle\">add_box</mat-icon>\n      </button>\n      <button mat-button (click)=\"tumunuSil()\" class=\"mat-icon-button\">\n        <mat-icon matTooltip=\"Anahtar kelimelerin hepsini sil.\">delete_sweep</mat-icon>\n      </button>\n    </div>\n  </div>\n\n  <div class=\"liste\">\n    <ol *ngIf=\"anahtarKelimelerArr\">\n      <li *ngFor=\"let control of anahtarKelimelerArr.controls\">\n        <div class=\"satir\" fxLayout=\"row\" fxLayoutAlign=\"space-between center\" fxFlex=\"auto\">\n          <div>{{control.value}}</div>\n          <button mat-button class=\"sil mat-icon-button\" (click)=\"sil(control)\" matTooltip=\"Aktif anahtar kelimeyi sil.\">\n            <mat-icon style=\"color:white!important\">delete</mat-icon>\n          </button>\n        </div>\n      </li>\n    </ol>\n  </div>\n</div>"
 
 /***/ }),
 
@@ -149,7 +462,7 @@ module.exports = "<div class=\"araclar\" fxLayout=\"row\" fxLayoutAlign=\"space-
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "/**\n * Applies styles for users in high contrast mode. Note that this only applies\n * to Microsoft browsers. Chrome can be included by checking for the `html[hc]`\n * attribute, however Chrome handles high contrast differently.\n */\n/* Theme for the ripple elements.*/\n/* stylelint-disable material/no-prefixes */\n/* stylelint-enable */\n:host {\n  padding: 5%;\n  padding-left: 10%; }\n.araclar {\n  display: flex;\n  flex-flow: row;\n  width: 80%;\n  max-width: 800px; }\n.araclar .mat-input-element {\n    color: #406D95; }\n.liste {\n  margin-top: 36px;\n  min-width: 150px;\n  width: 80%;\n  max-width: 600px;\n  padding-left: 24px; }\n.liste ol {\n    counter-reset: li;\n    list-style: none;\n    *list-style: decimal;\n    font-size: 15px;\n    padding: 0;\n    margin-bottom: 4em; }\n.liste ol ol {\n    margin: 0 0 0 2em; }\n.liste li {\n    position: relative;\n    display: block;\n    padding: .4em .4em .4em 2em;\n    *padding: .4em;\n    margin: .5em 0;\n    background: #D8E8E9;\n    color: #406D95;\n    text-decoration: none;\n    transition: all .5s ease-in-out; }\n.liste li:hover {\n    background: #406D95;\n    color: #D8E8E9;\n    -webkit-transform: scale(1.1);\n            transform: scale(1.1); }\n.liste li:hover .sil {\n      display: block;\n      color: white; }\n.liste li:before {\n    content: counter(li);\n    counter-increment: li;\n    position: absolute;\n    left: -1.2em;\n    top: 50%;\n    margin-top: -1.2em;\n    background: #A8D0DA;\n    height: 2em;\n    width: 2em;\n    line-height: 2em;\n    text-align: center;\n    font-weight: bold;\n    color: #FFF; }\n.sil {\n  display: none;\n  margin-right: 8px; }\n"
+module.exports = "/**\n * Applies styles for users in high contrast mode. Note that this only applies\n * to Microsoft browsers. Chrome can be included by checking for the `html[hc]`\n * attribute, however Chrome handles high contrast differently.\n */\n/* Theme for the ripple elements.*/\n/* stylelint-disable material/no-prefixes */\n/* stylelint-enable */\n:host .ekran {\n  padding: 10%;\n  padding-top: 48px;\n  height: 60vh; }\n:host .araclar .mat-input-element {\n  color: #406D95; }\n:host .liste {\n  padding: 100px;\n  padding-top: 24px; }\n:host .liste ol {\n    counter-reset: li;\n    list-style: none;\n    *list-style: decimal;\n    font-size: 15px;\n    padding: 0;\n    margin-bottom: 4em; }\n:host .liste ol ol {\n    margin: 0 0 0 2em; }\n:host .liste li {\n    position: relative;\n    display: block;\n    padding: .4em .4em .4em 2em;\n    *padding: .4em;\n    margin: .5em 0;\n    background: #D8E8E9;\n    color: #406D95;\n    text-decoration: none;\n    transition: all .5s ease-in-out; }\n:host .liste li:hover {\n    background: #406D95;\n    color: #D8E8E9;\n    -webkit-transform: scale(1.1);\n            transform: scale(1.1); }\n:host .liste li:hover .sil {\n      display: block;\n      color: white; }\n:host .liste li:before {\n    content: counter(li);\n    counter-increment: li;\n    position: absolute;\n    left: -1.2em;\n    top: 50%;\n    margin-top: -1.2em;\n    background: #A8D0DA;\n    height: 2em;\n    width: 2em;\n    line-height: 2em;\n    text-align: center;\n    font-weight: bold;\n    color: #FFF; }\n:host .sil {\n  display: none;\n  margin-right: 8px; }\n:host .mat-icon-button {\n  color: #406D95; }\n"
 
 /***/ }),
 
@@ -165,6 +478,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AnahtarKelimelerComponent", function() { return AnahtarKelimelerComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
+/* harmony import */ var _core_services_sb_mesaj_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../core/services/sb-mesaj.service */ "./src/app/core/services/sb-mesaj.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -176,9 +490,11 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 };
 
 
+
 var AnahtarKelimelerComponent = /** @class */ (function () {
-    function AnahtarKelimelerComponent(cdRef) {
+    function AnahtarKelimelerComponent(cdRef, mesajService) {
         this.cdRef = cdRef;
+        this.mesajService = mesajService;
         this.bosalt = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
         this.yeniAnahtarKelime = new _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormControl"]('', [_angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].minLength(3)]);
     }
@@ -191,6 +507,10 @@ var AnahtarKelimelerComponent = /** @class */ (function () {
     };
     AnahtarKelimelerComponent.prototype.ekle = function () {
         if (this.yeniAnahtarKelime.valid) {
+            if (this.anahtarKelimelerArr && this.anahtarKelimelerArr.length >= 5) {
+                this.mesajService.hata({ kod: '', tanim: 'En fazla 5 anahtar kelime girebilirsiniz.' });
+                return;
+            }
             this.anahtarKelimelerArr.push(new _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormControl"](this.yeniAnahtarKelime.value));
             this.anahtarKelimelerArr.markAsDirty();
             this.cdRef.detectChanges();
@@ -225,9 +545,233 @@ var AnahtarKelimelerComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./anahtar-kelimeler.component.html */ "./src/app/main/content/apps/sorular/anahtar-kelimeler/anahtar-kelimeler.component.html"),
             styles: [__webpack_require__(/*! ./anahtar-kelimeler.component.scss */ "./src/app/main/content/apps/sorular/anahtar-kelimeler/anahtar-kelimeler.component.scss")]
         }),
-        __metadata("design:paramtypes", [_angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectorRef"]])
+        __metadata("design:paramtypes", [_angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectorRef"],
+            _core_services_sb_mesaj_service__WEBPACK_IMPORTED_MODULE_2__["SbMesajService"]])
     ], AnahtarKelimelerComponent);
     return AnahtarKelimelerComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/main/content/apps/sorular/coktan-secmeli-iliskili-soru/coktan-secmeli-iliskili-soru.component.html":
+/*!********************************************************************************************************************!*\
+  !*** ./src/app/main/content/apps/sorular/coktan-secmeli-iliskili-soru/coktan-secmeli-iliskili-soru.component.html ***!
+  \********************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "\n<div id=\"soru\" class=\"page-layout carded left-sidenav\" fusePerfectScrollbar>\n  <!-- TOP BACKGROUND -->\n  <div class=\"top-bg\" style=\"background-color: #E2474C\"></div>\n  <!-- / TOP BACKGROUND -->\n\n  <mat-sidenav-container>\n\n    <div class=\"center\">\n          <!-- CONTENT HEADER -->\n          <div class=\"header\" fxLayout=\"row\" fxLayoutAlign=\"start center\">\n\n            <div class=\"search-wrapper\" fxFlex fxLayout=\"row\" fxLayoutAlign=\"start center\">\n                  <button mat-button class=\"mat-icon-button sidenav-toggle\" fuseMatSidenavToggler=\"carded-left-sidenav\" fxHide.gt-md aria-label=\"Toggle Sidenav\">\n                      <mat-icon>menu</mat-icon>\n                  </button>\n\n                  <div class=\"search\" flex fxLayout=\"row\" fxLayoutAlign=\"start center\">\n                      <mat-icon style=\"color:#2F3A57\">home</mat-icon>\n                      <div class=\"baslik\">\n                          {{baslik}}\n                      </div>\n                  </div>\n\n              </div>\n          </div>\n          <!-- / CONTENT HEADER -->\n\n          <!-- CONTENT CARD -->\n          <div class=\"content-card\" style=\"background-color:#A8D0DA\" [ngClass]=\"{'current-mail-selected':aktifSoru$ | async}\">\n\n              <!-- CONTENT TOOLBAR -->\n              <div class=\"toolbar px-24 py-8\">\n                  <div class=\"mail-selection\" fxFlex=\"row\" fxLayoutAlign=\"start center\">\n\n                      <mat-checkbox (click)=\"toggleSelectAll($event)\" [checked]=\"hasSelectedSorular\" [indeterminate]=\"isIndeterminate\">\n                      </mat-checkbox>\n\n                      <button mat-icon-button [matMenuTriggerFor]=\"selectMenu\">\n                          <mat-icon>arrow_drop_down</mat-icon>\n                      </button>\n                      <mat-menu #selectMenu=\"matMenu\">\n                          <button mat-menu-item (click)=\"tumSorulariSec()\">Tümü</button>\n                          <button mat-menu-item (click)=\"hicSoruSecilmesin()\">Hiçbiri</button>\n                          <!-- <button mat-menu-item (click)=\"selectMailsByParameter('read', true)\">Read</button>\n                          <button mat-menu-item (click)=\"selectMailsByParameter('read', false)\">Unread</button>\n                          <button mat-menu-item (click)=\"selectMailsByParameter('starred', true)\">Starred</button>\n                          <button mat-menu-item (click)=\"selectMailsByParameter('starred', false)\">Unstarred</button>\n                          <button mat-menu-item (click)=\"selectMailsByParameter('important', true)\">Important</button>\n                          <button mat-menu-item (click)=\"selectMailsByParameter('important', false)\">Unimportant</button> -->\n                      </mat-menu>\n\n                      <div class=\"toolbar-separator\" *ngIf=\"hasSelectedSorular\"></div>\n\n                      <button mat-button class=\"mat-icon-button\" (click)=\"seciliSorulariSil()\" *ngIf=\"hasSelectedSorular\">\n                          <mat-icon matTooltip=\"Seçilmiş {{selectedSorularIds.length}} soruyu siler.\">delete</mat-icon>\n                      </button>\n\n                      <span *ngIf=\"hasSelectedSorular\">{{selectedSorularIds.length}} soru seçildi.</span>\n\n                      <!-- <button mat-icon-button [matMenuTriggerFor]=\"folderMenu\" *ngIf=\"hasSelectedSorular\">\n                          <mat-icon>folder</mat-icon>\n                      </button> -->\n                      <!-- <mat-menu #folderMenu=\"matMenu\">\n                          <button mat-menu-item *ngFor=\"let folder of folders$ | async\"\n                                  (click)=\"setFolderOnSelectedMails(folder.id)\">{{folder.title}}\n                          </button>\n                      </mat-menu> -->\n\n                      <!-- <button mat-icon-button [matMenuTriggerFor]=\"labelMenu\" *ngIf=\"hasSelectedSorular\">\n                          <mat-icon>label</mat-icon>\n                      </button>\n                      <mat-menu #labelMenu=\"matMenu\">\n                          <button mat-menu-item *ngFor=\"let label of labels$ | async\"\n                                  (click)=\"toggleLabelOnSelectedMails(label.id)\">{{label.title}}\n                          </button>\n                      </mat-menu> -->\n                  </div>\n\n                  <div *ngIf=\"aktifSoru$ | async\" fxHide.gt-xs>\n                      <button mat-icon-button (click)=\"aktifSoruyuBosYap()\">\n                          <mat-icon>arrow_back</mat-icon>\n                      </button>\n                  </div>\n\n              </div>\n\n              <!-- / CONTENT TOOLBAR -->\n              <!-- CONTENT -->\n              <div class=\"content\" fxLayoutAlign=\"row\">\n                  \n                      <fuse-soru-listesi fusePerfectScrollbar fxFlex [sorular]=\"sorular$ | async\" [aktifSoru]=\"aktifSoru$|async\" (sorudegisti)=\"soruGoster($event)\"></fuse-soru-listesi>\n                      <fuse-soru-detay [soru]=\"aktifSoru$|async\" fusePerfectScrollbar fxflex> </fuse-soru-detay>\n                  \n              </div>\n              <!-- / CONTENT -->\n\n          </div>\n          <!-- / CONTENT CARD -->\n\n      </div>\n      <!-- / SIDENAV -->\n  </mat-sidenav-container>\n</div>"
+
+/***/ }),
+
+/***/ "./src/app/main/content/apps/sorular/coktan-secmeli-iliskili-soru/coktan-secmeli-iliskili-soru.component.scss":
+/*!********************************************************************************************************************!*\
+  !*** ./src/app/main/content/apps/sorular/coktan-secmeli-iliskili-soru/coktan-secmeli-iliskili-soru.component.scss ***!
+  \********************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = ""
+
+/***/ }),
+
+/***/ "./src/app/main/content/apps/sorular/coktan-secmeli-iliskili-soru/coktan-secmeli-iliskili-soru.component.ts":
+/*!******************************************************************************************************************!*\
+  !*** ./src/app/main/content/apps/sorular/coktan-secmeli-iliskili-soru/coktan-secmeli-iliskili-soru.component.ts ***!
+  \******************************************************************************************************************/
+/*! exports provided: CoktanSecmeliIliskiliSoruComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CoktanSecmeliIliskiliSoruComponent", function() { return CoktanSecmeliIliskiliSoruComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _fuse_components_confirm_dialog_confirm_dialog_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @fuse/components/confirm-dialog/confirm-dialog.component */ "./src/@fuse/components/confirm-dialog/confirm-dialog.component.ts");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var CoktanSecmeliIliskiliSoruComponent = /** @class */ (function () {
+    function CoktanSecmeliIliskiliSoruComponent(dialog) {
+        this.dialog = dialog;
+    }
+    CoktanSecmeliIliskiliSoruComponent.prototype.ngOnInit = function () {
+    };
+    CoktanSecmeliIliskiliSoruComponent.prototype.toggleSelectAll = function (ev) {
+        ev.preventDefault();
+        if (this.selectedSorularIds.length && this.selectedSorularIds.length > 0) {
+            this.hicSoruSecilmesin();
+        }
+        else {
+            this.tumSorulariSec();
+        }
+    };
+    CoktanSecmeliIliskiliSoruComponent.prototype.tumSorulariSec = function () {
+    };
+    CoktanSecmeliIliskiliSoruComponent.prototype.hicSoruSecilmesin = function () {
+    };
+    CoktanSecmeliIliskiliSoruComponent.prototype.seciliSorulariSil = function () {
+        var dialogRef = this.dialog.open(_fuse_components_confirm_dialog_confirm_dialog_component__WEBPACK_IMPORTED_MODULE_1__["FuseConfirmDialogComponent"], {
+            width: '600px',
+            height: '400',
+            data: {
+                onaybasligi: 'Silme onayı!',
+                onaymesaji: "<p>Silinsin derseniz listede se\u00E7ilmi\u015F olan sorular\u0131n (" + this.selectedSorularIds.length + " soru) hepsi sistemden tamamen silinecek!</p> Soru(lar) silinsin mi?",
+                olumluButonYazisi: 'Silinsin',
+                olumsuzButonYazisi: 'Vazgeçtim'
+            }
+        });
+    };
+    CoktanSecmeliIliskiliSoruComponent.prototype.aktifSoruyuBosYap = function () {
+    };
+    CoktanSecmeliIliskiliSoruComponent.prototype.soruGoster = function (degisenSoruId) {
+    };
+    CoktanSecmeliIliskiliSoruComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'fuse-coktan-secmeli-iliskili-soru',
+            template: __webpack_require__(/*! ./coktan-secmeli-iliskili-soru.component.html */ "./src/app/main/content/apps/sorular/coktan-secmeli-iliskili-soru/coktan-secmeli-iliskili-soru.component.html"),
+            styles: [__webpack_require__(/*! ./coktan-secmeli-iliskili-soru.component.scss */ "./src/app/main/content/apps/sorular/coktan-secmeli-iliskili-soru/coktan-secmeli-iliskili-soru.component.scss")]
+        }),
+        __metadata("design:paramtypes", [_angular_material__WEBPACK_IMPORTED_MODULE_2__["MatDialog"]])
+    ], CoktanSecmeliIliskiliSoruComponent);
+    return CoktanSecmeliIliskiliSoruComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/main/content/apps/sorular/coktan-secmeli-iliskili-soru/iliskili-soru-listesi/iliskili-soru-item/iliskili-soru-item.component.html":
+/*!***************************************************************************************************************************************************!*\
+  !*** ./src/app/main/content/apps/sorular/coktan-secmeli-iliskili-soru/iliskili-soru-listesi/iliskili-soru-item/iliskili-soru-item.component.html ***!
+  \***************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<p>\n  iliskili-soru-item works!\n</p>\n"
+
+/***/ }),
+
+/***/ "./src/app/main/content/apps/sorular/coktan-secmeli-iliskili-soru/iliskili-soru-listesi/iliskili-soru-item/iliskili-soru-item.component.scss":
+/*!***************************************************************************************************************************************************!*\
+  !*** ./src/app/main/content/apps/sorular/coktan-secmeli-iliskili-soru/iliskili-soru-listesi/iliskili-soru-item/iliskili-soru-item.component.scss ***!
+  \***************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = ""
+
+/***/ }),
+
+/***/ "./src/app/main/content/apps/sorular/coktan-secmeli-iliskili-soru/iliskili-soru-listesi/iliskili-soru-item/iliskili-soru-item.component.ts":
+/*!*************************************************************************************************************************************************!*\
+  !*** ./src/app/main/content/apps/sorular/coktan-secmeli-iliskili-soru/iliskili-soru-listesi/iliskili-soru-item/iliskili-soru-item.component.ts ***!
+  \*************************************************************************************************************************************************/
+/*! exports provided: IliskiliSoruItemComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "IliskiliSoruItemComponent", function() { return IliskiliSoruItemComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var IliskiliSoruItemComponent = /** @class */ (function () {
+    function IliskiliSoruItemComponent() {
+    }
+    IliskiliSoruItemComponent.prototype.ngOnInit = function () {
+    };
+    IliskiliSoruItemComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'fuse-iliskili-soru-item',
+            template: __webpack_require__(/*! ./iliskili-soru-item.component.html */ "./src/app/main/content/apps/sorular/coktan-secmeli-iliskili-soru/iliskili-soru-listesi/iliskili-soru-item/iliskili-soru-item.component.html"),
+            styles: [__webpack_require__(/*! ./iliskili-soru-item.component.scss */ "./src/app/main/content/apps/sorular/coktan-secmeli-iliskili-soru/iliskili-soru-listesi/iliskili-soru-item/iliskili-soru-item.component.scss")]
+        }),
+        __metadata("design:paramtypes", [])
+    ], IliskiliSoruItemComponent);
+    return IliskiliSoruItemComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/main/content/apps/sorular/coktan-secmeli-iliskili-soru/iliskili-soru-listesi/iliskili-soru-listesi.component.html":
+/*!***********************************************************************************************************************************!*\
+  !*** ./src/app/main/content/apps/sorular/coktan-secmeli-iliskili-soru/iliskili-soru-listesi/iliskili-soru-listesi.component.html ***!
+  \***********************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<p>\n  iliskili-soru-listesi works!\n</p>\n"
+
+/***/ }),
+
+/***/ "./src/app/main/content/apps/sorular/coktan-secmeli-iliskili-soru/iliskili-soru-listesi/iliskili-soru-listesi.component.scss":
+/*!***********************************************************************************************************************************!*\
+  !*** ./src/app/main/content/apps/sorular/coktan-secmeli-iliskili-soru/iliskili-soru-listesi/iliskili-soru-listesi.component.scss ***!
+  \***********************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = ""
+
+/***/ }),
+
+/***/ "./src/app/main/content/apps/sorular/coktan-secmeli-iliskili-soru/iliskili-soru-listesi/iliskili-soru-listesi.component.ts":
+/*!*********************************************************************************************************************************!*\
+  !*** ./src/app/main/content/apps/sorular/coktan-secmeli-iliskili-soru/iliskili-soru-listesi/iliskili-soru-listesi.component.ts ***!
+  \*********************************************************************************************************************************/
+/*! exports provided: IliskiliSoruListesiComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "IliskiliSoruListesiComponent", function() { return IliskiliSoruListesiComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var IliskiliSoruListesiComponent = /** @class */ (function () {
+    function IliskiliSoruListesiComponent() {
+    }
+    IliskiliSoruListesiComponent.prototype.ngOnInit = function () {
+    };
+    IliskiliSoruListesiComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'fuse-iliskili-soru-listesi',
+            template: __webpack_require__(/*! ./iliskili-soru-listesi.component.html */ "./src/app/main/content/apps/sorular/coktan-secmeli-iliskili-soru/iliskili-soru-listesi/iliskili-soru-listesi.component.html"),
+            styles: [__webpack_require__(/*! ./iliskili-soru-listesi.component.scss */ "./src/app/main/content/apps/sorular/coktan-secmeli-iliskili-soru/iliskili-soru-listesi/iliskili-soru-listesi.component.scss")]
+        }),
+        __metadata("design:paramtypes", [])
+    ], IliskiliSoruListesiComponent);
+    return IliskiliSoruListesiComponent;
 }());
 
 
@@ -437,6 +981,60 @@ var CoktanSecmeliSoruSecenekService = /** @class */ (function () {
         // Trigger the next event
         this.onSelectedTodosChanged.next(this.selectedTodos);
     };
+    CoktanSecmeliSoruSecenekService.prototype.oncekiSonrakiSecenegeGit = function (adim) {
+        var indeks = this.secenekIndeksiBul(this.currentTodo.get('tekDogruluSoruSecenekId').value);
+        var seceneklerArray = this.soruForm.get('secenekler');
+        var sonrakiSecenek;
+        if (!this.secenekIndeksiBul) {
+            return;
+        }
+        if (indeks === -1 || indeks + adim >= 5) {
+            sonrakiSecenek = seceneklerArray.controls[0];
+        }
+        else {
+            if (indeks + adim < 0) {
+                sonrakiSecenek = seceneklerArray.controls[seceneklerArray.length - 1];
+            }
+            else {
+                sonrakiSecenek = seceneklerArray.controls[indeks + adim];
+            }
+        }
+        if (sonrakiSecenek) {
+            this.currentTodo = sonrakiSecenek;
+            this.onCurrentTodoChanged.next(sonrakiSecenek);
+        }
+    };
+    CoktanSecmeliSoruSecenekService.prototype.ogrenimHedefIndeksiniBul = function (hedefId) {
+        if (hedefId < 1) {
+            return -1;
+        }
+        else {
+            var kontroller = this.soruForm.get('soruHedefleri').controls;
+            for (var index = 0; index < kontroller.length; index++) {
+                var element = kontroller[index];
+                if (element.value === hedefId) {
+                    return index;
+                }
+            }
+            return -1;
+        }
+    };
+    CoktanSecmeliSoruSecenekService.prototype.hesaplariYap = function (secenekler) {
+        if (!secenekler) {
+            secenekler = this.soruForm.get('secenekler');
+        }
+        var dogruSecenekSayisi = secenekler.controls.filter(function (el) { return el.get('dogruSecenek').value === true; }).length;
+        var hessGuncelDegeri = secenekler.controls.filter(function (el) { return el.get('hemenElenebilir').value === true; }).length;
+        var kei = this.kabulEdilebilirlikIndeksiniHesapla(secenekler.length, hessGuncelDegeri);
+        this.soruForm.patchValue({
+            kabulEdilebilirlikIndeksi: kei,
+            hemenElenebilirSecenekSayisi: hessGuncelDegeri
+        });
+        this.hemenElenebilirSecenekSayisiDegisti.next(hessGuncelDegeri);
+        this.dogruSecenekSayisiDegisti.next(dogruSecenekSayisi);
+        this.kabulEdilebilirkikIndeksiDegisti.next(kei);
+        return { dogruSecenekSayisi: dogruSecenekSayisi, hess: hessGuncelDegeri, kei: kei };
+    };
     CoktanSecmeliSoruSecenekService.prototype.kabulEdilebilirlikIndeksiniHesapla = function (seceneksayisi, hemenElenebilirSecenekSayisi) {
         if (seceneksayisi <= 0) {
             return 0;
@@ -468,7 +1066,7 @@ var CoktanSecmeliSoruSecenekService = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"sayfa\" fxLayout=\"column\">\n        <div class=\"sayfa-basi\" fxLayout=\"row\" fxLayoutAlign=\"space-between center\">\n          <div class=\"ekran-baslik\" fxFlex=\"1 0 auto\">\n            <div *ngIf=\"data.yeni\"> Yeni soru</div>\n            <div *ngIf=\"!data.yeni\"> {{data.degisecekSoru.soruAdi|ozet}} : (değişiyor)</div>\n          </div>\n          <div class=\"ekran-baslik-kapatma-butonu\" fxFlex=\"1 1 32px\">\n            <!-- <button mat-button class=\"mat-icon-button\" (click)=\"tamEkran=!tamEkran;\" aria-label=\"Ekrani kapat\" matTooltip=\"Formu kaydetmeden kapat\">\n              <mat-icon *ngIf=\"!tamEkran\">fullscreen</mat-icon>\n              <mat-icon *ngIf=\"tamEkran\">fullscreen_exit</mat-icon>\n            </button> -->\n            <button mat-button class=\"mat-icon-button\" (click)=\"dialogRef.close()\" aria-label=\"Ekrani kapat\" matTooltip=\"Formu kaydetmeden kapat\">\n              <mat-icon>close</mat-icon>\n            </button>\n          </div>\n        </div>\n        <form class=\"sayfa-ici\" name=\"soruFormu\" [formGroup]=\"coktanSecmeliSoruSecenekService.soruForm\" fxLayout=\"column\" fusePerfectScrollbar>\n      \n          <div class=\"ders-konu-paneli\" fxLayout=\"column\" fxLayout.gt-xs=\"row\" style=\"overflow-y: auto\">\n            <div class=\"ders-konu-adlari\">\n              <div class=\"ders-sutunu\" fxLayout=\"row\" fxFlexAlign=\"start center\">\n                <div class=\"ders-baslik\" fxHide fxShow.gt-xs fxFlex=\"60px\">Ders</div>\n                <div *ngIf=\"data.ders\" class=\"ders\" fxFill> {{' '+data.ders.dersAdi|ozet:'120'}}</div>\n              </div>\n              <div class=\"konu-sutunu\" *ngIf=\"konu\" fxLayout=\"row\" fxFlexAlign=\"start center\">\n                <div class=\"konu-baslik\" fxHide fxShow.gt-xs fxFlex=\"60px\">Konu</div>\n                <div *ngIf=\"konu\" class=\"konu\" fxFill> {{' '+konu.konuAdi|ozet:'120'}}</div>\n              </div>\n      \n            </div>\n      \n            <!-- KABUL EDILERBİLİRLİK İNDEKSİ -->\n            <fuse-widget class=\"widget\" fxLayout=\"column\"  style=\"width: 350px\" fxHide.lt-md>\n      \n              <!-- Front -->\n              <div class=\"fuse-widget-front mat-elevation-z4\" >\n                <div class=\"pl-16 pr-0 py-16\" fxLayout=\"row\" fxLayoutAlign=\"space-between center\">\n                  <div  matTooltip=\"Kabul Edilebilirlik İndeksi\">KEİ</div>\n                  <button mat-icon-button fuseWidgetToggle class=\"fuse-widget-flip-button\" aria-label=\"more\">\n                    <mat-icon>info</mat-icon>\n                  </button>\n                </div>\n                <div class=\"pt-8 pb-24\" fxLayout=\"column\" fxLayoutAlign=\"center center\">\n                  <div class=\"font-size-32 line-height-32\" style=\"color:#E2474C\">\n                    {{coktanSecmeliSoruSecenekService.soruForm.get('kabulEdilebilirlikIndeksi').value|number:'0.1-2'}}\n                  </div>\n                 \n                </div>\n              </div>\n              <!-- / Front -->\n      \n              <!-- Back -->\n              <div class=\"fuse-widget-back p-16 pt-32 mat-white-bg mat-elevation-z2\" style=\"overflow-y: auto!important;padding-bottom: 8px\">\n                <button mat-icon-button fuseWidgetToggle class=\"fuse-widget-flip-button\" aria-label=\"Flip widget\">\n                  <mat-icon class=\"s-16\">close</mat-icon>\n                </button>\n                <div>\n                  <span style=\"font-weight: bold\"> KEİ=1/(Ns-Ne)</span>\n                  Kabul edilebilir performans düzeyi geçme ya da kalma eşiğini belirler. Değer marjinal öğrenciden (tam geçmeye yetecek kadar\n                  bilen öğrenci) beklenen performans iler belirlenir. Hesaplanması: Çoktan seçmeli sınav sorusunde seçenekler arasıdan\n                  \"tam geçmeye seçenekler arasında yetecek kadar bilen öğrenci\" nin, tüm seçenekler arasında (Ns) bir bakışta eleyebileceği\n                  seçenek sayısı tahmin edilir (Ne değeri). Daha sonra aşağıdaki formüle göre ilgili sorunun \"Kabul edilebilirlik\n                  indeksi\" hesaplanır.\n                </div>\n              </div>\n              <!-- / Back -->\n      \n            </fuse-widget>\n            <!-- / KABUL EDILERBİLİRLİK İNDEKSİ -->\n      \n          </div>\n          <div fxLayout=\"column\">\n            <mat-tab-group dynamicHeight=false #defter>\n              <mat-tab label=\"Soru Tanımı\">\n                <ng-template mat-tab-label>\n                  <div fxHide fxShow.gt-sm>Soru Tanımı ve Seçenekleri</div>\n                  <mat-icon fxHide.gt-sm matTooltip=\"Soru metni ve seçenekleri tanımlamak için seçin.\">edit</mat-icon>\n                </ng-template>\n                <div class=\"soru-tanim-sayfa-icerik\">\n                  <fuse-sb-html-editor id=\"soru-metni\" [parentForm]=\"coktanSecmeliSoruSecenekService.soruForm\" parentFormControlName=\"soruMetni\"></fuse-sb-html-editor>\n                  <fuse-tek-dogrulu-secenek class=\"doldur\"></fuse-tek-dogrulu-secenek>\n                </div>\n              </mat-tab>\n              <mat-tab label=\"Özellikleri\">\n                <ng-template mat-tab-label>\n                  <div fxHide fxShow.gt-sm>Özellikler</div>\n                  <mat-icon fxHide.gt-sm matTooltip=\"Özellikleri ayrıntılı olarak tanımlamak için seçin\">settings</mat-icon>\n                </ng-template>\n                <div class=\"soru-ozellik-sayfa-icerik\" fxLayout=\"row wrap\" fxLayoutAlign=\"row\" fxLayoutGap=\"12px\" fxFlex>\n      \n                  <div class=\"kart-sari\" fxFlex>Soru adı ve açıklama\n                    <div class=\"px-12\" fxLayout=\"column\" fxLayoutAlign=\"start stretch\">\n                      <mat-form-field>\n                        <textarea matInput matTextareaAutosize formControlName=\"soruAdi\" placeholder=\"Soru adı\"></textarea>\n                        <mat-error *ngIf=\"displayMessage.soruAdi\">{{displayMessage.soruAdi}}</mat-error>\n                      </mat-form-field>\n                      <mat-form-field>\n                        <textarea matInput matTextareaAutosize formControlName=\"aciklama\" placeholder=\"Soru açıklaması\"></textarea>\n                        <mat-error *ngIf=\"displayMessage.aciklama\">{{displayMessage.aciklama}}</mat-error>\n                      </mat-form-field>\n      \n                      <mat-form-field>\n                        <textarea matInput matTextareaAutosize formControlName=\"cevaplamaSuresi\" placeholder=\"Cevaplama süresi\"></textarea>\n                        <mat-error *ngIf=\"displayMessage.cevaplamaSuresi\">{{displayMessage.cevaplamaSuresi}}</mat-error>\n                        <mat-hint>Cevaplama süresini saniye olarak yazın.</mat-hint>\n                      </mat-form-field>\n                    </div>\n                  </div>\n      \n                  <div class=\"kart-sari\" fxFlex>Özellikler\n                    <div class=\"px-12\" fxLayout=\"column\" fxLayoutAlign=\"start stretch\">\n                      <mat-form-field>\n                        <mat-select placeholder=\"Zorluk derecesi\" [formControl]=\"coktanSecmeliSoruSecenekService.soruForm.get('soruZorlukNo')\">\n                          <mat-option>Zorluk derecesini seçin</mat-option>\n                          <mat-option *ngFor=\"let zorluk of (soruZorluklari$|async)\" [value]=\"zorluk.zorlukId\">\n                            {{zorluk.zorlukAdi}}\n                          </mat-option>\n                        </mat-select>\n                        <mat-error *ngIf=\"displayMessage.soruZorlukNo\">{{displayMessage.soruZorlukNo}}</mat-error>\n                      </mat-form-field>\n                      <mat-form-field>\n                        <mat-select placeholder=\"Soru tipi\" [formControl]=\"coktanSecmeliSoruSecenekService.soruForm.get('soruTipNo')\">\n                          <mat-option>Soru tipini seçin</mat-option>\n                          <mat-option *ngFor=\"let tip of (soruTipleri$|async)\" [value]=\"tip.soruTipId\">\n                            {{tip.soruTipAdi}}\n                          </mat-option>\n                        </mat-select>\n                        <mat-error *ngIf=\"displayMessage.soruTipNo\">{{displayMessage.soruTipNo}}</mat-error>\n                      </mat-form-field>\n      \n                      <mat-form-field>\n                        <mat-select placeholder=\"Bilişsel düzey\" [formControl]=\"coktanSecmeliSoruSecenekService.soruForm.get('bilisselDuzeyNo')\">\n                          <mat-option>Bilişsel düzey seçin</mat-option>\n                          <mat-option *ngFor=\"let bd of (bilisselDuzeyler$|async)\" [value]=\"bd.bilisselDuzeyId\">\n                            {{bd.duzeyAdi}}\n                          </mat-option>\n                        </mat-select>\n                        <mat-error *ngIf=\"displayMessage.bilisselDuzeyId\">{{displayMessage.bilisselDuzeyId}}</mat-error>\n                      </mat-form-field>\n      \n                    </div>\n                  </div>\n                  <div class=\"kart-sari\" fxFlex>Geçerlilik süreleri\n                    <div class=\"px-12\" fxLayout=\"column\" fxLayoutAlign=\"start stretch\">\n                      <mat-form-field formGroupName=\"gecerlilik\">\n                        <input matInput #baslangic [matDatepicker]=\"pickerBaslangic\" placeholder=\"Başlangıç tarihi\" formControlName=\"baslangic\">\n                        <mat-datepicker-toggle matSuffix [for]=\"pickerBaslangic\"></mat-datepicker-toggle>\n                        <mat-datepicker #pickerBaslangic startView=\"year\" [startAt]=\"onTanimBaslangicTarihi\"></mat-datepicker>\n                      </mat-form-field>\n      \n                      <mat-form-field formGroupName=\"gecerlilik\">\n                        <input matInput [matDatepicker]=\"pickerBitis\" placeholder=\"Bitiş tarihi\" formControlName=\"bitis\">\n                        <mat-datepicker-toggle matSuffix [for]=\"pickerBitis\"></mat-datepicker-toggle>\n                        <mat-datepicker #pickerBitis [startAt]=\"baslangic.value\"></mat-datepicker>\n                      </mat-form-field>\n                      <mat-error *ngIf=\"displayMessage.gecerlilik\">{{displayMessage.gecerlilik}}</mat-error>\n                    </div>\n                  </div>\n                </div>\n              </mat-tab>\n              <mat-tab label=\"Hedefleri\">\n                <ng-template mat-tab-label>\n                  <div fxHide fxShow.gt-sm>Öğrenim Hedefleri</div>\n                  <mat-icon fxHide.gt-sm matTooltip=\"Sorunun ilişkili olduğu öğrenim hedeflerini belirlemek için seçin\">my_location</mat-icon>\n                </ng-template>\n                <div class=\"soru-hedefler-sayfa-icerik\">\n                  Öğrenim hedefleri\n                  <div class=\"kart\" fxLayout=\"row\" fxLayoutAlign=\"start center\" style=\"padding:8px \">\n                    <!-- <mat-selection-list #ogreninhedefleri (selectionChange)=\"degisti(ogreninhedefleri)\" fxFlex>\n                      <mat-list-option *ngFor=\"let hedef of SecilebilirOgrenimHedefleri\" [selected]=\"hedef.selected\" [value]=\"hedef\">\n                        {{hedef.ogrenimHedefAdi}}\n                      </mat-list-option>\n                    </mat-selection-list> -->\n                    <fuse-ogrenim-hedefleri> </fuse-ogrenim-hedefleri>\n                  </div>\n      \n                </div>\n              </mat-tab>\n      \n              <mat-tab label=\"Anahtar Kelimeler\">\n                <ng-template mat-tab-label>\n                  <div fxHide fxShow.gt-sm>Anahtar Kelimeler</div>\n                  <mat-icon fxHide.gt-sm matTooltip=\"Soruyu bulmak için kullanılacak anahtar kelimeleri tanımlamak için girin\">vpn_key</mat-icon>\n                </ng-template>\n                <div class=\"soru-anahtar-kelimeleri-sayfa-icerik\">\n                  <fuse-anahtar-kelimeler fxFlex=\"auto\" [anahtar-kelimeler]=\"coktanSecmeliSoruSecenekService.soruForm.get('anahtarKelimeler')\" (bosalt)=\"anahtarkelimeleriBosalt()\">\n                  </fuse-anahtar-kelimeler>\n                </div>\n              </mat-tab>\n      \n            </mat-tab-group>\n      \n          </div>\n        </form>\n      \n        <div matDialogActions class=\"sayfa-sonu\" fxLayout=\"row\" fxLayoutAlign=\"center center\" fxLayoutGap=\"30px\">\n          <button mat-button [fuseSubmitIfValid]=\"this.coktanSecmeliSoruSecenekService.soruForm\" (invalid)=\"formEksik()\" (valid)=\"tamam()\"\n            class=\"buton\" matTooltip=\"Formu kaydet\" aria-label=\"KAYDET\">\n            <mat-icon class=\"buton\">sd_storage</mat-icon>\n            Kaydet\n          </button>\n          <button mat-button (click)=\"dialogRef.close(['kapat',coktanSecmeliSoruSecenekService.soruForm])\" aria-label=\"KAPAT\" matTooltip=\"Formu kaydetmeden kapat\"\n            class=\"buton\">\n            <mat-icon class=\"buton\">close</mat-icon>\n            Kapat\n          </button>\n        </div>\n      \n      </div>"
+module.exports = "<div class=\"sayfa\" fxLayout=\"column\">\n  <div class=\"sayfa-basi\" fxLayout=\"row\" fxLayoutAlign=\"space-between center\">\n    <div class=\"ekran-baslik\" fxFlex=\"1 0 auto\">\n      <div *ngIf=\"data.yeni\"> Yeni soru</div>\n      <div *ngIf=\"!data.yeni\"> {{data.degisecekSoru.kaynakca|ozet}} : (değişiyor)</div>\n    </div>\n    <div class=\"ekran-baslik-kapatma-butonu\" fxFlex=\"1 1 32px\">\n      <!-- <button mat-button class=\"mat-icon-button\" (click)=\"tamEkran=!tamEkran;\" aria-label=\"Ekrani kapat\" matTooltip=\"Formu kaydetmeden kapat\">\n              <mat-icon *ngIf=\"!tamEkran\">fullscreen</mat-icon>\n              <mat-icon *ngIf=\"tamEkran\">fullscreen_exit</mat-icon>\n            </button> -->\n      <button mat-button class=\"mat-icon-button\" (click)=\"dialogRef.close()\" aria-label=\"Ekrani kapat\" matTooltip=\"Formu kaydetmeden kapat\">\n        <mat-icon>close</mat-icon>\n      </button>\n    </div>\n  </div>\n  <form class=\"sayfa-ici\" name=\"soruFormu\" [formGroup]=\"coktanSecmeliSoruSecenekService.soruForm\" fxLayout=\"column\" fusePerfectScrollbar>\n\n    <div class=\"ders-konu-paneli\" fxLayout=\"column\" fxLayout.gt-xs=\"row\" style=\"overflow-y: auto\">\n      <div class=\"ders-konu-adlari\">\n        <div class=\"ders-sutunu\" fxLayout=\"row\" fxFlexAlign=\"start center\">\n          <div class=\"ders-baslik\" fxHide fxShow.gt-xs fxFlex=\"60px\">Ders</div>\n          <div *ngIf=\"data.ders\" class=\"ders\" fxFill> {{' '+data.ders.dersAdi|ozet:'120'}}</div>\n        </div>\n        <div class=\"konu-sutunu\" *ngIf=\"konu\" fxLayout=\"row\" fxFlexAlign=\"start center\">\n          <div class=\"konu-baslik\" fxHide fxShow.gt-xs fxFlex=\"60px\">Konu</div>\n          <div *ngIf=\"konu\" class=\"konu\" fxFill> {{' '+konu.konuAdi|ozet:'120'}}</div>\n        </div>\n\n      </div>\n\n      <!-- KABUL EDILERBİLİRLİK İNDEKSİ -->\n      <fuse-widget class=\"widget\" fxLayout=\"column\" style=\"width: 350px\" fxHide.lt-md>\n\n        <!-- Front -->\n        <div class=\"fuse-widget-front mat-elevation-z4\">\n          <div class=\"pl-16 pr-0 py-16\" fxLayout=\"row\" fxLayoutAlign=\"space-between center\">\n            <div matTooltip=\"Kabul Edilebilirlik İndeksi\">KEİ</div>\n            <button mat-icon-button fuseWidgetToggle class=\"fuse-widget-flip-button\" aria-label=\"more\">\n              <mat-icon>info</mat-icon>\n            </button>\n          </div>\n          <div class=\"pt-8 pb-24\" fxLayout=\"column\" fxLayoutAlign=\"center center\">\n            <div class=\"font-size-32 line-height-32\" style=\"color:#E2474C\">\n              {{coktanSecmeliSoruSecenekService.soruForm.get('kabulEdilebilirlikIndeksi').value|number:'0.1-2'}}\n            </div>\n\n          </div>\n        </div>\n        <!-- / Front -->\n\n        <!-- Back -->\n        <div class=\"fuse-widget-back p-16 pt-32 mat-white-bg mat-elevation-z2\" style=\"overflow-y: auto!important;padding-bottom: 8px\">\n          <button mat-icon-button fuseWidgetToggle class=\"fuse-widget-flip-button\" aria-label=\"Flip widget\">\n            <mat-icon class=\"s-16\">close</mat-icon>\n          </button>\n          <div>\n            <span style=\"font-weight: bold\"> KEİ=1/(Ns-Ne)</span>\n            Kabul edilebilir performans düzeyi geçme ya da kalma eşiğini belirler. Değer marjinal öğrenciden (tam geçmeye yetecek kadar\n            bilen öğrenci) beklenen performans iler belirlenir. Hesaplanması: Çoktan seçmeli sınav sorusunde seçenekler arasıdan\n            \"tam geçmeye seçenekler arasında yetecek kadar bilen öğrenci\" nin, tüm seçenekler arasında (Ns) bir bakışta eleyebileceği\n            seçenek sayısı tahmin edilir (Ne değeri). Daha sonra aşağıdaki formüle göre ilgili sorunun \"Kabul edilebilirlik\n            indeksi\" hesaplanır.\n          </div>\n        </div>\n        <!-- / Back -->\n\n      </fuse-widget>\n      <!-- / KABUL EDILERBİLİRLİK İNDEKSİ -->\n\n    </div>\n    <div fxLayout=\"column\">\n      <mat-tab-group dynamicHeight=false #defter>\n        <mat-tab label=\"Soru Tanımı\">\n          <ng-template mat-tab-label>\n            <div fxHide fxShow.gt-sm>Soru Tanımı ve Seçenekleri</div>\n            <mat-icon fxHide.gt-sm matTooltip=\"Soru metni ve seçenekleri tanımlamak için seçin.\">edit</mat-icon>\n          </ng-template>\n          <div class=\"soru-tanim-sayfa-icerik\">\n            <fuse-sb-html-editor id=\"soru-metni\" [parentForm]=\"coktanSecmeliSoruSecenekService.soruForm\" parentFormControlName=\"soruMetni\"></fuse-sb-html-editor>\n            <fuse-tek-dogrulu-secenek class=\"doldur\"></fuse-tek-dogrulu-secenek>\n          </div>\n        </mat-tab>\n        <mat-tab label=\"Özellikleri\">\n          <ng-template mat-tab-label>\n            <div fxHide fxShow.gt-sm>Özellikler</div>\n            <mat-icon fxHide.gt-sm matTooltip=\"Özellikleri ayrıntılı olarak tanımlamak için seçin\">settings</mat-icon>\n          </ng-template>\n          <div class=\"soru-ozellik-sayfa-icerik\" fxLayout=\"column wrap\" fxLayoutAlign=\"row\" fxFlex>\n\n            <div class=\"kart-sari\" fxFlex>\n              <h2>Özellikler</h2>\n              <div class=\"px-12\" fxLayout=\"column\" fxLayoutAlign=\"start stretch\">\n                <mat-form-field>\n                  <mat-select placeholder=\"Zorluk derecesi\" [formControl]=\"coktanSecmeliSoruSecenekService.soruForm.get('soruZorlukNo')\">\n                    <mat-option>Zorluk derecesini seçin</mat-option>\n                    <mat-option *ngFor=\"let zorluk of (soruZorluklari$|async)\" [value]=\"zorluk.zorlukId\">\n                      {{zorluk.zorlukAdi}}\n                    </mat-option>\n                  </mat-select>\n                  <mat-error *ngIf=\"displayMessage.soruZorlukNo\">{{displayMessage.soruZorlukNo}}</mat-error>\n                </mat-form-field>\n                <mat-form-field>\n                  <div fxLayout=\"row\" fxLayoutAlign=\"space-between center\" fxLayoutGap=\"10px\">\n                    <input matInput #cevapSuresi placeholder=\"Cevaplama süresi\" formControlName=\"cevaplamaSuresi\"  fxFlex=\"50px\"  (keyup)=\"sureSlider.value=cevapSuresi.value\" >\n                    <mat-slider  #sureSlider [max]=\"360\" [min]=\"20\" [step]=\"1\" [thumbLabel]=\"true\"  [tickInterval]=\"20\" fxFlex=\"auto\" (change)=\"cevaplamaSuresiDegisti($event)\">\n                    </mat-slider>\n                  </div>\n                  <mat-error *ngIf=\"displayMessage.cevaplamaSuresi\">{{displayMessage.cevaplamaSuresi}}</mat-error>\n                  <mat-hint>Cevaplama süresini saniye olarak (20-180 sn) seçin.</mat-hint>\n                </mat-form-field>\n                <mat-form-field>\n                  <mat-select placeholder=\"Soru tipi\" [formControl]=\"coktanSecmeliSoruSecenekService.soruForm.get('soruTipNo')\">\n                    <mat-option>Soru tipini seçin</mat-option>\n                    <mat-option *ngFor=\"let tip of (soruTipleri$|async)\" [value]=\"tip.soruTipId\">\n                      {{tip.soruTipAdi}}\n                    </mat-option>\n                  </mat-select>\n                  <mat-error *ngIf=\"displayMessage.soruTipNo\">{{displayMessage.soruTipNo}}</mat-error>\n                </mat-form-field>\n\n                <mat-form-field>\n                  <mat-select placeholder=\"Bilişsel düzey\" [formControl]=\"coktanSecmeliSoruSecenekService.soruForm.get('bilisselDuzeyNo')\">\n                    <mat-option>Bilişsel düzey seçin</mat-option>\n                    <mat-option *ngFor=\"let bd of (bilisselDuzeyler$|async)\" [value]=\"bd.bilisselDuzeyId\">\n                      {{bd.duzeyAdi}}\n                    </mat-option>\n                  </mat-select>\n                  <mat-error *ngIf=\"displayMessage.bilisselDuzeyId\">{{displayMessage.bilisselDuzeyId}}</mat-error>\n                </mat-form-field>\n\n              </div>\n            </div>\n            <div class=\"kart-sari\" fxFlex>\n              <h2>Geçerlilik süreleri</h2>\n              <div class=\"px-12\" fxLayout=\"column\" fxLayoutAlign=\"start stretch\">\n                <mat-form-field formGroupName=\"gecerlilik\">\n                  <input matInput #baslangic [matDatepicker]=\"pickerBaslangic\" placeholder=\"Başlangıç tarihi\" formControlName=\"baslangic\">\n                  <mat-datepicker-toggle matSuffix [for]=\"pickerBaslangic\"></mat-datepicker-toggle>\n                  <mat-datepicker #pickerBaslangic startView=\"year\" [startAt]=\"onTanimBaslangicTarihi\"></mat-datepicker>\n                </mat-form-field>\n\n                <mat-form-field formGroupName=\"gecerlilik\">\n                  <input matInput [matDatepicker]=\"pickerBitis\" placeholder=\"Bitiş tarihi\" formControlName=\"bitis\">\n                  <mat-datepicker-toggle matSuffix [for]=\"pickerBitis\"></mat-datepicker-toggle>\n                  <mat-datepicker #pickerBitis [startAt]=\"baslangic.value\"></mat-datepicker>\n                </mat-form-field>\n                <mat-error *ngIf=\"displayMessage.gecerlilik\">{{displayMessage.gecerlilik}}</mat-error>\n              </div>\n            </div>\n            <div class=\"kart-sari\" fxFlex>\n              <h2>Kaynakça ve cevap açıklaması</h2>\n\n              <div class=\"px-12\" fxLayout=\"column\" fxLayoutAlign=\"start stretch\">\n                <mat-form-field>\n                  <textarea matInput matTextareaAutosize matAutosizeMinRows=\"4\" formControlName=\"kaynakca\" placeholder=\"Kaynakça\"></textarea>\n                  <mat-error *ngIf=\"displayMessage.kaynakca\">{{displayMessage.kaynajca}}</mat-error>\n                </mat-form-field>\n                <mat-form-field>\n                  <textarea matInput matTextareaAutosize matAutosizeMinRows=\"4\" formControlName=\"aciklama\" placeholder=\"Cevap açıklaması\"></textarea>\n                  <mat-error *ngIf=\"displayMessage.aciklama\">{{displayMessage.aciklama}}</mat-error>\n                </mat-form-field>\n\n\n              </div>\n            </div>\n          </div>\n        </mat-tab>\n        <mat-tab label=\"Hedefleri\">\n          <ng-template mat-tab-label>\n            <div fxHide fxShow.gt-sm>Öğrenim Hedefleri</div>\n            <mat-icon fxHide.gt-sm matTooltip=\"Sorunun ilişkili olduğu öğrenim hedeflerini belirlemek için seçin\">my_location</mat-icon>\n          </ng-template>\n          <div class=\"soru-hedefler-sayfa-icerik\">\n            Öğrenim hedefleri\n\n            <fuse-ogrenim-hedefleri> </fuse-ogrenim-hedefleri>\n\n\n          </div>\n        </mat-tab>\n\n        <mat-tab label=\"Anahtar Kelimeler\">\n          <ng-template mat-tab-label>\n            <div fxHide fxShow.gt-sm>Anahtar Kelimeler</div>\n            <mat-icon fxHide.gt-sm matTooltip=\"Soruyu bulmak için kullanılacak anahtar kelimeleri tanımlamak için girin\">vpn_key</mat-icon>\n          </ng-template>\n\n          <fuse-anahtar-kelimeler fusePerfectScrollbar [anahtar-kelimeler]=\"coktanSecmeliSoruSecenekService.soruForm.get('anahtarKelimeler')\"\n            (bosalt)=\"anahtarkelimeleriBosalt()\">\n          </fuse-anahtar-kelimeler>\n\n        </mat-tab>\n\n      </mat-tab-group>\n\n    </div>\n  </form>\n\n  <div matDialogActions class=\"sayfa-sonu\" fxLayout=\"row\" fxLayoutAlign=\"center center\" fxLayoutGap=\"30px\">\n    <button mat-button [fuseSubmitIfValid]=\"this.coktanSecmeliSoruSecenekService.soruForm\" (invalid)=\"formEksik()\" (valid)=\"tamam()\"\n      class=\"buton\" matTooltip=\"Formu kaydet\" aria-label=\"KAYDET\">\n      <mat-icon class=\"buton\">sd_storage</mat-icon>\n      Kaydet\n    </button>\n    <button mat-button (click)=\"dialogRef.close(['kapat',coktanSecmeliSoruSecenekService.soruForm])\" aria-label=\"KAPAT\" matTooltip=\"Formu kaydetmeden kapat\"\n      class=\"buton\">\n      <mat-icon class=\"buton\">close</mat-icon>\n      Kapat\n    </button>\n  </div>\n\n</div>"
 
 /***/ }),
 
@@ -479,7 +1077,7 @@ module.exports = "<div class=\"sayfa\" fxLayout=\"column\">\n        <div class=
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "/**\n * Applies styles for users in high contrast mode. Note that this only applies\n * to Microsoft browsers. Chrome can be included by checking for the `html[hc]`\n * attribute, however Chrome handles high contrast differently.\n */\n/* Theme for the ripple elements.*/\n/* stylelint-disable material/no-prefixes */\n/* stylelint-enable */\n.mat-dialog-container {\n  border-radius: 12px;\n  display: block;\n  padding: 0px;\n  background-color: #252D43;\n  overflow-y: hidden;\n  color: #D8E8E9; }\n.mat-dialog-container .popup-masaustu,\n  .mat-dialog-container .popup-mobil,\n  .mat-dialog-container .tam-ekran {\n    max-width: none;\n    width: 100vw;\n    height: 100vh;\n    background-color: yellow; }\n.mat-dialog-container .sayfa {\n    height: 100%;\n    width: 100%;\n    background-color: #D8E8E9; }\n.mat-dialog-container .sayfa-basi {\n    background-color: #E2474C;\n    padding: 12px;\n    width: 100%; }\n.mat-dialog-container .sayfa-ici {\n    width: 100%;\n    height: 100% !important;\n    border-left: 4px solid #E2474C;\n    border-right: 4px solid #E2474C; }\n.mat-dialog-container .sayfa-ici .mat-tab-group {\n      background-color: #D8E8E9;\n      width: 100%;\n      height: 100% !important;\n      box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n      transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1); }\n.mat-dialog-container .sayfa-sonu {\n    font-size: 16px;\n    min-height: 40px;\n    height: 60px;\n    font-weight: bolder;\n    background-color: #E2474C;\n    margin-bottom: 12px;\n    margin-bottom: 0px;\n    width: 100%; }\n.mat-dialog-container .sayfa-sonu .buton {\n      color: white; }\n.popup-masaustu .mat-tab-body-wrapper,\n.popup-mobil .mat-tab-body-wrapper {\n  height: 100%; }\n.ders-konu-paneli {\n  background-color: transparent;\n  padding: 4px;\n  color: #406D95; }\n.ders-konu-paneli .ders-konu-adlari {\n    width: 100%;\n    padding-left: 12px;\n    line-height: 32px; }\n.ders-konu-paneli .ders-konu-adlari .ders-sutunu {\n      font-size: 1.5em; }\n.ders-konu-paneli .ders-konu-adlari .ders-sutunu .ders-baslik {\n        color: #252D43; }\n@media (max-width: 959px) {\n        .ders-konu-paneli .ders-konu-adlari .ders-sutunu .ders {\n          font-size: 0.8em; } }\n.ders-konu-paneli .ders-konu-adlari .konu-sutunu {\n      font-size: 1.5em; }\n.ders-konu-paneli .ders-konu-adlari .konu-sutunu .konu-baslik {\n        color: #252D43; }\n@media (max-width: 959px) {\n        .ders-konu-paneli .ders-konu-adlari .konu-sutunu .konu {\n          font-size: 0.6em; } }\n.ders-konu-paneli .kabul-edilebilirlik-indeks-kutusu {\n    background-color: #E2474C;\n    border: 2px solid #E2474C;\n    padding: 10px; }\n.ders-konu-paneli .kabul-edilebilirlik-indeks-kutusu .indeks-yazisi {\n      font-size: 12px;\n      text-align: center;\n      color: white; }\n@media (max-width: 959px) {\n        .ders-konu-paneli .kabul-edilebilirlik-indeks-kutusu .indeks-yazisi {\n          display: none; } }\n.ders-konu-paneli .kabul-edilebilirlik-indeks-kutusu .kutu {\n      padding: 4px;\n      font-size: 2em;\n      font-weight: 900;\n      height: 100px;\n      min-height: 80px;\n      overflow: auto;\n      text-align: center;\n      color: white; }\n.kart {\n  border-radius: 2px;\n  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n  transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1);\n  padding: 24px;\n  margin: 12px;\n  color: #252D43; }\n.kart mat-form-field {\n    min-width: 150px;\n    margin: 8px;\n    color: #252D43;\n    width: 100%; }\n.soru-metni {\n  background-color: #3E6A91; }\n.doldur {\n  height: 100% !important; }\n/* Styles for the ink bar */\n.mat-ink-bar {\n  background-color: transparent; }\n/* label style */\n.mat-tab-label {\n  background: #D8E8E9;\n  color: #406D95; }\n/* focus style */\n.mat-tab-group.mat-primary .mat-tab-label:not(.mat-tab-disabled):focus,\n.mat-tab-group.mat-primary .mat-tab-link:not(.mat-tab-disabled):focus,\n.mat-tab-nav-bar.mat-primary .mat-tab-label:not(.mat-tab-disabled):focus,\n.mat-tab-nav-bar.mat-primary .mat-tab-link:not(.mat-tab-disabled):focus {\n  background: #E2474C;\n  color: white; }\n/* ink bar style */\n.mat-tab-group.mat-primary .mat-ink-bar,\n.mat-tab-nav-bar.mat-primary .mat-ink-bar {\n  background-color: #E2474C;\n  height: 8px; }\n.soru-tanim-sayfa-icerik {\n  padding: 2px; }\n.ekran-baslik {\n  font-size: 20px; }\n.ekran-baslik-kapatma-butonu mat-icon {\n  color: white; }\n.kart-sari {\n  border-radius: 2px;\n  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n  transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1);\n  padding: 24px;\n  margin: 12px;\n  background-color: #D8E8E9;\n  color: #252D43; }\n.kart-sari mat-form-field {\n    margin: 8px;\n    color: #252D43;\n    width: 100%; }\n.fuse-widget-front {\n  padding: 12px;\n  background-color: #E2E3DD !important;\n  color: #E2474C; }\n.anahtar-kelime-kutusu {\n  border-radius: 2px;\n  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n  transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1);\n  padding: 24px;\n  margin: 12px;\n  width: 100%;\n  font-size: 16px;\n  padding: 8px;\n  color: #E2474C;\n  background-color: #D8E8E9; }\n.soru-anahtar-kelimeler-sayfa-icerik {\n  background-color: #A8D0DA;\n  color: #252D43; }\n"
+module.exports = "/**\n * Applies styles for users in high contrast mode. Note that this only applies\n * to Microsoft browsers. Chrome can be included by checking for the `html[hc]`\n * attribute, however Chrome handles high contrast differently.\n */\n/* Theme for the ripple elements.*/\n/* stylelint-disable material/no-prefixes */\n/* stylelint-enable */\n.mat-dialog-container {\n  border-radius: 12px;\n  display: block;\n  padding: 0px;\n  background-color: #252D43;\n  overflow-y: hidden;\n  color: #D8E8E9; }\n.mat-dialog-container .popup-masaustu,\n  .mat-dialog-container .popup-mobil,\n  .mat-dialog-container .tam-ekran {\n    max-width: none;\n    width: 100vw;\n    height: 100vh;\n    background-color: yellow; }\n.mat-dialog-container .sayfa {\n    height: 100%;\n    width: 100%;\n    background-color: #D8E8E9; }\n.mat-dialog-container .sayfa-basi {\n    background-color: #E2474C;\n    padding: 12px;\n    width: 100%; }\n.mat-dialog-container .sayfa-ici {\n    width: 100%;\n    height: 100% !important;\n    border-left: 4px solid #E2474C;\n    border-right: 4px solid #E2474C; }\n.mat-dialog-container .sayfa-ici .mat-tab-group {\n      background-color: #D8E8E9;\n      width: 100%;\n      height: 100% !important;\n      box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n      transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1); }\n.mat-dialog-container .sayfa-sonu {\n    font-size: 16px;\n    min-height: 40px;\n    height: 60px;\n    font-weight: bolder;\n    background-color: #E2474C;\n    margin-bottom: 12px;\n    margin-bottom: 0px;\n    width: 100%; }\n.mat-dialog-container .sayfa-sonu .buton {\n      color: white; }\n.popup-masaustu .mat-tab-body-wrapper,\n.popup-mobil .mat-tab-body-wrapper {\n  height: 100%; }\n.ders-konu-paneli {\n  background-color: transparent;\n  padding: 4px;\n  color: #406D95; }\n.ders-konu-paneli .ders-konu-adlari {\n    width: 100%;\n    padding-left: 12px;\n    line-height: 32px; }\n.ders-konu-paneli .ders-konu-adlari .ders-sutunu {\n      font-size: 1.5em; }\n.ders-konu-paneli .ders-konu-adlari .ders-sutunu .ders-baslik {\n        color: #252D43; }\n@media (max-width: 959px) {\n        .ders-konu-paneli .ders-konu-adlari .ders-sutunu .ders {\n          font-size: 0.8em; } }\n.ders-konu-paneli .ders-konu-adlari .konu-sutunu {\n      font-size: 1.5em; }\n.ders-konu-paneli .ders-konu-adlari .konu-sutunu .konu-baslik {\n        color: #252D43; }\n@media (max-width: 959px) {\n        .ders-konu-paneli .ders-konu-adlari .konu-sutunu .konu {\n          font-size: 0.6em; } }\n.ders-konu-paneli .kabul-edilebilirlik-indeks-kutusu {\n    background-color: #E2474C;\n    border: 2px solid #E2474C;\n    padding: 10px; }\n.ders-konu-paneli .kabul-edilebilirlik-indeks-kutusu .indeks-yazisi {\n      font-size: 12px;\n      text-align: center;\n      color: white; }\n@media (max-width: 959px) {\n        .ders-konu-paneli .kabul-edilebilirlik-indeks-kutusu .indeks-yazisi {\n          display: none; } }\n.ders-konu-paneli .kabul-edilebilirlik-indeks-kutusu .kutu {\n      padding: 4px;\n      font-size: 2em;\n      font-weight: 900;\n      height: 100px;\n      min-height: 80px;\n      overflow: auto;\n      text-align: center;\n      color: white; }\n.kart {\n  border-radius: 2px;\n  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n  transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1);\n  padding: 24px;\n  margin: 12px;\n  color: #252D43; }\n.kart mat-form-field {\n    min-width: 150px;\n    margin: 8px;\n    color: #252D43;\n    width: 100%; }\n.soru-metni {\n  background-color: #3E6A91; }\n.doldur {\n  height: 100% !important; }\n/* Styles for the ink bar */\n.mat-ink-bar {\n  background-color: transparent; }\n/* label style */\n.mat-tab-label {\n  background: #D8E8E9;\n  color: #406D95; }\n/* focus style */\n.mat-tab-group.mat-primary .mat-tab-label:not(.mat-tab-disabled):focus,\n.mat-tab-group.mat-primary .mat-tab-link:not(.mat-tab-disabled):focus,\n.mat-tab-nav-bar.mat-primary .mat-tab-label:not(.mat-tab-disabled):focus,\n.mat-tab-nav-bar.mat-primary .mat-tab-link:not(.mat-tab-disabled):focus {\n  background: #E2474C;\n  color: white; }\n/* ink bar style */\n.mat-tab-group.mat-primary .mat-ink-bar,\n.mat-tab-nav-bar.mat-primary .mat-ink-bar {\n  background-color: #E2474C;\n  height: 8px; }\n.soru-tanim-sayfa-icerik {\n  padding: 2px; }\n.ekran-baslik {\n  font-size: 20px; }\n.ekran-baslik-kapatma-butonu mat-icon {\n  color: white; }\n.kart-sari {\n  border-radius: 4px;\n  box-shadow: 0 5px 2px -4px rgba(0, 0, 0, 0.4), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n  transition: box-shadow 560ms cubic-bezier(0.4, 0, 0.2, 1);\n  padding: 12px;\n  margin: 12px;\n  padding-bottom: 24px;\n  background-color: #D8E8E9;\n  color: #252D43; }\n@media (max-width: 959px) {\n    .kart-sari {\n      margin-right: 10%;\n      padding: 12px;\n      padding-right: 0px; } }\n.kart-sari h2 {\n    font-weight: 400;\n    color: #252D43; }\n.kart-sari .mat-input-element {\n    overflow-y: hidden;\n    height: 24px !important; }\n.kart-sari .mat-input-wrapper {\n    height: 24px !important; }\n.fuse-widget-front {\n  padding: 12px;\n  background-color: #E2E3DD !important;\n  color: #E2474C; }\n.anahtar-kelime-kutusu {\n  border-radius: 2px;\n  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n  transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1);\n  padding: 24px;\n  margin: 12px;\n  width: 100%;\n  font-size: 16px;\n  padding: 8px;\n  color: #E2474C;\n  background-color: #D8E8E9; }\n.soru-anahtar-kelimeler-sayfa-icerik {\n  background-color: #A8D0DA;\n  color: #252D43; }\n"
 
 /***/ }),
 
@@ -606,9 +1204,9 @@ var CoktanSecmeliSoruComponent = /** @class */ (function () {
     };
     CoktanSecmeliSoruComponent.prototype.ngAfterViewInit = function () {
         var _this = this;
-        var controlBlurs = this.formInputElements.map(function (formControl) { return rxjs__WEBPACK_IMPORTED_MODULE_7__["Observable"].fromEvent(formControl.nativeElement, 'blur'); });
+        var controlBlurs = this.formInputElements.map(function (formControl) { return Object(rxjs__WEBPACK_IMPORTED_MODULE_7__["fromEvent"])(formControl.nativeElement, 'blur'); });
         // Merge the blur event observable with the valueChanges observable
-        rxjs__WEBPACK_IMPORTED_MODULE_7__["Observable"].merge.apply(rxjs__WEBPACK_IMPORTED_MODULE_7__["Observable"], [this.coktanSecmeliSoruSecenekService.soruForm.valueChanges].concat(controlBlurs)).debounceTime(600)
+        rxjs__WEBPACK_IMPORTED_MODULE_7__["merge"].apply(void 0, [this.coktanSecmeliSoruSecenekService.soruForm.valueChanges].concat(controlBlurs)).debounceTime(600)
             .subscribe(function (value) {
             _this.displayMessage = _this.genericValidator.processMessages(_this.coktanSecmeliSoruSecenekService.soruForm);
         });
@@ -616,29 +1214,7 @@ var CoktanSecmeliSoruComponent = /** @class */ (function () {
             this.coktanSecmeliSoruSecenekService.soruForm.get('anahtarKelimeler').valueChanges.subscribe(function (anahtarlar) {
                 _this.anahtarKelimeler = anahtarlar;
             });
-            this.coktanSecmeliSoruSecenekService.soruForm.get('secenekler').valueChanges.subscribe(function (secenekler) {
-                var sonuc = _this.hesaplariYap(secenekler);
-                _this.coktanSecmeliSoruSecenekService.soruForm.patchValue({
-                    kabulEdilebilirlikIndeksi: sonuc.kei,
-                    hemenElenebilirSecenekSayisi: sonuc.hess
-                });
-                _this.coktanSecmeliSoruSecenekService.dogruSecenekSayisiDegisti.next(sonuc.dogruSecenekSayisi);
-                _this.coktanSecmeliSoruSecenekService.hemenElenebilirSecenekSayisiDegisti.next(sonuc.hess);
-                _this.coktanSecmeliSoruSecenekService.kabulEdilebilirkikIndeksiDegisti.next(sonuc.kei);
-            });
         }
-    };
-    CoktanSecmeliSoruComponent.prototype.hesaplariYap = function (secenekler) {
-        var dogruSecenekSayisi = secenekler.filter(function (el) { return el.dogruSecenek === true; }).length;
-        var hessGuncelDegeri = secenekler.filter(function (el) { return el.hemenElenebilir === true; }).length;
-        var kei = this.coktanSecmeliSoruSecenekService.kabulEdilebilirlikIndeksiniHesapla(secenekler.length, hessGuncelDegeri);
-        return { dogruSecenekSayisi: dogruSecenekSayisi, hess: hessGuncelDegeri, kei: kei };
-    };
-    CoktanSecmeliSoruComponent.prototype.hesaplariYapArray = function (secenekler) {
-        var dogruSecenekSayisi = secenekler.controls.filter(function (el) { return el.get('dogruSecenek').value === true; }).length;
-        var hessGuncelDegeri = secenekler.controls.filter(function (el) { return el.get('hemenElenebilir').value === true; }).length;
-        var kei = this.coktanSecmeliSoruSecenekService.kabulEdilebilirlikIndeksiniHesapla(secenekler.length, hessGuncelDegeri);
-        return { dogruSecenekSayisi: dogruSecenekSayisi, hess: hessGuncelDegeri, kei: kei };
     };
     CoktanSecmeliSoruComponent.prototype.secilebilirOgrenimHedefleriniAyarla = function () {
         var sonuc = [];
@@ -674,13 +1250,13 @@ var CoktanSecmeliSoruComponent = /** @class */ (function () {
             konuNo: this.data.konuNo,
             soruTipNo: [null, [_angular_forms__WEBPACK_IMPORTED_MODULE_5__["Validators"].required]],
             soruZorlukNo: [null, [_angular_forms__WEBPACK_IMPORTED_MODULE_5__["Validators"].required]],
-            soruAdi: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_5__["Validators"].required]],
+            kaynakca: [''],
             soruMetni: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_5__["Validators"].required]],
             gecerlilik: this.formBuilder.group({
                 baslangic: [null, [_angular_forms__WEBPACK_IMPORTED_MODULE_5__["Validators"].required]],
                 bitis: [null]
             }, { validator: this.soruValidatorleri.BitisBaslangictanOnceOlamaz('baslangic', 'bitis') }),
-            aciklama: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_5__["Validators"].required]],
+            aciklama: [''],
             secenekler: this.formBuilder.array([], this.soruValidatorleri.tekDogruluCoktanSecmeliSeceneklerValidator),
             hemenElenebilirSecenekSayisi: 0,
             kabulEdilebilirlikIndeksi: [0],
@@ -701,7 +1277,7 @@ var CoktanSecmeliSoruComponent = /** @class */ (function () {
             konuNo: soruBilgi.konuNo,
             soruTipNo: soruBilgi.soruTipNo,
             sorusozNo: soruBilgi.soruZorlukNo,
-            soruAdi: soruBilgi.soruAdi,
+            kaynakca: soruBilgi.kaynakca,
             soruMetni: soruBilgi.soruMetni,
             soruZorlukNo: soruBilgi.soruZorlukNo,
             gecerlilik: {
@@ -723,7 +1299,7 @@ var CoktanSecmeliSoruComponent = /** @class */ (function () {
                     hemenElenebilir: elSecenek.hemenElenebilir,
                 }));
             });
-            var sonuc = this.hesaplariYapArray(secenekler_1);
+            var sonuc = this.coktanSecmeliSoruSecenekService.hesaplariYap(secenekler_1);
             this.coktanSecmeliSoruSecenekService.dogruSecenekSayisiDegisti.next(sonuc.dogruSecenekSayisi);
             this.coktanSecmeliSoruSecenekService.hemenElenebilirSecenekSayisiDegisti.next(sonuc.hess);
             this.coktanSecmeliSoruSecenekService.kabulEdilebilirkikIndeksiDegisti.next(sonuc.kei);
@@ -740,11 +1316,12 @@ var CoktanSecmeliSoruComponent = /** @class */ (function () {
                 _this.coktanSecmeliSoruSecenekService.soruForm.get('anahtarKelimeler').push(_this.formBuilder.control(keyword));
             });
         }
+        this.sureKulagi.value = soruBilgi.cevaplamaSuresi;
         this.displayMessage = this.genericValidator.processMessages(this.coktanSecmeliSoruSecenekService.soruForm);
     };
     CoktanSecmeliSoruComponent.prototype.anahtarkelimeleriBosalt = function () {
-        while (this.coktanSecmeliSoruSecenekService.soruForm.get('anahtarkelimeler').length !== 0) {
-            this.coktanSecmeliSoruSecenekService.soruForm.get('anahtarkelimeler').removeAt(0);
+        while (this.coktanSecmeliSoruSecenekService.soruForm.get('anahtarKelimeler').length !== 0) {
+            this.coktanSecmeliSoruSecenekService.soruForm.get('anahtarKelimeler').removeAt(0);
         }
     };
     CoktanSecmeliSoruComponent.prototype.konuBul = function () {
@@ -760,7 +1337,8 @@ var CoktanSecmeliSoruComponent = /** @class */ (function () {
         }
     };
     CoktanSecmeliSoruComponent.prototype.cevaplamaSuresiDegisti = function (deger) {
-        this.coktanSecmeliSoruSecenekService.soruForm.patchValue({ cevaplamaSuresi: deger });
+        console.log(deger);
+        this.coktanSecmeliSoruSecenekService.soruForm.patchValue({ cevaplamaSuresi: deger.value });
     };
     CoktanSecmeliSoruComponent.prototype.hessSuresiDegisti = function (deger) {
         this.coktanSecmeliSoruSecenekService.soruForm.patchValue({ hemenElenebilirSecenekSayisi: deger });
@@ -775,7 +1353,7 @@ var CoktanSecmeliSoruComponent = /** @class */ (function () {
             dersGrubuNo: this.data.ders.dersGrubuNo,
             dersNo: this.data.dersNo,
             konuNo: this.data.konuNo,
-            // soruAdi: 'Otoskleroz tanımı',
+            // kaynakca: 'Otoskleroz tanımı',
             soruTipNo: 1,
             soruMetni: 'Aşağıdakilerden hangisi .... değildir? ',
             tekDogruluSecenekleri: [{
@@ -809,7 +1387,7 @@ var CoktanSecmeliSoruComponent = /** @class */ (function () {
                     'hemenElenebilir': false
                 }],
             // anahtarKelimeler: ['kelime ', 'işitme kaybı', 'genetik', 'çınlama'],
-            soruAdi: '',
+            kaynakca: '',
             aciklama: '',
             bilisselDuzeyNo: 2,
             soruZorlukNo: 1,
@@ -848,6 +1426,13 @@ var CoktanSecmeliSoruComponent = /** @class */ (function () {
         secenekListesi.removeAt(indeks);
     };
     CoktanSecmeliSoruComponent.prototype.tamam = function () {
+        var secenekler = this.coktanSecmeliSoruSecenekService.soruForm.get('secenekler');
+        var seceneklerDeger = secenekler.value;
+        var hemDogruHemdeElenebilirSorular = seceneklerDeger.filter(function (el) { return el.dogruSecenek && el.hemenElenebilir; });
+        if (hemDogruHemdeElenebilirSorular.length > 0) {
+            this.mesajService.hataStr('Aynı zamanda hem doğru seçenek hem de hemen elenebilir seçenek olarak işaretlenmiş seçenek var!');
+            return;
+        }
         this.dialogRef.close(['kaydet', this.coktanSecmeliSoruSecenekService.soruForm, this.data.degisecekSoru]);
     };
     CoktanSecmeliSoruComponent.prototype.formEksik = function () {
@@ -863,7 +1448,7 @@ var CoktanSecmeliSoruComponent = /** @class */ (function () {
                 return;
             }
             if (this.coktanSecmeliSoruSecenekService.soruForm.get('secenekler').errors.tekDogruSecenekOlabilir) {
-                this.mesajService.hataStr('Bu soru tipi için sadece tek seçenek doğru olarak işaretlenebilir');
+                this.mesajService.hataStr('Bu soru tipi için sadece tek seçenek doğru olarak işaretlenebilir!');
                 this.defter.selectedIndex = 0;
                 return;
             }
@@ -909,6 +1494,10 @@ var CoktanSecmeliSoruComponent = /** @class */ (function () {
         __metadata("design:type", _angular_material__WEBPACK_IMPORTED_MODULE_4__["MatTabGroup"])
     ], CoktanSecmeliSoruComponent.prototype, "defter", void 0);
     __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"])('sureSlider'),
+        __metadata("design:type", _angular_material__WEBPACK_IMPORTED_MODULE_4__["MatSlider"])
+    ], CoktanSecmeliSoruComponent.prototype, "sureKulagi", void 0);
+    __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["HostBinding"])('class.tam-ekran'),
         __metadata("design:type", Boolean)
     ], CoktanSecmeliSoruComponent.prototype, "tamEkran", void 0);
@@ -949,7 +1538,7 @@ var CoktanSecmeliSoruComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"!secenekFormu\" fxLayout=\"column\" fxLayoutAlign=\"center center\" fxFlex>\n    <mat-icon class=\"s-120 mb-12 select-todo-icon\" *fuseIfOnDom [@animate]=\"{value:'*',params:{delay:'300ms',scale:'0.2'}}\">check_box\n    </mat-icon>\n    <span class=\"hint-text mat-h1 select-todo-text\" *fuseIfOnDom [@animate]=\"{value:'*',params:{delay:'400ms'}}\">Seçenek seç\n    </span>\n  </div>\n  \n  <div *ngIf=\"secenekFormu\">\n    <div class=\"todo-header\" fxLayout=\"row\" fxLayoutAlign=\"space-between center\">\n     \n      <div class=\"actions\" fxLayout=\"row\" fxLayoutAlign=\"start center\">\n  \n        <button mat-button class=\"mat-icon-button\" (click)=\"addTekDogruluSecenek($event)\" aria-label=\"Seçenek ekle\" fxHide.lt-lg>\n          <mat-icon matTooltip=\"Yeni seçenek ekle\" class=\"ekle\">add_box</mat-icon>\n        </button>\n  \n        <button mat-button class=\"mat-icon-button\" (click)=\"toggleSecenekSil($event)\" aria-label=\"Toggle delete\" fxHide.lt-lg>\n          <mat-icon matTooltip=\"Bu seçeneği sil\">delete</mat-icon>\n        </button>\n  \n      </div>\n    </div>\n    <div class=\"todo-content\">\n      <form [formGroup]=\"secenekFormu\">\n        <fuse-sb-html-editor [parentForm]=\"secenekFormu\"></fuse-sb-html-editor>\n        \n        <div class=\"secenek-ozellik-listesi\" fxLayout=\"column\" fxLayoutAlign=\"start start\" fxLayoutGap=\"10px\">\n          <mat-checkbox formControlName=\"dogruSecenek\">\n            Doğru seçenek\n          </mat-checkbox>\n  \n          <mat-checkbox formControlName=\"hemenElenebilir\">\n            İlk bakışta elenebilir seçenek.\n          </mat-checkbox>\n        </div>\n        <!-- <div class=\"tags m-12\" fxLayout=\"row\" fxLayoutAlign=\"start center\" fxLayoutWrap fxHide.lt->\n  \n          <div class=\"tag\" fxLayout=\"row\" fxLayoutAlign=\"start center\">\n            <div class=\"tag-color\" [ngStyle]=\"{'background-color': dogruSecenek?'green':'#E2474C'}\"></div>\n            <div class=\"tag-label\">{{dogruSecenek?'Doğru Cevap':'Çeldirici'}}</div>\n          </div>\n  \n          <div class=\"tag\" fxLayout=\"row\" fxLayoutAlign=\"start center\">\n            <div class=\"tag-color\" [ngStyle]=\"{'background-color': hemenElenebilirSecenek?'#252D43':'#AF373A'}\"></div>\n            <div class=\"tag-label\">{{hemenElenebilirSecenek?'Hemen Elenebilir':'Hemen Elenemez'}}</div>\n          </div>\n  \n        </div> -->\n  \n      </form>\n    </div>\n  </div>"
+module.exports = "<div *ngIf=\"!secenekFormu\" fxLayout=\"column\" fxLayoutAlign=\"center center\" fxFlex>\n  <mat-icon class=\"s-120 mb-12 select-todo-icon\" *fuseIfOnDom [@animate]=\"{value:'*',params:{delay:'300ms',scale:'0.2'}}\">check_box\n  </mat-icon>\n  <span class=\"hint-text mat-h1 select-todo-text\" *fuseIfOnDom [@animate]=\"{value:'*',params:{delay:'400ms'}}\">Seçenek seç\n  </span>\n</div>\n\n<div *ngIf=\"secenekFormu\">\n  <div class=\"todo-header\" fxLayout=\"row\" fxLayoutAlign=\"space-between center\">\n\n    <div class=\"actions\" fxLayout=\"row\" fxLayoutAlign=\"start center\">\n\n      <button mat-button class=\"mat-icon-button\" (click)=\"addTekDogruluSecenek($event)\" aria-label=\"Seçenek ekle\" fxHide.lt-lg>\n        <mat-icon matTooltip=\"Yeni seçenek ekle\" class=\"ekle\">add_box</mat-icon>\n      </button>\n\n      <button mat-button class=\"mat-icon-button\" (click)=\"toggleSecenekSil($event)\" aria-label=\"Toggle delete\" fxHide.lt-lg>\n        <mat-icon matTooltip=\"Bu seçeneği sil\">delete</mat-icon>\n      </button>\n\n    </div>\n    <div class=\"actions\" fxLayout=\"row\" fxLayoutAlign=\"start center\">\n      <button mat-button class=\"mat-icon-button\" (click)=\"tekDogruluSecenekService.oncekiSonrakiSecenegeGit(-1)\" aria-label=\"Toggle delete\">\n        <mat-icon matTooltip=\"Önceki seçeneğe git\">navigate_before</mat-icon>\n      </button>\n      <button mat-button class=\"mat-icon-button\" (click)=\"tekDogruluSecenekService.oncekiSonrakiSecenegeGit(1)\" aria-label=\"Toggle delete\">\n        <mat-icon matTooltip=\"Sonraki seçeneğe git\">navigate_next</mat-icon>\n      </button>\n    </div>\n  </div>\n  <div class=\"todo-content\">\n    <form [formGroup]=\"secenekFormu\">\n      <fuse-sb-html-editor [parentForm]=\"secenekFormu\" parentFormControlName=\"secenekMetni\"  ></fuse-sb-html-editor>\n\n      <div class=\"secenek-ozellik-listesi\" fxLayout=\"column\" fxLayoutAlign=\"start start\" fxLayoutGap=\"10px\">\n        <mat-checkbox formControlName=\"dogruSecenek\" (change)=\"toggleDogruSecenek($event)\" [disabled]=\"hemenElenebilirSecenek\" >\n          Doğru seçenek\n        </mat-checkbox>\n\n        <mat-checkbox formControlName=\"hemenElenebilir\" (change)=\"toggleHemenElenebilir($event)\" [disabled]=\"dogruSecenek\">\n          İlk bakışta elenebilir seçenek.\n        </mat-checkbox>\n      </div>\n      <!-- <div class=\"tags m-12\" fxLayout=\"row\" fxLayoutAlign=\"start center\" fxLayoutWrap fxHide.lt->\n  \n          <div class=\"tag\" fxLayout=\"row\" fxLayoutAlign=\"start center\">\n            <div class=\"tag-color\" [ngStyle]=\"{'background-color': dogruSecenek?'green':'#E2474C'}\"></div>\n            <div class=\"tag-label\">{{dogruSecenek?'Doğru Cevap':'Çeldirici'}}</div>\n          </div>\n  \n          <div class=\"tag\" fxLayout=\"row\" fxLayoutAlign=\"start center\">\n            <div class=\"tag-color\" [ngStyle]=\"{'background-color': hemenElenebilirSecenek?'#252D43':'#AF373A'}\"></div>\n            <div class=\"tag-label\">{{hemenElenebilirSecenek?'Hemen Elenebilir':'Hemen Elenemez'}}</div>\n          </div>\n  \n        </div> -->\n\n    </form>\n  </div>\n</div>"
 
 /***/ }),
 
@@ -960,7 +1549,7 @@ module.exports = "<div *ngIf=\"!secenekFormu\" fxLayout=\"column\" fxLayoutAlign
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "/**\n * Applies styles for users in high contrast mode. Note that this only applies\n * to Microsoft browsers. Chrome can be included by checking for the `html[hc]`\n * attribute, however Chrome handles high contrast differently.\n */\n/* Theme for the ripple elements.*/\n/* stylelint-disable material/no-prefixes */\n/* stylelint-enable */\n:host {\n  display: flex;\n  flex: 1 0 auto;\n  flex-direction: column;\n  min-height: 20vh;\n  height: 50vh;\n  background-color: #E2E3DD;\n  color: #406D95; }\n:host .todo-header {\n    padding: 24px;\n    border-bottom: 1px solid rgba(0, 0, 0, 0.12);\n    background: rgba(0, 0, 0, 0.06); }\n:host .todo-header .actions {\n      min-width: 88px; }\n:host .todo-content {\n    padding: 8; }\n:host .todo-content .title {\n      font-size: 17px;\n      font-weight: 700; }\n:host .todo-content .tag {\n      font-size: 11px;\n      border-radius: 2px;\n      margin: 8px 4px 0 0;\n      padding: 3px 8px;\n      background-color: rgba(0, 0, 0, 0.08); }\n:host .todo-content .tag .tag-color {\n        width: 8px;\n        height: 8px;\n        margin-right: 8px;\n        border-radius: 50%; }\n:host .todo-content .dates .mat-form-field {\n      width: auto !important; }\n:host .sil {\n    color: #AF373A !important; }\n:host .ekle {\n    color: #406D95 !important; }\n:host .secenek-ozellik-listesi {\n    padding-left: 24px; }\n"
+module.exports = "/**\n * Applies styles for users in high contrast mode. Note that this only applies\n * to Microsoft browsers. Chrome can be included by checking for the `html[hc]`\n * attribute, however Chrome handles high contrast differently.\n */\n/* Theme for the ripple elements.*/\n/* stylelint-disable material/no-prefixes */\n/* stylelint-enable */\n:host {\n  display: flex;\n  flex: 1 0 auto;\n  flex-direction: column;\n  min-height: 20vh;\n  height: 50vh;\n  background-color: #E2E3DD;\n  color: #406D95; }\n:host .todo-header {\n    padding: 22px;\n    padding-bottom: 23px;\n    border-bottom: 1px solid rgba(0, 0, 0, 0.12);\n    background: rgba(0, 0, 0, 0.06); }\n:host .todo-header .actions {\n      min-width: 88px; }\n:host .todo-content {\n    padding: 8; }\n:host .todo-content .title {\n      font-size: 17px;\n      font-weight: 700; }\n:host .todo-content .tag {\n      font-size: 11px;\n      border-radius: 2px;\n      margin: 8px 4px 0 0;\n      padding: 3px 8px;\n      background-color: rgba(0, 0, 0, 0.08); }\n:host .todo-content .tag .tag-color {\n        width: 8px;\n        height: 8px;\n        margin-right: 8px;\n        border-radius: 50%; }\n:host .todo-content .dates .mat-form-field {\n      width: auto !important; }\n:host .sil {\n    color: #AF373A !important; }\n:host .ekle {\n    color: #406D95 !important; }\n:host .secenek-ozellik-listesi {\n    padding-left: 24px; }\n"
 
 /***/ }),
 
@@ -980,6 +1569,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var rxjs_add_operator_distinctUntilChanged__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs/add/operator/distinctUntilChanged */ "./node_modules/rxjs-compat/_esm5/add/operator/distinctUntilChanged.js");
 /* harmony import */ var _fuse_animations__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @fuse/animations */ "./src/@fuse/animations/index.ts");
 /* harmony import */ var _coktan_secmeli_soru_secenek_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../coktan-secmeli-soru-secenek.service */ "./src/app/main/content/apps/sorular/coktan-secmeli-soru-secenek.service.ts");
+/* harmony import */ var _core_services_sb_mesaj_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../../../../../core/services/sb-mesaj.service */ "./src/app/core/services/sb-mesaj.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -995,9 +1585,12 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
 var TekDogruluSecenekDetayComponent = /** @class */ (function () {
-    function TekDogruluSecenekDetayComponent(tekDogruluSecenekService, formBuilder) {
+    function TekDogruluSecenekDetayComponent(tekDogruluSecenekService, cd, mesajService, formBuilder) {
         this.tekDogruluSecenekService = tekDogruluSecenekService;
+        this.cd = cd;
+        this.mesajService = mesajService;
         this.formBuilder = formBuilder;
     }
     TekDogruluSecenekDetayComponent.prototype.ngOnInit = function () {
@@ -1006,24 +1599,24 @@ var TekDogruluSecenekDetayComponent = /** @class */ (function () {
         this.onCurrentTodoChanged =
             this.tekDogruluSecenekService.onCurrentTodoChanged
                 .subscribe(function (todo) {
-                if (todo && _this.secenekFormu) {
-                    _this.dogruSecenek = _this.secenekFormu.get('dogruSecenek').value;
-                    _this.yanlisSecenek = !_this.dogruSecenek;
-                    _this.hemenElenebilirSecenek = _this.secenekFormu.get('hemenElenebilir').value;
-                }
                 _this.secenekFormu = todo;
+                _this.stilSiniflariniAyarla();
+                _this.cd.detectChanges();
             });
     };
-    TekDogruluSecenekDetayComponent.prototype.toggleDogruSecenek = function (event) {
-        event.stopPropagation();
-        var dogruSecenek = this.secenekFormu.get('dogruSecenek').value;
-        this.secenekFormu.patchValue({ dogruSecenek: !dogruSecenek });
+    TekDogruluSecenekDetayComponent.prototype.stilSiniflariniAyarla = function () {
+        if (this.secenekFormu) {
+            this.dogruSecenek = this.secenekFormu.get('dogruSecenek').value;
+            this.yanlisSecenek = !this.dogruSecenek;
+            this.hemenElenebilirSecenek = this.secenekFormu.get('hemenElenebilir').value;
+        }
+    };
+    TekDogruluSecenekDetayComponent.prototype.toggleDogruSecenek = function () {
+        this.tekDogruluSecenekService.hesaplariYap();
         this.tekDogruluSecenekService.onCurrentTodoChanged.next(this.secenekFormu);
     };
-    TekDogruluSecenekDetayComponent.prototype.toggleHemenElenebilir = function (event) {
-        event.stopPropagation();
-        var hemenElenebilirSecenek = this.secenekFormu.get('hemenElenebilir').value;
-        this.secenekFormu.patchValue({ hemenElenebilir: !hemenElenebilirSecenek });
+    TekDogruluSecenekDetayComponent.prototype.toggleHemenElenebilir = function () {
+        this.tekDogruluSecenekService.hesaplariYap();
         this.tekDogruluSecenekService.onCurrentTodoChanged.next(this.secenekFormu);
     };
     TekDogruluSecenekDetayComponent.prototype.toggleSecenekSil = function (event) {
@@ -1063,6 +1656,8 @@ var TekDogruluSecenekDetayComponent = /** @class */ (function () {
             animations: _fuse_animations__WEBPACK_IMPORTED_MODULE_4__["fuseAnimations"]
         }),
         __metadata("design:paramtypes", [_coktan_secmeli_soru_secenek_service__WEBPACK_IMPORTED_MODULE_5__["CoktanSecmeliSoruSecenekService"],
+            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectorRef"],
+            _core_services_sb_mesaj_service__WEBPACK_IMPORTED_MODULE_6__["SbMesajService"],
             _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormBuilder"]])
     ], TekDogruluSecenekDetayComponent);
     return TekDogruluSecenekDetayComponent;
@@ -1079,7 +1674,7 @@ var TekDogruluSecenekDetayComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div fxLayout=\"row\" fxLayoutAlign=\"start center\">\n\n    <mat-checkbox [(ngModel)]=\"selected\" (ngModelChange)=\"onSelectedChange()\" class=\"mr-16\" fxFlex=\"0 1 auto\" (click)=\"$event.stopPropagation()\">\n    </mat-checkbox>\n\n    <div fxLayout=\"row\" fxLayoutAlign=\"start center\" fxFlex>\n\n        <div class=\"info\" fxFlex fxFlexLayout=\"column\">\n            <div class=\"notes\">\n\n                <div [innerHTML]=\"secenekCtrl.get('secenekMetni').value\"></div>\n\n            </div>\n            <!-- <div class=\"notes\">\n                    {{secenekCtrl.get('tekDogruluSoruSecenekId').value}}\n            </div> -->\n            <div  class=\"tags\" fxLayout=\"row\" fxLayoutAlign=\"start center\" fxLayoutWrap\n                fxHide.lt-lg>\n\n                <div *ngIf=\"secenekCtrl.get('dogruSecenek')?.value\" class=\"tag\" fxLayout=\"row\" fxLayoutAlign=\"start center\">\n                    <div class=\"tag-color\" [ngStyle]=\"{'background-color':'green'}\"></div>\n                    <div class=\"tag-label\">Doğru seçenek</div>\n                </div>\n\n                <div *ngIf=\"secenekCtrl.get('hemenElenebilir')?.value\" class=\"tag\" fxLayout=\"row\" fxLayoutAlign=\"start center\">\n                    <div class=\"tag-color\" [ngStyle]=\"{'background-color':'#252D43'}\"></div>\n                    <div class=\"tag-label\">İlk bakışta elenebilir seçenek.</div>\n                </div>\n\n            </div>\n\n        </div>\n        <div class=\"actions\" fxLayout=\"row\" fxLayoutAlign=\"start center\">\n            <div fxHide fxShow.gt-md>\n                <button mat-button class=\"mat-icon-button\" (click)=\"secenekSil($event)\" aria-label=\"Toggle delete\">\n                    <mat-icon >delete</mat-icon>\n                </button>\n            </div>\n            <button mat-button [matMenuTriggerFor]=\"moreMenu\" aria-label=\"More\" class=\"mat-icon-button\" (click)=\"$event.stopPropagation();\"\n                fxHide.xs>\n                <mat-icon>more_vert</mat-icon>\n            </button>\n            <mat-menu #moreMenu=\"matMenu\">\n                <button mat-menu-item aria-label=\"dogru secenek degistirici\" (click)=\"toggleDogruSecenek($event)\">\n                    <ng-container *ngIf=\"secenekCtrl.get('dogruSecenek')?.value===true\">\n                        <span>Doğru seçenek olmasın</span>\n                    </ng-container>\n                    <ng-container *ngIf=\"!secenekCtrl.get('dogruSecenek')?.value===true\">\n                        <span>Doğru seçenek yap</span>\n                    </ng-container>\n                </button>\n                <button mat-menu-item aria-label=\"ilk bakista elenebilir secenek degistirici\" (click)=\"toggleHemenElenebilir($event)\">\n                        <ng-container *ngIf=\"secenekCtrl.get('hemenElenebilir')?.value===true\">\n                            <span>İlk bakışta elebilir olmasın</span>\n                        </ng-container>\n                        <ng-container *ngIf=\"secenekCtrl.get('hemenElenebilir')?.value===false\">\n                            <span>İlk bakışta elenebilir yap</span>\n                        </ng-container>\n                    </button>\n    \n               \n            </mat-menu>\n\n        </div>\n\n    </div>\n\n</div>"
+module.exports = "<div fxLayout=\"row\" fxLayoutAlign=\"start center\">\n\n    <mat-checkbox [(ngModel)]=\"selected\" (ngModelChange)=\"onSelectedChange()\" class=\"mr-16\" fxFlex=\"0 1 auto\" (click)=\"$event.stopPropagation()\">\n    </mat-checkbox>\n\n    <div fxLayout=\"row\" fxLayoutAlign=\"start center\" fxFlex>\n\n        <div class=\"info\" fxFlex fxFlexLayout=\"column\">\n            <div class=\"notes\">\n\n                <div [innerHTML]=\"secenekCtrl.get('secenekMetni').value\"></div>\n\n            </div>\n            <!-- <div class=\"notes\">\n                    {{secenekCtrl.get('tekDogruluSoruSecenekId').value}}\n            </div> -->\n            <div  class=\"tags\" fxLayout=\"row\" fxLayoutAlign=\"start center\" fxLayoutWrap\n                fxHide.lt-lg>\n\n                <div *ngIf=\"secenekCtrl.get('dogruSecenek')?.value\" class=\"tag\" fxLayout=\"row\" fxLayoutAlign=\"start center\">\n                    <div class=\"tag-color\" [ngStyle]=\"{'background-color':'green'}\"></div>\n                    <div class=\"tag-label\">Doğru seçenek</div>\n                </div>\n\n                <div *ngIf=\"secenekCtrl.get('hemenElenebilir')?.value\" class=\"tag\" fxLayout=\"row\" fxLayoutAlign=\"start center\">\n                    <div class=\"tag-color\" [ngStyle]=\"{'background-color':'#252D43'}\"></div>\n                    <div class=\"tag-label\">İlk bakışta elenebilir seçenek.</div>\n                </div>\n\n            </div>\n\n        </div>\n        <div class=\"actions\" fxLayout=\"row\" fxLayoutAlign=\"start center\">\n            <div fxHide fxShow.gt-md>\n                <button mat-button class=\"mat-icon-button\" (click)=\"secenekSil($event)\" aria-label=\"Toggle delete\">\n                    <mat-icon >delete</mat-icon>\n                </button>\n            </div>\n            <button mat-button [matMenuTriggerFor]=\"moreMenu\" aria-label=\"More\" class=\"mat-icon-button\" (click)=\"$event.stopPropagation();\"\n                fxHide.xs>\n                <mat-icon>more_vert</mat-icon>\n            </button>\n            <mat-menu #moreMenu=\"matMenu\">\n                <button mat-menu-item aria-label=\"dogru secenek degistirici\" (click)=\"toggleDogruSecenek($event)\">\n                    <ng-container *ngIf=\"secenekCtrl.get('dogruSecenek')?.value===true\">\n                        <span>Doğru seçenek olmasın</span>\n                    </ng-container>\n                    <ng-container *ngIf=\"!secenekCtrl.get('dogruSecenek')?.value===true\">\n                        <span>Doğru seçenek yap</span>\n                    </ng-container>\n                </button>\n                <button mat-menu-item aria-label=\"ilk bakista elenebilir secenek degistirici\" (click)=\"toggleHemenElenebilir($event)\">\n                        <ng-container *ngIf=\"secenekCtrl.get('hemenElenebilir')?.value===true\">\n                            <span>İlk bakışta elenebilir olmasın</span>\n                        </ng-container>\n                        <ng-container *ngIf=\"secenekCtrl.get('hemenElenebilir')?.value===false\">\n                            <span>İlk bakışta elenebilir yap</span>\n                        </ng-container>\n                    </button>\n    \n               \n            </mat-menu>\n\n        </div>\n\n    </div>\n\n</div>"
 
 /***/ }),
 
@@ -1090,7 +1685,7 @@ module.exports = "<div fxLayout=\"row\" fxLayoutAlign=\"start center\">\n\n    <
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "/**\n * Applies styles for users in high contrast mode. Note that this only applies\n * to Microsoft browsers. Chrome can be included by checking for the `html[hc]`\n * attribute, however Chrome handles high contrast differently.\n */\n/* Theme for the ripple elements.*/\n/* stylelint-disable material/no-prefixes */\n/* stylelint-enable */\n.todo-list-item {\n  display: block;\n  position: relative;\n  padding: 16px 16px 16px 24px;\n  border-bottom: 1px solid rgba(0, 0, 0, 0.08);\n  text-transform: none;\n  cursor: pointer;\n  flex-shrink: 0;\n  background: #D8E8E9; }\n.todo-list-item .tags .tag {\n    font-size: 11px;\n    border-radius: 2px;\n    margin: 8px 4px 0 0;\n    padding: 3px 8px;\n    background-color: rgba(0, 0, 0, 0.08); }\n.todo-list-item .tags .tag .tag-color {\n      width: 8px;\n      height: 8px;\n      margin-right: 8px;\n      border-radius: 50%; }\n.todo-list-item.selected {\n    background: #A8D0DA; }\n.todo-list-item.aktif {\n    background: #E2E3DD; }\n.todo-list-item .info {\n    color: #2F3A57;\n    margin: 0 16px 0 8px; }\n.todo-list-item .info .title {\n      font-size: 15px;\n      font-weight: 500; }\n.todo-list-item .info .notes {\n      margin-top: 4px; }\n.todo-list-item .buttons .is-starred {\n    margin: 0 0 0 16px; }\n.todo-list-item .buttons .is-important {\n    margin: 0; }\n.todo-list-item .sil {\n    color: #E2474C !important; }\n"
+module.exports = "/**\n * Applies styles for users in high contrast mode. Note that this only applies\n * to Microsoft browsers. Chrome can be included by checking for the `html[hc]`\n * attribute, however Chrome handles high contrast differently.\n */\n/* Theme for the ripple elements.*/\n/* stylelint-disable material/no-prefixes */\n/* stylelint-enable */\n.todo-list-item {\n  display: block;\n  position: relative;\n  padding: 16px 16px 16px 24px;\n  border-bottom: 1px solid rgba(0, 0, 0, 0.08);\n  text-transform: none;\n  cursor: pointer;\n  flex-shrink: 0;\n  background: #D8E8E9; }\n.todo-list-item .tags .tag {\n    font-size: 11px;\n    border-radius: 2px;\n    margin: 8px 4px 0 0;\n    padding: 3px 8px;\n    background-color: rgba(0, 0, 0, 0.08); }\n.todo-list-item .tags .tag .tag-color {\n      width: 8px;\n      height: 8px;\n      margin-right: 8px;\n      border-radius: 50%; }\n.todo-list-item.selected {\n    background: #A8D0DA; }\n.todo-list-item.aktif {\n    background: #E2E3DD; }\n.todo-list-item .info {\n    color: #2F3A57;\n    margin: 0 16px 0 8px; }\n.todo-list-item .info .title {\n      font-size: 15px;\n      font-weight: 500; }\n.todo-list-item .info .notes {\n      margin-top: 4px; }\n.todo-list-item .buttons .is-starred {\n    margin: 0 0 0 16px; }\n.todo-list-item .buttons .is-important {\n    margin: 0; }\n.todo-list-item .sil {\n    color: #E2474C !important; }\n.todo-list-item .actions {\n    color: #2F3A57; }\n"
 
 /***/ }),
 
@@ -1293,7 +1888,7 @@ var TekDogruluSecenekListComponent = /** @class */ (function () {
         this.secenekler.valueChanges.subscribe(function (gelenler) {
             var dogruSecenekSayisi = gelenler.filter(function (s) { return s.dogruSecenek === true; });
             if (dogruSecenekSayisi && dogruSecenekSayisi.length > 1) {
-                _this.mesajService.hataStr("Bu soru i\u00E7in bir do\u011Fru se\u00E7enek belirlemeniz gerekli! Siz " + dogruSecenekSayisi.length + " se\u00E7ene\u011Fi do\u011Fr\u0131 olarak i\u015Faretlediniz.");
+                _this.mesajService.hataStr("Bu soru i\u00E7in  SADECE bir do\u011Fru se\u00E7enek belirleyebilirsiniz! Siz " + dogruSecenekSayisi.length + " se\u00E7ene\u011Fi do\u011Fru olarak i\u015Faretlediniz!");
             }
         });
     };
@@ -1326,7 +1921,7 @@ var TekDogruluSecenekListComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"page-layout carded left-sidenav\" fusePerfectScrollbar>\n    <!-- TOP BACKGROUND -->\n    <!-- <div class=\"top-bg mat-accent-bg\"></div> -->\n    <!-- / TOP BACKGROUND -->\n    <!-- CENTER -->\n    <div class=\"center\">\n        <!-- CONTENT HEADER -->\n        <!-- <div class=\"header\" fxLayout=\"row\" fxLayoutAlign=\"start center\">\n            <div class=\"search-wrapper mat-white-bg\" fxFlex fxLayout=\"row\" fxLayoutAlign=\"start center\">\n                <button mat-button class=\"mat-icon-button sidenav-toggle\" fuseMatSidenavToggler=\"carded-left-sidenav\" fxHide.gt-md aria-label=\"Toggle Sidenav\">\n                    <mat-icon>menu</mat-icon>\n                </button>\n                <div class=\"search\" flex fxLayout=\"row\" fxLayoutAlign=\"start center\">\n                    <mat-icon>search</mat-icon>\n                    <input [formControl]=\"searchInput\" placeholder=\"Aramak için kelime yazın\" fxFlex>\n                </div>\n            </div>\n        </div> -->\n        <!-- / CONTENT HEADER -->\n        <!-- CONTENT CARD -->\n        <div class=\"content-card\" [ngClass]=\"{'aktif-secenek-var':currentTodo}\">\n            <!-- CONTENT TOOLBAR -->\n            <div class=\"toolbar\">\n                <div class=\"todo-selection\" fxFlex=\"row\" fxLayoutAlign=\"start center\">\n                    <mat-checkbox (click)=\"toggleSelectAll()\" [checked]=\"hasSelectedTodos\" [indeterminate]=\"isIndeterminate\"></mat-checkbox>\n                    <button mat-icon-button [matMenuTriggerFor]=\"selectMenu\">\n                        <mat-icon>arrow_drop_down</mat-icon>\n                    </button>\n\n                    <mat-menu #selectMenu=\"matMenu\">\n                        <button mat-menu-item (click)=\"selectTodos()\">Tümü</button>\n                        <button mat-menu-item (click)=\"deselectTodos()\">Hiçbiri</button>\n                        <button mat-menu-item (click)=\"selectTodos('dogruSecenek', true)\">Doğru olanlar</button>\n                        <button mat-menu-item (click)=\"selectTodos('dogruSecenek', false)\">Doğru olmayanlar</button>\n                        <button mat-menu-item (click)=\"selectTodos('hemenElenebilir', true)\">Hemen elenebilirler</button>\n                        <button mat-menu-item (click)=\"selectTodos('hemenElenebilir', false)\">Hemen elenemezler</button>\n                    </mat-menu>\n                    <div class=\"toolbar-separator\"></div>\n                    <button mat-button class=\"mat-icon-button\" (click)=\"addTekDogruluSecenek($event)\" aria-label=\"Seçenek ekle\">\n                        <mat-icon class=\"ekle\" matTooltip=\"Yeni seçenek ekle\">add_box</mat-icon>\n                    </button>\n                    <div class=\"toolbar-separator\" *ngIf=\"hasSelectedTodos\"></div>\n                    <button mat-icon-button (click)=\"seciliSecenekleriSil()\" *ngIf=\"hasSelectedTodos\">\n                        <mat-icon class=\"sil\" matTooltip=\"Seçili seçenekleri sil\">delete_sweep</mat-icon>\n                    </button>\n                    <div class=\"toolbar-separator\"></div>\n                    <div matTooltip=\"Tek seferde elenebilir soru sayısı\">\n                        H.E.S.S. :{{hemenElenebilirSecenekSayisi}}\n                    </div>\n                    <div class=\"toolbar-separator\"></div>\n                    <div matTooltip=\"Doğru seçenek sayısı\">\n                        D.S.S.:{{dogruSeceneksayisi}}\n                    </div>\n                </div>\n                <div *ngIf=\"currentTodo\" fxHide.gt-md>\n                    <button mat-icon-button (click)=\"deSelectCurrentTodo()\">\n                        <mat-icon>arrow_back</mat-icon>\n                    </button>\n                    <button mat-button class=\"mat-icon-button\" (click)=\"addTekDogruluSecenek($event)\" aria-label=\"Seçenek ekle\">\n                            <mat-icon matTooltip=\"Yeni seçenek ekle\" class=\"ekle\">add_box</mat-icon>\n                    </button>\n                    <button mat-button class=\"mat-icon-button\" (click)=\"toggleSecenekSil($event)\" aria-label=\"Toggle delete\">\n                            <mat-icon class=\"sil\" matTooltip=\"Bu seçeneği sil\">delete</mat-icon>\n                    </button>\n                </div>\n            </div>\n            <!-- / CONTENT TOOLBAR -->\n            <!-- CONTENT -->\n            <div class=\"content\" fxFlexAlign=\"row\">\n                <fuse-tek-dogrulu-secenek-list fusePerfectScrollbar fxFlex></fuse-tek-dogrulu-secenek-list>\n                <fuse-tek-dogrulu-secenek-detay fusePerfectScrollbar fxFlex></fuse-tek-dogrulu-secenek-detay>\n            </div>\n            <!-- / CONTENT -->\n        </div>\n        <!-- / CONTENT CARD -->\n    </div>\n    <!-- / CENTER -->\n</div>"
+module.exports = "<div class=\"page-layout carded left-sidenav\" fusePerfectScrollbar>\n    <!-- TOP BACKGROUND -->\n    <!-- <div class=\"top-bg mat-accent-bg\"></div> -->\n    <!-- / TOP BACKGROUND -->\n    <!-- CENTER -->\n    <div class=\"center\">\n        <!-- CONTENT HEADER -->\n        <!-- <div class=\"header\" fxLayout=\"row\" fxLayoutAlign=\"start center\">\n            <div class=\"search-wrapper mat-white-bg\" fxFlex fxLayout=\"row\" fxLayoutAlign=\"start center\">\n                <button mat-button class=\"mat-icon-button sidenav-toggle\" fuseMatSidenavToggler=\"carded-left-sidenav\" fxHide.gt-md aria-label=\"Toggle Sidenav\">\n                    <mat-icon>menu</mat-icon>\n                </button>\n                <div class=\"search\" flex fxLayout=\"row\" fxLayoutAlign=\"start center\">\n                    <mat-icon>search</mat-icon>\n                    <input [formControl]=\"searchInput\" placeholder=\"Aramak için kelime yazın\" fxFlex>\n                </div>\n            </div>\n        </div> -->\n        <!-- / CONTENT HEADER -->\n        <!-- CONTENT CARD -->\n        <div class=\"content-card\" [ngClass]=\"{'aktif-secenek-var':currentTodo}\">\n            <!-- CONTENT TOOLBAR -->\n            <div class=\"toolbar\">\n                <div class=\"todo-selection\" fxFlex=\"row\" fxLayoutAlign=\"start center\">\n                    <mat-checkbox (click)=\"toggleSelectAll()\" [checked]=\"hasSelectedTodos\" [indeterminate]=\"isIndeterminate\"></mat-checkbox>\n                    <button mat-icon-button [matMenuTriggerFor]=\"selectMenu\">\n                        <mat-icon>arrow_drop_down</mat-icon>\n                    </button>\n\n                    <mat-menu #selectMenu=\"matMenu\">\n                        <button mat-menu-item (click)=\"selectTodos()\">Tümü</button>\n                        <button mat-menu-item (click)=\"deselectTodos()\">Hiçbiri</button>\n                        <button mat-menu-item (click)=\"selectTodos('dogruSecenek', true)\">Doğru olanlar</button>\n                        <button mat-menu-item (click)=\"selectTodos('dogruSecenek', false)\">Doğru olmayanlar</button>\n                        <button mat-menu-item (click)=\"selectTodos('hemenElenebilir', true)\">Hemen elenebilirler</button>\n                        <button mat-menu-item (click)=\"selectTodos('hemenElenebilir', false)\">Hemen elenemezler</button>\n                    </mat-menu>\n                    <div class=\"toolbar-separator\"></div>\n                    <button mat-button class=\"mat-icon-button\" (click)=\"addTekDogruluSecenek($event)\" aria-label=\"Seçenek ekle\">\n                        <mat-icon class=\"ekle\" matTooltip=\"Yeni seçenek ekle\">add_box</mat-icon>\n                    </button>\n                    <div class=\"toolbar-separator\" *ngIf=\"hasSelectedTodos\"></div>\n                    <button mat-icon-button (click)=\"seciliSecenekleriSil()\" *ngIf=\"hasSelectedTodos\">\n                        <mat-icon class=\"sil\" matTooltip=\"Seçili seçenekleri sil\">delete_sweep</mat-icon>\n                    </button>\n                    <div class=\"toolbar-separator\"></div>\n                    <div matTooltip=\"Tek seferde elenebilir soru sayısı\">\n                        HESS :{{hemenElenebilirSecenekSayisi}}\n                    </div>\n                    <div class=\"toolbar-separator\"></div>\n                    <div matTooltip=\"Doğru seçenek sayısı\">\n                        D.S.S.:{{dogruSeceneksayisi}}\n                    </div>\n                </div>\n                <div *ngIf=\"currentTodo\" fxHide.gt-md>\n                    <button mat-icon-button (click)=\"deSelectCurrentTodo()\">\n                        <mat-icon>arrow_back</mat-icon>\n                    </button>\n                    <button mat-button class=\"mat-icon-button\" (click)=\"addTekDogruluSecenek($event)\" aria-label=\"Seçenek ekle\">\n                            <mat-icon matTooltip=\"Yeni seçenek ekle\" class=\"ekle\">add_box</mat-icon>\n                    </button>\n                    <button mat-button class=\"mat-icon-button\" (click)=\"toggleSecenekSil($event)\" aria-label=\"Toggle delete\">\n                            <mat-icon class=\"sil\" matTooltip=\"Bu seçeneği sil\">delete</mat-icon>\n                    </button>\n                </div>\n            </div>\n            <!-- / CONTENT TOOLBAR -->\n            <!-- CONTENT -->\n            <div class=\"content\"  fxLayout=\"row\" fxFlexAlign=\"row\">\n                <fuse-tek-dogrulu-secenek-list fusePerfectScrollbar fxFlex></fuse-tek-dogrulu-secenek-list>\n                <fuse-tek-dogrulu-secenek-detay fusePerfectScrollbar fxFlex></fuse-tek-dogrulu-secenek-detay>\n            </div>\n            <!-- / CONTENT -->\n        </div>\n        <!-- / CONTENT CARD -->\n    </div>\n    <!-- / CENTER -->\n</div>"
 
 /***/ }),
 
@@ -1337,7 +1932,7 @@ module.exports = "<div class=\"page-layout carded left-sidenav\" fusePerfectScro
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "/**\n * Applies styles for users in high contrast mode. Note that this only applies\n * to Microsoft browsers. Chrome can be included by checking for the `html[hc]`\n * attribute, however Chrome handles high contrast differently.\n */\n/* Theme for the ripple elements.*/\n/* stylelint-disable material/no-prefixes */\n/* stylelint-enable */\n:host {\n  width: 100%; }\n:host .center .header .search-wrapper {\n    box-shadow: 0px 4px 5px -2px rgba(0, 0, 0, 0.2), 0px 7px 10px 1px rgba(0, 0, 0, 0.14), 0px 2px 16px 1px rgba(0, 0, 0, 0.12); }\n:host .center .header .search-wrapper .sidenav-toggle {\n      margin: 0;\n      width: 56px;\n      height: 56px;\n      border-radius: 0;\n      border-right: 1px solid rgba(0, 0, 0, 0.12); }\n:host .center .header .search-wrapper .search {\n      width: 100%;\n      height: 56px;\n      line-height: 56px;\n      padding: 18px; }\n:host .center .header .search-wrapper .search input {\n        height: 56px;\n        padding-left: 16px;\n        color: rgba(0, 0, 0, 0.54);\n        border: none;\n        outline: none; }\n:host .center .content-card .content {\n    background-color: #A8D0DA;\n    border-radius: 2px;\n    box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n    transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1);\n    margin: 12px; }\n:host .center .content-card .toolbar {\n    background-color: #A8D0DA;\n    color: #2F3A57;\n    border-radius: 2px;\n    box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n    transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1);\n    padding: 24px;\n    padding-top: 8px;\n    padding-bottom: 8px;\n    margin: 12px; }\n@media (max-width: 1279px) and (max-width: 1279px) {\n  :host .center .content-card fuse-tek-dogrulu-secenek-list {\n    border-right: 0; }\n  :host .center .content-card fuse-tek-dogrulu-secenek-list,\n  :host .center .content-card fuse-tek-dogrulu-secenek-detay {\n    flex: 1 0 100%; }\n  :host .center .content-card fuse-tek-dogrulu-secenek-detay {\n    display: none !important; }\n  :host .center .content-card.aktif-secenek-var .toolbar {\n    padding-left: 16px !important; }\n    :host .center .content-card.aktif-secenek-var .toolbar .todo-selection {\n      display: none !important; }\n  :host .center .content-card.aktif-secenek-var .content fuse-tek-dogrulu-secenek-list {\n    display: none !important; }\n  :host .center .content-card.aktif-secenek-var .content fuse-tek-dogrulu-secenek-detay {\n    display: flex !important; } }\n:host .center .ekle {\n    color: #406D95 !important; }\n:host .center .sil {\n    color: #AF373A !important; }\n"
+module.exports = "/**\n * Applies styles for users in high contrast mode. Note that this only applies\n * to Microsoft browsers. Chrome can be included by checking for the `html[hc]`\n * attribute, however Chrome handles high contrast differently.\n */\n/* Theme for the ripple elements.*/\n/* stylelint-disable material/no-prefixes */\n/* stylelint-enable */\n:host {\n  width: 100%; }\n:host .center .header .search-wrapper {\n    box-shadow: 0px 4px 5px -2px rgba(0, 0, 0, 0.2), 0px 7px 10px 1px rgba(0, 0, 0, 0.14), 0px 2px 16px 1px rgba(0, 0, 0, 0.12); }\n:host .center .header .search-wrapper .sidenav-toggle {\n      margin: 0;\n      width: 56px;\n      height: 56px;\n      border-radius: 0;\n      border-right: 1px solid rgba(0, 0, 0, 0.12); }\n:host .center .header .search-wrapper .search {\n      width: 100%;\n      height: 56px;\n      line-height: 56px;\n      padding: 18px; }\n:host .center .header .search-wrapper .search input {\n        height: 56px;\n        padding-left: 16px;\n        color: rgba(0, 0, 0, 0.54);\n        border: none;\n        outline: none; }\n:host .center .content-card .content {\n    background-color: #A8D0DA;\n    border-radius: 2px;\n    box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n    transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1);\n    margin: 12px; }\n:host .center .content-card .toolbar {\n    background-color: #A8D0DA;\n    color: #2F3A57;\n    border-radius: 2px;\n    box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n    transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1);\n    padding: 24px;\n    padding-top: 8px;\n    padding-bottom: 8px;\n    margin: 12px; }\n@media (max-width: 1279px) {\n    :host .center .content-card fuse-tek-dogrulu-secenek-list {\n      border-right: 0; }\n    :host .center .content-card fuse-tek-dogrulu-secenek-list,\n    :host .center .content-card fuse-tek-dogrulu-secenek-detay {\n      flex: 1 0 100%; }\n    :host .center .content-card fuse-tek-dogrulu-secenek-detay {\n      display: none !important; }\n    :host .center .content-card.aktif-secenek-var .toolbar {\n      padding-left: 16px !important; }\n      :host .center .content-card.aktif-secenek-var .toolbar .todo-selection {\n        display: none !important; }\n    :host .center .content-card.aktif-secenek-var .content fuse-tek-dogrulu-secenek-list {\n      display: none !important; }\n    :host .center .content-card.aktif-secenek-var .content fuse-tek-dogrulu-secenek-detay {\n      display: flex !important; } }\n:host .center .ekle {\n    color: #406D95 !important; }\n:host .center .sil {\n    color: #AF373A !important; }\n"
 
 /***/ }),
 
@@ -1413,8 +2008,7 @@ var TekDogruluSecenekComponent = /** @class */ (function () {
                 else {
                     _this.currentTodo = currentTodo;
                 }
-                console.log(_this.currentTodo);
-                console.log('gelen', currentTodo);
+                _this.cd.detectChanges();
             });
     };
     TekDogruluSecenekComponent.prototype.deSelectCurrentTodo = function () {
@@ -1460,7 +2054,8 @@ var TekDogruluSecenekComponent = /** @class */ (function () {
             styles: [__webpack_require__(/*! ./tek-dogrulu-secenek.component.scss */ "./src/app/main/content/apps/sorular/coktan-secmeli-soru/tek-dogrulu-secenek/tek-dogrulu-secenek.component.scss")],
             animations: _fuse_animations__WEBPACK_IMPORTED_MODULE_3__["fuseAnimations"]
         }),
-        __metadata("design:paramtypes", [_coktan_secmeli_soru_secenek_service__WEBPACK_IMPORTED_MODULE_4__["CoktanSecmeliSoruSecenekService"], _angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectorRef"]])
+        __metadata("design:paramtypes", [_coktan_secmeli_soru_secenek_service__WEBPACK_IMPORTED_MODULE_4__["CoktanSecmeliSoruSecenekService"],
+            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectorRef"]])
     ], TekDogruluSecenekComponent);
     return TekDogruluSecenekComponent;
 }());
@@ -1481,11 +2076,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CoktanSecmeliSoruValidasyonMesajlari_tr", function() { return CoktanSecmeliSoruValidasyonMesajlari_tr; });
 function CoktanSecmeliSoruValidasyonMesajlari_tr() {
     return {
-        soruAdi: {
-            required: 'Soru adı alanına bilgi girilmesi gerekli.',
-            minlength: 'En az 3 karakter olmalıdır.',
-            maxlength: 'En fazla 200 karakter olmalıdır.'
-        },
+        // kaynakca: {
+        //     required: 'Soru adı alanına bilgi girilmesi gerekli.',
+        //     minlength: 'En az 3 karakter olmalıdır.',
+        //     maxlength: 'En fazla 200 karakter olmalıdır.'
+        // },
         soruBelgesi: {
             required: 'Soru belgesi alanına bilgi girilmesi gerekli.',
             minlength: 'En az 3 karakter olmalıdır.'
@@ -1496,11 +2091,11 @@ function CoktanSecmeliSoruValidasyonMesajlari_tr() {
         gecerlilik: {
             bitisbaslangictanonceolamaz: 'Başlangıç tarihi bitiş tarihinden sonra olamaz.'
         },
-        aciklama: {
-            required: 'Açıklama alanına bilgi girilmesi gerekli.',
-            minlength: 'En az 3 karakter olmalıdır.',
-            maxlength: 'En fazla 500 karakter olmalıdır.'
-        },
+        // aciklama: {
+        //     required: 'Açıklama alanına bilgi girilmesi gerekli.',
+        //     minlength: 'En az 3 karakter olmalıdır.',
+        //     maxlength: 'En fazla 500 karakter olmalıdır.'
+        // },
         anahtarKelimeler: {
             required: 'Anahtar kelimeler alanına bilgi girilmesi gerekli.',
         },
@@ -1808,7 +2403,7 @@ var AlanKoduItem = /** @class */ (function () {
 /*!**********************************************************!*\
   !*** ./src/app/main/content/apps/sorular/models/soru.ts ***!
   \**********************************************************/
-/*! exports provided: SoruListe, SoruYarat, SoruDegistir, OgrenimHedef, TekDogruluSoruSecenek */
+/*! exports provided: SoruListe, SoruYarat, SoruDegistir, IliskiliSoruListe, IliskiliSoruYarat, IliskiliSoruDegistir, OgrenimHedef, TekDogruluSoruSecenek */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1816,6 +2411,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SoruListe", function() { return SoruListe; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SoruYarat", function() { return SoruYarat; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SoruDegistir", function() { return SoruDegistir; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "IliskiliSoruListe", function() { return IliskiliSoruListe; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "IliskiliSoruYarat", function() { return IliskiliSoruYarat; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "IliskiliSoruDegistir", function() { return IliskiliSoruDegistir; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OgrenimHedef", function() { return OgrenimHedef; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TekDogruluSoruSecenek", function() { return TekDogruluSoruSecenek; });
 var __extends = (undefined && undefined.__extends) || (function () {
@@ -1839,8 +2437,11 @@ var SoruListe = /** @class */ (function () {
         this.soruTipAdi = soru.soruTipAdi;
         this.soruZorlukNo = soru.soruZorlukNo;
         this.soruZorlukAdi = soru.soruZorlukAdi;
-        this.soruAdi = soru.soruAdi;
+        this.kaynakca = soru.kaynakca;
         this.soruMetni = soru.soruMetni;
+        this.soruKokuMetni = soru.soruKokuMetni;
+        this.soruKokuNo = soru.soruKokuNo;
+        this.soruKokuSorulariSayisi = soru.soruKokuSorulariSayisi;
         this.tekDogruluSecenekleri = soru.tekDogruluSecenekleri;
         this.secenekSayisi = soru.secenekSayisi;
         this.baslangic = soru.baslangic;
@@ -1875,6 +2476,24 @@ var SoruDegistir = /** @class */ (function (_super) {
     }
     return SoruDegistir;
 }(SoruYarat));
+
+var IliskiliSoruListe = /** @class */ (function () {
+    function IliskiliSoruListe() {
+    }
+    return IliskiliSoruListe;
+}());
+
+var IliskiliSoruYarat = /** @class */ (function () {
+    function IliskiliSoruYarat() {
+    }
+    return IliskiliSoruYarat;
+}());
+
+var IliskiliSoruDegistir = /** @class */ (function () {
+    function IliskiliSoruDegistir() {
+    }
+    return IliskiliSoruDegistir;
+}());
 
 var OgrenimHedef = /** @class */ (function () {
     function OgrenimHedef() {
@@ -1920,7 +2539,7 @@ module.exports = "<div *ngIf=\"secilebilirOgrenimHedefleri?.length === 0\" fxLay
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ":host {\n  display: flex;\n  flex: 1 0 auto;\n  flex-direction: column;\n  overflow-y: auto;\n  position: relative;\n  padding: 0;\n  min-height: 20vh;\n  height: 50vh;\n  background-color: #D8E8E9; }\n  :host .no-todos-text {\n    font-size: 24px;\n    font-weight: 300; }\n"
+module.exports = ":host {\n  display: flex;\n  flex: 1 0 auto;\n  flex-direction: column;\n  overflow-y: auto;\n  position: relative;\n  padding: 12px;\n  min-height: 20vh;\n  height: 50vh;\n  background-color: #D8E8E9; }\n  :host .no-todos-text {\n    font-size: 24px;\n    font-weight: 300; }\n"
 
 /***/ }),
 
@@ -1994,7 +2613,7 @@ module.exports = "<div fxLayout=\"row\" fxLayoutAlign=\"start center\">\n\n    <
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "/**\n * Applies styles for users in high contrast mode. Note that this only applies\n * to Microsoft browsers. Chrome can be included by checking for the `html[hc]`\n * attribute, however Chrome handles high contrast differently.\n */\n/* Theme for the ripple elements.*/\n/* stylelint-disable material/no-prefixes */\n/* stylelint-enable */\n.todo-list-item {\n  display: block;\n  position: relative;\n  padding: 16px 16px 16px 24px;\n  border-bottom: 1px solid rgba(0, 0, 0, 0.08);\n  text-transform: none;\n  cursor: pointer;\n  flex-shrink: 0;\n  background: #A8D0DA; }\n.todo-list-item .tags .tag {\n    font-size: 11px;\n    border-radius: 2px;\n    margin: 8px 4px 0 0;\n    padding: 3px 8px;\n    background-color: rgba(0, 0, 0, 0.08); }\n.todo-list-item .tags .tag .tag-color {\n      width: 8px;\n      height: 8px;\n      margin-right: 8px;\n      border-radius: 50%; }\n.todo-list-item.aktif {\n    background: #A3C9D3;\n    color: #252D43; }\n.todo-list-item.aktif .title,\n    .todo-list-item.aktif .notes {\n      color: #252D43; }\n.todo-list-item.selected {\n    background: #E2474C; }\n.todo-list-item.selected .notes {\n      color: white; }\n.todo-list-item .info {\n    color: #2F3A57;\n    margin: 0 16px 0 8px; }\n.todo-list-item .info .title {\n      font-size: 15px;\n      font-weight: 500; }\n.todo-list-item .info .notes {\n      margin-top: 4px; }\n.todo-list-item .buttons .is-starred {\n    margin: 0 0 0 16px; }\n.todo-list-item .buttons .is-important {\n    margin: 0; }\n.todo-list-item .sil {\n    color: #E2474C !important; }\n"
+module.exports = "/**\n * Applies styles for users in high contrast mode. Note that this only applies\n * to Microsoft browsers. Chrome can be included by checking for the `html[hc]`\n * attribute, however Chrome handles high contrast differently.\n */\n/* Theme for the ripple elements.*/\n/* stylelint-disable material/no-prefixes */\n/* stylelint-enable */\n.todo-list-item {\n  display: block;\n  position: relative;\n  padding: 16px 16px 16px 24px;\n  border-bottom: 1px solid rgba(0, 0, 0, 0.08);\n  text-transform: none;\n  cursor: pointer;\n  flex-shrink: 0;\n  background: #E2E3DD; }\n.todo-list-item .tags .tag {\n    font-size: 11px;\n    border-radius: 2px;\n    margin: 8px 4px 0 0;\n    padding: 3px 8px;\n    background-color: rgba(0, 0, 0, 0.08); }\n.todo-list-item .tags .tag .tag-color {\n      width: 8px;\n      height: 8px;\n      margin-right: 8px;\n      border-radius: 50%; }\n.todo-list-item.aktif {\n    background: #A3C9D3;\n    color: #252D43; }\n.todo-list-item.aktif .title,\n    .todo-list-item.aktif .notes {\n      color: #252D43; }\n.todo-list-item.selected {\n    background: #E2474C; }\n.todo-list-item.selected .notes {\n      color: white; }\n.todo-list-item .info {\n    color: #2F3A57;\n    margin: 0 16px 0 8px; }\n.todo-list-item .info .title {\n      font-size: 15px;\n      font-weight: 500; }\n.todo-list-item .info .notes {\n      margin-top: 4px; }\n.todo-list-item .buttons .is-starred {\n    margin: 0 0 0 16px; }\n.todo-list-item .buttons .is-important {\n    margin: 0; }\n.todo-list-item .sil {\n    color: #E2474C !important; }\n"
 
 /***/ }),
 
@@ -2051,7 +2670,10 @@ var OgrenimHedefSatirComponent = /** @class */ (function () {
         return false;
     };
     OgrenimHedefSatirComponent.prototype.onSelectedChange = function () {
-        var indeks = this.indeksimiBul();
+        if (!this.hedef) {
+            return -1;
+        }
+        var indeks = this.tekDogruluSecenekService.ogrenimHedefIndeksiniBul(this.hedef.ogrenimHedefId);
         if (indeks >= 0) {
             this.tekDogruluSecenekService.soruForm.get('soruHedefleri').removeAt(indeks);
         }
@@ -2059,21 +2681,6 @@ var OgrenimHedefSatirComponent = /** @class */ (function () {
             this.tekDogruluSecenekService.soruForm.get('soruHedefleri').push(this.fb.control(this.hedef.ogrenimHedefId));
         }
         this.tekDogruluSecenekService.soruForm.markAsDirty();
-    };
-    OgrenimHedefSatirComponent.prototype.indeksimiBul = function () {
-        if (!this.hedef) {
-            return -1;
-        }
-        else {
-            var controller = this.tekDogruluSecenekService.soruForm.get('soruHedefleri').controls;
-            for (var index = 0; index < controller.length; index++) {
-                var element = controller[index];
-                if (element.value === this.hedef.ogrenimHedefId) {
-                    return this.indeks;
-                }
-            }
-            return -1;
-        }
     };
     __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])(),
@@ -2109,7 +2716,7 @@ var OgrenimHedefSatirComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<p>\n  ogrenim-hedefleri works!\n</p>\n"
+module.exports = "<div class=\"\" fusePerfectScrollbar>\n    <!-- TOP BACKGROUND -->\n    <!-- <div class=\"top-bg mat-accent-bg\"></div> -->\n    <!-- / TOP BACKGROUND -->\n    <!-- CENTER -->\n    <div class=\"center\">\n        <!-- CONTENT HEADER -->\n        <!-- <div class=\"header\" fxLayout=\"row\" fxLayoutAlign=\"start center\">\n            <div class=\"search-wrapper mat-white-bg\" fxFlex fxLayout=\"row\" fxLayoutAlign=\"start center\">\n                <button mat-button class=\"mat-icon-button sidenav-toggle\" fuseMatSidenavToggler=\"carded-left-sidenav\" fxHide.gt-md aria-label=\"Toggle Sidenav\">\n                    <mat-icon>menu</mat-icon>\n                </button>\n                <div class=\"search\" flex fxLayout=\"row\" fxLayoutAlign=\"start center\">\n                    <mat-icon>search</mat-icon>\n                    <input [formControl]=\"searchInput\" placeholder=\"Aramak için kelime yazın\" fxFlex>\n                </div>\n            </div>\n        </div> -->\n        <!-- / CONTENT HEADER -->\n        <!-- CONTENT CARD -->\n        <div class=\"content-card\">\n            <!-- CONTENT TOOLBAR -->\n            <div class=\"toolbar\">\n                <div class=\"todo-selection\" fxFlex=\"row\" fxLayoutAlign=\"start center\">\n                    <mat-checkbox   #secim (click)=\"toggleselectAll(secim)\" [checked]=\"hasSelectedTodos\" [indeterminate]=\"isIndeterminate\"></mat-checkbox>\n                    <button mat-icon-button [matMenuTriggerFor]=\"selectMenu\">\n                        <mat-icon>arrow_drop_down</mat-icon>\n                    </button>\n\n                    <mat-menu #selectMenu=\"matMenu\">\n                        <button mat-menu-item (click)=\"selectAll()\">Tümü</button>\n                        <button mat-menu-item (click)=\"deselectAll()\">Hiçbiri</button>\n                    </mat-menu>\n                    <div *ngIf=\"soruHedefleri?.controls.length\">\n                        {{'Seçilebilir '+ogrenimHedefleri.length+' öğrenim hedefi var. '+soruHedefleri.controls.length+\n                        ' hedef seçildi.'}}\n                    </div>\n                </div>\n            </div>\n            <!-- / CONTENT TOOLBAR -->\n            <!-- CONTENT -->\n            <div class=\" ontent \" fxFlexAlign=\"row \">\n                <div *ngIf=\"!ogrenimHedefleri \">Seçilebilir öğrenim hedefi yok!</div>\n                <fuse-ogrenim-hedef-list *ngIf=\"ogrenimHedefleri \" fusePerfectScrollbar fxFlex></fuse-ogrenim-hedef-list>\n            </div>\n            <!-- / CONTENT -->\n        </div>\n        <!-- / CONTENT CARD -->\n    </div>\n    <!-- / CENTER -->\n</div>"
 
 /***/ }),
 
@@ -2120,7 +2727,7 @@ module.exports = "<p>\n  ogrenim-hedefleri works!\n</p>\n"
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "/**\n * Applies styles for users in high contrast mode. Note that this only applies\n * to Microsoft browsers. Chrome can be included by checking for the `html[hc]`\n * attribute, however Chrome handles high contrast differently.\n */\n/* Theme for the ripple elements.*/\n/* stylelint-disable material/no-prefixes */\n/* stylelint-enable */\n:host {\n  width: 100%; }\n:host .center .header .search-wrapper {\n    box-shadow: 0px 4px 5px -2px rgba(0, 0, 0, 0.2), 0px 7px 10px 1px rgba(0, 0, 0, 0.14), 0px 2px 16px 1px rgba(0, 0, 0, 0.12); }\n:host .center .header .search-wrapper .sidenav-toggle {\n      margin: 0;\n      width: 56px;\n      height: 56px;\n      border-radius: 0; }\n:host .center .header .search-wrapper .search {\n      width: 100%;\n      height: 56px;\n      line-height: 56px;\n      padding: 18px; }\n:host .center .header .search-wrapper .search input {\n        height: 56px;\n        padding-left: 16px;\n        color: rgba(0, 0, 0, 0.54);\n        border: none;\n        outline: none; }\n:host .center .content-card .content {\n    background-color: #D8E8E9;\n    border-radius: 2px;\n    box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n    transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1);\n    margin: 12px;\n    padding: 8px; }\n:host .center .content-card .toolbar {\n    background-color: #406D95;\n    color: #A8D0DA;\n    border-radius: 2px;\n    box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n    transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1);\n    padding: 24px;\n    margin: 12px; }\n@media (max-width: 1279px) and (max-width: 1279px) {\n  :host .center .content-card fuse-ogrenim-hedef-list {\n    border-right: 0; }\n  :host .center .content-card fuse-ogrenim-hedef-list {\n    flex: 1 0 100%; }\n  :host .center .content-card.aktif-secenek-var .toolbar {\n    padding-left: 16px !important; }\n    :host .center .content-card.aktif-secenek-var .toolbar .todo-selection {\n      display: none !important; }\n  :host .center .content-card.aktif-secenek-var .content fuse-ogrenim-hedef-list {\n    display: none !important; } }\n:host .center .ekle {\n    color: #406D95 !important; }\n:host .center .sil {\n    color: #AF373A !important; }\n"
+module.exports = "/**\n * Applies styles for users in high contrast mode. Note that this only applies\n * to Microsoft browsers. Chrome can be included by checking for the `html[hc]`\n * attribute, however Chrome handles high contrast differently.\n */\n/* Theme for the ripple elements.*/\n/* stylelint-disable material/no-prefixes */\n/* stylelint-enable */\n:host {\n  width: 100%; }\n:host .center .header .search-wrapper {\n    box-shadow: 0px 4px 5px -2px rgba(0, 0, 0, 0.2), 0px 7px 10px 1px rgba(0, 0, 0, 0.14), 0px 2px 16px 1px rgba(0, 0, 0, 0.12); }\n:host .center .header .search-wrapper .sidenav-toggle {\n      margin: 0;\n      width: 56px;\n      height: 56px;\n      border-radius: 0; }\n:host .center .header .search-wrapper .search {\n      width: 100%;\n      height: 56px;\n      line-height: 56px;\n      padding: 18px; }\n:host .center .header .search-wrapper .search input {\n        height: 56px;\n        padding-left: 16px;\n        color: rgba(0, 0, 0, 0.54);\n        border: none;\n        outline: none; }\n:host .center .content-card .content {\n    background-color: #E2E3DD;\n    border-radius: 2px;\n    box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n    transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1);\n    margin: 12px;\n    padding: 8px; }\n:host .center .content-card .toolbar {\n    background-color: #A8D0DA;\n    color: #2F3A56;\n    border-radius: 2px;\n    box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n    transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1);\n    padding: 24px;\n    margin: 12px; }\n@media (max-width: 1279px) and (max-width: 1279px) {\n  :host .center .content-card fuse-ogrenim-hedef-list {\n    border-right: 0; }\n  :host .center .content-card fuse-ogrenim-hedef-list {\n    flex: 1 0 100%; }\n  :host .center .content-card.aktif-secenek-var .toolbar {\n    padding-left: 16px !important; }\n    :host .center .content-card.aktif-secenek-var .toolbar .todo-selection {\n      display: none !important; }\n  :host .center .content-card.aktif-secenek-var .content fuse-ogrenim-hedef-list {\n    display: none !important; } }\n:host .center .ekle {\n    color: #406D95 !important; }\n:host .center .sil {\n    color: #AF373A !important; }\n"
 
 /***/ }),
 
@@ -2150,9 +2757,10 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 var OgrenimHedefleriComponent = /** @class */ (function () {
-    function OgrenimHedefleriComponent(secenekService, cd) {
+    function OgrenimHedefleriComponent(secenekService, cd, fb) {
         this.secenekService = secenekService;
         this.cd = cd;
+        this.fb = fb;
     }
     Object.defineProperty(OgrenimHedefleriComponent.prototype, "soruHedefleri", {
         get: function () {
@@ -2182,33 +2790,46 @@ var OgrenimHedefleriComponent = /** @class */ (function () {
                 }, 0);
             });
     };
-    OgrenimHedefleriComponent.prototype.secilileriSil = function () {
-        // this.tekDogruluSecenekService.seciliOgrenimHedefleriniSil();
-    };
     OgrenimHedefleriComponent.prototype.ngOnDestroy = function () {
         this.onSelectedOgrenimHedefleriChanged.unsubscribe();
         this.cd.detach();
     };
-    OgrenimHedefleriComponent.prototype.toggleSelectAll = function () {
-        // this.tekDogruluSecenekService.toggleOgrenimHedefleriSelectAll();
+    OgrenimHedefleriComponent.prototype.toggleselectAll = function (secim) {
+        if (secim.checked) {
+            this.deselectAll();
+        }
+        else {
+            this.selectAll();
+        }
     };
-    OgrenimHedefleriComponent.prototype.select = function (filterParameter, filterValue) {
-        // this.tekDogruluSecenekService.selectOgrenimHedefleri(filterParameter, filterValue);
+    OgrenimHedefleriComponent.prototype.selectAll = function () {
+        var _this = this;
+        var degisensayi = 0;
+        this.ogrenimHedefleri.forEach(function (hedef) {
+            var zatenSecili = _this.secenekService.ogrenimHedefIndeksiniBul(hedef.ogrenimHedefId) >= 0;
+            if (!zatenSecili) {
+                _this.secenekService.soruForm.get('soruHedefleri').push(_this.fb.control(hedef.ogrenimHedefId));
+                degisensayi++;
+            }
+        });
+        if (degisensayi > 0) {
+            this.secenekService.soruForm.markAsDirty();
+        }
     };
-    OgrenimHedefleriComponent.prototype.deselect = function () {
-        // this.tekDogruluSecenekService.deselectOgrenimHedefleri();
+    OgrenimHedefleriComponent.prototype.deselectAll = function () {
+        while (this.secenekService.soruForm.get('soruHedefleri').length !== 0) {
+            this.secenekService.soruForm.get('soruHedefleri').removeAt(0);
+        }
     };
-    __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])(),
-        __metadata("design:type", _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormGroup"])
-    ], OgrenimHedefleriComponent.prototype, "soruForm", void 0);
     OgrenimHedefleriComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'fuse-ogrenim-hedefleri',
             template: __webpack_require__(/*! ./ogrenim-hedefleri.component.html */ "./src/app/main/content/apps/sorular/ogrenim-hedefleri/ogrenim-hedefleri.component.html"),
             styles: [__webpack_require__(/*! ./ogrenim-hedefleri.component.scss */ "./src/app/main/content/apps/sorular/ogrenim-hedefleri/ogrenim-hedefleri.component.scss")]
         }),
-        __metadata("design:paramtypes", [_coktan_secmeli_soru_secenek_service__WEBPACK_IMPORTED_MODULE_2__["CoktanSecmeliSoruSecenekService"], _angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectorRef"]])
+        __metadata("design:paramtypes", [_coktan_secmeli_soru_secenek_service__WEBPACK_IMPORTED_MODULE_2__["CoktanSecmeliSoruSecenekService"],
+            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectorRef"],
+            _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormBuilder"]])
     ], OgrenimHedefleriComponent);
     return OgrenimHedefleriComponent;
 }());
@@ -2224,7 +2845,7 @@ var OgrenimHedefleriComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<fuse-widget class=\"p-12\" class=\"widget\" fxLayout=\"column\">\n  <!-- Front -->\n  <div class=\"fuse-widget-front mat-elevation-z2\">\n    <div fxLayout=\"row\" fxLayoutAlign=\"space-between center\">\n      <div class=\"h3\">SORU KÖKÜ</div>\n      <button mat-icon-button fuseWidgetToggle class=\"fuse-widget-flip-button\" aria-label=\"more\">\n        <mat-icon>info</mat-icon>\n      </button>\n    </div>\n    <div fxFlex=\"auto\" class=\"metin\">\n      <form fxFlex=\"auto\" *ngIf=\"parentForm\" [formGroup]=\"parentForm\">\n        <div *ngIf=\"!parentFormGroupName\">\n          <div *ngIf=\"parentFormControlName\" style=\"background-color: white;padding:8px\">\n            <textarea matInput #metinAlani  formControlName=\"{{parentFormControlName}}\" matTextareaAutosize matAutosizeMinRows=\"2\"\n            matAutosizeMaxRows=\"10\"></textarea>\n            <!-- <textarea matInput #metinAlani [froalaEditor] formControlName=\"{{parentFormControlName}}\"></textarea> -->\n            <!-- <ckeditor [(ngModel)]=\"content\" formControlName=\"area\" #myckeditor [config]=\"ckeConfig\" debounce=\"500\"></ckeditor>   -->\n            <!-- <ckeditor  formControlName=\"{{parentFormControlName}}\" #editorum\n            [config]=\"ckeConfig\" debounce=\"500\"></ckeditor>   -->\n            <!-- <ckeditor  [config]=\"{uiColor: '#cccccc'}\" debounce=\"500\">\n            </ckeditor> -->\n          </div>\n        </div>\n      </form>\n    </div>\n  </div>\n  <!-- / Front -->\n\n  <!-- Back -->\n  <div class=\"fuse-widget-back p-16 pt-32 mat-white-bg mat-elevation-z2\">\n    <button mat-icon-button fuseWidgetToggle class=\"fuse-widget-flip-button\" aria-label=\"Flip widget\">\n      <mat-icon class=\"s-16\">close</mat-icon>\n    </button>\n\n    <div>\n      Kabul edilebilirlik indeksi şudur budur.\n    </div>\n  </div>\n  <!-- / Back -->\n\n</fuse-widget>"
+module.exports = "<fuse-widget class=\"p-12\" class=\"widget\" fxLayout=\"column\">\n  <!-- Front -->\n  <div class=\"fuse-widget-front mat-elevation-z2\">\n    <div fxLayout=\"row\" fxLayoutAlign=\"space-between center\">\n      <div class=\"h3\">SORU KÖKÜ</div>\n      <button mat-icon-button fuseWidgetToggle class=\"fuse-widget-flip-button\" aria-label=\"more\">\n        <mat-icon>info</mat-icon>\n      </button>\n    </div>\n    <div fxFlex=\"auto\" class=\"metin\">\n      <form fxFlex=\"auto\" *ngIf=\"parentForm\" [formGroup]=\"parentForm\">\n        <div *ngIf=\"!parentFormGroupName\">\n          <div *ngIf=\"parentFormControlName\" style=\"background-color: white;padding:8px\">\n            <textarea matInput #metinAlani  formControlName=\"{{parentFormControlName}}\" matTextareaAutosize matAutosizeMinRows=\"2\"\n            matAutosizeMaxRows=\"10\" ></textarea>\n            <!-- <textarea matInput #metinAlani [froalaEditor] formControlName=\"{{parentFormControlName}}\"></textarea> -->\n            <!-- <ckeditor [(ngModel)]=\"content\" formControlName=\"area\" #myckeditor [config]=\"ckeConfig\" debounce=\"500\"></ckeditor>   -->\n            <!-- <ckeditor  formControlName=\"{{parentFormControlName}}\" #editorum\n            [config]=\"ckeConfig\" debounce=\"500\"></ckeditor>   -->\n            <!-- <ckeditor  [config]=\"{uiColor: '#cccccc'}\" debounce=\"500\">\n            </ckeditor> -->\n          </div>\n        </div>\n      </form>\n    </div>\n  </div>\n  <!-- / Front -->\n\n  <!-- Back -->\n  <div class=\"fuse-widget-back p-16 pt-32 mat-white-bg mat-elevation-z2\">\n    <button mat-icon-button fuseWidgetToggle class=\"fuse-widget-flip-button\" aria-label=\"Flip widget\">\n      <mat-icon class=\"s-16\">close</mat-icon>\n    </button>\n\n    <div>\n      Kabul edilebilirlik indeksi şudur budur.\n    </div>\n  </div>\n  <!-- / Back -->\n\n</fuse-widget>"
 
 /***/ }),
 
@@ -2251,6 +2872,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SbHtmlEditorComponent", function() { return SbHtmlEditorComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
+/* harmony import */ var events__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! events */ "./node_modules/events/events.js");
+/* harmony import */ var events__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(events__WEBPACK_IMPORTED_MODULE_2__);
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -2262,11 +2885,13 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 };
 
 
+
 var SbHtmlEditorComponent = /** @class */ (function () {
     function SbHtmlEditorComponent() {
         this.gerekli = false;
         this.minSatir = 2;
         this.maksSatir = 10;
+        this.tamam = new events__WEBPACK_IMPORTED_MODULE_2__["EventEmitter"]();
     }
     SbHtmlEditorComponent.prototype.ngOnInit = function () {
     };
@@ -2299,6 +2924,10 @@ var SbHtmlEditorComponent = /** @class */ (function () {
         __metadata("design:type", Object)
     ], SbHtmlEditorComponent.prototype, "maksSatir", void 0);
     __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"])(),
+        __metadata("design:type", Object)
+    ], SbHtmlEditorComponent.prototype, "tamam", void 0);
+    __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"])('metinAlani'),
         __metadata("design:type", Object)
     ], SbHtmlEditorComponent.prototype, "metinAlani", void 0);
@@ -2328,7 +2957,7 @@ var SbHtmlEditorComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"!soru\" fxLayout=\"column\" fxLayoutAlign=\"center center\" fxFlex=\"1 2 auto\">\n    <mat-icon class=\"s-128 mb-16\">\n        question_answer\n    </mat-icon>\n    <span class=\"soru-sec-yazisi hint-text\">\n        <span>Bir soru seçin.</span>\n    </span>\n</div>\n\n<div *ngIf=\"soru\">\n    <div class=\"mail-header\" fxLayout=\"row\" fxLayoutAlign=\"space-between center\">\n        <div>\n            <div class=\"subject\" flex>{{dersKonuAdi}}</div>\n\n            <div class=\"labels\" fxLayout=\"row\" fxLayoutWrap>\n                <div class=\"label\" *ngFor=\"let kelime of soru.anahtarKelimeler\" fxLayout=\"row\" fxLayoutAlign=\"start center\">\n                    <div class=\"label-color\"></div>\n                    <div class=\"label-title\">{{kelime}}</div>\n                </div>\n            </div>\n        </div>\n        <div class=\"actions\" fxHide fxShow.gt-lg fxLayout=\"row\" fxLayoutAlign=\"start center\">\n            <button fxHide fxShow.gt-md mat-icon-button (click)=\"$event.stopPropagation();\" aria-label=\"Toggle star\">\n                <mat-icon *ngIf=\"!bitisTarihiGecerli\" matTooltip=\"Aksi belirtilene kadar soru geçerli.\">all_inclusive</mat-icon>\n            </button>\n            <button mat-button class=\"mat-icon-button\" aria-label=\"Soru aktif\">\n                <mat-icon *ngIf=\"soru.aktif\" matTooltip=\"Bu soru aktif. Aktif sorular onay yapıldıktan sonra sınavlarda çıkabilir.\">fast_forward</mat-icon>\n                <mat-icon *ngIf=\"!soru.aktif\" matTooltip=\"Bu soru aktif değil. Pasif sorular sınavlarda çıkmaz.\">stop</mat-icon>\n            </button>\n\n            <button mat-button class=\"mat-icon-button\" aria-label=\"Staj dersi\">\n                <mat-icon *ngIf=\"soru.favori\" matTooltip=\"Bu soru sizin favori sorunuz.\">star</mat-icon>\n                <mat-icon *ngIf=\"!soru.favori\" matTooltip=\"Bu soru sizin için favori olmayan bir sorudur.\">star_outline</mat-icon>\n            </button>\n\n\n            <button mat-button class=\"mat-icon-button\" aria-label=\"Ders kurulu dersi\">\n                <mat-icon *ngIf=\"soru.onaylandi\" matTooltip=\"Bu soru onaylanmış. Sınavlarda çıkabilir.\">thumb_up</mat-icon>\n                <mat-icon *ngIf=\"!soru.onaylandi\" matTooltip=\"Bu soru onaysız. Sınavlarda ÇIKMAZ!.\">thumb_down</mat-icon>\n            </button>\n        </div>\n    </div>\n\n    <div class=\"actions alt-cizgi\" fxShow fxHide.gt-lg fxLayout=\"row\" fxLayoutAlign=\"start center\">\n\n\n        <button mat-button class=\"mat-icon-button\" aria-label=\"Soru aktif\">\n            <mat-icon *ngIf=\"soru.aktif\" matTooltip=\"Bu soru aktif. Aktif sorular onay yapıldıktan sonra sınavlarda çıkabilir.\">fast_forward</mat-icon>\n            <mat-icon *ngIf=\"!soru.aktif\" matTooltip=\"Bu soru aktif değil. Pasif sorular sınavlarda çıkmaz.\">stop</mat-icon>\n        </button>\n        <button  *ngIf=\"!bitisTarihiGecerli\" mat-icon-button (click)=\"$event.stopPropagation();\" aria-label=\"Toggle star\">\n            <mat-icon  matTooltip=\"Aksi belirtilene kadar soru geçerli.\">all_inclusive</mat-icon>\n        </button>\n        <button mat-button class=\"mat-icon-button\" aria-label=\"Staj dersi\">\n            <mat-icon *ngIf=\"soru.favori\" matTooltip=\"Bu soru sizin favori sorunuz.\">star</mat-icon>\n            <mat-icon *ngIf=\"!soru.favori\" matTooltip=\"Bu soru sizin için favori olmayan bir sorudur.\">star_outline</mat-icon>\n        </button>\n\n\n        <button mat-button class=\"mat-icon-button\" aria-label=\"Ders kurulu dersi\">\n            <mat-icon *ngIf=\"soru.onaylandi\" matTooltip=\"Bu soru onaylanmış. Sınavlarda çıkabilir.\">thumb_up</mat-icon>\n            <mat-icon *ngIf=\"!soru.onaylandi\" matTooltip=\"Bu soru onaysız. Sınavlarda ÇIKMAZ!.\">thumb_down</mat-icon>\n        </button>\n    </div>\n\n\n    <div class=\"mail-content\">\n\n        <div class=\"info\" fxLayout=\"row\" fxLayoutAlign=\"space-between start\">\n\n            <div fxFlex fxLayout=\"column\" fxLayoutAlign=\"start start\">\n\n                <div fxLayout=\"row\" fxLayoutAlign=\"start start\">\n\n\n                    <div fxLayout=\"column\" fxLayoutAlign=\"start start\">\n                        <div class=\"name\">                            \n                            {{soru.soruAdi}}\n                        </div>\n\n                        <div class=\"to\" fxLayout=\"row\" fxLayoutAlign=\"start center\">\n                            <div>{{soru.aciklama}}</div>\n                        </div>\n                    </div>\n                </div>\n\n\n            </div>\n\n            <button mat-button class=\"mat-icon-button\" (click)=\"soruyuDegistir()\" matTooltip=\"Düzenleme ekranını aç\">\n                    <mat-icon>edit</mat-icon>\n                </button>\n\n            <button mat-button [matMenuTriggerFor]=\"moreMenu\" aria-label=\"More\" class=\"mat-icon-button\" (click)=\"$event.stopPropagation()\">\n                <mat-icon>more_vert</mat-icon>\n            </button>\n\n            <mat-menu #moreMenu=\"matMenu\">\n\n                <button *ngIf=\"soru.aktif\" mat-menu-item aria-label=\"Kapat\" (click)=\"soruyuKapat()\">\n                    <mat-icon>stop</mat-icon>\n                    <span matTooltip=\"Soruyu inaktif yaparsanız sonraki sınavlarda çıkmasını önlersiniz.\">İnaktif yap</span>\n                </button>\n\n                <button *ngIf=\"!soru.aktif\" mat-menu-item aria-label=\"Aç\" (click)=\"soruyuAc()\">\n                    <mat-icon>fast_forward</mat-icon>\n                    <span matTooltip=\"Aktif yaptığınız sorular sınavlarda onaylandıktan sonra çıkabilir.\" >Aktif yap</span>\n                </button>\n                <button mat-menu-item aria-label=\"Reply\" (click)=\"soruyuDegistir()\" matTooltip=\"Düzenleme ekranını aç\">\n                    <mat-icon>edit</mat-icon>\n                    <span>Düzelt</span>\n                </button>\n                <button mat-menu-item aria-label=\"Print\" (click)=\"soruOnIzlemeGoster()\" fxHide.lt-lg >\n                    <mat-icon>print</mat-icon>\n                    <span>Yazdır</span>\n                </button>\n                <mat-divider></mat-divider>\n                <button *ngIf=\"!soru.favori\" mat-menu-item aria-label=\"Favori yap\" (click)=\"soruyuFavoriYap()\">\n                    <mat-icon matTooltip=\"Favori olarak işaretlerseniz sınavlarda çıkma olasılığı artar\">star</mat-icon>\n                    <span>Favori sorum olsun</span>\n                </button>\n\n                <button *ngIf=\"soru.favori\" mat-menu-item aria-label=\"Sıradan yap\" (click)=\"soruyuSiradanYap()\">\n                    <mat-icon matTooltip=\" Soruyu sıradan yaparsanız, sınavlarda çıkma şansı az olur. \">star_outline</mat-icon>\n                    <span>Favori sorum olmasın</span>\n                </button>\n\n                <mat-divider></mat-divider>\n                <button mat-menu-item aria-label=\"Forward \" [disabled]=\"soru.silinemez \" (click)=\"soruyuSilindiYap()\">\n                    <mat-icon>delete</mat-icon>\n                    <span *ngIf=\"!soru.silinemez \" matTooltip=\"Soruyu sildikten sonra geri alamazsınız! \">Sil</span>\n                    <span *ngIf=\"soru.silinemez \" matTooltip=\"Bu soru silinemez olarak işaretlenmiş. \">Sil</span>\n                </button>\n\n\n\n\n            </mat-menu>\n        </div>\n\n        <button class=\"toggle-details\" mat-button (click)=\"detayToogle()\">\n            <span *ngIf=\"!detayGoster\">Ayrıntı</span>\n            <span *ngIf=\"detayGoster\">Ayrıntıyı gizle</span>\n        </button>\n\n        <div class=\"kart detay\" *ngIf=\"detayGoster\">\n            <div class=\"details\" fxLayout=\"row\" fxLayoutAlign=\"start start\">\n                <div fxLayout=\"column\">\n                    <span class=\"title\">Birim</span>\n                    <span class=\"title\">Program</span>\n                    <span class=\"title\">Donem</span>\n                    <span *ngIf=\"Ders.dersGrubuNo>0\" class=\"title\">Ders grubu</span>\n                    <span class=\"title\">Ders</span>\n                    <span *ngIf=\"soru.konuNo\" class=\"title\">Konu</span>\n                    <span class=\"title\">Soru tipi</span>\n                    <span class=\"title\">Bilissel düzeyi</span>\n                    <span class=\"title\">Başlangıç</span>\n                    <span class=\"title\">Bitiş</span>\n                </div>\n                <div fxLayout=\"column\">\n                    <span class=\"detail\">{{Ders.birimAdi}}</span>\n                    <span class=\"detail\">{{Ders.programAdi}}</span>\n                    <span class=\"detail\">{{Ders.donemAdi}}</span>\n                    <span *ngIf=\"Ders.dersGrubuNo>0\" class=\"detail\">{{Ders.dersGrubuAdi}}</span>\n                    <span class=\"detail\">{{Ders.dersAdi}}</span>\n                    <span *ngIf=\"soru.konuNo\" class=\"detail\">{{getKonu(soru.konuNo).konuAdi}}</span>\n                    <span class=\"detail\">{{soru.soruTipAdi}}</span>\n                    <span class=\"detail\">{{soru.bilisselDuzeyAdi}}</span>\n                    <span class=\"detail\">{{soru.baslangic| date: 'MMMM, yyyy'}}</span>\n                    <span class=\"detail\">{{soru.bitis| date: 'MMMM, yyyy'}}</span>\n                </div>\n\n            </div>\n        </div>\n        <div class=\"soru-metni kart\">{{soru.soruMetni}}</div>\n        <ol class=\"rectangle-list soru-secenekler kart \">\n            <li *ngFor=\"let secenek of soru.tekDogruluSecenekleri \">\n                <a [ngStyle]=\"{ 'border-right': secenek.dogruSecenek===true? '5px solid #5BA36F': '5px solid #E2474C'} \">\n                    <div [innerHTML]=\"secenek.secenekMetni\"></div>\n                </a>\n            </li>\n        </ol>\n        <div *ngIf=\"soru.soruHedefleri.length===0\">\n            <h3>Soru ile ilişkilendirilmiş öğrenim hedefi yok.</h3>\n        </div>\n        <div *ngIf=\"soru.soruHedefleri.length>0\" id=\"soru-hedefleri\" class=\"kart\">\n            <h3>Sorunun ilişkilendirildiği öğrenim hedefleri</h3>\n            <ol>\n                <li *ngFor=\"let item of soru.soruHedefleri let i=index \">\n                    <p>\n                        <em>{{item.ogrenimHedefAdi}}</em>\n                    </p>\n                </li>\n            </ol>\n        </div>\n    </div>\n</div>"
+module.exports = "<div *ngIf=\"!soru\" fxLayout=\"column\" fxLayoutAlign=\"center center\" fxFlex=\"1 2 auto\">\n    <mat-icon class=\"s-128 mb-16\">\n        question_answer\n    </mat-icon>\n    <span class=\"soru-sec-yazisi hint-text\">\n        <span>Bir soru seçin.</span>\n    </span>\n</div>\n\n<div *ngIf=\"soru\" style=\"color:#252D43\">\n    <div class=\"mail-header\" fxLayout=\"row\" fxLayoutAlign=\"space-between center\">\n        <div>\n            <div class=\"subject\" flex>{{dersKonuAdi}}</div>\n\n            <div class=\"labels\" fxLayout=\"row\" fxLayoutWrap>\n                <div class=\"label\" *ngFor=\"let kelime of soru.anahtarKelimeler\" fxLayout=\"row\" fxLayoutAlign=\"start center\">\n                    <div class=\"label-color\"></div>\n                    <div class=\"label-title\">{{kelime}}</div>\n                </div>\n            </div>\n        </div>\n        <!-- <div class=\"actions\" fxHide fxShow.gt-lg fxLayout=\"row\" fxLayoutAlign=\"start center\">\n            <button fxHide fxShow.gt-md mat-icon-button (click)=\"$event.stopPropagation();\" aria-label=\"Toggle star\">\n                <mat-icon *ngIf=\"!bitisTarihiGecerli\" matTooltip=\"Aksi belirtilene kadar soru geçerli.\">all_inclusive</mat-icon>\n            </button>\n            <button mat-button class=\"mat-icon-button\" aria-label=\"Soru aktif\" (click)=\"soruyuAcKapat()\">\n                <mat-icon *ngIf=\"soru.aktif\" matTooltip=\"Bu soru aktif. Aktif sorular onay yapıldıktan sonra sınavlarda çıkabilir.\">fast_forward</mat-icon>\n                <mat-icon *ngIf=\"!soru.aktif\" matTooltip=\"Bu soru aktif değil. Pasif sorular sınavlarda çıkmaz.\">stop</mat-icon>\n            </button>\n\n            <button mat-button class=\"mat-icon-button\" aria-label=\"Staj dersi\" (click)=\"favoriToogle()\">\n                <mat-icon *ngIf=\"soru.favori\" matTooltip=\"Bu soru sizin favori sorunuz.\">star</mat-icon>\n                <mat-icon *ngIf=\"!soru.favori\" matTooltip=\"Bu soru sizin için favori olmayan bir sorudur.\">star_outline</mat-icon>\n            </button>\n\n\n            <button mat-button class=\"mat-icon-button\" aria-label=\"Ders kurulu dersi\">\n                <mat-icon *ngIf=\"soru.onaylandi\" matTooltip=\"Bu soru onaylanmış. Sınavlarda çıkabilir.\">thumb_up</mat-icon>\n                <mat-icon *ngIf=\"!soru.onaylandi\" matTooltip=\"Bu soru onaysız. Sınavlarda ÇIKMAZ!.\">thumb_down</mat-icon>\n            </button>\n        </div> -->\n    </div>\n\n    <!-- <div class=\"actions alt-cizgi\" fxShow fxHide.gt-lg fxLayout=\"row\" fxLayoutAlign=\"start center\">\n\n\n        <button mat-button class=\"mat-icon-button\" aria-label=\"Soru aktif\">\n            <mat-icon *ngIf=\"soru.aktif\" matTooltip=\"Bu soru aktif. Aktif sorular onay yapıldıktan sonra sınavlarda çıkabilir.\">fast_forward</mat-icon>\n            <mat-icon *ngIf=\"!soru.aktif\" matTooltip=\"Bu soru aktif değil. Pasif sorular sınavlarda çıkmaz.\">stop</mat-icon>\n        </button>\n        <button *ngIf=\"!bitisTarihiGecerli\" mat-icon-button (click)=\"$event.stopPropagation();\" aria-label=\"Toggle star\">\n            <mat-icon matTooltip=\"Aksi belirtilene kadar soru geçerli.\">all_inclusive</mat-icon>\n        </button>\n        <button mat-button class=\"mat-icon-button\" aria-label=\"Staj dersi\">\n            <mat-icon *ngIf=\"soru.favori\" matTooltip=\"Bu soru sizin favori sorunuz.\">star</mat-icon>\n            <mat-icon *ngIf=\"!soru.favori\" matTooltip=\"Bu soru sizin için favori olmayan bir sorudur.\">star_outline</mat-icon>\n        </button>\n\n\n        <button mat-button class=\"mat-icon-button\" aria-label=\"Ders kurulu dersi\">\n            <mat-icon *ngIf=\"soru.onaylandi\" matTooltip=\"Bu soru onaylanmış. Sınavlarda çıkabilir.\">thumb_up</mat-icon>\n            <mat-icon *ngIf=\"!soru.onaylandi\" matTooltip=\"Bu soru onaysız. Sınavlarda ÇIKMAZ!.\">thumb_down</mat-icon>\n        </button>\n    </div> -->\n\n\n    <div class=\"mail-content\" fxLayout=\"column\" fxLayoutAlign=\"start stretch\" fxLayoutgap=\"16px\">\n\n        <div class=\"info\" fxLayout=\"row\" fxLayoutAlign=\"space-between center\">\n\n            <div fxLayout=\"row\" fxLayoutAlign=\"start center\">\n                <!-- <span fxFlex=\"auto\" class=\"name\">{{soru?.soruMetni| slice:0:100}}{{soru?.soruMetni.length > 100 ? '...' : ''}}</span> -->\n                <button  *ngIf=\"!bitisTarihiGecerli\" mat-icon-button class=\"mat-icon-button\" (click)=\"$event.stopPropagation();\" aria-label=\"Toggle star\">\n                    <mat-icon  matTooltip=\"Aksi belirtilene kadar soru geçerli.\">all_inclusive</mat-icon>\n                </button>\n                <button mat-button class=\"mat-icon-button\" aria-label=\"Soru aktif\" (click)=\"soruyuAcKapat()\">\n                    <mat-icon *ngIf=\"soru.aktif\" matTooltip=\"Bu soru aktif. Aktif sorular onay yapıldıktan sonra sınavlarda çıkabilir.\">fast_forward</mat-icon>\n                    <mat-icon *ngIf=\"!soru.aktif\" matTooltip=\"Bu soru aktif değil. Pasif sorular sınavlarda çıkmaz.\">stop</mat-icon>\n                </button>\n\n                <button mat-button class=\"mat-icon-button\" aria-label=\"Staj dersi\" (click)=\"favoriToogle()\">\n                    <mat-icon *ngIf=\"soru.favori\" matTooltip=\"Bu soru sizin favori sorunuz.\">star</mat-icon>\n                    <mat-icon *ngIf=\"!soru.favori\" matTooltip=\"Bu soru sizin için favori olmayan bir sorudur.\">star_outline</mat-icon>\n                </button>\n\n\n                <button mat-icon-button class=\"mat-icon-button\" aria-label=\"Ders kurulu dersi\">\n                    <mat-icon *ngIf=\"soru.onaylandi\" matTooltip=\"Bu soru onaylanmış. Sınavlarda çıkabilir.\">thumb_up</mat-icon>\n                    <mat-icon *ngIf=\"!soru.onaylandi\" matTooltip=\"Bu soru onaysız. Sınavlarda ÇIKMAZ!.\">thumb_down</mat-icon>\n                </button>\n            </div>\n            <div fxLayout=\"row\" fxLayoutAlign=\"start center\">\n\n                <button mat-button class=\"mat-icon-button\" (click)=\"soruyuDegistir()\" matTooltip=\"Düzenleme ekranını aç\">\n                    <mat-icon>edit</mat-icon>\n                </button>\n\n                <button mat-button [matMenuTriggerFor]=\"moreMenu\" aria-label=\"More\" class=\"mat-icon-button\" (click)=\"$event.stopPropagation()\">\n                    <mat-icon>more_vert</mat-icon>\n                </button>\n\n                <mat-menu #moreMenu=\"matMenu\">\n\n                    <button *ngIf=\"soru.aktif\" mat-menu-item aria-label=\"Kapat\" (click)=\"soruyuKapat()\">\n                        <mat-icon>stop</mat-icon>\n                        <span matTooltip=\"Soruyu inaktif yaparsanız sonraki sınavlarda çıkmasını önlersiniz.\">İnaktif yap</span>\n                    </button>\n\n                    <button *ngIf=\"!soru.aktif\" mat-menu-item aria-label=\"Aç\" (click)=\"soruyuAc()\">\n                        <mat-icon>fast_forward</mat-icon>\n                        <span matTooltip=\"Aktif yaptığınız sorular sınavlarda onaylandıktan sonra çıkabilir.\">Aktif yap</span>\n                    </button>\n                    <button mat-menu-item aria-label=\"Reply\" (click)=\"soruyuDegistir()\" matTooltip=\"Düzenleme ekranını aç\">\n                        <mat-icon>edit</mat-icon>\n                        <span>Düzelt</span>\n                    </button>\n                    <button mat-menu-item aria-label=\"Print\" (click)=\"soruOnIzlemeGoster()\" fxHide.lt-lg>\n                        <mat-icon>print</mat-icon>\n                        <span>Yazdır</span>\n                    </button>\n                    <mat-divider></mat-divider>\n                    <button *ngIf=\"!soru.favori\" mat-menu-item aria-label=\"Favori yap\" (click)=\"soruyuFavoriYap()\">\n                        <mat-icon matTooltip=\"Favori olarak işaretlerseniz sınavlarda çıkma olasılığı artar\">star</mat-icon>\n                        <span>Favori sorum olsun</span>\n                    </button>\n\n                    <button *ngIf=\"soru.favori\" mat-menu-item aria-label=\"Sıradan yap\" (click)=\"soruyuSiradanYap()\">\n                        <mat-icon matTooltip=\" Soruyu sıradan yaparsanız, sınavlarda çıkma şansı az olur. \">star_outline</mat-icon>\n                        <span>Favori sorum olmasın</span>\n                    </button>\n\n                    <mat-divider></mat-divider>\n                    <button mat-menu-item aria-label=\"Forward \" [disabled]=\"soru.silinemez \" (click)=\"soruyuSilindiYap()\">\n                        <mat-icon>delete</mat-icon>\n                        <span *ngIf=\"!soru.silinemez \" matTooltip=\"Soruyu sildikten sonra geri alamazsınız! \">Sil</span>\n                        <span *ngIf=\"soru.silinemez \" matTooltip=\"Bu soru silinemez olarak işaretlenmiş. \">Sil</span>\n                    </button>\n                </mat-menu>\n            </div>\n        </div>\n\n        <button class=\"toggle-details\" mat-button (click)=\"detayToogle()\">\n            <span *ngIf=\"!detayGoster\">Ayrıntı</span>\n            <span *ngIf=\"detayGoster\">Ayrıntıyı gizle</span>\n        </button>\n\n        <div class=\"kart detay\" *ngIf=\"detayGoster\">\n            <div class=\"details\" fxLayout=\"row\" fxLayoutAlign=\"start start\">\n                <div fxLayout=\"column\">\n                    <span class=\"title\">Birim</span>\n                    <span class=\"title\">Program</span>\n                    <span class=\"title\">Donem</span>\n                    <span *ngIf=\"Ders.dersGrubuNo>0\" class=\"title\">Ders grubu</span>\n                    <span class=\"title\">Ders</span>\n                    <span *ngIf=\"soru.konuNo\" class=\"title\">Konu</span>\n                    <span class=\"title\">Zorluk derecesi</span>\n                    <span class=\"title\">Cevaplama süresi</span>\n                    <span class=\"title\">Hemen elenebilir seçenek sayısı</span>\n                    <span class=\"title\">Kabul edilebilirlik indeksi</span>\n\n                    <span class=\"title\">Soru tipi</span>\n                    <span class=\"title\">Bilissel düzeyi</span>\n                    <span class=\"title\">Başlangıç</span>\n                    <span class=\"title\">Bitiş</span>\n                </div>\n                <div fxLayout=\"column\">\n                    <span class=\"detail\">{{Ders.birimAdi}}</span>\n                    <span class=\"detail\">{{Ders.programAdi}}</span>\n                    <span class=\"detail\">{{Ders.donemAdi}}</span>\n                    <span *ngIf=\"Ders.dersGrubuNo>0\" class=\"detail\">{{Ders.dersGrubuAdi}}</span>\n                    <span class=\"detail\">{{Ders.dersAdi}}</span>\n                    <span *ngIf=\"soru.konuNo\" class=\"detail\">{{getKonu(soru.konuNo).konuAdi}}</span>\n                    <span class=\"detail\">{{soru.soruZorlukAdi}}</span>\n                    <span class=\"detail\">{{soru.cevaplamaSuresi+' saniye.'}}</span>\n                    <span *ngIf=\"soru.hemenElenebilirSecenekSayisi===0\" class=\"detail\">Yok</span>\n                    <span *ngIf=\"soru.hemenElenebilirSecenekSayisi>0\" class=\"detail\">{{soru.hemenElenebilirSecenekSayisi}}</span>\n                    <span class=\"detail\">{{soru.kabulEdilebilirlikIndeksi}}</span>\n                    <span class=\"detail\">{{soru.soruTipAdi}}</span>\n                    <span class=\"detail\">{{soru.bilisselDuzeyAdi}}</span>\n                    <span class=\"detail\">{{soru.baslangic| date: 'MMMM, yyyy'}}</span>\n                    <span *ngIf=\"soru.bitis\" class=\"detail\">{{ soru.bitis| date: 'MMMM, yyyy'}}</span>\n                    <span *ngIf=\"!soru.bitis\" class=\"detail\">Belirtilmemiş</span>\n                </div>\n\n            </div>\n        </div>\n        <div class=\"kart\" style=\"background-color: #DB4549;color:#E2E3DD;\" *ngIf=\"soru.soruKokuMetni\">\n            <div fxLayout=\"row\" fxLayoutAlign=\"start center\" fxLayoutGap=\"16px\">\n                <mat-icon class=\"mat-18\">attachment</mat-icon>\n                <h2>Soru Kökü</h2>\n            </div>\n            <mat-divider></mat-divider>\n            <div [innerHTML]=\"soru.soruKokuMetni\" style=\"padding:24px;text-align: justify; \"></div>\n        </div>\n\n        <div class=\"kart\">\n            <div fxLayout=\"row\" fxLayoutAlign=\"start center\" fxLayoutGap=\"16px\">\n                <mat-icon class=\"mat-18\">library_books</mat-icon>\n                <h2>Soru metni ve seçenekler</h2>\n            </div>\n            <mat-divider></mat-divider>\n            <div class=\"soru-metni kart\">{{soru.soruMetni}}</div>\n            <ol class=\"rectangle-list soru-secenekler kart \">\n                <li *ngFor=\"let secenek of soru.tekDogruluSecenekleri \">\n                    <a [ngStyle]=\"{ 'border-right': secenek.dogruSecenek===true? '5px solid #5BA36F': '5px solid #E2474C'} \">\n                        <div [innerHTML]=\"secenek.secenekMetni\"></div>\n                    </a>\n                </li>\n            </ol>\n        </div>\n\n\n        <div *ngIf=\"soru.soruHedefleri.length>0\" id=\"soru-hedefleri\" class=\"kart\">\n\n            <div fxLayout=\"row\" fxLayoutAlign=\"start center\" fxLayoutGap=\"16px\">\n                <mat-icon class=\"mat-18\">my_location</mat-icon>\n                <h2>Sorunun ilişkilendirildiği öğrenim hedefleri</h2>\n            </div>\n            <mat-divider></mat-divider>\n            <div *ngIf=\"soru.soruHedefleri.length===0\">\n                <h2>Soru ile ilişkilendirilmiş öğrenim hedefi yok!</h2>\n            </div>\n            <ol>\n                <li *ngFor=\"let item of soru.soruHedefleri let i=index \">\n                    <p>\n                        <em>{{item.ogrenimHedefAdi}}</em>\n                    </p>\n                </li>\n            </ol>\n        </div>\n\n        <div fxLayout=\"column\" fxLayoutAlign=\"start stretch\">\n            <div class=\"kart\">\n                <div fxLayout=\"row\" fxLayoutAlign=\"start center\" fxLayoutGap=\"16px\">\n                    <mat-icon class=\"mat-18\">assignment</mat-icon>\n                    <h2>Kaynakça</h2>\n                </div>\n                <mat-divider></mat-divider>\n                <div class=\"name\">\n                    {{soru.kaynakca|htmlToPlaintext}}\n                </div>\n                <div *ngIf=\"!soru.kaynakca\" class=\"name\">\n                    Kaynakça girilmemiş!\n                </div>\n            </div>\n            <div class=\"kart\">\n\n                <div fxLayout=\"row\" fxLayoutAlign=\"start center\" fxLayoutGap=\"16px\">\n                    <mat-icon class=\"mat-18\">lightbulb_outline</mat-icon>\n                    <h2>Cevap açıklaması</h2>\n                </div>\n                <mat-divider></mat-divider>\n                <div class=\"to\" fxLayout=\"row\" fxLayoutAlign=\"start center\">\n                    <div>{{soru.aciklama|htmlToPlaintext}}</div>\n                    <div *ngIf=\"!soru.aciklama\" class=\"name\">\n                        Cevap açıklaması girilmemiş!\n                    </div>\n                </div>\n            </div>\n        </div>\n\n    </div>\n</div>"
 
 /***/ }),
 
@@ -2339,7 +2968,7 @@ module.exports = "<div *ngIf=\"!soru\" fxLayout=\"column\" fxLayoutAlign=\"cente
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "/**\n * Applies styles for users in high contrast mode. Note that this only applies\n * to Microsoft browsers. Chrome can be included by checking for the `html[hc]`\n * attribute, however Chrome handles high contrast differently.\n */\n/* Theme for the ripple elements.*/\n/* stylelint-disable material/no-prefixes */\n/* stylelint-enable */\n:host {\n  display: flex;\n  flex-direction: column;\n  flex: 1;\n  overflow-y: auto;\n  padding: 24px;\n  background-color: #D8E8E9; }\n:host .select-message-text {\n    font-size: 24px;\n    font-weight: 300; }\n:host .mail-header {\n    padding-bottom: 16px;\n    border-bottom: 1px solid rgba(0, 0, 0, 0.12); }\n:host .mail-header .actions {\n      min-width: 88px; }\n:host .mail-header .subject {\n      font-size: 17px;\n      font-weight: 500; }\n:host .mail-header .label {\n      font-size: 11px;\n      border-radius: 2px;\n      margin: 4px 4px 4px 0;\n      padding: 3px 8px;\n      background-color: rgba(0, 0, 0, 0.08); }\n:host .mail-header .label .label-color {\n        width: 8px;\n        height: 8px;\n        margin-right: 8px;\n        border-radius: 50%;\n        background-color: #DB4549; }\n:host .mail-content {\n    padding: 24px 0; }\n:host .mail-content .info {\n      background-color: #E2E3DD;\n      padding: 12px;\n      box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n      transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1); }\n:host .mail-content .info .avatar {\n        margin-right: 16px;\n        background-color: #039be5; }\n:host .mail-content .info .name {\n        margin-right: 8px;\n        font-weight: 500;\n        font-size: 1.1em; }\n:host .toggle-details {\n    color: #406D95;\n    text-align: left;\n    margin-top: 12px; }\n:host .toggle-details:hover {\n    color: #DB4549;\n    -webkit-text-decoration: #406D95;\n            text-decoration: #406D95;\n    -webkit-text-decoration-style: dashed;\n            text-decoration-style: dashed;\n    -webkit-text-decoration-line: underline;\n            text-decoration-line: underline; }\n:host ol {\n    counter-reset: li;\n    /* Initiate a counter */\n    list-style: none;\n    /* Remove default numbering */\n    *list-style: upper-alpha;\n    /* Keep using default numbering for IE6/7 */\n    font: 15px 'trebuchet MS', 'lucida sans';\n    padding: 0;\n    margin-bottom: 4em;\n    text-shadow: 0 1px 0 rgba(5, 5, 5, 0.1); }\n:host .rectangle-list a {\n    position: relative;\n    display: block;\n    padding: .4em .4em .4em .8em;\n    *padding: .4em;\n    margin: .5em 0 .5em 2.5em;\n    background: #A8D0DA;\n    color: #2F3A57;\n    text-decoration: none;\n    transition: all .3s ease-out; }\n:host .rectangle-list a:hover {\n    background: #406D95;\n    color: #A8D0DA; }\n:host .rectangle-list a:before {\n    content: counter(li, upper-alpha);\n    counter-increment: li;\n    position: absolute;\n    left: -2.5em;\n    top: 50%;\n    color: white;\n    margin-top: -1em;\n    background: #2F3A57;\n    height: 2em;\n    width: 2em;\n    line-height: 2em;\n    text-align: center;\n    font-weight: bold; }\n:host .rectangle-list a:after {\n    position: absolute;\n    content: '';\n    border: .5em solid transparent;\n    left: -1em;\n    top: 50%;\n    margin-top: -.5em;\n    transition: all .3s ease-out; }\n:host .rectangle-list a:hover:after {\n    left: -.5em;\n    border-left-color: #2F3A57; }\n:host .kart {\n    border-radius: 2px;\n    box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n    transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1);\n    padding: 24px;\n    margin-top: 12px; }\n:host .detay {\n    background-color: #E2E3DD;\n    padding-top: 8px; }\n:host .detay .title {\n      color: #406D95;\n      margin-right: 8px; }\n:host .detay .detail {\n      padding-left: 2px;\n      color: #2F3A57;\n      font-weight: 500; }\n:host .actions.alt-cizgi {\n    border-bottom: 1px solid rgba(0, 0, 0, 0.12); }\n:host .soru-metni {\n    background-color: #406D95;\n    color: white;\n    font-size: 1.2em; }\n:host .soru-secenekler {\n    background-color: #A8D0DA;\n    color: #E2474C;\n    font-size: .9em; }\n:host #soru-hedefleri {\n    margin-top: -24px;\n    padding: 8px;\n    padding-left: 24px; }\n:host #soru-hedefleri h3 {\n      margin: 0;\n      color: #406D95;\n      font-weight: 700;\n      font-size: 20px; }\n:host #soru-hedefleri ol {\n      font-style: italic;\n      font-family: Georgia, Times, serif;\n      font-size: 16px;\n      color: #406D95; }\n:host #soru-hedefleri ol li {\n      color: white; }\n:host #soru-hedefleri ol li p {\n      padding: 8px;\n      font-style: normal;\n      font-family: Arial;\n      font-size: 13px;\n      color: #406D95;\n      border-left: 2px solid #E2474C; }\n:host #soru-hedefleri ol li p em {\n      display: block; }\n"
+module.exports = "/**\n * Applies styles for users in high contrast mode. Note that this only applies\n * to Microsoft browsers. Chrome can be included by checking for the `html[hc]`\n * attribute, however Chrome handles high contrast differently.\n */\n/* Theme for the ripple elements.*/\n/* stylelint-disable material/no-prefixes */\n/* stylelint-enable */\n:host {\n  display: flex;\n  flex-direction: column;\n  flex: 1;\n  overflow-y: auto;\n  padding: 24px;\n  background-color: #D8E8E9; }\n:host .select-message-text {\n    font-size: 24px;\n    font-weight: 300; }\n:host .mail-header {\n    padding-bottom: 16px;\n    border-bottom: 1px solid rgba(0, 0, 0, 0.12); }\n:host .mail-header .actions {\n      min-width: 88px; }\n:host .mail-header .subject {\n      font-size: 17px;\n      font-weight: 500; }\n:host .mail-header .label {\n      font-size: 11px;\n      border-radius: 2px;\n      margin: 4px 4px 4px 0;\n      padding: 3px 8px;\n      background-color: rgba(0, 0, 0, 0.08); }\n:host .mail-header .label .label-color {\n        width: 8px;\n        height: 8px;\n        margin-right: 8px;\n        border-radius: 50%;\n        background-color: #DB4549; }\n:host .mail-content {\n    padding: 24px 0; }\n:host .mail-content .info {\n      background-color: #E2E3DD;\n      padding: 12px;\n      box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n      transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1); }\n:host .mail-content .info .avatar {\n        margin-right: 16px;\n        background-color: #039be5; }\n:host .mail-content .info .name {\n        margin-right: 8px;\n        font-weight: 500;\n        font-size: 1.1em; }\n:host .toggle-details {\n    color: #406D95;\n    text-align: left;\n    margin-top: 12px; }\n:host .toggle-details:hover {\n    color: #DB4549;\n    -webkit-text-decoration: #406D95;\n            text-decoration: #406D95;\n    -webkit-text-decoration-style: dashed;\n            text-decoration-style: dashed;\n    -webkit-text-decoration-line: underline;\n            text-decoration-line: underline; }\n:host ol {\n    counter-reset: li;\n    /* Initiate a counter */\n    list-style: none;\n    /* Remove default numbering */\n    *list-style: upper-alpha;\n    /* Keep using default numbering for IE6/7 */\n    font: 15px 'trebuchet MS', 'lucida sans';\n    padding: 0;\n    margin-bottom: 4em;\n    text-shadow: 0 1px 0 rgba(5, 5, 5, 0.1); }\n:host .rectangle-list a {\n    position: relative;\n    display: block;\n    padding: .4em .4em .4em .8em;\n    *padding: .4em;\n    margin: .5em 0 .5em 2.5em;\n    background: #A8D0DA;\n    color: #2F3A57;\n    text-decoration: none;\n    transition: all .3s ease-out; }\n:host .rectangle-list a:hover {\n    background: #406D95;\n    color: #A8D0DA; }\n:host .rectangle-list a:before {\n    content: counter(li, upper-alpha);\n    counter-increment: li;\n    position: absolute;\n    left: -2.5em;\n    top: 50%;\n    color: white;\n    margin-top: -1em;\n    background: #2F3A57;\n    height: 2em;\n    width: 2em;\n    line-height: 2em;\n    text-align: center;\n    font-weight: bold; }\n:host .rectangle-list a:after {\n    position: absolute;\n    content: '';\n    border: .5em solid transparent;\n    left: -1em;\n    top: 50%;\n    margin-top: -.5em;\n    transition: all .3s ease-out; }\n:host .rectangle-list a:hover:after {\n    left: -.5em;\n    border-left-color: #2F3A57; }\n:host .kart {\n    border-radius: 2px;\n    box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n    transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1);\n    padding: 24px;\n    background-color: #E2E3DD;\n    margin-top: 12px; }\n:host .detay {\n    background-color: #E2E3DD;\n    padding-top: 8px; }\n:host .detay .title {\n      color: #406D95;\n      margin-right: 8px; }\n:host .detay .detail {\n      padding-left: 2px;\n      color: #2F3A57;\n      font-weight: 500; }\n:host .actions.alt-cizgi {\n    border-bottom: 1px solid rgba(0, 0, 0, 0.12); }\n:host .soru-metni {\n    background-color: #406D95;\n    color: white;\n    font-size: 1.2em; }\n:host .soru-secenekler {\n    background-color: #A8D0DA;\n    color: #E2474C;\n    font-size: .9em; }\n:host #soru-hedefleri {\n    padding: 8px;\n    padding-left: 24px; }\n:host #soru-hedefleri h3 {\n      margin: 0;\n      color: #406D95;\n      font-weight: 700;\n      font-size: 20px; }\n:host #soru-hedefleri ol {\n      font-style: italic;\n      font-family: Georgia, Times, serif;\n      font-size: 16px;\n      color: #406D95; }\n:host #soru-hedefleri ol li {\n      color: white; }\n:host #soru-hedefleri ol li p {\n      padding: 8px;\n      font-style: normal;\n      font-family: Arial;\n      font-size: 13px;\n      color: #406D95;\n      border-left: 2px solid #E2474C; }\n:host #soru-hedefleri ol li p em {\n      display: block; }\n"
 
 /***/ }),
 
@@ -2364,6 +2993,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _core_services_sb_mesaj_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../../../core/services/sb-mesaj.service */ "./src/app/core/services/sb-mesaj.service.ts");
 /* harmony import */ var _coktan_secmeli_soru_coktan_secmeli_soru_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../coktan-secmeli-soru/coktan-secmeli-soru.component */ "./src/app/main/content/apps/sorular/coktan-secmeli-soru/coktan-secmeli-soru.component.ts");
 /* harmony import */ var _fuse_components_confirm_dialog_confirm_dialog_component__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @fuse/components/confirm-dialog/confirm-dialog.component */ "./src/@fuse/components/confirm-dialog/confirm-dialog.component.ts");
+/* harmony import */ var _soru_onizleme_soru_onizleme_component__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../soru-onizleme/soru-onizleme.component */ "./src/app/main/content/apps/sorular/soru-onizleme/soru-onizleme.component.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -2373,6 +3003,7 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 var __metadata = (undefined && undefined.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+
 
 
 
@@ -2519,17 +3150,33 @@ var SoruDetayComponent = /** @class */ (function () {
         kaydedilecekSoru.tekDogruluSecenekleri = formData.get('secenekler').value;
         this.store.dispatch(new _soru_store_index__WEBPACK_IMPORTED_MODULE_7__["UpdateSoru"](kaydedilecekSoru));
     };
+    SoruDetayComponent.prototype.soruyuAcKapat = function () {
+        if (this.soru.aktif === true) {
+            this.soruyuKapat();
+        }
+        else {
+            this.soruyuAc();
+        }
+    };
     SoruDetayComponent.prototype.soruyuKapat = function () {
         this.store.dispatch(new _soru_store_index__WEBPACK_IMPORTED_MODULE_7__["SoruAcKapa"]({ soruNo: this.soru.soruId, ac: false }));
     };
     SoruDetayComponent.prototype.soruyuAc = function () {
         this.store.dispatch(new _soru_store_index__WEBPACK_IMPORTED_MODULE_7__["SoruAcKapa"]({ soruNo: this.soru.soruId, ac: true }));
     };
+    SoruDetayComponent.prototype.favoriToogle = function () {
+        if (this.soru.favori) {
+            this.soruyuSiradanYap();
+        }
+        else {
+            this.soruyuFavoriYap();
+        }
+    };
     SoruDetayComponent.prototype.soruyuFavoriYap = function () {
         this.store.dispatch(new _soru_store_index__WEBPACK_IMPORTED_MODULE_7__["SoruFavoriDegistir"]({ soruNo: this.soru.soruId, favori: true }));
     };
     SoruDetayComponent.prototype.soruyuSiradanYap = function () {
-        this.store.dispatch(new _soru_store_index__WEBPACK_IMPORTED_MODULE_7__["SoruFavoriDegistir"]({ soruNo: this.soru.soruId, favori: true }));
+        this.store.dispatch(new _soru_store_index__WEBPACK_IMPORTED_MODULE_7__["SoruFavoriDegistir"]({ soruNo: this.soru.soruId, favori: false }));
     };
     SoruDetayComponent.prototype.soruyuSilindiYap = function () {
         var _this = this;
@@ -2550,24 +3197,24 @@ var SoruDetayComponent = /** @class */ (function () {
         });
     };
     SoruDetayComponent.prototype.soruOnIzlemeGoster = function () {
-        //   let en = '100vw';
-        //   let boy = '10 0vh';
-        //   let sinif = 'popup-masaustu';
-        //   if (this.platform.ANDROID || this.platform.IOS) {
-        //     en = '600px';
-        //     boy = '960px';
-        //     sinif = 'popup-mobil';
-        //   }
-        //   const dialogRef = this.dialog.open(SoruSayfaComponent, {
-        //      height: boy,
-        //      width: en,
-        //     panelClass: sinif,
-        //     data: {
-        //       soru: this.soru,
-        //       ders: this.ders,
-        //       konu: this.getKonu(this.soru.konuNo)
-        //     }
-        //   });
+        var en = '100vw';
+        var boy = '10 0vh';
+        var sinif = 'popup-masaustu';
+        if (this.platform.ANDROID || this.platform.IOS) {
+            en = '600px';
+            boy = '960px';
+            sinif = 'popup-mobil';
+        }
+        var dialogRef = this.dialog.open(_soru_onizleme_soru_onizleme_component__WEBPACK_IMPORTED_MODULE_11__["SoruOnizlemeComponent"], {
+            height: boy,
+            width: en,
+            panelClass: sinif,
+            data: {
+                soru: this.soru,
+                ders: this.ders,
+                konu: this.getKonu(this.soru.konuNo)
+            }
+        });
     };
     __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])('soru'),
@@ -2599,7 +3246,7 @@ var SoruDetayComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div fxLayout=\"row\" fxLayoutAlign=\"start center\">\n\n    <mat-checkbox [checked]=\"selected\" (change)=\"onSelectedChange()\" (click)=\"$event.stopPropagation();\">\n    </mat-checkbox>\n    <button mat-button class=\"mat-icon-button\" (click)=\"$event.stopPropagation()\" (click)=\" soruyuDegistir()\">\n        <mat-icon matTooltip=\"Düzenleme ekranını aç\">edit</mat-icon>\n    </button>\n    <div class=\"info\" fxFlex FlexLayout=\"column\">\n\n        <div fxLayout=\"row\" fxLayoutAlign=\"start center\">\n\n            <div class=\"soru-adi\" fxFlex>\n\n                <span *ngIf=\"soru?.soruAdi\">{{soru.soruAdi}}</span>\n\n            </div>\n            <div *ngIf=\"soru.baslangic\" fxHide fxShow.gt-lg>\n                <div matTooltip=\"Gecerlilik başlangıç - bitiş tarihi\" class=\"time\">\n                    <span> {{soru.baslangic| date: 'MMMM yyyy'}}</span>\n                    <span *ngIf=\"bitisTarihiGecerli\">- {{soru.bitis| date: 'MMMM yyyy'}}</span>\n\n                </div>\n            </div>\n        </div>\n\n        <div fxLayout=\"row\" fxLayoutAlign=\"space-betwwen center\">\n            <div class=\"aciklama\" *ngIf=\"soru?.aciklama\" fxFlex>\n                {{soru.aciklama | htmlToPlaintext | slice:0:180}}{{soru.aciklama.length > 250 ? '...' : ''}}\n            </div>\n\n\n            <div *ngIf=\"soru.baslangic\" fxLayout=\"row\" fxLayoutAlign=\"end center\" fxFlex.gt-lg=\"1 1 150px\" fxFlex=\"1 1 40px\">\n\n                <button fxHide fxShow.gt-lg mat-icon-button (click)=\"$event.stopPropagation();\" aria-label=\"Toggle star\">\n                    <mat-icon *ngIf=\"!bitisTarihiGecerli\" matTooltip=\"Aksi belirtilene kadar soru geçerli.\">all_inclusive</mat-icon>\n                </button>\n                <button fxHide fxShow.gt-lg mat-icon-button *ngIf=\"!bitisTarihiGecerli\" (click)=\"$event.stopPropagation();\" aria-label=\"Toggle star\">\n                    <mat-icon *ngIf=\"soru.favori\" matTooltip=\"Bu soru sizin favori sorunuz.\">star</mat-icon>\n                    <mat-icon *ngIf=\"!soru.favori\" matTooltip=\"Bu soru sizin için favori olmayan bir sorudur.\">star_outline</mat-icon>\n                </button>\n                <button fxHide fxShow.gt-lg mat-button class=\"mat-icon-button\" aria-label=\"Ders kurulu dersi\">\n                    <mat-icon *ngIf=\"soru.onaylandi\" matTooltip=\"Bu soru onaylanmış. Sınavlarda çıkabilir.\">thumb_up</mat-icon>\n                    <mat-icon *ngIf=\"!soru.onaylandi\" matTooltip=\"Bu soru onaysız. Sınavlarda ÇIKMAZ!.\">thumb_down</mat-icon>\n                </button>\n\n                <button mat-icon-button [matMenuTriggerFor]=\"moreMenu\" aria-label=\"More\" (click)=\"$event.stopPropagation();\">\n                    <mat-icon>more_vert</mat-icon>\n                </button>\n\n                <mat-menu #moreMenu=\"matMenu\">\n                    <button *ngIf=\"soru.aktif\" mat-menu-item aria-label=\"Kapat\" (click)=\"soruyuKapat()\">\n                        <mat-icon>stop</mat-icon>\n                        <span matTooltip=\"Soruyu inkatif yaparak sonraki sınavlarda çıkmasını önlersiniz.\">İnaktif yap</span>\n                    </button>\n\n                    <button *ngIf=\"!soru.aktif\" mat-menu-item aria-label=\"Aç\" (click)=\"soruyuAc()\">\n                        <mat-icon>fast_forward</mat-icon>\n                        <span matTooltip=\"Aktif yaptığınız sorular sınavlarda onaylandıktan sonra çıkabilir.\">Aktif yap</span>\n                    </button>\n                    <button mat-menu-item aria-label=\"Reply\" (click)=\"soruyuDegistir()\">\n                        <mat-icon matTooltip=\"Düzenleme ekranını aç\">edit</mat-icon>\n                        <span>Düzelt</span>\n                    </button>\n                    <!-- <button mat-menu-item aria-label=\"Print\">\n                        <mat-icon>print</mat-icon>\n                        <span>Yazdır</span>\n                    </button> -->\n                    <mat-divider></mat-divider>\n                    <button *ngIf=\"!soru.favori\" mat-menu-item aria-label=\"Favori yap\" (click)=\"soruyuFavoriYap()\">\n                        <mat-icon matTooltip=\"Favori olarak işaretlerseniz sınavlarda çıkma olasılığı artar\">star</mat-icon>\n                        <span>Favori sorum olsun</span>\n                    </button>\n\n                    <button *ngIf=\"soru.favori\" mat-menu-item aria-label=\"Sıradan yap\" (click)=\"soruyuSiradanYap()\">\n                        <mat-icon matTooltip=\"Soruyu favori yapmazsanız, sınavlarda çıkma şansı az olur. \">star_outline</mat-icon>\n                        <span>Favori sorum olmasın</span>\n                    </button>\n\n                    <mat-divider></mat-divider>\n\n                    <button mat-menu-item aria-label=\"Forward \" [disabled]=\"soru.silinemez\" (click)=\"soruyuSilindiYap()\">\n                        <mat-icon>delete</mat-icon>\n                        <span *ngIf=\"!soru.silinemez \" matTooltip=\"Soruyu sildikten sonra geri alamazsınız! \">Sil</span>\n                        <span *ngIf=\"soru.silinemez \" matTooltip=\"Bu soru silinemez olarak işaretlenmiş. \">Sil</span>\n                    </button>\n\n                </mat-menu>\n            </div>\n\n        </div>\n    </div>\n</div>"
+module.exports = "<div fxLayout=\"row\" fxLayoutAlign=\"start center\">\n\n    <mat-checkbox [checked]=\"selected\" (change)=\"onSelectedChange()\" (click)=\"$event.stopPropagation();\" style=\"margin-right: 8px\">\n    </mat-checkbox>\n    <button mat-button class=\"mat-icon-button\" (click)=\"$event.stopPropagation()\" (click)=\" soruyuDegistir()\">\n        <mat-icon matTooltip=\"Düzenleme ekranını aç\">edit</mat-icon>\n    </button>\n    <div class=\"info\" fxFlex FlexLayout=\"column\">\n\n        <!-- <div fxLayout=\"row\" fxLayoutAlign=\"start center\">\n\n            <div class=\"soru-adi\" fxFlex>\n\n                <span *ngIf=\"soru?.kaynakca\">{{soru.kaynakca}}</span>\n\n            </div>\n            <div *ngIf=\"soru.baslangic\" fxHide fxShow.gt-lg>\n                <div matTooltip=\"Gecerlilik başlangıç - bitiş tarihi\" class=\"time\">\n                    <span> {{soru.baslangic| date: 'MMMM yyyy'}}</span>\n                    <span *ngIf=\"bitisTarihiGecerli\">- {{soru.bitis| date: 'MMMM yyyy'}}</span>\n\n                </div>\n            </div>\n        </div> -->\n\n        <div fxLayout=\"row\" fxLayoutAlign=\"space-betwwen center\">\n            <div class=\"aciklama\" *ngIf=\"soru?.soruMetni\" fxFlex fxLayout=\"row\" fxLayoutAlign=\"star start\" fxLayoutGap=\"10px\">\n\n                <div class=\"mx-4\">\n                    <mat-icon style=\"color:#E2474C\" *ngIf=\"soru?.soruKokuSorulariSayisi>0\" matTooltip=\"İlişkili sorudur. Yani aynı soru köküne bağlı birden fazla soru var. Bu soru da onlardan biridir.\">link</mat-icon>\n                    <!-- <mat-icon style=\"color:#252D43\" *ngIf=\"soru?.soruKokuSorulariSayisi===0\" matTooltip=\"Bağlantısız soru. İlişkili olduğu soru yok. \">label_outline</mat-icon> -->\n                </div>\n                {{soru?.soruMetni | htmlToPlaintext | slice:0:500}}{{soru?.soruMetni.length > 500 ? '...' : ''}}\n                <!-- <div *ngIf=\"soru.baslangic\" fxHide fxShow.gt-lg>\n                        <div matTooltip=\"Gecerlilik başlangıç - bitiş tarihi\" class=\"time\">\n                            <span> {{soru.baslangic| date: 'MMMM yyyy'}}</span>\n                            <span *ngIf=\"bitisTarihiGecerli\">- {{soru.bitis| date: 'MMMM yyyy'}}</span>\n        \n                        </div>\n                    </div> -->\n            </div>\n\n\n            <div *ngIf=\"soru?.baslangic\" fxLayout=\"row\" fxLayoutAlign=\"end center\" fxFlex.gt-lg=\"1 1 150px\" fxFlex=\"1 1 40px\">\n\n\n\n                <button fxHide fxShow.gt-lg mat-icon-button (click)=\"$event.stopPropagation();\" aria-label=\"Toggle star\">\n                    <mat-icon *ngIf=\"!bitisTarihiGecerli\" matTooltip=\"Aksi belirtilene kadar soru geçerli.\">all_inclusive</mat-icon>\n                </button>\n                <button fxHide fxShow.gt-lg mat-icon-button *ngIf=\"!bitisTarihiGecerli\" (click)=\"$event.stopPropagation();favoriToogle()\" aria-label=\"Toggle star\">\n                    <mat-icon *ngIf=\"soru?.favori\" matTooltip=\"Bu soru sizin favori sorunuz.\">star</mat-icon>\n                    <mat-icon *ngIf=\"!soru?.favori\" matTooltip=\"Bu soru sizin için favori olmayan bir sorudur.\">star_outline</mat-icon>\n                </button>\n                <button fxHide fxShow.gt-lg mat-button class=\"mat-icon-button\" aria-label=\"Ders kurulu dersi\">\n                    <mat-icon *ngIf=\"soru?.onaylandi\" matTooltip=\"Bu soru onaylanmış. Sınavlarda çıkabilir.\">thumb_up</mat-icon>\n                    <mat-icon *ngIf=\"!soru?.onaylandi\" matTooltip=\"Bu soru onaysız. Sınavlarda ÇIKMAZ!.\">thumb_down</mat-icon>\n                </button>\n\n                <button mat-icon-button [matMenuTriggerFor]=\"moreMenu\" aria-label=\"More\" (click)=\"$event.stopPropagation();\">\n                    <mat-icon>more_vert</mat-icon>\n                </button>\n\n                <mat-menu #moreMenu=\"matMenu\">\n                    <button *ngIf=\"soru?.aktif\" mat-menu-item aria-label=\"Kapat\" (click)=\"soruyuKapat()\">\n                        <mat-icon>stop</mat-icon>\n                        <span matTooltip=\"Soruyu inkatif yaparak sonraki sınavlarda çıkmasını önlersiniz.\">İnaktif yap</span>\n                    </button>\n\n                    <button *ngIf=\"!soru?.aktif\" mat-menu-item aria-label=\"Aç\" (click)=\"soruyuAc()\">\n                        <mat-icon>fast_forward</mat-icon>\n                        <span matTooltip=\"Aktif yaptığınız sorular sınavlarda onaylandıktan sonra çıkabilir.\">Aktif yap</span>\n                    </button>\n                    <button mat-menu-item aria-label=\"Reply\" (click)=\"soruyuDegistir()\">\n                        <mat-icon matTooltip=\"Düzenleme ekranını aç\">edit</mat-icon>\n                        <span>Düzelt</span>\n                    </button>\n                    <!-- <button mat-menu-item aria-label=\"Print\">\n                        <mat-icon>print</mat-icon>\n                        <span>Yazdır</span>\n                    </button> -->\n                    <mat-divider></mat-divider>\n                    <button *ngIf=\"!soru?.favori\" mat-menu-item aria-label=\"Favori yap\" (click)=\"soruyuFavoriYap()\">\n                        <mat-icon matTooltip=\"Favori olarak işaretlerseniz sınavlarda çıkma olasılığı artar\">star</mat-icon>\n                        <span>Favori sorum olsun</span>\n                    </button>\n\n                    <button *ngIf=\"soru?.favori\" mat-menu-item aria-label=\"Sıradan yap\" (click)=\"soruyuSiradanYap()\">\n                        <mat-icon matTooltip=\"Soruyu favori yapmazsanız, sınavlarda çıkma şansı az olur. \">star_outline</mat-icon>\n                        <span>Favori sorum olmasın</span>\n                    </button>\n\n                    <mat-divider></mat-divider>\n\n                    <button mat-menu-item aria-label=\"Forward \" [disabled]=\"soru?.silinemez\" (click)=\"soruyuSilindiYap()\">\n                        <mat-icon>delete</mat-icon>\n                        <span *ngIf=\"!soru?.silinemez \" matTooltip=\"Soruyu sildikten sonra geri alamazsınız! \">Sil</span>\n                        <span *ngIf=\"soru?.silinemez \" matTooltip=\"Bu soru silinemez olarak işaretlenmiş. \">Sil</span>\n                    </button>\n\n                </mat-menu>\n            </div>\n\n        </div>\n    </div>\n</div>"
 
 /***/ }),
 
@@ -2610,7 +3257,7 @@ module.exports = "<div fxLayout=\"row\" fxLayoutAlign=\"start center\">\n\n    <
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "/**\n * Applies styles for users in high contrast mode. Note that this only applies\n * to Microsoft browsers. Chrome can be included by checking for the `html[hc]`\n * attribute, however Chrome handles high contrast differently.\n */\n/* Theme for the ripple elements.*/\n/* stylelint-disable material/no-prefixes */\n/* stylelint-enable */\n:host {\n  flex-shrink: 0;\n  position: relative;\n  padding: 16px 24px;\n  border-bottom: 1px solid rgba(0, 0, 0, 0.12);\n  cursor: pointer;\n  background: #E2E3DD; }\n:host.selected {\n    background: #D8E8E9; }\n:host.current-mail {\n    background: #A8D0DA; }\n:host.current-mail .soru-adi {\n      color: #2F3A57; }\n:host.current-mail .aciklama {\n      color: #D8E8E9; }\n:host.current-mail .info .row-2 .labels {\n      background: #FFF8E1; }\n:host .info {\n    overflow: hidden;\n    width: 0;\n    margin-left: 8px;\n    position: relative; }\n:host .info .row-1 {\n      margin-bottom: 8px; }\n:host .info .row-1 .name {\n        font-size: 15px;\n        font-weight: 500; }\n:host .info .row-1 .name .avatar {\n          min-width: 32px;\n          width: 32px;\n          height: 32px;\n          line-height: 32px;\n          background-color: #039be5; }\n:host .info .row-1 .actions {\n        margin-left: 4px; }\n:host .info .row-1 .actions .mat-icon-button {\n          width: 32px;\n          height: 32px;\n          line-height: 1; }\n:host .info .row-2 .labels {\n      position: absolute;\n      background: #FFFFFF;\n      bottom: 0;\n      right: 0;\n      padding-left: 6px; }\n:host .info .row-2 .labels .label {\n        font-size: 11px;\n        border-radius: 2px;\n        margin: 0 4px 0 0;\n        padding: 3px 8px;\n        background-color: rgba(0, 0, 0, 0.08); }\n:host .info .row-2 .labels .label .label-color {\n          width: 8px;\n          height: 8px;\n          margin-right: 8px;\n          border-radius: 50%; }\n:host .soru-adi {\n    font-weight: 500;\n    color: #2F3A57;\n    font-size: 1.5em; }\n@media (max-width: 959px) {\n      :host .soru-adi {\n        font-size: 1em; } }\n:host .aciklama {\n    font-weight: normal;\n    font-style: italic;\n    color: #406D95;\n    font-size: 0.9em; }\n@media (max-width: 959px) {\n      :host .aciklama {\n        font-size: .8em; } }\n"
+module.exports = "/**\n * Applies styles for users in high contrast mode. Note that this only applies\n * to Microsoft browsers. Chrome can be included by checking for the `html[hc]`\n * attribute, however Chrome handles high contrast differently.\n */\n/* Theme for the ripple elements.*/\n/* stylelint-disable material/no-prefixes */\n/* stylelint-enable */\n:host {\n  flex-shrink: 0;\n  position: relative;\n  padding: 16px 24px;\n  border-bottom: 1px solid rgba(0, 0, 0, 0.12);\n  cursor: pointer;\n  background: #E2E3DD; }\n:host.selected {\n    background: #D8E8E9; }\n:host.current-mail {\n    background: #A8D0DA; }\n:host.current-mail .soru-adi {\n      color: #2F3A57; }\n:host.current-mail .aciklama {\n      color: #2F3A57; }\n:host.current-mail .info .row-2 .labels {\n      background: #FFF8E1; }\n:host .info {\n    overflow: hidden;\n    width: 0;\n    margin-left: 8px;\n    position: relative; }\n:host .info .row-1 {\n      margin-bottom: 8px; }\n:host .info .row-1 .name {\n        font-size: 15px;\n        font-weight: 500; }\n:host .info .row-1 .name .avatar {\n          min-width: 32px;\n          width: 32px;\n          height: 32px;\n          line-height: 32px;\n          background-color: #039be5; }\n:host .info .row-1 .actions {\n        margin-left: 4px; }\n:host .info .row-1 .actions .mat-icon-button {\n          width: 32px;\n          height: 32px;\n          line-height: 1; }\n:host .info .row-2 .labels {\n      position: absolute;\n      background: #FFFFFF;\n      bottom: 0;\n      right: 0;\n      padding-left: 6px; }\n:host .info .row-2 .labels .label {\n        font-size: 11px;\n        border-radius: 2px;\n        margin: 0 4px 0 0;\n        padding: 3px 8px;\n        background-color: rgba(0, 0, 0, 0.08); }\n:host .info .row-2 .labels .label .label-color {\n          width: 8px;\n          height: 8px;\n          margin-right: 8px;\n          border-radius: 50%; }\n:host .soru-adi {\n    font-weight: 500;\n    color: #2F3A57;\n    font-size: 1.5em; }\n@media (max-width: 959px) {\n      :host .soru-adi {\n        font-size: 1em; } }\n:host .aciklama {\n    font-weight: normal;\n    color: #406D95;\n    font-size: 1.2em; }\n@media (max-width: 959px) {\n      :host .aciklama {\n        font-size: .8em; } }\n"
 
 /***/ }),
 
@@ -2728,7 +3375,6 @@ var SoruListesiSatiriComponent = /** @class */ (function () {
                 var formData = response[1];
                 if (!formData.dirty) {
                     console.log('Kaydetmeye gerek yok!');
-                    console.log(formData.value);
                     return;
                 }
                 var kaydedilecekSoru = response[2];
@@ -2756,6 +3402,14 @@ var SoruListesiSatiriComponent = /** @class */ (function () {
     };
     SoruListesiSatiriComponent.prototype.soruyuAc = function () {
         this.store.dispatch(new _soru_store__WEBPACK_IMPORTED_MODULE_6__["SoruAcKapa"]({ soruNo: this.soru.soruId, ac: true }));
+    };
+    SoruListesiSatiriComponent.prototype.favoriToogle = function () {
+        if (this.soru.favori) {
+            this.soruyuSiradanYap();
+        }
+        else {
+            this.soruyuFavoriYap();
+        }
     };
     SoruListesiSatiriComponent.prototype.soruyuFavoriYap = function () {
         this.store.dispatch(new _soru_store__WEBPACK_IMPORTED_MODULE_6__["SoruFavoriDegistir"]({ soruNo: this.soru.soruId, favori: true }));
@@ -2906,7 +3560,7 @@ var SoruListesiComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"invoice\" class=\"modern page-layout blank\" fxLayout=\"row\" fusePerfectScrollbar>\n\n  <div class=\"invoice-container\">\n\n    <!-- INVOICE -->\n    <div class=\"card\">\n\n      <div class=\"header\" fxLayout=\"row\" fxLayoutAlign=\"space-between start\">\n\n        <div class=\"ids\" fxLayout=\"column\" fxFlex=\"70%\">\n\n          <div fxLayout=\"row\" class=\"seller\" fxLayoutAlign=\"start center\">\n\n            <div class=\"detail\">\n              <div class=\"title\">\n                <span>Soru Adı:</span>\n                {{data.soru.soruAdi}}</div>\n              <div class=\"address\">\n                <span>Soru Açıklaması:</span>\n                {{data.soru.aciklama}}\n              </div>\n              <div *ngIf=\"data.ders\" class=\"website\">\n                {{data.ders.birimAdi}} {{','+data.ders.programAdi+' programı'}}\n              </div>\n              <div *ngIf=\"data.ders\" class=\"website\">\n                {{data.ders.donemAdi}}\n              </div>\n              <div *ngIf=\"data.ders\" class=\"phone\">\n                <span>Ders:</span>\n                {{data.ders.dersAdi}}\n              </div>\n              <div *ngIf=\"data.konu\">\n                <span>Konu:</span>\n                {{data.konu.konuAdi}}\n              </div>\n\n            </div>\n          </div>\n\n          <div fxLayout=\"row\" class=\"client\" fxLayoutAlign=\"start center\">\n            <div class=\"label\" fxLayout=\"row\" fxLayoutAlign=\"end center\">\n              <div *ngIf=\"!data.konu\">Ders Anlatan Hocalar</div>\n              <div *ngIf=\"data.konu\">Konu Anlatan Hocalar</div>\n            </div>\n\n            <div class=\"divider\"></div>\n\n            <div *ngIf=\"!data.konu\" class=\"detail\">\n              <div class=\"title\" *ngFor=\"let hoca of data.ders.anlatanHocalar\">\n                {{hoca.unvanAdSoyad}}\n              </div>\n             \n            </div>\n            <div *ngIf=\"data.konu\" class=\"detail\">\n              <div class=\"title\" *ngFor=\"let hoca of data.konu.anlatanHocalar\">\n                  {{hoca.unvanAdSoyad}}\n              </div>\n            </div>\n          </div>\n        </div>\n\n        <table class=\"summary\" fxFlex=\"30%\">\n          <tr class=\"code\">\n            <td class=\"label\">SORU</td>\n            <td class=\"value\">{{data.soru.soruId}}</td>\n          </tr>\n\n          <tr>\n            <td class=\"label\">Başlangıç</td>\n            <td class=\"value\">{{data.soru.baslangic| date: 'MMMM yyyy'}}</td>\n          </tr>\n\n          <tr>\n            <td class=\"label\">Bitiş</td>\n            <td class=\"value\">{{data.soru.bitis| date: 'MMMM yyyy'}}</td>\n          </tr>\n\n          <tr>\n            <td class=\"label\">KEI</td>\n            <td class=\"value\">{{data.soru.kabulEdilebilirlikIndeksi}}</td>\n          </tr>\n        </table>\n      </div>\n\n      <div class=\"content\">\n\n        <div>{{data.soru.soruMetni}}</div>\n        <ol type=\"a\">\n          <li *ngFor=\"let secenek of data.soru.tekDogruluSecenekleri \">\n            <div [innerHTML]=\"secenek.secenekMetni\"></div>\n          </li>\n        </ol>\n      </div>\n      <div class=\"footer\">\n        <div class=\"note\">Yukarıdaki çerçeve içinde soruyu görmektesiniz. Buraya bakarak sorunun sınavda nasıl çıkacağı konusunda yaklaşık\n          bilgi elde edebilirsiniz.</div>\n        <div fxLayout=\"row\" fxLayoutAlign=\"start start\">\n          <div class=\"small-note\">\n            Lütfen siyah çerçeve içinde sorunun görünüşüne dikkat edin. Buradaki problemleri varsa görüp soru düzeltme kısmından gerekli\n            değişiklikleri yaptıktan sonra soruyu kaydedin. Sonra tekrar bu ekrana gelip sorunun son görünüşüne bakın.\n          </div>\n        </div>\n      </div>\n\n      <!--\n\n          Use the following elements to add breaks to your pages. This will make sure that the section in between\n          these elements will be printed on a new page. The following two elements must be used before and after the\n          page content that you want to show as a new page. So, you have to wrap your content with them.\n\n          Elements:\n          ---------\n          <div class=\"page-break-after\"></div>\n          <div class=\"page-break-before\"></div>\n\n          -->\n\n      <!--\n\n          Example:\n          --------\n\n          Initial page content!\n\n          <div class=\"page-break-after\"></div>\n          <div class=\"page-break-before\"></div>\n\n          This is the second page!\n\n          <div class=\"page-break-after\"></div>\n          <div class=\"page-break-before\"></div>\n\n          This is the third page!\n\n          <div class=\"page-break-after\"></div>\n          <div class=\"page-break-before\"></div>\n\n          -->\n\n    </div>\n    <!-- / INVOICE -->\n\n  </div>\n\n</div>"
+module.exports = "<div id=\"invoice\" class=\"modern page-layout blank\" fxLayout=\"row\" fusePerfectScrollbar>\n\n  <div class=\"invoice-container\">\n\n    <!-- INVOICE -->\n    <div class=\"card\">\n\n      <div class=\"header\" fxLayout=\"row\" fxLayoutAlign=\"space-between start\">\n\n        <div class=\"ids\" fxLayout=\"column\" fxFlex=\"70%\">\n\n          <div fxLayout=\"row\" class=\"seller\" fxLayoutAlign=\"start center\">\n\n            <div class=\"detail\">\n              <div class=\"title\">\n                <span>Soru Adı:</span>\n                {{data.soru.kaynakca}}</div>\n              <div class=\"address\">\n                <span>Soru Açıklaması:</span>\n                {{data.soru.aciklama}}\n              </div>\n              <div *ngIf=\"data.ders\" class=\"website\">\n                {{data.ders.birimAdi}} {{','+data.ders.programAdi+' programı'}}\n              </div>\n              <div *ngIf=\"data.ders\" class=\"website\">\n                {{data.ders.donemAdi}}\n              </div>\n              <div *ngIf=\"data.ders\" class=\"phone\">\n                <span>Ders:</span>\n                {{data.ders.dersAdi}}\n              </div>\n              <div *ngIf=\"data.konu\">\n                <span>Konu:</span>\n                {{data.konu.konuAdi}}\n              </div>\n\n            </div>\n          </div>\n\n          <div fxLayout=\"row\" class=\"client\" fxLayoutAlign=\"start center\">\n            <div class=\"label\" fxLayout=\"row\" fxLayoutAlign=\"end center\">\n              <div *ngIf=\"!data.konu\">Ders Anlatan Hocalar</div>\n              <div *ngIf=\"data.konu\">Konu Anlatan Hocalar</div>\n            </div>\n\n            <div class=\"divider\"></div>\n\n            <div *ngIf=\"!data.konu\" class=\"detail\">\n              <div class=\"title\" *ngFor=\"let hoca of data.ders.anlatanHocalar\">\n                {{hoca.unvanAdSoyad}}\n              </div>\n             \n            </div>\n            <div *ngIf=\"data.konu\" class=\"detail\">\n              <div class=\"title\" *ngFor=\"let hoca of data.konu.anlatanHocalar\">\n                  {{hoca.unvanAdSoyad}}\n              </div>\n            </div>\n          </div>\n        </div>\n\n        <table class=\"summary\" fxFlex=\"30%\">\n          <tr class=\"code\">\n            <td class=\"label\">SORU</td>\n            <td class=\"value\">{{data.soru.soruId}}</td>\n          </tr>\n\n          <tr>\n            <td class=\"label\">Başlangıç</td>\n            <td class=\"value\">{{data.soru.baslangic| date: 'MMMM yyyy'}}</td>\n          </tr>\n\n          <tr>\n            <td class=\"label\">Bitiş</td>\n            <td class=\"value\">{{data.soru.bitis| date: 'MMMM yyyy'}}</td>\n          </tr>\n\n          <tr>\n            <td class=\"label\">KEI</td>\n            <td class=\"value\">{{data.soru.kabulEdilebilirlikIndeksi}}</td>\n          </tr>\n        </table>\n      </div>\n\n      <div class=\"content\">\n\n        <div>{{data.soru.soruMetni}}</div>\n        <ol type=\"a\">\n          <li *ngFor=\"let secenek of data.soru.tekDogruluSecenekleri \">\n            <div [innerHTML]=\"secenek.secenekMetni\"></div>\n          </li>\n        </ol>\n      </div>\n      <div class=\"footer\">\n        <div class=\"note\">Yukarıdaki çerçeve içinde soruyu görmektesiniz. Buraya bakarak sorunun sınavda nasıl çıkacağı konusunda yaklaşık\n          bilgi elde edebilirsiniz.</div>\n        <div fxLayout=\"row\" fxLayoutAlign=\"start start\">\n          <div class=\"small-note\">\n            Lütfen siyah çerçeve içinde sorunun görünüşüne dikkat edin. Buradaki problemleri varsa görüp soru düzeltme kısmından gerekli\n            değişiklikleri yaptıktan sonra soruyu kaydedin. Sonra tekrar bu ekrana gelip sorunun son görünüşüne bakın.\n          </div>\n        </div>\n      </div>\n\n      <!--\n\n          Use the following elements to add breaks to your pages. This will make sure that the section in between\n          these elements will be printed on a new page. The following two elements must be used before and after the\n          page content that you want to show as a new page. So, you have to wrap your content with them.\n\n          Elements:\n          ---------\n          <div class=\"page-break-after\"></div>\n          <div class=\"page-break-before\"></div>\n\n          -->\n\n      <!--\n\n          Example:\n          --------\n\n          Initial page content!\n\n          <div class=\"page-break-after\"></div>\n          <div class=\"page-break-before\"></div>\n\n          This is the second page!\n\n          <div class=\"page-break-after\"></div>\n          <div class=\"page-break-before\"></div>\n\n          This is the third page!\n\n          <div class=\"page-break-after\"></div>\n          <div class=\"page-break-before\"></div>\n\n          -->\n\n    </div>\n    <!-- / INVOICE -->\n\n  </div>\n\n</div>"
 
 /***/ }),
 
@@ -3842,7 +4496,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var rxjs_Observable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs/Observable */ "./node_modules/rxjs-compat/_esm5/Observable.js");
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
 /* harmony import */ var environments_environment__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! environments/environment */ "./src/environments/environment.ts");
-/* harmony import */ var _ngrx_store__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @ngrx/store */ "./node_modules/@ngrx/store/fesm5/store.js");
+/* harmony import */ var _store_index__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../../../../store/index */ "./src/app/store/index.ts");
+/* harmony import */ var _ngrx_store__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @ngrx/store */ "./node_modules/@ngrx/store/fesm5/store.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -3852,6 +4507,7 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 var __metadata = (undefined && undefined.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+
 
 
 
@@ -3867,7 +4523,7 @@ var SorularEffectsService = /** @class */ (function () {
         this.dersanlatanHocalarUrl = 'dersanlatanhocalar';
         this.soruTipleriUrl = 'sorutipleri';
         this.bilisselDuzeylerUrl = 'bilisselduzeyler';
-        rootStore.subscribe(function (authState) { return _this.kb = authState.kullaniciBilgi; });
+        rootStore.select(_store_index__WEBPACK_IMPORTED_MODULE_4__["getAuthState"]).subscribe(function (authState) { return _this.kb = authState.kullaniciBilgi; });
     }
     SorularEffectsService.prototype.getKullanicininAnlattigiDersler = function () {
         var adres = this.baseUrl + "/" + this.dersanlatanHocalarUrl + "/kullanicininanlattigiderslervekonular/";
@@ -3884,7 +4540,6 @@ var SorularEffectsService = /** @class */ (function () {
     SorularEffectsService.prototype.updateSoru = function (soru) {
         var kaydedilecekSoru = Object.assign({}, soru, { personelNo: this.kb.personelNo });
         delete kaydedilecekSoru['gecerlilik'];
-        console.log(kaydedilecekSoru);
         if (soru && soru['soruId']) {
             return this.soruDegisiklikKaydet(kaydedilecekSoru);
         }
@@ -3929,7 +4584,7 @@ var SorularEffectsService = /** @class */ (function () {
     };
     SorularEffectsService.prototype.soruHandleYarat = function (routerState) {
         var handle = [];
-        var routeParams = rxjs_Observable__WEBPACK_IMPORTED_MODULE_1__["Observable"].of('dersNo', 'konuNo', 'soruId');
+        var routeParams = rxjs_Observable__WEBPACK_IMPORTED_MODULE_1__["Observable"].of('programNo', 'donemNo', 'dersNo', 'konuNo', 'soruId');
         routeParams.subscribe(function (param) {
             if (routerState.params[param]) {
                 handle.push({
@@ -3945,7 +4600,7 @@ var SorularEffectsService = /** @class */ (function () {
             providedIn: 'root'
         }),
         __metadata("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"],
-            _ngrx_store__WEBPACK_IMPORTED_MODULE_4__["Store"]])
+            _ngrx_store__WEBPACK_IMPORTED_MODULE_5__["Store"]])
     ], SorularEffectsService);
     return SorularEffectsService;
 }());
@@ -4014,8 +4669,10 @@ var SorularEffect = /** @class */ (function () {
             var handle = _this.service.soruHandleYarat(_this.routerState);
             if (_this.aktifBirim !== null && _this.aktifBirim.programlari && _this.aktifBirim.programlari.length > 0) {
                 handle.push({ id: 'birimNo', value: _this.aktifBirim.birimId });
+                _this.store.dispatch(new _store_index__WEBPACK_IMPORTED_MODULE_11__["StartLoading"]());
                 return _this.service.getKullanicininSorulari(handle)
                     .map(function (sorular) {
+                    _this.store.dispatch(new _store_index__WEBPACK_IMPORTED_MODULE_11__["StopLoading"]());
                     _this.mesajService.goster('Soru listesi alındı.');
                     return new _actions_sorular_actions__WEBPACK_IMPORTED_MODULE_8__["GetSorularTamam"]({
                         loaded: handle,
@@ -4037,8 +4694,10 @@ var SorularEffect = /** @class */ (function () {
         this.updateSoru = this.actions
             .ofType(_actions_sorular_actions__WEBPACK_IMPORTED_MODULE_8__["UPDATE_SORU"])
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_7__["exhaustMap"])(function (action) {
+            _this.store.dispatch(new _store_index__WEBPACK_IMPORTED_MODULE_11__["StartLoading"]());
             return _this.service.updateSoru(action.payload)
                 .map(function (sonuc) {
+                _this.store.dispatch(new _store_index__WEBPACK_IMPORTED_MODULE_11__["StopLoading"]());
                 if (sonuc.basarili) {
                     _this.mesajService.goster('Soru kaydedildi.');
                     return new _actions_sorular_actions__WEBPACK_IMPORTED_MODULE_8__["UpdateSoruTamam"](sonuc.donenNesne);
@@ -4051,8 +4710,10 @@ var SorularEffect = /** @class */ (function () {
         this.soruAcKapa = this.actions
             .ofType(_actions_sorular_actions__WEBPACK_IMPORTED_MODULE_8__["SORU_AC_KAPA"])
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_7__["exhaustMap"])(function (action) {
+            _this.store.dispatch(new _store_index__WEBPACK_IMPORTED_MODULE_11__["StartLoading"]());
             return _this.service.soruAcKapaDegistir(action.payload)
                 .map(function (sonuc) {
+                _this.store.dispatch(new _store_index__WEBPACK_IMPORTED_MODULE_11__["StopLoading"]());
                 if (sonuc.basarili) {
                     _this.mesajService.goster('İşlem başarılı');
                     return new _actions_sorular_actions__WEBPACK_IMPORTED_MODULE_8__["UpdateSoruTamam"](sonuc.donenNesne);
@@ -4065,8 +4726,10 @@ var SorularEffect = /** @class */ (function () {
         this.soruFavoriDegistir = this.actions
             .ofType(_actions_sorular_actions__WEBPACK_IMPORTED_MODULE_8__["SORU_FAVORI_DEGISTIR"])
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_7__["exhaustMap"])(function (action) {
+            _this.store.dispatch(new _store_index__WEBPACK_IMPORTED_MODULE_11__["StartLoading"]());
             return _this.service.soruFavoriDegistir(action.payload)
                 .map(function (sonuc) {
+                _this.store.dispatch(new _store_index__WEBPACK_IMPORTED_MODULE_11__["StopLoading"]());
                 if (sonuc.basarili) {
                     _this.mesajService.goster('İşlem başarılı');
                     return new _actions_sorular_actions__WEBPACK_IMPORTED_MODULE_8__["UpdateSoruTamam"](sonuc.donenNesne);
@@ -4079,8 +4742,10 @@ var SorularEffect = /** @class */ (function () {
         this.soruyuSilindiOlarakIsaretle = this.actions
             .ofType(_actions_sorular_actions__WEBPACK_IMPORTED_MODULE_8__["SORU_SIL"])
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_7__["exhaustMap"])(function (action) {
+            _this.store.dispatch(new _store_index__WEBPACK_IMPORTED_MODULE_11__["StartLoading"]());
             return _this.service.soruSilindiOlarakIsaretle(action.payload)
                 .map(function (sonuc) {
+                _this.store.dispatch(new _store_index__WEBPACK_IMPORTED_MODULE_11__["StopLoading"]());
                 if (sonuc.basarili) {
                     _this.mesajService.goster('İşlem başarılı');
                     return new _actions_sorular_actions__WEBPACK_IMPORTED_MODULE_8__["SoruSilindi"](action.payload);
@@ -5177,7 +5842,7 @@ var SoruStoreModule = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<!-- SIDENAV HEADER -->\n<div fxLayout=\"column\" fxLayoutAlign=\"space-between start\" class=\"header p-24 pb-4\" ngClass=\"kucuk-ekran\" ngClass.gt-md=\"buyuk-ekran\">\n    <div class=\"logo\" fxFlex fxLayout=\"row\" fxLayoutAlign=\"start center\" matTooltip=\"Sayfayı tazelemek için tıklayın\">\n        \n        <button class=\"logo\">\n            <span class=\"logo-text\">SORU DEPOSU</span>\n        </button>\n    </div>\n\n    <div class=\"birimler\" fxLayout=\"column\" style=\"color:2F3A57;font-size:16px\">\n        <div >Çalıştığınız Birimler</div>\n        <mat-form-field floatPlaceholder=\"never\" >\n            <mat-select class=\"account-selection\" placeholder=\"Birim seçin\" [(ngModel)]=\"seciliBirim\" >\n                <mat-option *ngFor=\"let birim of (birimler$ |async)\" [value]=\"birim\">\n                    {{birim.birimAdi}}\n                </mat-option>\n            </mat-select>\n        </mat-form-field>\n    </div>\n\n</div>\n<!-- / SIDENAV HEADER -->\n\n\n<!-- SIDENAV CONTENT -->\n<div class=\"content\"  ngClass=\"kucuk-ekran\" ngClass.gt-md=\"buyuk-ekran\" fusePerfectScrollbar>\n\n    <div class=\"p-12\">\n\n        <button mat-raised-button fxFlex class=\"mat-accent compose-dialog-button\" (click)=\"composeDialog()\"\n            #yeniButon aria-label=\"Compose\" [disabled]=\"dersNo<=0\">\n            <mat-icon class=\"yeni-ikon\">add_box </mat-icon>\n            YENİ SORU\n            <mat-icon matTooltip=\"Bir ders veya konu için soru yaratabilirsiniz. Lütfen ders veya konu seçiniz.\" *ngIf=\"dersNo<=0\">error </mat-icon>\n        </button>\n\n    </div>\n\n    <div class=\"nav\" ngClass=\"yan-acik\" ngClass.gt-md=\"yan\">\n        <div *ngIf=\"!seciliBirim?.programlari || seciliBirim?.programlari.length===0\">\n            <span class=\"nav-subheader\">Ders ve/veya konu yok.</span>\n        </div>\n\n        <div *ngIf=\"seciliBirim?.programlari && seciliBirim?.programlari?.length>0\">\n            <div class=\"nav-subheader ders\">DERSLER /\n                <span class=\"konu\"> KONULAR</span>\n                <button  mat-icon-button matTooltip=\"Ders konu ağacını yeniden yükle\" (click)=\"sayfayiTazele()\">\n                        <mat-icon>loop</mat-icon>\n                    </button>\n            </div>\n            \n            <div *ngFor=\"let program of seciliBirim.programlari\">\n                <div *ngFor=\"let donem of program.donemleri\">                 \n                    <div *ngIf=\"donem.dersGruplari\">\n                        <div *ngFor=\"let dersGrubu of donem.dersGruplari\">\n                            <div class=\"nav-item\" *ngFor=\"let ders of dersGrubu.dersleri\">\n                                <a class=\"nav-link ders\" matRipple  \n                                 [routerLink]=\"'/sorudeposu/ders/' + ders.dersId\" routerLinkActive=\"active\" (click)=\"$event.stopPropagation()\">\n                                    <mat-icon class=\"nav-link-icon\" matTooltip=\"{{program.programAdi}} - {{donem.donemAdi}}:{{dersGrubu.dersGrubuAdi}} dersi\">import_contacts</mat-icon>\n                                    <span matTooltip=\"{{ders.dersAdi}}\">{{ders.dersAdi|ozet}}</span>\n                                </a>\n                                <div class=\"nav-item konu\" *ngFor=\"let konu of ders.konulari\">\n                                    <a class=\"nav-link\" matRipple [routerLink]=\"'/sorudeposu/ders/' + ders.dersId+'/konu/'+konu.konuId\" routerLinkActive=\"active\"\n                                        (click)=\"$event.stopPropagation()\"  >\n                                        <mat-icon class=\"nav-link-icon\" matTooltip=\"{{program.programAdi}} - {{donem.donemAdi}} : {{dersGrubu.dersGrubuAdi}} - {{ders.dersAdi}} konusu\">label</mat-icon>\n                                        <span matTooltip=\"{{konu.konuAdi}}\">{{konu.konuAdi|ozet}}</span>\n                                    </a>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n\n    </div>\n\n</div>\n<!-- / SIDENAV CONTENT -->"
+module.exports = "<!-- SIDENAV HEADER -->\n<div fxLayout=\"column\" fxLayoutAlign=\"space-between start\" class=\"header p-24 pb-4\" ngClass=\"kucuk-ekran\" ngClass.gt-md=\"buyuk-ekran\">\n    <div class=\"logo\" fxFlex fxLayout=\"row\" fxLayoutAlign=\"start center\" matTooltip=\"Sayfayı tazelemek için tıklayın\">\n\n        <button class=\"logo\">\n            <span class=\"logo-text\">SORU DEPOSU</span>\n        </button>\n    </div>\n\n    <div class=\"birimler\" fxLayout=\"column\" style=\"color:2F3A57;font-size:16px\">\n        <div>Çalıştığınız Birimler</div>\n        <mat-form-field floatPlaceholder=\"never\">\n            <mat-select class=\"account-selection\" placeholder=\"Birim seçin\" [(ngModel)]=\"seciliBirim\">\n                <mat-option *ngFor=\"let birim of (birimler$ |async)\" [value]=\"birim\">\n                    {{birim.birimAdi}}\n                </mat-option>\n            </mat-select>\n        </mat-form-field>\n    </div>\n\n</div>\n<!-- / SIDENAV HEADER -->\n\n\n<!-- SIDENAV CONTENT -->\n<div class=\"content\" ngClass=\"kucuk-ekran\" ngClass.gt-md=\"buyuk-ekran\" fusePerfectScrollbar>\n\n    <div class=\"p-12\">\n        <fuse-yeni-soru-btn [menuItems]=\"yenimenuItems\" [gecerli]=\"dersNo>0\" (islem)=\"yeniSoruYarat($event)\" ipucu=\"Bir ders veya konu için soru yaratabilirsiniz. Lütfen ders veya konu seçiniz.\">\n\n        </fuse-yeni-soru-btn>\n        <!-- <button [matMenuTriggerFor]=\"yeniMenu\" x-position=\"after\"  mat-raised-button fxFlex class=\"compose-dialog-button\" #yeniButon aria-label=\"Compose\"\n            [disabled]=\"dersNo<=0\">\n            YENİ SORU\n            <mat-icon *ngIf=\"dersNo>0\" class=\"yeni-ikon\">arrow_drop_down </mat-icon>\n            <mat-icon matTooltip=\"Bir ders veya konu için soru yaratabilirsiniz. Lütfen ders veya konu seçiniz.\" *ngIf=\"dersNo<=0\">error </mat-icon>\n        </button>\n        <mat-menu #yeniMenu=\"matMenu\" >\n            <button mat-menu-item (click)=\"composeDialog()\">Basit Soru</button>\n            <button mat-menu-item>İlişkili Soru</button>\n        </mat-menu> -->\n    </div>\n    <div class=\"navbar-content\" fusePerfectScrollbar>\n        <fuse-navigation [navigation]=\"navigation\" layout=\"vertical\"></fuse-navigation>\n    </div>\n\n\n    <div class=\"nav\" ngClass=\"yan-acik\" ngClass.gt-md=\"yan\">\n        <div *ngIf=\"!seciliBirim?.programlari || seciliBirim?.programlari.length===0\">\n            <span class=\"nav-subheader\">Ders ve/veya konu yok.</span>\n        </div>\n        <div *ngIf=\"seciliBirim?.programlari && seciliBirim?.programlari?.length>0\">\n            <div class=\"nav-subheader\" fxLayout=\"row\" fxLayoutAlign=\"center center\">\n                <span> DERSLER / KONULAR</span>\n                <button mat-icon-button matTooltip=\"Ders konu ağacını yeniden yükle\" (click)=\"sayfayiTazele()\">\n                    <mat-icon>loop</mat-icon>\n                </button>\n            </div>\n\n            <div class=\"nav-item\" *ngFor=\"let program of seciliBirim.programlari\">\n                <a class=\"nav-link program\" matRipple [routerLink]=\"'/sorudeposu/program/' + program.programId\" (click)=\"$event.stopPropagation()\"\n                    routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact:true}\">\n                    <mat-icon class=\"nav-link-icon\" matTooltip=\"{{seciliBirim.birimAdi +','+program.programAdi+' programı'}}\">account_balance</mat-icon>\n                    <span matTooltip=\"{{'Program adı: '+program.programAdi}}\">{{program.programAdi|ozet}}</span>\n                </a>\n                <div class=\"nav-item\" *ngFor=\"let donem of program.donemleri\">\n                    <a class=\"nav-link\" matRipple [routerLink]=\"'/sorudeposu/program/' + program.programId+'/donem/'+donem.donemId\" (click)=\"$event.stopPropagation()\"\n                    routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact:true}\">\n                        <div class=\"donem\">\n                            <mat-icon class=\"nav-link-icon\" matTooltip=\"{{donem.donemAdi}}\">event</mat-icon>\n                            <span matTooltip=\"{{donem.sinifi+' .sınıf,'+ donem.donemAdi}}\">{{donem.sinifi+'. Sınıf, '+donem.donemAdi|ozet}}</span>\n                        </div>\n                    </a>\n                    <div *ngIf=\"donem.dersGruplari\">\n                        <div *ngFor=\"let dersGrubu of donem.dersGruplari\">\n                            <div class=\"nav-item\" *ngFor=\"let ders of dersGrubu.dersleri\">\n                                <a  class=\"nav-link\" matRipple [routerLink]=\"'/sorudeposu/program/'+program.programId+'/donem/'+donem.donemId+'/ders/' + ders.dersId\"\n                                    routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact:true}\" (click)=\"$event.stopPropagation()\">\n                                    <div class=\"ders\">\n                                        <mat-icon class=\"nav-link-icon\" matTooltip=\"{{program.programAdi}} - {{donem.donemAdi}}:{{dersGrubu.dersGrubuAdi}} dersi\">import_contacts</mat-icon>\n                                        <span matTooltip=\"Ders:{{ders.dersAdi}}\">{{ders.dersAdi|ozet:50}}</span>\n                                    </div>\n                                </a>\n                                \n\n                                <div class=\"nav-item\" *ngFor=\"let konu of ders.konulari\">\n                                    <a class=\"nav-link\" matRipple [routerLink]=\"'/sorudeposu/program/'+program.programId+'/donem/'+donem.donemId+'/ders/' + ders.dersId+'/konu/'+konu.konuId\"\n                                        routerLinkActive=\"active\" (click)=\"$event.stopPropagation()\">\n                                        <div class=\"konu\">\n                                            <mat-icon class=\"nav-link-icon\" matTooltip=\"{{program.programAdi}} - {{donem.donemAdi}}, \n                                        {{ders.dersAdi}} {{dersGrubu.staj?' stajı' :''}} \n                                        {{dersGrubu.dersKurulu?' komitesi':''}}\n                                        {{!dersGrubu.staj &&  !dersGrubu.dersKurulu?' dersi':''}}\n                                         {{konu.konuAdi}} konusu\">label</mat-icon>\n                                            <span matTooltip=\"Konu:{{konu.konuAdi}}\">{{konu.konuAdi|ozet:30}}</span>\n                                        </div>\n                                    </a>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n\n    </div>\n\n</div>\n<!-- / SIDENAV CONTENT -->"
 
 /***/ }),
 
@@ -5188,7 +5853,7 @@ module.exports = "<!-- SIDENAV HEADER -->\n<div fxLayout=\"column\" fxLayoutAlig
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ":host {\n  display: flex;\n  flex: 1 0 auto;\n  flex-direction: column;\n  height: 100%; }\n  :host .header .logo {\n    cursor: pointer; }\n  :host .header .logo .logo-text {\n      font-size: 24px;\n      line-height: 24px;\n      font-weight: 700;\n      color: #E2E3DD; }\n  :host .header .birimler {\n    width: 100%;\n    color: #E2E3DD; }\n  :host .content {\n    background-color: #E2E3DD; }\n  :host .content .compose-dialog-button {\n      background-color: #E2474C;\n      color: white; }\n  :host .nav .nav-item .nav-link.active {\n    background-color: #E2E3DD;\n    color: #2F3A57;\n    font-weight: bolder; }\n  :host .nav .nav-item .nav-link.active .nav-link-icon {\n      color: #2F3A57; }\n  :host .nav .nav-item {\n    color: #3E6A91; }\n  :host .nav-link-icon {\n    color: #3E6A91; }\n  :host .ders {\n    font-size: 1em;\n    color: #2F3A57;\n    font-weight: bolder; }\n  :host .konu {\n    padding-left: 4px;\n    font-size: 0.8em; }\n  :host .yeni-ikon {\n    margin-bottom: 4px;\n    margin-right: 12px;\n    color: white; }\n  :host .kucuk-ekran {\n    background-color: #E2474C; }\n  :host .kucuk-ekran .nav .nav-item {\n      color: #2F3A57; }\n  :host .kucuk-ekran .nav-link-icon {\n      color: #2F3A57; }\n  :host .kucuk-ekran .compose-dialog-button {\n      background-color: #406D95;\n      color: #A8D0DA; }\n  :host .kucuk-ekran .yeni-ikon {\n      color: #A8D0DA; }\n  :host .yan-acik {\n    background-color: transparent; }\n"
+module.exports = ":host {\n  display: flex;\n  flex: 1 0 auto;\n  flex-direction: column;\n  height: 100%; }\n  :host .header .logo {\n    cursor: pointer; }\n  :host .header .logo .logo-text {\n      font-size: 24px;\n      line-height: 24px;\n      font-weight: 700;\n      color: #E2E3DD; }\n  :host .header .birimler {\n    width: 100%;\n    color: #E2E3DD; }\n  :host .content {\n    background-color: #E2E3DD; }\n  :host .content .compose-dialog-button {\n      background-color: #E2474C;\n      color: white;\n      width: 90%; }\n  :host .nav .nav-subheader {\n    display: block;\n    font-size: 1em; }\n  :host .nav .nav-subheader :hover {\n    cursor: pointer; }\n  :host .nav .nav-item .nav-link.active {\n    background-color: #E2E3DD;\n    color: #2F3A57;\n    font-weight: bolder; }\n  :host .nav .nav-item .nav-link.active .nav-link-icon {\n      color: #2F3A57; }\n  :host .nav .nav-item {\n    color: #3E6A91; }\n  :host .nav-link-icon {\n    color: #3E6A91; }\n  :host .program {\n    font-size: 1.2em;\n    color: #2F3A57;\n    font-weight: bolder; }\n  :host .donem {\n    margin-left: 24px;\n    font-size: 1em;\n    color: #2F3A57;\n    font-weight: bolder; }\n  :host .ders {\n    margin-left: 36px;\n    font-size: 0.9em;\n    font-weight: bolder; }\n  :host .konu {\n    margin-left: 48px;\n    font-size: 0.8em; }\n  :host .yeni-ikon {\n    margin-bottom: 4px;\n    margin-right: 12px;\n    color: white; }\n  :host .kucuk-ekran {\n    background-color: #E2474C; }\n  :host .kucuk-ekran .nav .nav-item {\n      color: #2F3A57; }\n  :host .kucuk-ekran .nav-link-icon {\n      color: #2F3A57; }\n  :host .kucuk-ekran .compose-dialog-button {\n      background-color: #406D95;\n      color: #A8D0DA; }\n  :host .kucuk-ekran .yeni-ikon {\n      color: #A8D0DA; }\n  :host .yan-acik {\n    background-color: transparent; }\n  :host .navbar-content {\n    flex: 1; }\n"
 
 /***/ }),
 
@@ -5251,6 +5916,10 @@ var SorularSideNavComponent = /** @class */ (function () {
         this.router = router;
         this.dersNo = null;
         this.konuNo = null;
+        this.yenimenuItems = [
+            { name: 'basit', icon: 'add', title: 'Yeni soru' },
+            { name: 'iliskili', icon: 'attachment', title: 'Yeni ilişkili soru' }
+        ];
         this.store.select(_store__WEBPACK_IMPORTED_MODULE_4__["getRouterState"]).subscribe(function (routerState) {
             if (routerState) {
                 _this.routerState = routerState.state;
@@ -5285,6 +5954,7 @@ var SorularSideNavComponent = /** @class */ (function () {
         var _this = this;
         this.seciliBirim$.subscribe(function (birim) {
             _this._seciliBirim = birim;
+            _this.navigation = _this.sorularService.createNavigationTree(birim);
         });
     };
     SorularSideNavComponent.prototype.ngAfterViewChecked = function () {
@@ -5354,7 +6024,7 @@ var SorularSideNavComponent = /** @class */ (function () {
         var sinif = 'popup-masaustu';
         if (this.platform.ANDROID || this.platform.IOS) {
             en = '99vw';
-            boy = '95vh';
+            boy = '99vh';
             sinif = 'popup-mobil';
         }
         this.dialogRef = this.dialog.open(_coktan_secmeli_soru_coktan_secmeli_soru_component__WEBPACK_IMPORTED_MODULE_11__["CoktanSecmeliSoruComponent"], {
@@ -5412,6 +6082,15 @@ var SorularSideNavComponent = /** @class */ (function () {
     SorularSideNavComponent.prototype.refresh = function () {
         this.cd.markForCheck();
     };
+    SorularSideNavComponent.prototype.yeniSoruYarat = function (islem) {
+        switch (islem) {
+            case 'iliskili':
+                break;
+            default:
+                this.composeDialog();
+                break;
+        }
+    };
     SorularSideNavComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'fuse-sorular-side-nav',
@@ -5436,6 +6115,106 @@ var SorularSideNavComponent = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "./src/app/main/content/apps/sorular/sorular-side-nav/yeni-soru-btn/yeni-soru-btn.component.html":
+/*!*******************************************************************************************************!*\
+  !*** ./src/app/main/content/apps/sorular/sorular-side-nav/yeni-soru-btn/yeni-soru-btn.component.html ***!
+  \*******************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<!-- Fab -->\n<button *ngIf=\"menuItems\" mat-fab [@preventInitialAnimation] [satPopoverAnchorFor]=\"dial\" [disabled]=\"!gecerli\" (click)=\"dial.toggle()\" ng-blur=\"dial.close()\" \n  style=\"background-color: #E2474C;\">\n  <mat-icon [@spinInOut]=\"'in'\" *ngIf=\"!gecerli\" [@spinInOut]=\"'in'\" style=\"background-color: #E2474C;\" matTooltip=\"{{ipucu}}\">warning</mat-icon>\n  <mat-icon [@spinInOut]=\"'in'\" *ngIf=\"gecerli && dial.isOpen()\" style=\"background-color: #E2474C;\" matTooltip=\"Kapat\" >close</mat-icon>\n  <mat-icon [@spinInOut]=\"'in'\" *ngIf=\"gecerli && !dial.isOpen()\" style=\"background-color: #E2474C;\" matTooltip=\"Soru Ekle\">add</mat-icon>\n</button>\n\n<!-- Actions -->\n<sat-popover #dial verticalAlign=\"above\">\n  <div class=\"dial\">\n    <ng-container *ngFor=\"let a of menuItems\">\n      <button mat-mini-fab [satPopoverAnchorFor]=\"tooltip\" (mouseenter)=\"tooltip.open()\" (mouseleave)=\"tooltip.close()\" (click)=\"dial.close()\"\n        (click)=\"islem.emit(a.name)\" style=\"background-color: #3E6A91;\">\n        <mat-icon>{{a.icon}}</mat-icon>\n      </button>\n      <sat-popover #tooltip horizontalAlign=\"before\">\n        <div class=\"tooltip mat-body-1\">\n          {{a.title}}\n        </div>\n      </sat-popover>\n    </ng-container>\n  </div>\n</sat-popover>"
+
+/***/ }),
+
+/***/ "./src/app/main/content/apps/sorular/sorular-side-nav/yeni-soru-btn/yeni-soru-btn.component.scss":
+/*!*******************************************************************************************************!*\
+  !*** ./src/app/main/content/apps/sorular/sorular-side-nav/yeni-soru-btn/yeni-soru-btn.component.scss ***!
+  \*******************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = ":host {\n  display: block;\n  padding-left: 30%;\n  margin-bottom: 0px !important; }\n\n.mat-fab .mat-icon {\n  position: absolute;\n  top: 16px;\n  left: 16px;\n  color: white; }\n\n.dial {\n  margin-bottom: 8px;\n  display: flex;\n  flex-direction: column-reverse; }\n\n.dial .mat-mini-fab {\n    margin: 8px 0; }\n\n.tooltip {\n  padding: 4px 8px;\n  background-color: #E2474C;\n  color: white;\n  border-radius: 2px;\n  margin: 8px;\n  font-size: 12px; }\n"
+
+/***/ }),
+
+/***/ "./src/app/main/content/apps/sorular/sorular-side-nav/yeni-soru-btn/yeni-soru-btn.component.ts":
+/*!*****************************************************************************************************!*\
+  !*** ./src/app/main/content/apps/sorular/sorular-side-nav/yeni-soru-btn/yeni-soru-btn.component.ts ***!
+  \*****************************************************************************************************/
+/*! exports provided: YeniSoruBtnComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "YeniSoruBtnComponent", function() { return YeniSoruBtnComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_animations__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/animations */ "./node_modules/@angular/animations/fesm5/animations.js");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var YeniSoruBtnComponent = /** @class */ (function () {
+    function YeniSoruBtnComponent() {
+        this.islem = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.gecerli = true;
+    }
+    YeniSoruBtnComponent.prototype.ngOnInit = function () {
+    };
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"])(),
+        __metadata("design:type", Object)
+    ], YeniSoruBtnComponent.prototype, "islem", void 0);
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])(),
+        __metadata("design:type", Object)
+    ], YeniSoruBtnComponent.prototype, "gecerli", void 0);
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])(),
+        __metadata("design:type", Array)
+    ], YeniSoruBtnComponent.prototype, "menuItems", void 0);
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])(),
+        __metadata("design:type", String)
+    ], YeniSoruBtnComponent.prototype, "ipucu", void 0);
+    YeniSoruBtnComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'fuse-yeni-soru-btn',
+            template: __webpack_require__(/*! ./yeni-soru-btn.component.html */ "./src/app/main/content/apps/sorular/sorular-side-nav/yeni-soru-btn/yeni-soru-btn.component.html"),
+            styles: [__webpack_require__(/*! ./yeni-soru-btn.component.scss */ "./src/app/main/content/apps/sorular/sorular-side-nav/yeni-soru-btn/yeni-soru-btn.component.scss")],
+            animations: [
+                Object(_angular_animations__WEBPACK_IMPORTED_MODULE_1__["trigger"])('spinInOut', [
+                    Object(_angular_animations__WEBPACK_IMPORTED_MODULE_1__["state"])('in', Object(_angular_animations__WEBPACK_IMPORTED_MODULE_1__["style"])({ transform: 'rotate(0)', opacity: '1' })),
+                    Object(_angular_animations__WEBPACK_IMPORTED_MODULE_1__["transition"])(':enter', [
+                        Object(_angular_animations__WEBPACK_IMPORTED_MODULE_1__["style"])({ transform: 'rotate(-180deg)', opacity: '0' }),
+                        Object(_angular_animations__WEBPACK_IMPORTED_MODULE_1__["animate"])('150ms ease')
+                    ]),
+                    Object(_angular_animations__WEBPACK_IMPORTED_MODULE_1__["transition"])(':leave', [
+                        Object(_angular_animations__WEBPACK_IMPORTED_MODULE_1__["animate"])('150ms ease', Object(_angular_animations__WEBPACK_IMPORTED_MODULE_1__["style"])({ transform: 'rotate(180deg)', opacity: '0' }))
+                    ]),
+                ]),
+                Object(_angular_animations__WEBPACK_IMPORTED_MODULE_1__["trigger"])('preventInitialAnimation', [
+                    Object(_angular_animations__WEBPACK_IMPORTED_MODULE_1__["transition"])(':enter', [
+                        Object(_angular_animations__WEBPACK_IMPORTED_MODULE_1__["query"])(':enter', [], { optional: true })
+                    ]),
+                ]),
+            ]
+        }),
+        __metadata("design:paramtypes", [])
+    ], YeniSoruBtnComponent);
+    return YeniSoruBtnComponent;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/app/main/content/apps/sorular/sorular.component.html":
 /*!******************************************************************!*\
   !*** ./src/app/main/content/apps/sorular/sorular.component.html ***!
@@ -5443,7 +6222,7 @@ var SorularSideNavComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"soru\" class=\"page-layout carded left-sidenav\" fusePerfectScrollbar>\n    <!-- TOP BACKGROUND -->\n    <div class=\"top-bg\"></div>\n    <!-- / TOP BACKGROUND -->\n\n    <mat-sidenav-container>\n        <!-- SIDENAV -->\n        <mat-sidenav class=\"sidenav\" align=\"start\" mode=\"side\" opened=\"true\" fuseMatSidenavHelper=\"carded-left-sidenav\" mat-is-locked-open=\"gt-md\">\n            <fuse-sorular-side-nav></fuse-sorular-side-nav>\n\n        </mat-sidenav>\n\n        <div class=\"center\">\n            <!-- CONTENT HEADER -->\n\n            <div class=\"header\" fxLayout=\"row\" fxLayoutAlign=\"start center\">\n\n                <div class=\"search-wrapper\" fxFlex fxLayout=\"row\" fxLayoutAlign=\"start center\">\n                    <button mat-button class=\"mat-icon-button sidenav-toggle\" fuseMatSidenavToggler=\"carded-left-sidenav\" fxHide.gt-md aria-label=\"Toggle Sidenav\">\n                        <mat-icon>menu</mat-icon>\n                    </button>\n\n                    <div class=\"search\" flex fxLayout=\"row\" fxLayoutAlign=\"start center\">\n                        <mat-icon style=\"color:#2F3A57\">home</mat-icon>\n                        <div class=\"baslik\">\n                            {{baslik}}\n                        </div>\n                    </div>\n\n                </div>\n            </div>\n            <!-- / CONTENT HEADER -->\n\n\n            <!-- CONTENT CARD -->\n            <div class=\"content-card\" style=\"background-color:#A8D0DA\" [ngClass]=\"{'current-mail-selected':aktifSoru$ | async}\">\n\n                <!-- CONTENT TOOLBAR -->\n                <div class=\"toolbar px-24 py-8\">\n                    <div class=\"mail-selection\" fxFlex=\"row\" fxLayoutAlign=\"start center\">\n\n                        <mat-checkbox (click)=\"toggleSelectAll($event)\" [checked]=\"hasSelectedSorular\" [indeterminate]=\"isIndeterminate\">\n                        </mat-checkbox>\n\n                        <button mat-icon-button [matMenuTriggerFor]=\"selectMenu\">\n                            <mat-icon>arrow_drop_down</mat-icon>\n                        </button>\n                        <mat-menu #selectMenu=\"matMenu\">\n                            <button mat-menu-item (click)=\"tumSorulariSec()\">Tümü</button>\n                            <button mat-menu-item (click)=\"hicSoruSecilmesin()\">Hiçbiri</button>\n                            <!-- <button mat-menu-item (click)=\"selectMailsByParameter('read', true)\">Read</button>\n                            <button mat-menu-item (click)=\"selectMailsByParameter('read', false)\">Unread</button>\n                            <button mat-menu-item (click)=\"selectMailsByParameter('starred', true)\">Starred</button>\n                            <button mat-menu-item (click)=\"selectMailsByParameter('starred', false)\">Unstarred</button>\n                            <button mat-menu-item (click)=\"selectMailsByParameter('important', true)\">Important</button>\n                            <button mat-menu-item (click)=\"selectMailsByParameter('important', false)\">Unimportant</button> -->\n                        </mat-menu>\n\n                        <div class=\"toolbar-separator\" *ngIf=\"hasSelectedSorular\"></div>\n\n                        <button mat-button class=\"mat-icon-button\" (click)=\"seciliSorulariSil()\" *ngIf=\"hasSelectedSorular\">\n                            <mat-icon matTooltip=\"Seçilmiş {{selectedSorularIds.length}} soruyu siler.\">delete</mat-icon>\n                        </button>\n\n                        <span *ngIf=\"hasSelectedSorular\">{{selectedSorularIds.length}} soru seçildi.</span>\n\n                        <!-- <button mat-icon-button [matMenuTriggerFor]=\"folderMenu\" *ngIf=\"hasSelectedSorular\">\n                            <mat-icon>folder</mat-icon>\n                        </button> -->\n                        <!-- <mat-menu #folderMenu=\"matMenu\">\n                            <button mat-menu-item *ngFor=\"let folder of folders$ | async\"\n                                    (click)=\"setFolderOnSelectedMails(folder.id)\">{{folder.title}}\n                            </button>\n                        </mat-menu> -->\n\n                        <!-- <button mat-icon-button [matMenuTriggerFor]=\"labelMenu\" *ngIf=\"hasSelectedSorular\">\n                            <mat-icon>label</mat-icon>\n                        </button>\n                        <mat-menu #labelMenu=\"matMenu\">\n                            <button mat-menu-item *ngFor=\"let label of labels$ | async\"\n                                    (click)=\"toggleLabelOnSelectedMails(label.id)\">{{label.title}}\n                            </button>\n                        </mat-menu> -->\n                    </div>\n\n                    <div *ngIf=\"aktifSoru$ | async\" fxHide.gt-xs>\n                        <button mat-icon-button (click)=\"aktifSoruyuBosYap()\">\n                            <mat-icon>arrow_back</mat-icon>\n                        </button>\n                    </div>\n\n                </div>\n\n                <!-- / CONTENT TOOLBAR -->\n                <!-- CONTENT -->\n                <div class=\"content\" fxLayoutAlign=\"row\">\n                    \n                        <fuse-soru-listesi fusePerfectScrollbar fxFlex [sorular]=\"sorular$ | async\" [aktifSoru]=\"aktifSoru$|async\" (sorudegisti)=\"soruGoster($event)\"></fuse-soru-listesi>\n                        <fuse-soru-detay [soru]=\"aktifSoru$|async\" fusePerfectScrollbar fxflex> </fuse-soru-detay>\n                    \n                </div>\n                <!-- / CONTENT -->\n\n            </div>\n            <!-- / CONTENT CARD -->\n\n        </div>\n        <!-- / SIDENAV -->\n    </mat-sidenav-container>\n</div>"
+module.exports = "<div id=\"soru\" class=\"page-layout carded left-sidenav\" fusePerfectScrollbar>\n    <!-- TOP BACKGROUND -->\n    <div class=\"top-bg\" style=\"background-color: #E2474C\"></div>\n    <!-- / TOP BACKGROUND -->\n\n    <mat-sidenav-container>\n        <!-- SIDENAV -->\n        <mat-sidenav class=\"sidenav\" align=\"start\" mode=\"side\" opened=\"true\" fuseMatSidenavHelper=\"carded-left-sidenav\" mat-is-locked-open=\"gt-md\">\n            <fuse-sorular-side-nav></fuse-sorular-side-nav>\n\n        </mat-sidenav>\n\n        <div class=\"center\">\n            <!-- CONTENT HEADER -->\n\n            <div class=\"header\" fxLayout=\"row\" fxLayoutAlign=\"start center\">\n\n                <div class=\"search-wrapper\" fxFlex fxLayout=\"row\" fxLayoutAlign=\"start center\">\n                    <button mat-button class=\"mat-icon-button sidenav-toggle\" fuseMatSidenavToggler=\"carded-left-sidenav\" fxHide.gt-md aria-label=\"Toggle Sidenav\">\n                        <mat-icon>menu</mat-icon>\n                    </button>\n\n                    <div class=\"search\" flex fxLayout=\"row\" fxLayoutAlign=\"start center\">\n                        <mat-icon style=\"color:#2F3A57\">home</mat-icon>\n                        <div class=\"baslik\">\n                            {{baslik}}\n                        </div>\n                    </div>\n\n                </div>\n            </div>\n            <!-- / CONTENT HEADER -->\n\n\n            <!-- CONTENT CARD -->\n            <div class=\"content-card\" style=\"background-color:#A8D0DA\" [ngClass]=\"{'current-mail-selected':aktifSoru$ | async}\">\n\n                <!-- CONTENT TOOLBAR -->\n                <div class=\"toolbar px-24 py-8\">\n                    <div class=\"mail-selection\" fxFlex=\"row\" fxLayoutAlign=\"start center\">\n\n                        <mat-checkbox (click)=\"toggleSelectAll($event)\" [checked]=\"hasSelectedSorular\" [indeterminate]=\"isIndeterminate\">\n                        </mat-checkbox>\n\n                        <button mat-icon-button [matMenuTriggerFor]=\"selectMenu\">\n                            <mat-icon>arrow_drop_down</mat-icon>\n                        </button>\n                        <mat-menu #selectMenu=\"matMenu\">\n                            <button mat-menu-item (click)=\"tumSorulariSec()\">Tümü</button>\n                            <button mat-menu-item (click)=\"hicSoruSecilmesin()\">Hiçbiri</button>\n                            <!-- <button mat-menu-item (click)=\"selectMailsByParameter('read', true)\">Read</button>\n                            <button mat-menu-item (click)=\"selectMailsByParameter('read', false)\">Unread</button>\n                            <button mat-menu-item (click)=\"selectMailsByParameter('starred', true)\">Starred</button>\n                            <button mat-menu-item (click)=\"selectMailsByParameter('starred', false)\">Unstarred</button>\n                            <button mat-menu-item (click)=\"selectMailsByParameter('important', true)\">Important</button>\n                            <button mat-menu-item (click)=\"selectMailsByParameter('important', false)\">Unimportant</button> -->\n                        </mat-menu>\n\n                        <div class=\"toolbar-separator\" *ngIf=\"hasSelectedSorular\"></div>\n\n                        <button mat-button class=\"mat-icon-button\" (click)=\"seciliSorulariSil()\" *ngIf=\"hasSelectedSorular\">\n                            <mat-icon matTooltip=\"Seçilmiş {{selectedSorularIds.length}} soruyu siler.\">delete</mat-icon>\n                        </button>\n\n                        <span *ngIf=\"hasSelectedSorular\">{{selectedSorularIds.length}} soru seçildi.</span>\n\n                        <!-- <button mat-icon-button [matMenuTriggerFor]=\"folderMenu\" *ngIf=\"hasSelectedSorular\">\n                            <mat-icon>folder</mat-icon>\n                        </button> -->\n                        <!-- <mat-menu #folderMenu=\"matMenu\">\n                            <button mat-menu-item *ngFor=\"let folder of folders$ | async\"\n                                    (click)=\"setFolderOnSelectedMails(folder.id)\">{{folder.title}}\n                            </button>\n                        </mat-menu> -->\n\n                        <!-- <button mat-icon-button [matMenuTriggerFor]=\"labelMenu\" *ngIf=\"hasSelectedSorular\">\n                            <mat-icon>label</mat-icon>\n                        </button>\n                        <mat-menu #labelMenu=\"matMenu\">\n                            <button mat-menu-item *ngFor=\"let label of labels$ | async\"\n                                    (click)=\"toggleLabelOnSelectedMails(label.id)\">{{label.title}}\n                            </button>\n                        </mat-menu> -->\n                    </div>\n\n                    <div *ngIf=\"aktifSoru$ | async\" fxHide.gt-xs>\n                        <button mat-icon-button (click)=\"aktifSoruyuBosYap()\">\n                            <mat-icon>arrow_back</mat-icon>\n                        </button>\n                    </div>\n\n                </div>\n\n                <!-- / CONTENT TOOLBAR -->\n                <!-- CONTENT -->\n                <div class=\"content\" fxLayoutAlign=\"row\">\n                    \n                        <fuse-soru-listesi fusePerfectScrollbar fxFlex [sorular]=\"sorular$ | async\" [aktifSoru]=\"aktifSoru$|async\" (sorudegisti)=\"soruGoster($event)\"></fuse-soru-listesi>\n                        <fuse-soru-detay [soru]=\"aktifSoru$|async\" fusePerfectScrollbar fxflex> </fuse-soru-detay>\n                    \n                </div>\n                <!-- / CONTENT -->\n\n            </div>\n            <!-- / CONTENT CARD -->\n\n        </div>\n        <!-- / SIDENAV -->\n    </mat-sidenav-container>\n</div>"
 
 /***/ }),
 
@@ -5469,22 +6248,22 @@ module.exports = "/**\n * Applies styles for users in high contrast mode. Note t
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SorularComponent", function() { return SorularComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _ngrx_store__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ngrx/store */ "./node_modules/@ngrx/store/fesm5/store.js");
-/* harmony import */ var _i18n_en__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./i18n/en */ "./src/app/main/content/apps/sorular/i18n/en.ts");
-/* harmony import */ var _i18n_tr__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./i18n/tr */ "./src/app/main/content/apps/sorular/i18n/tr.ts");
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
-/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
-/* harmony import */ var rxjs_add_operator_debounceTime__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! rxjs/add/operator/debounceTime */ "./node_modules/rxjs-compat/_esm5/add/operator/debounceTime.js");
-/* harmony import */ var rxjs_add_operator_distinctUntilChanged__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! rxjs/add/operator/distinctUntilChanged */ "./node_modules/rxjs-compat/_esm5/add/operator/distinctUntilChanged.js");
-/* harmony import */ var _soru_store__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./soru-store */ "./src/app/main/content/apps/sorular/soru-store/index.ts");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var _fuse_components_confirm_dialog_confirm_dialog_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @fuse/components/confirm-dialog/confirm-dialog.component */ "./src/@fuse/components/confirm-dialog/confirm-dialog.component.ts");
+/* harmony import */ var _fuse_services_config_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @fuse/services/config.service */ "./src/@fuse/services/config.service.ts");
+/* harmony import */ var _fuse_services_translation_loader_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @fuse/services/translation-loader.service */ "./src/@fuse/services/translation-loader.service.ts");
+/* harmony import */ var _ngrx_store__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @ngrx/store */ "./node_modules/@ngrx/store/fesm5/store.js");
+/* harmony import */ var rxjs_add_operator_debounceTime__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! rxjs/add/operator/debounceTime */ "./node_modules/rxjs-compat/_esm5/add/operator/debounceTime.js");
+/* harmony import */ var rxjs_add_operator_distinctUntilChanged__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! rxjs/add/operator/distinctUntilChanged */ "./node_modules/rxjs-compat/_esm5/add/operator/distinctUntilChanged.js");
 /* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../../../store */ "./src/app/store/index.ts");
-/* harmony import */ var _sorular_service__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./sorular.service */ "./src/app/main/content/apps/sorular/sorular.service.ts");
-/* harmony import */ var _fuse_services_config_service__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @fuse/services/config.service */ "./src/@fuse/services/config.service.ts");
-/* harmony import */ var _soru_store_helpers_soru_depo_veri_service__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./soru-store/helpers/soru-depo-veri.service */ "./src/app/main/content/apps/sorular/soru-store/helpers/soru-depo-veri.service.ts");
+/* harmony import */ var _i18n_en__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./i18n/en */ "./src/app/main/content/apps/sorular/i18n/en.ts");
+/* harmony import */ var _i18n_tr__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./i18n/tr */ "./src/app/main/content/apps/sorular/i18n/tr.ts");
+/* harmony import */ var _soru_store__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./soru-store */ "./src/app/main/content/apps/sorular/soru-store/index.ts");
 /* harmony import */ var _soru_store_effects_sorular_effects_service__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./soru-store/effects/sorular-effects.service */ "./src/app/main/content/apps/sorular/soru-store/effects/sorular-effects.service.ts");
-/* harmony import */ var _fuse_services_translation_loader_service__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @fuse/services/translation-loader.service */ "./src/@fuse/services/translation-loader.service.ts");
-/* harmony import */ var _fuse_components_confirm_dialog_confirm_dialog_component__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @fuse/components/confirm-dialog/confirm-dialog.component */ "./src/@fuse/components/confirm-dialog/confirm-dialog.component.ts");
+/* harmony import */ var _soru_store_helpers_soru_depo_veri_service__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./soru-store/helpers/soru-depo-veri.service */ "./src/app/main/content/apps/sorular/soru-store/helpers/soru-depo-veri.service.ts");
+/* harmony import */ var _sorular_service__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./sorular.service */ "./src/app/main/content/apps/sorular/sorular.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -5562,7 +6341,7 @@ var SorularComponent = /** @class */ (function () {
                 _this.soruBasliginiOlustur();
             }
         });
-        this.store.select(_soru_store__WEBPACK_IMPORTED_MODULE_9__["getAktifBirim"]).subscribe(function (birim) {
+        this.store.select(_soru_store__WEBPACK_IMPORTED_MODULE_13__["getAktifBirim"]).subscribe(function (birim) {
             if (birim) {
                 _this.aktifBirim = birim;
                 _this.soruBasliginiOlustur();
@@ -5570,30 +6349,32 @@ var SorularComponent = /** @class */ (function () {
         });
         this.kullaniciTakip$ = this.authStore.select(_store__WEBPACK_IMPORTED_MODULE_10__["getAuthState"]).subscribe(function (authBilgi) {
             if (!authBilgi.kullaniciAdi) {
-                _this.store.dispatch(new _soru_store__WEBPACK_IMPORTED_MODULE_9__["SorulariSifirla"]());
-                _this.store.dispatch(new _soru_store__WEBPACK_IMPORTED_MODULE_9__["BirimleriSifirla"]());
+                _this.store.dispatch(new _soru_store__WEBPACK_IMPORTED_MODULE_13__["SorulariSifirla"]());
+                _this.store.dispatch(new _soru_store__WEBPACK_IMPORTED_MODULE_13__["BirimleriSifirla"]());
                 _this.route.navigate(['/']);
             }
         });
-        this.store.select(_soru_store__WEBPACK_IMPORTED_MODULE_9__["getAktifDers"]).subscribe(function (ders) {
+        this.store.select(_soru_store__WEBPACK_IMPORTED_MODULE_13__["getAktifDers"]).subscribe(function (ders) {
             if (ders) {
                 _this.aktifders = ders;
                 _this.soruBasliginiOlustur();
             }
         });
-        this.store.select(_soru_store__WEBPACK_IMPORTED_MODULE_9__["getAktifKonu"]).subscribe(function (konu) {
+        this.store.select(_soru_store__WEBPACK_IMPORTED_MODULE_13__["getAktifKonu"]).subscribe(function (konu) {
             _this.aktifKonu = konu;
             _this.soruBasliginiOlustur();
         });
-        this.store.select(_soru_store__WEBPACK_IMPORTED_MODULE_9__["getSorulardaHataVar"]).subscribe(function (mesaj) {
-            console.log(mesaj);
+        this.store.select(_soru_store__WEBPACK_IMPORTED_MODULE_13__["getSorulardaHataVar"]).subscribe(function (mesaj) {
+            if (mesaj) {
+                console.log(mesaj);
+            }
         });
-        this.searchInput = new _angular_forms__WEBPACK_IMPORTED_MODULE_6__["FormControl"]('');
-        this.translationLoader.loadTranslations(_i18n_en__WEBPACK_IMPORTED_MODULE_2__["locale"], _i18n_tr__WEBPACK_IMPORTED_MODULE_3__["locale"]);
-        this.aktifSoru$ = this.store.select(_soru_store__WEBPACK_IMPORTED_MODULE_9__["getCurrentSoru"]);
-        this.sorular$ = this.store.select(_soru_store__WEBPACK_IMPORTED_MODULE_9__["getSorularArr"]);
-        this.selectedSorularIds$ = this.store.select(_soru_store__WEBPACK_IMPORTED_MODULE_9__["getSelectedSoruNumaralari"]);
-        this.searchText$ = this.store.select(_soru_store__WEBPACK_IMPORTED_MODULE_9__["getSorularAramaCumlesi"]);
+        this.searchInput = new _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormControl"]('');
+        this.translationLoader.loadTranslations(_i18n_en__WEBPACK_IMPORTED_MODULE_11__["locale"], _i18n_tr__WEBPACK_IMPORTED_MODULE_12__["locale"]);
+        this.aktifSoru$ = this.store.select(_soru_store__WEBPACK_IMPORTED_MODULE_13__["getCurrentSoru"]);
+        this.sorular$ = this.store.select(_soru_store__WEBPACK_IMPORTED_MODULE_13__["getSorularArr"]);
+        this.selectedSorularIds$ = this.store.select(_soru_store__WEBPACK_IMPORTED_MODULE_13__["getSelectedSoruNumaralari"]);
+        this.searchText$ = this.store.select(_soru_store__WEBPACK_IMPORTED_MODULE_13__["getSorularAramaCumlesi"]);
         this.sorular = [];
         this.selectedSorularIds = [];
         this.configService.setConfig({
@@ -5601,10 +6382,12 @@ var SorularComponent = /** @class */ (function () {
         });
     }
     SorularComponent.prototype.ngOnInit = function () {
+        // this.sorular$.subscribe(sorular => {
+        //   this.sorular = sorular;
+        //   this.cd.detectChanges();
+        //   console.log(sorular);
+        // });
         var _this = this;
-        this.sorular$.subscribe(function (sorular) {
-            _this.sorular = sorular;
-        });
         this.selectedSorularIds$
             .subscribe(function (selectedMailIds) {
             _this.selectedSorularIds = selectedMailIds;
@@ -5619,7 +6402,7 @@ var SorularComponent = /** @class */ (function () {
             .debounceTime(300)
             .distinctUntilChanged()
             .subscribe(function (searchText) {
-            _this.store.dispatch(new _soru_store__WEBPACK_IMPORTED_MODULE_9__["SetSorularAramaCumlesi"](searchText));
+            _this.store.dispatch(new _soru_store__WEBPACK_IMPORTED_MODULE_13__["SetSorularAramaCumlesi"](searchText));
         });
     };
     SorularComponent.prototype.soruBasliginiOlustur = function () {
@@ -5643,9 +6426,9 @@ var SorularComponent = /** @class */ (function () {
             }
         }
         this.baslik = this.baslik + ' Soruları';
-        this.store.dispatch(new _soru_store__WEBPACK_IMPORTED_MODULE_9__["GetSorular"]());
-        this.store.dispatch(new _soru_store__WEBPACK_IMPORTED_MODULE_9__["SetSorularAramaCumlesi"](''));
-        this.store.dispatch(new _soru_store__WEBPACK_IMPORTED_MODULE_9__["DeselectSorularTumu"]());
+        this.store.dispatch(new _soru_store__WEBPACK_IMPORTED_MODULE_13__["GetSorular"]());
+        this.store.dispatch(new _soru_store__WEBPACK_IMPORTED_MODULE_13__["SetSorularAramaCumlesi"](''));
+        this.store.dispatch(new _soru_store__WEBPACK_IMPORTED_MODULE_13__["DeselectSorularTumu"]());
     };
     SorularComponent.prototype.yukle = function () {
         // this.store.dispatch(new UI.StartLoading());
@@ -5660,20 +6443,20 @@ var SorularComponent = /** @class */ (function () {
         }
     };
     SorularComponent.prototype.tumSorulariSec = function () {
-        this.store.dispatch(new _soru_store__WEBPACK_IMPORTED_MODULE_9__["SelectSorularTumu"]());
+        this.store.dispatch(new _soru_store__WEBPACK_IMPORTED_MODULE_13__["SelectSorularTumu"]());
     };
     SorularComponent.prototype.hicSoruSecilmesin = function () {
-        this.store.dispatch(new _soru_store__WEBPACK_IMPORTED_MODULE_9__["DeselectSorularTumu"]());
+        this.store.dispatch(new _soru_store__WEBPACK_IMPORTED_MODULE_13__["DeselectSorularTumu"]());
     };
     SorularComponent.prototype.selectMailsByParameter = function (parameter, value) {
-        this.store.dispatch(new _soru_store__WEBPACK_IMPORTED_MODULE_9__["SelectSorularParametreyeGore"]({
+        this.store.dispatch(new _soru_store__WEBPACK_IMPORTED_MODULE_13__["SelectSorularParametreyeGore"]({
             parameter: parameter,
             value: value
         }));
     };
     SorularComponent.prototype.seciliSorulariSil = function () {
         var _this = this;
-        var dialogRef = this.dialog.open(_fuse_components_confirm_dialog_confirm_dialog_component__WEBPACK_IMPORTED_MODULE_16__["FuseConfirmDialogComponent"], {
+        var dialogRef = this.dialog.open(_fuse_components_confirm_dialog_confirm_dialog_component__WEBPACK_IMPORTED_MODULE_4__["FuseConfirmDialogComponent"], {
             width: '600px',
             height: '400',
             data: {
@@ -5687,13 +6470,13 @@ var SorularComponent = /** @class */ (function () {
             if (result) {
                 for (var index = 0; index < _this.selectedSorularIds.length; index++) {
                     var soruNo = _this.selectedSorularIds[index];
-                    _this.store.dispatch(new _soru_store__WEBPACK_IMPORTED_MODULE_9__["SoruSilindiIsaretle"](+soruNo));
+                    _this.store.dispatch(new _soru_store__WEBPACK_IMPORTED_MODULE_13__["SoruSilindiIsaretle"](+soruNo));
                 }
             }
         });
     };
     SorularComponent.prototype.aktifSoruyuBosYap = function () {
-        this.store.dispatch(new _soru_store__WEBPACK_IMPORTED_MODULE_9__["SetAktifSoru"](''));
+        this.store.dispatch(new _soru_store__WEBPACK_IMPORTED_MODULE_13__["SetAktifSoru"](''));
     };
     SorularComponent.prototype.refresh = function () {
         this.cd.markForCheck();
@@ -5705,7 +6488,7 @@ var SorularComponent = /** @class */ (function () {
         this.cd.detach();
     };
     SorularComponent.prototype.soruGoster = function (degisenSoruId) {
-        this.store.dispatch(new _soru_store__WEBPACK_IMPORTED_MODULE_9__["SetAktifSoru"](degisenSoruId));
+        this.store.dispatch(new _soru_store__WEBPACK_IMPORTED_MODULE_13__["SetAktifSoru"](degisenSoruId));
     };
     SorularComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -5714,17 +6497,17 @@ var SorularComponent = /** @class */ (function () {
             styles: [__webpack_require__(/*! ./sorular.component.scss */ "./src/app/main/content/apps/sorular/sorular.component.scss")],
             changeDetection: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectionStrategy"].OnPush
         }),
-        __metadata("design:paramtypes", [_fuse_services_config_service__WEBPACK_IMPORTED_MODULE_12__["FuseConfigService"],
-            _fuse_services_translation_loader_service__WEBPACK_IMPORTED_MODULE_15__["FuseTranslationLoaderService"],
-            _ngrx_store__WEBPACK_IMPORTED_MODULE_1__["Store"],
-            _ngrx_store__WEBPACK_IMPORTED_MODULE_1__["Store"],
-            _ngrx_store__WEBPACK_IMPORTED_MODULE_1__["Store"],
-            _sorular_service__WEBPACK_IMPORTED_MODULE_11__["SorularService"],
+        __metadata("design:paramtypes", [_fuse_services_config_service__WEBPACK_IMPORTED_MODULE_5__["FuseConfigService"],
+            _fuse_services_translation_loader_service__WEBPACK_IMPORTED_MODULE_6__["FuseTranslationLoaderService"],
+            _ngrx_store__WEBPACK_IMPORTED_MODULE_7__["Store"],
+            _ngrx_store__WEBPACK_IMPORTED_MODULE_7__["Store"],
+            _ngrx_store__WEBPACK_IMPORTED_MODULE_7__["Store"],
+            _sorular_service__WEBPACK_IMPORTED_MODULE_16__["SorularService"],
             _soru_store_effects_sorular_effects_service__WEBPACK_IMPORTED_MODULE_14__["SorularEffectsService"],
             _angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectorRef"],
-            _angular_router__WEBPACK_IMPORTED_MODULE_4__["Router"],
-            _angular_material__WEBPACK_IMPORTED_MODULE_5__["MatDialog"],
-            _soru_store_helpers_soru_depo_veri_service__WEBPACK_IMPORTED_MODULE_13__["SoruDepoVeriService"]])
+            _angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"],
+            _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatDialog"],
+            _soru_store_helpers_soru_depo_veri_service__WEBPACK_IMPORTED_MODULE_15__["SoruDepoVeriService"]])
     ], SorularComponent);
     return SorularComponent;
 }());
@@ -5772,12 +6555,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _soru_store_guards_sorular_resolve_guard__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./soru-store/guards/sorular-resolve.guard */ "./src/app/main/content/apps/sorular/soru-store/guards/sorular-resolve.guard.ts");
 /* harmony import */ var _soru_onizleme_soru_onizleme_component__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./soru-onizleme/soru-onizleme.component */ "./src/app/main/content/apps/sorular/soru-onizleme/soru-onizleme.component.ts");
 /* harmony import */ var _coktan_secmeli_soru_validators__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./coktan-secmeli-soru/validators */ "./src/app/main/content/apps/sorular/coktan-secmeli-soru/validators.ts");
+/* harmony import */ var _sorular_side_nav_yeni_soru_btn_yeni_soru_btn_component__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./sorular-side-nav/yeni-soru-btn/yeni-soru-btn.component */ "./src/app/main/content/apps/sorular/sorular-side-nav/yeni-soru-btn/yeni-soru-btn.component.ts");
+/* harmony import */ var _ncstate_sat_popover__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! @ncstate/sat-popover */ "./node_modules/@ncstate/sat-popover/@ncstate/sat-popover.es5.js");
+/* harmony import */ var _coktan_secmeli_iliskili_soru_coktan_secmeli_iliskili_soru_component__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./coktan-secmeli-iliskili-soru/coktan-secmeli-iliskili-soru.component */ "./src/app/main/content/apps/sorular/coktan-secmeli-iliskili-soru/coktan-secmeli-iliskili-soru.component.ts");
+/* harmony import */ var _coktan_secmeli_iliskili_soru_iliskili_soru_listesi_iliskili_soru_listesi_component__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./coktan-secmeli-iliskili-soru/iliskili-soru-listesi/iliskili-soru-listesi.component */ "./src/app/main/content/apps/sorular/coktan-secmeli-iliskili-soru/iliskili-soru-listesi/iliskili-soru-listesi.component.ts");
+/* harmony import */ var _coktan_secmeli_iliskili_soru_iliskili_soru_listesi_iliskili_soru_item_iliskili_soru_item_component__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ./coktan-secmeli-iliskili-soru/iliskili-soru-listesi/iliskili-soru-item/iliskili-soru-item.component */ "./src/app/main/content/apps/sorular/coktan-secmeli-iliskili-soru/iliskili-soru-listesi/iliskili-soru-item/iliskili-soru-item.component.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
+
+
+
+
 
 
 
@@ -5819,12 +6612,22 @@ var routes = [
         canActivate: [_soru_store_guards_sorular_resolve_guard__WEBPACK_IMPORTED_MODULE_26__["SorularResolveGuard"]]
     },
     {
-        path: 'ders/:dersNo',
+        path: 'program/:programNo',
         component: _sorular_component__WEBPACK_IMPORTED_MODULE_2__["SorularComponent"],
         canActivate: [_soru_store_guards_sorular_resolve_guard__WEBPACK_IMPORTED_MODULE_26__["SorularResolveGuard"]]
     },
     {
-        path: 'ders/:dersNo/konu/:konuNo',
+        path: 'program/:programNo/donem/:donemNo',
+        component: _sorular_component__WEBPACK_IMPORTED_MODULE_2__["SorularComponent"],
+        canActivate: [_soru_store_guards_sorular_resolve_guard__WEBPACK_IMPORTED_MODULE_26__["SorularResolveGuard"]]
+    },
+    {
+        path: 'program/:programNo/donem/:donemNo/ders/:dersNo',
+        component: _sorular_component__WEBPACK_IMPORTED_MODULE_2__["SorularComponent"],
+        canActivate: [_soru_store_guards_sorular_resolve_guard__WEBPACK_IMPORTED_MODULE_26__["SorularResolveGuard"]]
+    },
+    {
+        path: 'program/:programNo/donem/:donemNo/ders/:dersNo/konu/:konuNo',
         component: _sorular_component__WEBPACK_IMPORTED_MODULE_2__["SorularComponent"],
         canActivate: [_soru_store_guards_sorular_resolve_guard__WEBPACK_IMPORTED_MODULE_26__["SorularResolveGuard"]]
     },
@@ -5860,7 +6663,10 @@ var SorularModule = /** @class */ (function () {
                 _material_module__WEBPACK_IMPORTED_MODULE_8__["MaterialModule"],
                 _fuse_shared_module__WEBPACK_IMPORTED_MODULE_10__["FuseSharedModule"],
                 _core_sb_core_module__WEBPACK_IMPORTED_MODULE_9__["SbCoreModule"],
-                _fuse_components__WEBPACK_IMPORTED_MODULE_17__["FuseWidgetModule"]
+                _ncstate_sat_popover__WEBPACK_IMPORTED_MODULE_30__["SatPopoverModule"],
+                _fuse_components__WEBPACK_IMPORTED_MODULE_17__["FuseWidgetModule"],
+                _fuse_components__WEBPACK_IMPORTED_MODULE_17__["FuseConfirmDialogModule"],
+                _fuse_components__WEBPACK_IMPORTED_MODULE_17__["FuseNavigationModule"]
             ],
             declarations: [
                 _sorular_component__WEBPACK_IMPORTED_MODULE_2__["SorularComponent"],
@@ -5878,7 +6684,11 @@ var SorularModule = /** @class */ (function () {
                 _sorular_side_nav_sorular_side_nav_component__WEBPACK_IMPORTED_MODULE_21__["SorularSideNavComponent"],
                 _soru_listesi_soru_listesi_component__WEBPACK_IMPORTED_MODULE_23__["SoruListesiComponent"],
                 _soru_listesi_soru_listesi_satiri_soru_listesi_satiri_component__WEBPACK_IMPORTED_MODULE_24__["SoruListesiSatiriComponent"],
-                _soru_onizleme_soru_onizleme_component__WEBPACK_IMPORTED_MODULE_27__["SoruOnizlemeComponent"]
+                _soru_onizleme_soru_onizleme_component__WEBPACK_IMPORTED_MODULE_27__["SoruOnizlemeComponent"],
+                _sorular_side_nav_yeni_soru_btn_yeni_soru_btn_component__WEBPACK_IMPORTED_MODULE_29__["YeniSoruBtnComponent"],
+                _coktan_secmeli_iliskili_soru_coktan_secmeli_iliskili_soru_component__WEBPACK_IMPORTED_MODULE_31__["CoktanSecmeliIliskiliSoruComponent"],
+                _coktan_secmeli_iliskili_soru_iliskili_soru_listesi_iliskili_soru_listesi_component__WEBPACK_IMPORTED_MODULE_32__["IliskiliSoruListesiComponent"],
+                _coktan_secmeli_iliskili_soru_iliskili_soru_listesi_iliskili_soru_item_iliskili_soru_item_component__WEBPACK_IMPORTED_MODULE_33__["IliskiliSoruItemComponent"]
             ],
             providers: [
                 _soru_store_effects_sorular_effects_service__WEBPACK_IMPORTED_MODULE_5__["SorularEffectsService"],
@@ -5913,6 +6723,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var environments_environment__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! environments/environment */ "./src/environments/environment.ts");
 /* harmony import */ var _store_index__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../../store/index */ "./src/app/store/index.ts");
 /* harmony import */ var _soru_store_index__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./soru-store/index */ "./src/app/main/content/apps/sorular/soru-store/index.ts");
+/* harmony import */ var _models_sb_navigation__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../../models/sb-navigation */ "./src/app/models/sb-navigation.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -5922,6 +6733,7 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 var __metadata = (undefined && undefined.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+
 
 
 
@@ -5966,7 +6778,6 @@ var SorularService = /** @class */ (function () {
         var donecekDers = null;
         if (dersNo > 0 && this.dersler.length > 0) {
             this.dersler.forEach(function (ders) {
-                console.log(ders.dersId, dersNo);
                 // tslint:disable-next-line:triple-equals
                 if (ders.dersId == dersNo) {
                     donecekDers = ders;
@@ -5982,8 +6793,70 @@ var SorularService = /** @class */ (function () {
         kaydedilecekSoru.hemenElenebilirSecenekSayisi = formData.get('hemenElenebilirSecenekSayisi').value;
         kaydedilecekSoru.baslangic = formData.get('gecerlilik.baslangic').value;
         kaydedilecekSoru.bitis = formData.get('gecerlilik.bitis').value;
-        console.log('Soru kayıt bilgisi', kaydedilecekSoru);
         this.store.dispatch(new _soru_store_index__WEBPACK_IMPORTED_MODULE_5__["UpdateSoru"](kaydedilecekSoru));
+    };
+    SorularService.prototype.createNavigationTree = function (seciliBirim) {
+        var navItems = [];
+        if (!seciliBirim) {
+            return navItems;
+        }
+        seciliBirim.programlari.forEach(function (program) {
+            var programItem = new _models_sb_navigation__WEBPACK_IMPORTED_MODULE_6__["SbNavitaionItem"]();
+            programItem.id = program.programId.toString();
+            programItem.title = program.programAdi;
+            programItem.type = 'group';
+            programItem.icon = 'account_balance';
+            programItem.url = "sorudeposu/program/" + program.programId;
+            programItem.exactMatch = true;
+            programItem.children = [];
+            program.donemleri.forEach(function (donem) {
+                var donemItem = new _models_sb_navigation__WEBPACK_IMPORTED_MODULE_6__["SbNavitaionItem"]();
+                donemItem.id = donem.donemId.toString();
+                donemItem.title = donem.sinifi + ". s\u0131n\u0131f, " + donem.donemAdi;
+                donemItem.type = 'group';
+                donemItem.icon = 'event';
+                donemItem.url = programItem.url + "+/donem/" + donem.donemId;
+                donemItem.exactMatch = true;
+                donem.dersGruplari.forEach(function (dersGrubu) {
+                    var dersGrubuItem = new _models_sb_navigation__WEBPACK_IMPORTED_MODULE_6__["SbNavitaionItem"]();
+                    dersGrubuItem.id = dersGrubu.dersGrupId.toString();
+                    dersGrubuItem.title = dersGrubu.grupAdi;
+                    donemItem.type = 'group';
+                    if (dersGrubu.staj || dersGrubu.dersKurulu) {
+                        dersGrubuItem.icon = 'content_copy';
+                    }
+                    else {
+                        dersGrubuItem.icon = 'folder';
+                    }
+                    dersGrubuItem.url = donemItem.url + "/dersgrubu/" + dersGrubu.dersGrupId;
+                    dersGrubu.dersleri.forEach(function (ders) {
+                        var dersItem = new _models_sb_navigation__WEBPACK_IMPORTED_MODULE_6__["SbNavitaionItem"]();
+                        dersItem.id = ders.dersId.toString();
+                        dersItem.title = ders.dersAdi;
+                        dersItem.icon = 'book';
+                        dersItem.url = dersGrubuItem.url + "/ders/" + ders.dersId;
+                        if (ders.konulari) {
+                            dersItem.type = 'group';
+                        }
+                        else {
+                            dersItem.type = 'item';
+                        }
+                        ders.konulari.forEach(function (konu) {
+                            var konuItem = new _models_sb_navigation__WEBPACK_IMPORTED_MODULE_6__["SbNavitaionItem"]();
+                            konuItem.id = konu.konuId.toString();
+                            konuItem.title = konu.konuAdi;
+                            konuItem.type = 'item';
+                            konuItem.url = dersItem.url + "/konu/" + konu.konuId;
+                            dersItem.children.push(konuItem);
+                        });
+                        dersGrubuItem.children.push(dersItem);
+                    });
+                    donemItem.children.push(dersGrubuItem);
+                });
+                programItem.children.push(donemItem);
+            });
+            navItems.push(programItem);
+        });
     };
     SorularService = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({
@@ -5993,6 +6866,34 @@ var SorularService = /** @class */ (function () {
             _ngrx_store__WEBPACK_IMPORTED_MODULE_2__["Store"]])
     ], SorularService);
     return SorularService;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/models/sb-navigation.ts":
+/*!*****************************************!*\
+  !*** ./src/app/models/sb-navigation.ts ***!
+  \*****************************************/
+/*! exports provided: SbNavitaionItem, SbNavigationBadge */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SbNavitaionItem", function() { return SbNavitaionItem; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SbNavigationBadge", function() { return SbNavigationBadge; });
+var SbNavitaionItem = /** @class */ (function () {
+    function SbNavitaionItem() {
+        this.children = [];
+    }
+    return SbNavitaionItem;
+}());
+
+var SbNavigationBadge = /** @class */ (function () {
+    function SbNavigationBadge() {
+    }
+    return SbNavigationBadge;
 }());
 
 

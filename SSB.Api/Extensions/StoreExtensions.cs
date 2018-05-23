@@ -12,6 +12,7 @@ namespace Psg.Api.Extensions
         {
             services.AddScoped<IDersAnlatanHocaStore, DersAnlatanHocaStore>();
             services.AddScoped<ISoruStore, SoruStore>();
+            services.AddScoped<ISoruKokuStore, SoruKokuStore>();
             services.AddScoped<ISoruTipStore, SoruTipStore>();
             services.AddScoped<ISoruZorlukStore, SoruZorlukStore>();
             services.AddScoped<IBilisselDuzeyStore, BilisselDuzeyStore>();

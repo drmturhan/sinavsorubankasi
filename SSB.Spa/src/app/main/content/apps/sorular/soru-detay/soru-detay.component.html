@@ -66,12 +66,12 @@
 
     <div class="mail-content" fxLayout="column" fxLayoutAlign="start stretch" fxLayoutgap="16px">
 
-        <div class="info" fxLayout="row" fxLayoutAlign="space-between start">
+        <div class="info" fxLayout="row" fxLayoutAlign="space-between center">
 
-            <div>
+            <div fxLayout="row" fxLayoutAlign="start center">
                 <!-- <span fxFlex="auto" class="name">{{soru?.soruMetni| slice:0:100}}{{soru?.soruMetni.length > 100 ? '...' : ''}}</span> -->
-                <button fxHide fxShow.gt-md mat-icon-button (click)="$event.stopPropagation();" aria-label="Toggle star">
-                    <mat-icon *ngIf="!bitisTarihiGecerli" matTooltip="Aksi belirtilene kadar soru geçerli.">all_inclusive</mat-icon>
+                <button  *ngIf="!bitisTarihiGecerli" mat-icon-button class="mat-icon-button" (click)="$event.stopPropagation();" aria-label="Toggle star">
+                    <mat-icon  matTooltip="Aksi belirtilene kadar soru geçerli.">all_inclusive</mat-icon>
                 </button>
                 <button mat-button class="mat-icon-button" aria-label="Soru aktif" (click)="soruyuAcKapat()">
                     <mat-icon *ngIf="soru.aktif" matTooltip="Bu soru aktif. Aktif sorular onay yapıldıktan sonra sınavlarda çıkabilir.">fast_forward</mat-icon>
@@ -84,12 +84,12 @@
                 </button>
 
 
-                <button mat-button class="mat-icon-button" aria-label="Ders kurulu dersi">
+                <button mat-icon-button class="mat-icon-button" aria-label="Ders kurulu dersi">
                     <mat-icon *ngIf="soru.onaylandi" matTooltip="Bu soru onaylanmış. Sınavlarda çıkabilir.">thumb_up</mat-icon>
                     <mat-icon *ngIf="!soru.onaylandi" matTooltip="Bu soru onaysız. Sınavlarda ÇIKMAZ!.">thumb_down</mat-icon>
                 </button>
             </div>
-            <div>
+            <div fxLayout="row" fxLayoutAlign="start center">
 
                 <button mat-button class="mat-icon-button" (click)="soruyuDegistir()" matTooltip="Düzenleme ekranını aç">
                     <mat-icon>edit</mat-icon>

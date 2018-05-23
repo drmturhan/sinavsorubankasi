@@ -52,10 +52,12 @@ namespace SSB.Api.Controllers.Api.SoruDepo
         {
             return await KullaniciVarsaCalistir<IActionResult>(async () =>
             {
-                var soru = await soruKokuStore.BulAsync(id);
-                if (soru == null)
+                var soruKoku = await soruKokuStore.BulAsync(id);
+                if (soruKoku == null)
                     return NotFound("Soru kökü bulunamadı");
-                return Ok(soru.ToDto());
+
+                var sonuc = KayitSonuc<SoruKokuListeDto>.IslemTamam(soruKoku.ToDto());
+                return Ok(sonuc);
             });
         }
 
@@ -65,10 +67,10 @@ namespace SSB.Api.Controllers.Api.SoruDepo
             return await KullaniciVarsaCalistir<IActionResult>(async () =>
             {
 
-                var soru = await soruKokuStore.BulAsync(id);
-                if (soru == null)
+                var soruKoku = await soruKokuStore.BulAsync(id);
+                if (soruKoku == null)
                     return NotFound("Soru kökü bulunamadı");
-                var sonuc = KayitSonuc<SoruKokuDegistirDto>.IslemTamam(soru.ToDegistirDto());
+                var sonuc = KayitSonuc<SoruKokuDegistirDto>.IslemTamam(soruKoku.ToDegistirDto());
                 return Ok(sonuc);
             });
         }

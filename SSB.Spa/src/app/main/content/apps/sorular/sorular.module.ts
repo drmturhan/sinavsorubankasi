@@ -15,7 +15,7 @@ import { OgrenimHedefSatirComponent } from './ogrenim-hedefleri/ogrenim-hedef-li
 import { TekDogruluSecenekComponent } from './coktan-secmeli-soru/tek-dogrulu-secenek/tek-dogrulu-secenek.component';
 import { TekDogruluSecenekDetayComponent } from './coktan-secmeli-soru/tek-dogrulu-secenek/tek-dogrulu-secenek-detay/tek-dogrulu-secenek-detay.component';
 import { SbHtmlEditorComponent } from './sb-html-editor/sb-html-editor.component';
-import { FuseWidgetModule, FuseNavigationModule } from '@fuse/components';
+import { FuseWidgetModule, FuseNavigationModule, FuseConfirmDialogModule } from '@fuse/components';
 import { TekDogruluSecenekListComponent } from './coktan-secmeli-soru/tek-dogrulu-secenek/tek-dogrulu-secenek-list/tek-dogrulu-secenek-list.component';
 import { TekDogruluSecenekItemComponent } from './coktan-secmeli-soru/tek-dogrulu-secenek/tek-dogrulu-secenek-list/tek-dogrulu-secenek-item/tek-dogrulu-secenek-item.component';
 import { SoruDetayComponent } from './soru-detay/soru-detay.component';
@@ -32,6 +32,8 @@ import { SatPopoverModule } from '@ncstate/sat-popover';
 import { CoktanSecmeliIliskiliSoruComponent } from './coktan-secmeli-iliskili-soru/coktan-secmeli-iliskili-soru.component';
 import { IliskiliSoruListesiComponent } from './coktan-secmeli-iliskili-soru/iliskili-soru-listesi/iliskili-soru-listesi.component';
 import { IliskiliSoruItemComponent } from './coktan-secmeli-iliskili-soru/iliskili-soru-listesi/iliskili-soru-item/iliskili-soru-item.component';
+import { IliskiliSoruDetayComponent } from './coktan-secmeli-iliskili-soru/iliskili-soru-detay/iliskili-soru-detay.component';
+import { IliskiliSoruService } from './coktan-secmeli-iliskili-soru/iliskili-soru.service';
 
 
 
@@ -59,7 +61,7 @@ const routes: Routes = [
   },
   {
     path: 'program/:programNo/donem/:donemNo/ders/:dersNo',
-    
+
     component: SorularComponent,
     canActivate: [SorularResolveGuard]
   },
@@ -72,6 +74,13 @@ const routes: Routes = [
     path: 'ders/:dersNo/konu/:konuNo/soru/:soruId',
     component: SorularComponent,
     canActivate: [SorularResolveGuard]
+  },
+  {
+    path: 'iliskilisoru/:soruKokuNo',
+    component: CoktanSecmeliIliskiliSoruComponent,
+    resolve: {
+      mail: IliskiliSoruService
+    }
   },
   {
     path: 'ders/:dersNo/soru/:soruId',
@@ -100,6 +109,7 @@ const routes: Routes = [
     SbCoreModule,
     SatPopoverModule,
     FuseWidgetModule,
+    FuseConfirmDialogModule,
     FuseNavigationModule
   ],
   declarations: [
@@ -122,8 +132,9 @@ const routes: Routes = [
     YeniSoruBtnComponent,
     CoktanSecmeliIliskiliSoruComponent,
     IliskiliSoruListesiComponent,
-    IliskiliSoruItemComponent
-],
+    IliskiliSoruItemComponent,
+    IliskiliSoruDetayComponent
+  ],
   providers: [
     SorularEffectsService,
     SoruDepoVeriService,

@@ -12,6 +12,7 @@ import { OgrenimHedefItem } from './models/birim-program-donem-ders';
   providedIn: 'root'
 })
 export class CoktanSecmeliSoruSecenekService {
+  
   soruForm: FormGroup;
   selectedTodos: AbstractControl[];
   currentTodo: AbstractControl;

@@ -5670,7 +5670,8 @@ var FuseSharedModule = /** @class */ (function () {
                 _angular_flex_layout__WEBPACK_IMPORTED_MODULE_3__["FlexLayoutModule"],
                 _fuse_directives_directives__WEBPACK_IMPORTED_MODULE_4__["FuseDirectivesModule"],
                 _fuse_pipes_pipes_module__WEBPACK_IMPORTED_MODULE_5__["FusePipesModule"]
-            ]
+            ],
+            entryComponents: [],
         })
     ], FuseSharedModule);
     return FuseSharedModule;
@@ -5929,17 +5930,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ngx_translate_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @ngx-translate/core */ "./node_modules/@ngx-translate/core/esm5/ngx-translate-core.js");
 /* harmony import */ var hammerjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! hammerjs */ "./node_modules/hammerjs/hammer.js");
 /* harmony import */ var hammerjs__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(hammerjs__WEBPACK_IMPORTED_MODULE_7__);
-/* harmony import */ var _fuse_fuse_module__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @fuse/fuse.module */ "./src/@fuse/fuse.module.ts");
-/* harmony import */ var _fuse_shared_module__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @fuse/shared.module */ "./src/@fuse/shared.module.ts");
-/* harmony import */ var _fuse_config__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./fuse-config */ "./src/app/fuse-config.ts");
-/* harmony import */ var _app_component__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./app.component */ "./src/app/app.component.ts");
-/* harmony import */ var _fuse_fake_db_fuse_fake_db_service__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./fuse-fake-db/fuse-fake-db.service */ "./src/app/fuse-fake-db/fuse-fake-db.service.ts");
-/* harmony import */ var _main_main_module__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./main/main.module */ "./src/app/main/main.module.ts");
-/* harmony import */ var _store_store_module__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./store/store.module */ "./src/app/store/store.module.ts");
-/* harmony import */ var _material_module__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./material.module */ "./src/app/material.module.ts");
-/* harmony import */ var environments_environment__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! environments/environment */ "./src/environments/environment.ts");
-/* harmony import */ var _auth0_angular_jwt__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! @auth0/angular-jwt */ "./node_modules/@auth0/angular-jwt/index.js");
-/* harmony import */ var _core_sb_core_module__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./core/sb-core.module */ "./src/app/core/sb-core.module.ts");
+/* harmony import */ var _ncstate_sat_popover__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @ncstate/sat-popover */ "./node_modules/@ncstate/sat-popover/@ncstate/sat-popover.es5.js");
+/* harmony import */ var _fuse_fuse_module__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @fuse/fuse.module */ "./src/@fuse/fuse.module.ts");
+/* harmony import */ var _fuse_shared_module__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @fuse/shared.module */ "./src/@fuse/shared.module.ts");
+/* harmony import */ var _fuse_config__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./fuse-config */ "./src/app/fuse-config.ts");
+/* harmony import */ var _app_component__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./app.component */ "./src/app/app.component.ts");
+/* harmony import */ var _fuse_fake_db_fuse_fake_db_service__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./fuse-fake-db/fuse-fake-db.service */ "./src/app/fuse-fake-db/fuse-fake-db.service.ts");
+/* harmony import */ var _main_main_module__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./main/main.module */ "./src/app/main/main.module.ts");
+/* harmony import */ var _store_store_module__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./store/store.module */ "./src/app/store/store.module.ts");
+/* harmony import */ var _material_module__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./material.module */ "./src/app/material.module.ts");
+/* harmony import */ var environments_environment__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! environments/environment */ "./src/environments/environment.ts");
+/* harmony import */ var _auth0_angular_jwt__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! @auth0/angular-jwt */ "./node_modules/@auth0/angular-jwt/index.js");
+/* harmony import */ var _core_sb_core_module__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./core/sb-core.module */ "./src/app/core/sb-core.module.ts");
+/* harmony import */ var _angular_common_locales_tr__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! @angular/common/locales/tr */ "./node_modules/@angular/common/locales/tr.js");
+/* harmony import */ var _angular_common_locales_tr__WEBPACK_IMPORTED_MODULE_20___default = /*#__PURE__*/__webpack_require__.n(_angular_common_locales_tr__WEBPACK_IMPORTED_MODULE_20__);
+/* harmony import */ var _angular_common_locales_extra_tr__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! @angular/common/locales/extra/tr */ "./node_modules/@angular/common/locales/extra/tr.js");
+/* harmony import */ var _angular_common_locales_extra_tr__WEBPACK_IMPORTED_MODULE_21___default = /*#__PURE__*/__webpack_require__.n(_angular_common_locales_extra_tr__WEBPACK_IMPORTED_MODULE_21__);
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -5965,12 +5972,18 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 
 
 
+
+
+
+
+Object(_angular_common__WEBPACK_IMPORTED_MODULE_22__["registerLocaleData"])(_angular_common_locales_tr__WEBPACK_IMPORTED_MODULE_20___default.a, 'tr');
+Object(_angular_common__WEBPACK_IMPORTED_MODULE_22__["registerLocaleData"])(_angular_common_locales_tr__WEBPACK_IMPORTED_MODULE_20___default.a, 'tr-TR', _angular_common_locales_extra_tr__WEBPACK_IMPORTED_MODULE_21___default.a);
 function GetAccessToken() {
     return localStorage.getItem('access_token');
 }
 var authConfig = {
     tokenGetter: GetAccessToken,
-    whitelistedDomains: environments_environment__WEBPACK_IMPORTED_MODULE_16__["environment"].whitelistedDomains,
+    whitelistedDomains: environments_environment__WEBPACK_IMPORTED_MODULE_17__["environment"].whitelistedDomains,
     skipWhenExpired: true
 };
 var appRoutes = [
@@ -5985,31 +5998,35 @@ var AppModule = /** @class */ (function () {
     AppModule = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"])({
             declarations: [
-                _app_component__WEBPACK_IMPORTED_MODULE_11__["AppComponent"]
+                _app_component__WEBPACK_IMPORTED_MODULE_12__["AppComponent"]
             ],
             imports: [
                 _angular_platform_browser__WEBPACK_IMPORTED_MODULE_1__["BrowserModule"],
                 _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_3__["BrowserAnimationsModule"],
                 _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClientModule"],
-                _material_module__WEBPACK_IMPORTED_MODULE_15__["MaterialModule"],
+                _material_module__WEBPACK_IMPORTED_MODULE_16__["MaterialModule"],
                 _angular_router__WEBPACK_IMPORTED_MODULE_4__["RouterModule"].forRoot(appRoutes),
-                _core_sb_core_module__WEBPACK_IMPORTED_MODULE_18__["SbCoreModule"],
-                _auth0_angular_jwt__WEBPACK_IMPORTED_MODULE_17__["JwtModule"].forRoot({
+                _core_sb_core_module__WEBPACK_IMPORTED_MODULE_19__["SbCoreModule"],
+                _auth0_angular_jwt__WEBPACK_IMPORTED_MODULE_18__["JwtModule"].forRoot({
                     config: authConfig
                 }),
+                _ncstate_sat_popover__WEBPACK_IMPORTED_MODULE_8__["SatPopoverModule"],
                 _ngx_translate_core__WEBPACK_IMPORTED_MODULE_6__["TranslateModule"].forRoot(),
-                angular_in_memory_web_api__WEBPACK_IMPORTED_MODULE_5__["InMemoryWebApiModule"].forRoot(_fuse_fake_db_fuse_fake_db_service__WEBPACK_IMPORTED_MODULE_12__["FuseFakeDbService"], {
+                angular_in_memory_web_api__WEBPACK_IMPORTED_MODULE_5__["InMemoryWebApiModule"].forRoot(_fuse_fake_db_fuse_fake_db_service__WEBPACK_IMPORTED_MODULE_13__["FuseFakeDbService"], {
                     delay: 0,
                     passThruUnknownUrl: true
                 }),
                 // Fuse Main and Shared modules
-                _fuse_fuse_module__WEBPACK_IMPORTED_MODULE_8__["FuseModule"].forRoot(_fuse_config__WEBPACK_IMPORTED_MODULE_10__["fuseConfig"]),
-                _fuse_shared_module__WEBPACK_IMPORTED_MODULE_9__["FuseSharedModule"],
-                _store_store_module__WEBPACK_IMPORTED_MODULE_14__["AppStoreModule"],
-                _main_main_module__WEBPACK_IMPORTED_MODULE_13__["FuseMainModule"]
+                _fuse_fuse_module__WEBPACK_IMPORTED_MODULE_9__["FuseModule"].forRoot(_fuse_config__WEBPACK_IMPORTED_MODULE_11__["fuseConfig"]),
+                _fuse_shared_module__WEBPACK_IMPORTED_MODULE_10__["FuseSharedModule"],
+                _store_store_module__WEBPACK_IMPORTED_MODULE_15__["AppStoreModule"],
+                _main_main_module__WEBPACK_IMPORTED_MODULE_14__["FuseMainModule"]
+            ],
+            providers: [
+                { provide: _angular_core__WEBPACK_IMPORTED_MODULE_0__["LOCALE_ID"], useValue: 'tr' }
             ],
             bootstrap: [
-                _app_component__WEBPACK_IMPORTED_MODULE_11__["AppComponent"]
+                _app_component__WEBPACK_IMPORTED_MODULE_12__["AppComponent"]
             ]
         })
     ], AppModule);
@@ -6702,15 +6719,18 @@ var SbMesajService = /** @class */ (function () {
         return this.yansit(mesajlar, action);
     };
     SbMesajService.prototype.yansit = function (mesajlar, action, sure) {
+        var _this = this;
         if (mesajlar && mesajlar.length > 0) {
             if (sure == null) {
                 sure = 4000;
             }
-            return this.snackBar.open(mesajlar[0], action, {
-                duration: sure,
-                verticalPosition: 'top',
-                horizontalPosition: 'center',
-                panelClass: ['snack-basari']
+            setTimeout(function () {
+                return _this.snackBar.open(mesajlar[0], action, {
+                    duration: sure,
+                    verticalPosition: 'top',
+                    horizontalPosition: 'center',
+                    panelClass: ['snack-basari']
+                });
             });
         }
         return null;
@@ -6724,15 +6744,18 @@ var SbMesajService = /** @class */ (function () {
         return this.hatalar(hatalar);
     };
     SbMesajService.prototype.hatalar = function (hatalar, action, sure) {
+        var _this = this;
         if (sure == null) {
             sure = 4000;
         }
         if (hatalar && hatalar.length > 0) {
-            return this.snackBar.open(hatalar[0].tanim, action, {
-                duration: sure,
-                verticalPosition: 'bottom',
-                horizontalPosition: 'end',
-                panelClass: ['snack-hata'],
+            setTimeout(function () {
+                return _this.snackBar.open(hatalar[0].tanim, action, {
+                    duration: sure,
+                    verticalPosition: 'top',
+                    horizontalPosition: 'center',
+                    panelClass: ['snack-hata'],
+                });
             });
         }
         return null;
@@ -19169,7 +19192,7 @@ var FuseMainModule = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<ng-container *ngIf=\"layout == 'vertical'\">\r\n\r\n    <div class=\"navbar-vertical\">\r\n\r\n        <div class=\"navbar-header\">\r\n\r\n            <div class=\"logo\" (click)=\"anasayfayaGit()\">\r\n                <img class=\"logo-icon\" src=\"assets/images/logos/fuse.svg\">\r\n                <span class=\"logo-text\">SSB</span>\r\n            </div>\r\n\r\n            <button mat-icon-button class=\"toggle-button-navbar\"\r\n                    (click)=\"toggleSidebarFolded()\" fxHide.lt-lg>\r\n                <mat-icon>menu</mat-icon>\r\n            </button>\r\n\r\n            <button mat-icon-button class=\"toggle-button-navbar\"\r\n                    (click)=\"toggleSidebarOpened()\" fxHide.gt-md>\r\n                <mat-icon>arrow_back</mat-icon>\r\n            </button>\r\n\r\n        </div>\r\n\r\n        <div class=\"navbar-content\" fusePerfectScrollbar>\r\n            <fuse-navigation [navigation]=\"navigation\" layout=\"vertical\"></fuse-navigation>\r\n        </div>\r\n\r\n    </div>\r\n\r\n</ng-container>\r\n\r\n<ng-container *ngIf=\"layout == 'horizontal'\">\r\n\r\n    <div class=\"navbar-horizontal\">\r\n        <fuse-navigation [navigation]=\"navigation\" layout=\"horizontal\"></fuse-navigation>\r\n    </div>\r\n\r\n</ng-container>"
+module.exports = "<ng-container *ngIf=\"layout == 'vertical'\">\r\n\r\n    <div class=\"navbar-vertical\">\r\n\r\n        <div class=\"navbar-header\">\r\n\r\n            <div class=\"logo\" (click)=\"anasayfayaGit()\">\r\n                <img class=\"logo-icon\" src=\"assets/images/logos/fuse.svg\">\r\n                <span class=\"logo-text\">SINAV SORU BANKASI</span>\r\n            </div>\r\n\r\n            <button mat-icon-button class=\"toggle-button-navbar\"\r\n                    (click)=\"toggleSidebarFolded()\" fxHide.lt-lg>\r\n                <mat-icon>menu</mat-icon>\r\n            </button>\r\n\r\n            <button mat-icon-button class=\"toggle-button-navbar\"\r\n                    (click)=\"toggleSidebarOpened()\" fxHide.gt-md>\r\n                <mat-icon>arrow_back</mat-icon>\r\n            </button>\r\n\r\n        </div>\r\n\r\n        <div class=\"navbar-content\" fusePerfectScrollbar>\r\n            <fuse-navigation [navigation]=\"navigation\" layout=\"vertical\"></fuse-navigation>\r\n        </div>\r\n\r\n    </div>\r\n\r\n</ng-container>\r\n\r\n<ng-container *ngIf=\"layout == 'horizontal'\">\r\n\r\n    <div class=\"navbar-horizontal\">\r\n        <fuse-navigation [navigation]=\"navigation\" layout=\"horizontal\"></fuse-navigation>\r\n    </div>\r\n\r\n</ng-container>"
 
 /***/ }),
 
@@ -19180,7 +19203,7 @@ module.exports = "<ng-container *ngIf=\"layout == 'vertical'\">\r\n\r\n    <div 
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "/**\n * Applies styles for users in high contrast mode. Note that this only applies\n * to Microsoft browsers. Chrome can be included by checking for the `html[hc]`\n * attribute, however Chrome handles high contrast differently.\n */\n/* Theme for the ripple elements.*/\n/* stylelint-disable material/no-prefixes */\n/* stylelint-enable */\nbody.fuse-sidebar-folded .content-wrapper:last-child {\n  padding-left: 64px !important; }\nbody.fuse-sidebar-folded .content-wrapper:first-child {\n  padding-right: 64px !important; }\nbody.fuse-sidebar-folded .content-wrapper:first-child:last-child {\n  padding-left: 0 !important;\n  padding-right: 0 !important; }\nfuse-sidebar.folded:not(.unfolded) .navbar-vertical .navbar-header {\n  padding: 0 13px; }\nfuse-sidebar.folded:not(.unfolded) .navbar-vertical .navbar-header .logo .logo-text {\n    opacity: 0;\n    transition: opacity 200ms ease; }\nfuse-navbar:not(.top-navbar) {\n  height: 100%; }\nfuse-navbar .navbar-vertical {\n  display: flex;\n  flex-direction: column;\n  width: 100%;\n  height: 100%; }\nfuse-navbar .navbar-vertical .navbar-header {\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    height: 64px;\n    min-height: 64px;\n    padding: 0 16px 0 24px;\n    transition: padding 200ms ease;\n    background-color: rgba(255, 255, 255, 0.05);\n    box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12); }\nfuse-navbar .navbar-vertical .navbar-header .logo {\n      cursor: pointer;\n      display: flex;\n      align-items: center; }\nfuse-navbar .navbar-vertical .navbar-header .logo .logo-icon {\n        width: 38px;\n        height: 38px; }\nfuse-navbar .navbar-vertical .navbar-header .logo .logo-text {\n        margin-left: 8px;\n        font-size: 20px;\n        font-weight: 300;\n        letter-spacing: 0.4px; }\nfuse-navbar .navbar-vertical .navbar-content {\n    flex: 1; }\n.top-navbar + #wrapper > .left-navbar {\n  display: none !important; }\n@media (max-width: 1279px) {\n    .top-navbar + #wrapper > .left-navbar {\n      display: flex !important; } }\n"
+module.exports = "/**\n * Applies styles for users in high contrast mode. Note that this only applies\n * to Microsoft browsers. Chrome can be included by checking for the `html[hc]`\n * attribute, however Chrome handles high contrast differently.\n */\n/* Theme for the ripple elements.*/\n/* stylelint-disable material/no-prefixes */\n/* stylelint-enable */\nbody.fuse-sidebar-folded .content-wrapper:last-child {\n  padding-left: 64px !important; }\nbody.fuse-sidebar-folded .content-wrapper:first-child {\n  padding-right: 64px !important; }\nbody.fuse-sidebar-folded .content-wrapper:first-child:last-child {\n  padding-left: 0 !important;\n  padding-right: 0 !important; }\nfuse-sidebar.folded:not(.unfolded) .navbar-vertical .navbar-header {\n  padding: 0 13px; }\nfuse-sidebar.folded:not(.unfolded) .navbar-vertical .navbar-header .logo .logo-text {\n    opacity: 0;\n    transition: opacity 200ms ease; }\nfuse-navbar:not(.top-navbar) {\n  height: 100%; }\nfuse-navbar .navbar-vertical {\n  display: flex;\n  flex-direction: column;\n  width: 100%;\n  height: 100%; }\nfuse-navbar .navbar-vertical .navbar-header {\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    height: 128px;\n    min-height: 128px;\n    padding: 0 16px 0 24px;\n    transition: padding 200ms ease;\n    background-color: rgba(255, 255, 255, 0.05);\n    box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12); }\nfuse-navbar .navbar-vertical .navbar-header .logo {\n      cursor: pointer;\n      display: flex;\n      align-items: center; }\nfuse-navbar .navbar-vertical .navbar-header .logo .logo-icon {\n        width: 96px;\n        height: 96px; }\nfuse-navbar .navbar-vertical .navbar-header .logo .logo-text {\n        margin-left: 8px;\n        font-size: 20px;\n        font-weight: 300;\n        letter-spacing: 0.4px; }\nfuse-navbar .navbar-vertical .navbar-content {\n    flex: 1; }\n.top-navbar + #wrapper > .left-navbar {\n  display: none !important; }\n@media (max-width: 1279px) {\n    .top-navbar + #wrapper > .left-navbar {\n      display: flex !important; } }\n"
 
 /***/ }),
 
