@@ -99,7 +99,7 @@ export class IliskiliSoruService {
       this.http.get<KayitSonuc<SoruKokuListe>>(adres + soruKokuNo)
         .subscribe((sonuc: KayitSonuc<SoruKokuListe>) => {
           if (sonuc.basarili) {
-
+            this.soruKokuSonuc = sonuc;
             this.sorular = sonuc.donenNesne.sorulari.map(soruListe => {
               return new SoruListe(soruListe);
             });

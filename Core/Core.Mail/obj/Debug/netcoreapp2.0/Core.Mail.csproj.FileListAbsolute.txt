@@ -37,3 +37,16 @@ D:\GitProjeleri\sinavsorubankasi\Core\Core.Mail\obj\Debug\netcoreapp2.0\Core.Mai
 D:\GitProjeleri\sinavsorubankasi\Core\Core.Mail\obj\Debug\netcoreapp2.0\Core.Mail.csproj.CopyComplete
 D:\GitProjeleri\sinavsorubankasi\Core\Core.Mail\obj\Debug\netcoreapp2.0\Core.Mail.dll
 D:\GitProjeleri\sinavsorubankasi\Core\Core.Mail\obj\Debug\netcoreapp2.0\Core.Mail.pdb
+D:\SSB2018\sinavsorubankasi\Core\Core.Mail\bin\Debug\netcoreapp2.0\Properties\Resources.resx
+D:\SSB2018\sinavsorubankasi\Core\Core.Mail\bin\Debug\netcoreapp2.0\Core.Mail.deps.json
+D:\SSB2018\sinavsorubankasi\Core\Core.Mail\bin\Debug\netcoreapp2.0\Core.Mail.dll
+D:\SSB2018\sinavsorubankasi\Core\Core.Mail\bin\Debug\netcoreapp2.0\Core.Mail.pdb
+D:\SSB2018\sinavsorubankasi\Core\Core.Mail\bin\Debug\netcoreapp2.0\Core.Base.dll
+D:\SSB2018\sinavsorubankasi\Core\Core.Mail\bin\Debug\netcoreapp2.0\Core.Base.pdb
+D:\SSB2018\sinavsorubankasi\Core\Core.Mail\obj\Debug\netcoreapp2.0\Core.Mail.csprojAssemblyReference.cache
+D:\SSB2018\sinavsorubankasi\Core\Core.Mail\obj\Debug\netcoreapp2.0\Core.Mail.csproj.CoreCompileInputs.cache
+D:\SSB2018\sinavsorubankasi\Core\Core.Mail\obj\Debug\netcoreapp2.0\Core.Mail.AssemblyInfoInputs.cache
+D:\SSB2018\sinavsorubankasi\Core\Core.Mail\obj\Debug\netcoreapp2.0\Core.Mail.AssemblyInfo.cs
+D:\SSB2018\sinavsorubankasi\Core\Core.Mail\obj\Debug\netcoreapp2.0\Core.Mail.csproj.CopyComplete
+D:\SSB2018\sinavsorubankasi\Core\Core.Mail\obj\Debug\netcoreapp2.0\Core.Mail.dll
+D:\SSB2018\sinavsorubankasi\Core\Core.Mail\obj\Debug\netcoreapp2.0\Core.Mail.pdb
