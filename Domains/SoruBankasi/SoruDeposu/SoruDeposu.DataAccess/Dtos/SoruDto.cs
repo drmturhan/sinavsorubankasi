@@ -12,6 +12,8 @@ namespace SoruDeposu.DataAccess.Dtos
         public int? BirimNo { get; set; }
 
         public int DersNo { get; set; }
+        public string DersAdi { get; set; }
+        public string KonuAdi { get; set; }
         public int KonuNo { get; set; }
 
         public int SoruTipNo { get; set; }

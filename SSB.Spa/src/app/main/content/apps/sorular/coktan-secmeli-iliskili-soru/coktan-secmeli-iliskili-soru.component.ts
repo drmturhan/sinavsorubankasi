@@ -8,13 +8,15 @@ import { FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { IliskiliSoruService } from './iliskili-soru.service';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
+import { SoruDepoVeriService } from '../soru-store/helpers/soru-depo-veri.service';
+import { Router } from '@angular/router';
 
 
 @Component({
   selector: 'fuse-coktan-secmeli-iliskili-soru',
   templateUrl: './coktan-secmeli-iliskili-soru.component.html',
   styleUrls: ['./coktan-secmeli-iliskili-soru.component.scss']
-  
+
 })
 export class CoktanSecmeliIliskiliSoruComponent implements OnInit, OnDestroy {
 
@@ -35,10 +37,13 @@ export class CoktanSecmeliIliskiliSoruComponent implements OnInit, OnDestroy {
 
   constructor(
     private service: IliskiliSoruService,
+    private soruDepoService: SoruDepoVeriService,
     public dialog: MatDialog,
+    private router: Router,
     private fuseTranslationLoader: FuseTranslationLoaderService
   ) {
     this.searchInput = new FormControl('');
+    this.soruDepoService.getBirimler().subscribe((sonuc) => { console.log(sonuc); });
     // this.fuseTranslationLoader.loadTranslations(english, turkish);
   }
 
@@ -88,12 +93,11 @@ export class CoktanSecmeliIliskiliSoruComponent implements OnInit, OnDestroy {
     this.service.deselectSorular();
   }
 
-  aktifSoruyuSecilmemisYap()
-  {
-      this.service.onAktifSoruDegisti.next(null);
+  aktifSoruyuSecilmemisYap() {
+    this.service.onAktifSoruDegisti.next(null);
   }
 
-  
+
   seciliSorulariSil() {
     const dialogRef = this.dialog.open(FuseConfirmDialogComponent, {
       width: '600px',
@@ -111,5 +115,8 @@ export class CoktanSecmeliIliskiliSoruComponent implements OnInit, OnDestroy {
   }
   soruGoster(degisenSoruId) {
 
+  }
+  soruDepoAnaSayfayaGit() {
+    this.router.navigate(['sorudeposu']);
   }
 }

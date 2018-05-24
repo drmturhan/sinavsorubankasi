@@ -38,18 +38,18 @@
 
         .content-card {
 
-            @include media-breakpoint(xs) {
+            @include media-breakpoint(sm) {
 
-                fuse-mail-list {
+                fuse-iliskili-soru-listesi {
                     border-right: none;
                 }
 
-                fuse-mail-list,
-                fuse-mail-details {
+                fuse-iliskili-soru-listesi,
+                fuse-iliskili-soru-detay {
                     flex: 1 0 100%;
                 }
 
-                fuse-mail-details {
+                fuse-iliskili-soru-detay {
                     display: none !important;
                 }
 
@@ -65,11 +65,11 @@
 
                     .content {
 
-                        fuse-mail-list {
+                        fuse-iliskili-soru-listesi {
                             display: none !important;
                         }
 
-                        fuse-mail-details {
+                        fuse-iliskili-soru-detay {
                             display: flex !important;
                         }
                     }

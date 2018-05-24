@@ -13,6 +13,7 @@ import { FuseUtils } from '@fuse/utils';
 import { environment } from 'environments/environment';
 import { KayitSonuc } from '../../../../../models/sonuclar';
 import { SbMesajService } from '../../../../../core/services/sb-mesaj.service';
+import { SoruDepoVeriService } from '../soru-store/helpers/soru-depo-veri.service';
 
 @Injectable({
   providedIn: 'root'
@@ -46,12 +47,16 @@ export class IliskiliSoruService {
     private http: HttpClient,
     private soruStore: Store<fromSoruStore.SoruDepoAppState>,
     private mesajService: SbMesajService) {
+
     this.secilmisSorular = [];
     this.soruTipleri$ = this.soruStore.select(fromSoruStore.getSoruTipleri);
     this.soruZorluklari$ = this.soruStore.select(fromSoruStore.getSoruZorluklari);
     this.bilisselDuzeyler$ = this.soruStore.select(fromSoruStore.getBilisselDuzeyler);
   }
 
+  yenile() {
+    this.getSorularBySoruKoku(this.soruKokuNo);
+  }
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | Promise<any> | any {
     if (route.params && route.params['soruKokuNo']) {
       this.routeParams = route.params;

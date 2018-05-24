@@ -1,10 +1,10 @@
 <div id="mail" class="page-layout carded left-sidenav" fusePerfectScrollbar>
 
     <!-- TOP BACKGROUND -->
-    <div class="top-bg mat-accent-bg"></div>
+    <div class="top-bg" style="background-color: #C43F4D"></div>
     <!-- / TOP BACKGROUND -->
 
-    <mat-sidenav-container>
+    <mat-sidenav-container style="background-color: #E3E3EA">
 
         <!-- SIDENAV -->
         <!-- <mat-sidenav class="sidenav" position="start" mode="side" opened="true"
@@ -16,36 +16,41 @@
         <!-- CENTER -->
         <div class="center">
 
+
             <!-- CONTENT HEADER -->
             <div class="header" fxLayout="row" fxLayoutAlign="start center">
 
-                <div class="search-wrapper" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                <div fxFlex fxLayout="column" fxLayoutAlign="start stretch">
+                    <div style="color: #C43F4D" fxFlex fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="24px">
+                        <mat-icon class="mat-18">link</mat-icon>
+                        <h1 fxFlex="auto" >İlişkili soru düzenleme Ekranı</h1>
+                    </div>
+                    <div class="search-wrapper" fxLayout="row" fxLayoutAlign="start center" style="background-color: #E3E3EA">
 
-                    <button mat-icon-button class="sidenav-toggle"
-                            fuseMatSidenavToggler="carded-left-sidenav"
-                            fxHide.gt-md aria-label="Toggle Sidenav">
-                        <mat-icon>menu</mat-icon>
-                    </button>
+                        <!-- <button mat-icon-button class="sidenav-toggle" fuseMatSidenavToggler="carded-left-sidenav" fxHide.gt-md aria-label="Toggle Sidenav">
+                            <mat-icon>menu</mat-icon>
+                        </button> -->
 
-                    <div class="search mat-white-bg" flex fxLayout="row" fxLayoutAlign="start center">
-                        <mat-icon>search</mat-icon>
-                        <!-- <input [formControl]="searchInput" [placeholder]="'MAIL.SEARCH_PLACEHOLDER' | translate" fxFlex> -->
-                        <input [formControl]="searchInput" placeholder="Soru ara" fxFlex>
+                        <div class="search " flex fxLayout="row" fxLayoutAlign="start center" style="background-color: #E3E3EA">
+                            <mat-icon>search</mat-icon>
+                            <!-- <input [formControl]="searchInput" [placeholder]="'MAIL.SEARCH_PLACEHOLDER' | translate" fxFlex> -->
+                            <input [formControl]="searchInput" placeholder="Soru ara" fxFlex style="background-color: #E3E3EA">
+                        </div>
                     </div>
                 </div>
+
 
             </div>
             <!-- / CONTENT HEADER -->
 
             <!-- CONTENT CARD -->
-            <div class="content-card mat-white-bg" [ngClass]="{'current-mail-selected':aktifSoru}">
+            <div class="content-card" style="background-color: #D2BECD;color:#434C60" [ngClass]="{'current-mail-selected':aktifSoru}">
 
                 <!-- CONTENT TOOLBAR -->
                 <div class="toolbar px-24 py-8">
 
                     <div class="mail-selection" fxFlex="row" fxLayoutAlign="start center">
-                        <mat-checkbox (click)="toogleTumSorulariSec()" [checked]="secilmisSorularVar"
-                                      [indeterminate]="belirlenmemis"></mat-checkbox>
+                        <mat-checkbox (click)="toogleTumSorulariSec()" [checked]="secilmisSorularVar" [indeterminate]="belirlenmemis"></mat-checkbox>
 
                         <button mat-icon-button [matMenuTriggerFor]="selectMenu">
                             <mat-icon>arrow_drop_down</mat-icon>
@@ -66,9 +71,10 @@
                         <!-- <button mat-icon-button (click)="setFolderOnSelectedMails(4)" *ngIf="hasSelectedMails">
                             <mat-icon>delete</mat-icon>
                         </button> -->
-                        <button mat-icon-button  *ngIf="secilmisSorularVar">
+                        <button mat-icon-button *ngIf="secilmisSorularVar">
                             <mat-icon>delete</mat-icon>
                         </button>
+
 
                         <!-- <button mat-icon-button [matMenuTriggerFor]="folderMenu" *ngIf="hasSelectedMails">
                             <mat-icon>folder</mat-icon>
@@ -87,10 +93,16 @@
                                     (click)="toggleLabelOnSelectedMails(label.id)">{{label.title}}
                             </button>
                         </mat-menu> -->
+
+                        <button mat-icon-button (click)="soruDepoAnaSayfayaGit()" matTooltip="Sorularım ana listesine git.">
+                            <mat-icon>fast_rewind</mat-icon>
+                        </button>
+
                     </div>
 
-                    <div *ngIf="aktifSoru" fxHide.gt-xs>
-                        <button mat-icon-button (click)="aktifSoruyuSecilmemisYap()">
+
+                    <div *ngIf="aktifSoru" fxHide.gt-sm>
+                        <button mat-icon-button (click)="aktifSoruyuSecilmemisYap()" matTooltip="İlişkili soru listesine git.">
                             <mat-icon>arrow_back</mat-icon>
                         </button>
                     </div>

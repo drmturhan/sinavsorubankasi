@@ -8,6 +8,10 @@ namespace SoruDeposu.DataAccess.Dtos
     {
         public int SoruKokuId { get; set; }
         public string SoruKokuMetni { get; set; }
+        public int? DersNo { get; set; }
+        public string DersAdi{ get; set; }
+        public int? KonuNo { get; set; }
+        public string KonuAdi { get; set; }
         public ICollection<SoruListeDto> Sorulari { get; set; } = new List<SoruListeDto>();
 
 

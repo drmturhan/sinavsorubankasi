@@ -1,14 +1,13 @@
 <!-- SIDENAV HEADER -->
-<div fxLayout="column" fxLayoutAlign="space-between start" class="header p-24 pb-4" ngClass="kucuk-ekran" ngClass.gt-md="buyuk-ekran">
-    <div class="logo" fxFlex fxLayout="row" fxLayoutAlign="start center" matTooltip="Sayfayı tazelemek için tıklayın">
-
+<div fxLayout="column" style="background-color:#A3C9D3!important;" fxLayoutAlign="space-between start" class="header p-24 pb-4" ngClass="kucuk-ekran" ngClass.gt-md="buyuk-ekran">
+    <!-- <div class="logo" fxFlex fxLayout="row" fxLayoutAlign="start center" matTooltip="Sayfayı tazelemek için tıklayın">
         <button class="logo">
+            <mat-icon>sd_card</mat-icon>
             <span class="logo-text">SORU DEPOSU</span>
         </button>
-    </div>
+    </div> -->
 
-    <div class="birimler" fxLayout="column" style="color:2F3A57;font-size:16px">
-        <div>Çalıştığınız Birimler</div>
+    <div class="birimler pt-24" fxLayout="column" style="color:#2F3A57;font-size:16px">
         <mat-form-field floatPlaceholder="never">
             <mat-select class="account-selection" placeholder="Birim seçin" [(ngModel)]="seciliBirim">
                 <mat-option *ngFor="let birim of (birimler$ |async)" [value]="birim">
@@ -23,7 +22,7 @@
 
 
 <!-- SIDENAV CONTENT -->
-<div class="content" ngClass="kucuk-ekran" ngClass.gt-md="buyuk-ekran" fusePerfectScrollbar>
+<div class="content" style="background-color:#E2E3DD!important;"  ngClass="kucuk-ekran" ngClass.gt-md="buyuk-ekran" fusePerfectScrollbar>
 
     <div class="p-12">
         <fuse-yeni-soru-btn [menuItems]="yenimenuItems" [gecerli]="dersNo>0" (islem)="yeniSoruYarat($event)" ipucu="Bir ders veya konu için soru yaratabilirsiniz. Lütfen ders veya konu seçiniz.">
@@ -40,7 +39,7 @@
             <button mat-menu-item>İlişkili Soru</button>
         </mat-menu> -->
     </div>
-    <div class="navbar-content" fusePerfectScrollbar>
+    <div class="navbar-content" fusePerfectScrollbar >
         <fuse-navigation [navigation]="navigation" layout="vertical"></fuse-navigation>
     </div>
 
@@ -65,7 +64,7 @@
                 </a>
                 <div class="nav-item" *ngFor="let donem of program.donemleri">
                     <a class="nav-link" matRipple [routerLink]="'/sorudeposu/program/' + program.programId+'/donem/'+donem.donemId" (click)="$event.stopPropagation()"
-                    routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+                        routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
                         <div class="donem">
                             <mat-icon class="nav-link-icon" matTooltip="{{donem.donemAdi}}">event</mat-icon>
                             <span matTooltip="{{donem.sinifi+' .sınıf,'+ donem.donemAdi}}">{{donem.sinifi+'. Sınıf, '+donem.donemAdi|ozet}}</span>
@@ -74,14 +73,14 @@
                     <div *ngIf="donem.dersGruplari">
                         <div *ngFor="let dersGrubu of donem.dersGruplari">
                             <div class="nav-item" *ngFor="let ders of dersGrubu.dersleri">
-                                <a  class="nav-link" matRipple [routerLink]="'/sorudeposu/program/'+program.programId+'/donem/'+donem.donemId+'/ders/' + ders.dersId"
+                                <a class="nav-link" matRipple [routerLink]="'/sorudeposu/program/'+program.programId+'/donem/'+donem.donemId+'/ders/' + ders.dersId"
                                     routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" (click)="$event.stopPropagation()">
                                     <div class="ders">
                                         <mat-icon class="nav-link-icon" matTooltip="{{program.programAdi}} - {{donem.donemAdi}}:{{dersGrubu.dersGrubuAdi}} dersi">import_contacts</mat-icon>
                                         <span matTooltip="Ders:{{ders.dersAdi}}">{{ders.dersAdi|ozet:50}}</span>
                                     </div>
                                 </a>
-                                
+
 
                                 <div class="nav-item" *ngFor="let konu of ders.konulari">
                                     <a class="nav-link" matRipple [routerLink]="'/sorudeposu/program/'+program.programId+'/donem/'+donem.donemId+'/ders/' + ders.dersId+'/konu/'+konu.konuId"

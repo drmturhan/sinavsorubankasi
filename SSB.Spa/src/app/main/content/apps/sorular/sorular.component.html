@@ -1,11 +1,11 @@
 <div id="soru" class="page-layout carded left-sidenav" fusePerfectScrollbar>
     <!-- TOP BACKGROUND -->
-    <div class="top-bg" style="background-color: #E2474C"></div>
+    <div  style="background-color: #A3C9D3"></div>
     <!-- / TOP BACKGROUND -->
 
-    <mat-sidenav-container>
+    <mat-sidenav-container >
         <!-- SIDENAV -->
-        <mat-sidenav class="sidenav" align="start" mode="side" opened="true" fuseMatSidenavHelper="carded-left-sidenav" mat-is-locked-open="gt-md">
+        <mat-sidenav  style="background-color:#E2E3DD" class="sidenav" align="start" mode="side" opened="true" fuseMatSidenavHelper="carded-left-sidenav" mat-is-locked-open="gt-md">
             <fuse-sorular-side-nav></fuse-sorular-side-nav>
 
         </mat-sidenav>
@@ -14,26 +14,28 @@
             <!-- CONTENT HEADER -->
 
             <div class="header" fxLayout="row" fxLayoutAlign="start center">
+                <div fxFlex fxLayout="column" fxLayoutAlign="start stretch">
+                    <h1 fxFlex="auto" class="px-24"  style="color: #2E3853">{{baslik}}</h1>
 
-                <div class="search-wrapper" fxFlex fxLayout="row" fxLayoutAlign="start center">
-                    <button mat-button class="mat-icon-button sidenav-toggle" fuseMatSidenavToggler="carded-left-sidenav" fxHide.gt-md aria-label="Toggle Sidenav">
-                        <mat-icon>menu</mat-icon>
-                    </button>
+                    <div class="search-wrapper" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                        <button mat-button class="mat-icon-button sidenav-toggle" fuseMatSidenavToggler="carded-left-sidenav" fxHide.gt-md aria-label="Toggle Sidenav">
+                            <mat-icon>menu</mat-icon>
+                        </button>
 
-                    <div class="search" flex fxLayout="row" fxLayoutAlign="start center">
-                        <mat-icon style="color:#2F3A57">home</mat-icon>
-                        <div class="baslik">
-                            {{baslik}}
+                        <div class="search " flex fxLayout="row" fxLayoutAlign="start center" style="background-color: #D1E1E1">
+                            <mat-icon>search</mat-icon>
+                            <!-- <input [formControl]="searchInput" [placeholder]="'MAIL.SEARCH_PLACEHOLDER' | translate" fxFlex> -->
+                            <input [formControl]="searchInput" placeholder="Soru ara" fxFlex style="background-color: #D1E1E1">
                         </div>
-                    </div>
 
+                    </div>
                 </div>
             </div>
             <!-- / CONTENT HEADER -->
 
 
             <!-- CONTENT CARD -->
-            <div class="content-card" style="background-color:#A8D0DA" [ngClass]="{'current-mail-selected':aktifSoru$ | async}">
+            <div class="content-card"  [ngClass]="{'current-mail-selected':aktifSoru$ | async}">
 
                 <!-- CONTENT TOOLBAR -->
                 <div class="toolbar px-24 py-8">
@@ -94,10 +96,11 @@
                 <!-- / CONTENT TOOLBAR -->
                 <!-- CONTENT -->
                 <div class="content" fxLayoutAlign="row">
-                    
-                        <fuse-soru-listesi fusePerfectScrollbar fxFlex [sorular]="sorular$ | async" [aktifSoru]="aktifSoru$|async" (sorudegisti)="soruGoster($event)"></fuse-soru-listesi>
-                        <fuse-soru-detay [soru]="aktifSoru$|async" fusePerfectScrollbar fxflex> </fuse-soru-detay>
-                    
+
+                    <fuse-soru-listesi fusePerfectScrollbar fxFlex [sorular]="sorular$ | async" [aktifSoru]="aktifSoru$|async" (sorudegisti)="soruGoster($event)"
+                        ></fuse-soru-listesi>
+                    <fuse-soru-detay [soru]="aktifSoru$|async" fusePerfectScrollbar fxflex> </fuse-soru-detay>
+
                 </div>
                 <!-- / CONTENT -->
 

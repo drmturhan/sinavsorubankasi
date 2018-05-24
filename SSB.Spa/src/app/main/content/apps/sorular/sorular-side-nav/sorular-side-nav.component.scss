@@ -3,6 +3,8 @@
     flex: 1 0 auto;
     flex-direction: column;
     height: 100%;
+    background-color: transparent;
+    
     .header {
         .logo {
             cursor: pointer;
@@ -36,11 +38,11 @@
         cursor: pointer;
     }
     .nav .nav-item .nav-link.active {
-        background-color: #E2E3DD;
-        color: #2F3A57;
+        background-color: #DB4549;
+        color: #DBDCD6;
         font-weight: bolder;
         .nav-link-icon {
-            color: #2F3A57;
+            color: #DBDCD6;
         }
     }
     .nav .nav-item {
@@ -52,13 +54,13 @@
     .program {
         font-size: 1.2em;
         color: #2F3A57;
-        font-weight: bolder;
+        
     }
     .donem {
         margin-left: 24px;
         font-size: 1em;
-        color: #2F3A57;
-        font-weight: bolder;
+        
+        
     }
     .ders {
         margin-left: 36px;

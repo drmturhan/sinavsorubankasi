@@ -1,9 +1,10 @@
 <div *ngIf="!soru" fxLayout="column" fxLayoutAlign="center center" fxFlex="1 2 auto">
-    <mat-icon class="s-128 mb-16">
-        question_answer
-    </mat-icon>
-    <span class="soru-sec-yazisi hint-text">
-        <span>Bir soru seçin.</span>
+    <mat-icon class="s-128  mb-16 select-message-icon hint-text" 
+    [@animate]="{value:'*',params:{delay:'300ms',scale:'0.2'}}">view_list</mat-icon>
+    
+    
+    <span class="soru-sec-yazisi hint-text" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'400ms'}}">
+        <span>Lütfen bir soru seçin.</span>
     </span>
 </div>
 
@@ -19,50 +20,8 @@
                 </div>
             </div>
         </div>
-        <!-- <div class="actions" fxHide fxShow.gt-lg fxLayout="row" fxLayoutAlign="start center">
-            <button fxHide fxShow.gt-md mat-icon-button (click)="$event.stopPropagation();" aria-label="Toggle star">
-                <mat-icon *ngIf="!bitisTarihiGecerli" matTooltip="Aksi belirtilene kadar soru geçerli.">all_inclusive</mat-icon>
-            </button>
-            <button mat-button class="mat-icon-button" aria-label="Soru aktif" (click)="soruyuAcKapat()">
-                <mat-icon *ngIf="soru.aktif" matTooltip="Bu soru aktif. Aktif sorular onay yapıldıktan sonra sınavlarda çıkabilir.">fast_forward</mat-icon>
-                <mat-icon *ngIf="!soru.aktif" matTooltip="Bu soru aktif değil. Pasif sorular sınavlarda çıkmaz.">stop</mat-icon>
-            </button>
-
-            <button mat-button class="mat-icon-button" aria-label="Staj dersi" (click)="favoriToogle()">
-                <mat-icon *ngIf="soru.favori" matTooltip="Bu soru sizin favori sorunuz.">star</mat-icon>
-                <mat-icon *ngIf="!soru.favori" matTooltip="Bu soru sizin için favori olmayan bir sorudur.">star_outline</mat-icon>
-            </button>
-
-
-            <button mat-button class="mat-icon-button" aria-label="Ders kurulu dersi">
-                <mat-icon *ngIf="soru.onaylandi" matTooltip="Bu soru onaylanmış. Sınavlarda çıkabilir.">thumb_up</mat-icon>
-                <mat-icon *ngIf="!soru.onaylandi" matTooltip="Bu soru onaysız. Sınavlarda ÇIKMAZ!.">thumb_down</mat-icon>
-            </button>
-        </div> -->
+       
     </div>
-
-    <!-- <div class="actions alt-cizgi" fxShow fxHide.gt-lg fxLayout="row" fxLayoutAlign="start center">
-
-
-        <button mat-button class="mat-icon-button" aria-label="Soru aktif">
-            <mat-icon *ngIf="soru.aktif" matTooltip="Bu soru aktif. Aktif sorular onay yapıldıktan sonra sınavlarda çıkabilir.">fast_forward</mat-icon>
-            <mat-icon *ngIf="!soru.aktif" matTooltip="Bu soru aktif değil. Pasif sorular sınavlarda çıkmaz.">stop</mat-icon>
-        </button>
-        <button *ngIf="!bitisTarihiGecerli" mat-icon-button (click)="$event.stopPropagation();" aria-label="Toggle star">
-            <mat-icon matTooltip="Aksi belirtilene kadar soru geçerli.">all_inclusive</mat-icon>
-        </button>
-        <button mat-button class="mat-icon-button" aria-label="Staj dersi">
-            <mat-icon *ngIf="soru.favori" matTooltip="Bu soru sizin favori sorunuz.">star</mat-icon>
-            <mat-icon *ngIf="!soru.favori" matTooltip="Bu soru sizin için favori olmayan bir sorudur.">star_outline</mat-icon>
-        </button>
-
-
-        <button mat-button class="mat-icon-button" aria-label="Ders kurulu dersi">
-            <mat-icon *ngIf="soru.onaylandi" matTooltip="Bu soru onaylanmış. Sınavlarda çıkabilir.">thumb_up</mat-icon>
-            <mat-icon *ngIf="!soru.onaylandi" matTooltip="Bu soru onaysız. Sınavlarda ÇIKMAZ!.">thumb_down</mat-icon>
-        </button>
-    </div> -->
-
 
     <div class="mail-content" fxLayout="column" fxLayoutAlign="start stretch" fxLayoutgap="16px">
 
@@ -169,7 +128,7 @@
                     <span class="detail">{{Ders.donemAdi}}</span>
                     <span *ngIf="Ders.dersGrubuNo>0" class="detail">{{Ders.dersGrubuAdi}}</span>
                     <span class="detail">{{Ders.dersAdi}}</span>
-                    <span *ngIf="soru.konuNo" class="detail">{{getKonu(soru.konuNo).konuAdi}}</span>
+                    <span *ngIf="soru.konuNo" class="detail">{{soru.konuAdi}}</span>
                     <span class="detail">{{soru.soruZorlukAdi}}</span>
                     <span class="detail">{{soru.cevaplamaSuresi+' saniye.'}}</span>
                     <span *ngIf="soru.hemenElenebilirSecenekSayisi===0" class="detail">Yok</span>

@@ -2,7 +2,7 @@
   <!-- Front -->
   <div class="fuse-widget-front mat-elevation-z2">
     <div fxLayout="row" fxLayoutAlign="space-between center">
-      <div class="h3">SORU KÖKÜ</div>
+      <div *ngIf="baslik" class="h3">{{baslik}}</div>
       <button mat-icon-button fuseWidgetToggle class="fuse-widget-flip-button" aria-label="more">
         <mat-icon>info</mat-icon>
       </button>

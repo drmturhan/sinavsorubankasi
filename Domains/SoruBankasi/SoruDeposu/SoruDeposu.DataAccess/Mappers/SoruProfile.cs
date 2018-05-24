@@ -3,6 +3,7 @@ using SoruDeposu.DataAccess.Dtos;
 using SoruDeposu.DataAccess.Entities;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace SoruDeposu.DataAccess.Mappers
@@ -40,6 +41,8 @@ namespace SoruDeposu.DataAccess.Mappers
                 .ForMember(d => d.BilisselDuzeyAdi, islem => islem.ResolveUsing(e => e.BilisselDuzeyi != null ? e.BilisselDuzeyi.BilisselDuzyeAdi : ""))
                 .ForMember(d => d.SoruKokuMetni, islem => islem.ResolveUsing(e => e.SoruKoku != null ? e.SoruKoku.SoruKokuMetni : string.Empty))
                 .ForMember(d => d.SoruKokuSorulariSayisi, islem => islem.ResolveUsing(e => e.SoruKoku != null ? e.SoruKoku.Sorulari.Count : 0))
+                .ForMember(d => d.DersAdi, islem => islem.ResolveUsing(e => e.Dersi != null ? e.Dersi.DersAdi : string.Empty))
+                .ForMember(d => d.KonuAdi, islem => islem.ResolveUsing(e => e.Konusu != null ? e.Konusu.KonuAdi : string.Empty))
                 .AfterMap((e, d) =>
                 {
                     //foreach (var item in e.TekDogruluSecenekleri)
@@ -76,7 +79,25 @@ namespace SoruDeposu.DataAccess.Mappers
                         d.AnahtarKelimeler = e.AnahtarKelimeler.Split(';');
                 });
 
-            CreateMap<SoruKoku, SoruKokuListeDto>();
+            CreateMap<SoruKoku, SoruKokuListeDto>().AfterMap((e, d) =>
+            {
+                if (e.Sorulari.Count > 0)
+                {
+                    var ilkSoru = e.Sorulari.First();
+                    if (ilkSoru.Dersi != null)
+                    {
+                        d.DersAdi = ilkSoru.Dersi.DersAdi;
+                        d.DersNo = ilkSoru.DersNo;
+                    }
+                    if (ilkSoru.Dersi != null)
+                    {
+                        d.DersAdi = ilkSoru.Konusu.KonuAdi;
+                        d.KonuNo = ilkSoru.KonuNo;
+
+                    }
+
+                }
+            });
             CreateMap<SoruKoku, SoruKokuDegistirDto>();
         }
 

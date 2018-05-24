@@ -1,40 +1,41 @@
 <div *ngIf="sorular.length === 0" fxLayout="column" fxLayoutAlign="center center" fxFlexFill>
-    <!-- <span class="no-messages-text hint-text">{{ 'MAIL.NO_MESSAGES' | translate }}</span> -->
-    <span class="no-messages-text hint-text">İlişkili soru listesi boş</span>
+  <!-- <span class="no-messages-text hint-text">{{ 'MAIL.NO_MESSAGES' | translate }}</span> -->
+  <span class="no-messages-text hint-text">İlişkili soru listesi boş</span>
 </div>
 
 <div class="mail-list" *fuseIfOnDom [@animateStagger]="{value:'50'}" fxLayout="column" fxLayoutAlign="start stretch">
-    <div class="kart p-24" style="background-color: #DB4549;color:#E2E3DD;" *ngIf="service.soruKokuSonuc.donenNesne.soruKokuMetni">
-        <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="16px">
-            <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="16px">
-                <mat-icon class="mat-18">attachment</mat-icon>
-                <h2>Soru Kökü</h2>
-            </div>
-            <div>
-                <button mat-icon-button class="mat-icon-button" (click)="$event.stopPropagation();" aria-label="Yeni soru ekle">
-          <mat-icon matTooltip="Bu sor kökü ile ilişkili soru ekle">edit</mat-icon>
+  <div class="kart p-24" style="background-color: #EDDDE3;color:#424A5E;" *ngIf="service.soruKokuSonuc.donenNesne.soruKokuMetni">
+    <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="16px">
+      <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="16px">
+        <mat-icon class="mat-18">link</mat-icon>
+        <h2>Soru Kökü</h2>
+      </div>
+      <div>
+        <button mat-button class="mat-button" (click)="$event.stopPropagation();" aria-label="Yeni soru ekle">
+          <mat-icon matTooltip="Soru kökünü değiştir">edit</mat-icon>
         </button>
-            </div>
-        </div>
-
-        <div [innerHTML]="service.soruKokuSonuc.donenNesne.soruKokuMetni" style="padding:24px;text-align: justify; "></div>
+      </div>
     </div>
 
-    <div class="kart px-16" *ngIf="service.soruKokuSonuc.donenNesne.soruKokuMetni">
-        <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="16px">
-            <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="16px">
-                <mat-icon class="mat-18">attachment</mat-icon>
-                <h2>İlişkili soruları</h2>
-            </div>
-            <div>
-                <button mat-icon-button class="mat-icon-button" (click)="$event.stopPropagation();" aria-label="Yeni soru ekle">
-          <mat-icon matTooltip="Bu sor kökü ile ilişkili soru ekle">add</mat-icon>
-        </button>
-            </div>
-        </div>
+    <div [innerHTML]="service.soruKokuSonuc.donenNesne.soruKokuMetni" style="padding:24px;text-align: justify; "></div>
+  </div>
 
+  <div class="kart px-16" style="background-color: #424A5E;color:#BECDC4" *ngIf="service.soruKokuSonuc.donenNesne.soruKokuMetni">
+    <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="16px">
+      <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="16px">
+        <mat-icon class="mat-18">link</mat-icon>
+        <h2>Soru kökü ile ilişkili soru listesi</h2>
+      </div>
+      <div>
+        <button mat-button class="mat-button" (click)="$event.stopPropagation();yeniSoruYarat()" aria-label="Yeni soru ekle">
+          <mat-icon matTooltip="Bu sor kökü ile ilişkili YENİ soru yarat.">add</mat-icon>
+        </button>
+      </div>
     </div>
-    <fuse-iliskili-soru-item matRipple *ngFor="let soruItem of sorular" [soru]="soruItem" (click)="soruyuOku(soruItem.soruId)" [ngClass]="{'current-mail':soruItem?.soruId == aktifSoru?.soruId}" [@animate]="{value:'*',params:{y:'100%'}}">
-    </fuse-iliskili-soru-item>
+
+  </div>
+  <fuse-iliskili-soru-item class="px-16" matRipple *ngFor="let soruItem of sorular" [soru]="soruItem" (click)="soruyuOku(soruItem.soruId)"
+    [ngClass]="{'current-mail':soruItem?.soruId == aktifSoru?.soruId}" [@animate]="{value:'*',params:{y:'100%'}}">
+  </fuse-iliskili-soru-item>
 
 </div>

@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Location } from '@angular/common';
 import { Store } from '@ngrx/store';
 
 import { SoruListe, SoruDegistir } from '../models/soru';
@@ -16,11 +17,13 @@ import { CoktanSecmeliSoruComponent } from '../coktan-secmeli-soru/coktan-secmel
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
 import { KayitSonuc } from '../../../../../models/sonuclar';
 import { SoruOnizlemeComponent } from '../soru-onizleme/soru-onizleme.component';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
   selector: 'fuse-soru-detay',
   templateUrl: './soru-detay.component.html',
-  styleUrls: ['./soru-detay.component.scss']
+  styleUrls: ['./soru-detay.component.scss'],
+  animations: fuseAnimations
 })
 export class SoruDetayComponent implements OnInit, OnChanges {
 
@@ -44,7 +47,7 @@ export class SoruDetayComponent implements OnInit, OnChanges {
   private _dersKonuAdi: string;
   public get dersKonuAdi(): string {
     if (!this._dersKonuAdi) {
-      this._dersKonuAdi = this.dersKonuAdiniAl();
+      this._dersKonuAdi = this.sorularService.dersKonuAdiniAl(this.soru.dersAdi, this.soru.konuAdi);
     }
     return this._dersKonuAdi;
   }
@@ -53,6 +56,7 @@ export class SoruDetayComponent implements OnInit, OnChanges {
 
   dialogRef: any;
   constructor(
+    private location: Location,
     public dialog: MatDialog,
     private sorularService: SorularService,
     private store: Store<fromStore.SoruDepoAppState>,
@@ -80,35 +84,17 @@ export class SoruDetayComponent implements OnInit, OnChanges {
   detayToogle() {
     this.detayGoster = !this.detayGoster;
   }
-  dersKonuAdiniAl(): string | null {
-    let sonuc: string = null;
-    if (this.Ders) {
-      let konu: KonuItem = null;
-      if (this.soru.konuNo) {
-        konu = this.getKonu(this.soru.konuNo);
-      }
-      if (konu) {
-        sonuc = `${this.ders.dersAdi} : ${konu.konuAdi}`;
-      } else {
-        return this.ders.dersAdi;
-      }
-    }
-    return sonuc;
-  }
-  getKonu(konuNo): KonuItem {
-    if (this.Ders && konuNo > 0) {
-      for (let index = 0; index < this.ders.konulari.length; index++) {
-        const konu = this.ders.konulari[index];
-        // tslint:disable-next-line:triple-equals
-        if (konu.konuId == konuNo) {
-          return konu;
-        }
-      }
-    }
-    return null;
-  }
 
   soruyuDegistir() {
+    if (this.soru.soruKokuNo > 0) {
+      this.location.go('sorudeposu/iliskilisoru/' + this.soru.soruKokuNo);
+
+    }
+    else {
+      this.iliskisiOlmayanSoruyuDegistir()
+    }
+  }
+  iliskisiOlmayanSoruyuDegistir() {
     this.store.dispatch(new fromUIActions.StartLoading());
     const degisecekSoru = this.sorularService.getSoruById(this.soru.soruId).subscribe((sonuc: KayitSonuc<SoruDegistir>) => {
       this.store.dispatch(new fromUIActions.StopLoading());
@@ -232,7 +218,7 @@ export class SoruDetayComponent implements OnInit, OnChanges {
       data: {
         soru: this.soru,
         ders: this.ders,
-        konu: this.getKonu(this.soru.konuNo)
+        konu: this.sorularService.getKonu(this.ders, this.soru.konuNo)
       }
     });
   }

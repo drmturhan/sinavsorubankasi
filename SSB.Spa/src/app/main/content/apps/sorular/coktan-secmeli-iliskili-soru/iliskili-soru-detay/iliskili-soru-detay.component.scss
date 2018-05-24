@@ -1,118 +1,196 @@
-@import 'src/@fuse/scss/fuse';
-
+@import "src/@fuse/scss/fuse";
 :host {
     display: flex;
     flex-direction: column;
     flex: 1;
     overflow-y: auto;
     padding: 24px;
-
+    background-color: #E3E3EA;
+    color: #434C60;
     .select-message-text {
         font-size: 24px;
         font-weight: 300;
     }
-
     .mail-header {
         padding-bottom: 16px;
         border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-
         .actions {
             min-width: 88px;
         }
-
         .subject {
             font-size: 17px;
             font-weight: 500;
         }
-
         .label {
             font-size: 11px;
             border-radius: 2px;
             margin: 4px 4px 4px 0;
             padding: 3px 8px;
             background-color: rgba(0, 0, 0, 0.08);
-
             .label-color {
                 width: 8px;
                 height: 8px;
                 margin-right: 8px;
-                border-radius: 50%;
+                border-radius: 50%; //Murat
+                background-color: #BD3D4B;
             }
         }
     }
-
     .mail-content {
         padding: 24px 0;
-
-        .to {
-            color: rgba(0, 0, 0, 0.54);
-
-            .to-text {
-                margin-right: 4px;
-                text-transform: lowercase;
-            }
-        }
-
         .info {
-            padding-bottom: 16px;
-
+            background-color: #CCB8C7;
+            padding: 12px;
+            box-shadow: 0 3px 1px -2px rgba(0, 0, 0, .2), 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12);
+            transition: box-shadow 280ms cubic-bezier(.4, 0, .2, 1);
             .avatar {
                 margin-right: 16px;
                 background-color: mat-color($accent);
             }
-
             .name {
                 margin-right: 8px;
                 font-weight: 500;
+                font-size: 1.1em;
             }
-
-            .toggle-details {
-                user-select: none;
-                text-decoration: underline;
-                padding-top: 16px;
-                cursor: pointer;
-                font-weight: 500;
-            }
-
-            .details {
-                padding-top: 8px;
-
-                .title {
-                    font-weight: 500;
-                    margin-right: 6px;
-                }
-
-                .detail {
-                    color: rgba(0, 0, 0, 0.54);
-                }
-            }
-
         }
     }
+    .toggle-details {
+        color: #424A5E;
+        text-align: left;
+        margin-top: 12px;
+    }
+    h2 {
 
-    .mail-attachments {
-        padding: 24px 0;
-        border-top: 1px solid rgba(0, 0, 0, 0.12);
-
+    }
+    .toggle-details:hover {
+        color: #BD3D4B;
+        text-decoration: #406D95;
+        text-decoration-style: dashed;
+        text-decoration-line: underline;
+    }
+    ol {
+        counter-reset: li;
+        /* Initiate a counter */
+        list-style: none;
+        /* Remove default numbering */
+        *list-style: upper-alpha;
+        /* Keep using default numbering for IE6/7 */
+        font: 15px 'trebuchet MS', 'lucida sans';
+        padding: 0;
+        margin-bottom: 4em;
+        text-shadow: 0 1px 0 rgba(5, 5, 5, .1);
+    }
+    .rectangle-list a {
+        position: relative;
+        display: block;
+        padding: .4em .4em .4em .8em;
+        *padding: .4em;
+        margin: .5em 0 .5em 2.5em;
+        background: #EDDDE3;
+        color: #424A5E;
+        text-decoration: none;
+        transition: all .3s ease-out; // @include media-breakpoint-down('sm') {
+        //     margin-right: 10px;
+        // }
+    }
+    .rectangle-list a:hover {
+        background: #BD3D4B;
+        color: #F5E5EA;
+    }
+    .rectangle-list a:before {
+        content: counter(li, upper-alpha);
+        counter-increment: li;
+        position: absolute;
+        left: -2.5em;
+        top: 50%;
+        color: #F5E5EA;
+        margin-top: -1em;
+        background: #BD3D4B;
+        height: 2em;
+        width: 2em;
+        line-height: 2em;
+        text-align: center;
+        font-weight: bold;
+    }
+    .rectangle-list a:after {
+        position: absolute;
+        content: '';
+        border: .5em solid transparent;
+        left: -1em;
+        top: 50%;
+        margin-top: -.5em;
+        transition: all .3s ease-out;
+    }
+    .rectangle-list a:hover:after {
+        left: -.5em;
+        border-left-color: #BD3D4B;
+    }
+    .kart {
+        border-radius: 2px;
+        box-shadow: 0 3px 1px -2px rgba(0, 0, 0, .2), 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12);
+        transition: box-shadow 280ms cubic-bezier(.4, 0, .2, 1);
+        padding: 24px;
+        background-color: #CCB8C7;
+        margin-top: 12px; // @include media-breakpoint-down('sm') {
+        //     margin-right: 10%;
+        //     padding: 12px;
+        //     padding-right: 0px;
+        // }
+    }
+    .detay {
+        background-color: #E2E3DD;
+        padding-top: 8px;
         .title {
-            margin-bottom: 16px;
+            color: #406D95;
+            margin-right: 8px;
+        }
+        .detail {
+            padding-left: 2px;
+            color: #2F3A57;
             font-weight: 500;
         }
-
-        .attachment {
-
-            .preview {
-                width: 100px;
-                margin: 0 16px 8px 0;
-            }
-
-            .link {
-                margin-bottom: 2px;
-            }
-
-            .size {
-                font-size: 11px;
-            }
+    }
+    .actions.alt-cizgi {
+        border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+    }
+    .soru-metni {
+        background-color: #BD3D4B;
+        color: #E3E3EA;
+        font-size: 1.2em;
+    }
+    .soru-secenekler {
+        background-color: #EDDDE3;
+        color: #424A5E;
+        font-size: .9em;
+    }
+    #soru-hedefleri {
+        padding: 8px;
+        padding-left: 24px;
+        h3 {
+            margin: 0;
+            color: #C5D4CB;
+            font-weight: 700;
+            font-size: 20px;
+        }
+        ol {
+            font-style: italic;
+            font-family: Georgia, Times, serif;
+            font-size: 16px;
+            color: #C5D4CB;
+        }
+        ol li {
+            color: #C5D4CB;
+        }
+        ol li p {
+            padding: 8px;
+            font-style: normal;
+            font-family: Arial;
+            font-size: 13px;
+            color: #434C60;
+            border-left: 2px solid #C43F4D;
+        }
+        ol li p em {
+            display: block;
         }
     }
 }

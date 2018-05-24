@@ -16,7 +16,7 @@ export class SbHtmlEditorComponent implements OnInit {
   @Input() gerekli = false;
   @Input() minSatir = 2;
   @Input() maksSatir = 10;
-
+  @Input() baslik = '';
   @Output() tamam = new EventEmitter();
 
   @ViewChild('metinAlani') metinAlani;

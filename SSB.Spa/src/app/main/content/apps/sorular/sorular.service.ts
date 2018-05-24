@@ -24,6 +24,7 @@ export class SorularService {
   constructor(private http: HttpClient,
     private store: Store<fromRootStore.State>,
   ) {
+    
     this.store.select(fromSorularStore.getDersler).subscribe((dersler: DersItem[]) => {
       this.dersler = dersler;
     });
@@ -63,7 +64,7 @@ export class SorularService {
     let donecekDers: DersItem = null;
     if (dersNo > 0 && this.dersler.length > 0) {
       this.dersler.forEach(ders => {
-        
+
         // tslint:disable-next-line:triple-equals
         if (ders.dersId == dersNo) {
           donecekDers = ders;
@@ -73,13 +74,55 @@ export class SorularService {
     }
     return donecekDers;
   }
+  getKonu(ders: DersItem, konuNo): KonuItem {
+    if (ders && konuNo > 0) {
+      for (let index = 0; index < ders.konulari.length; index++) {
+        const konu = ders.konulari[index];
+        // tslint:disable-next-line:triple-equals
+        if (konu.konuId == konuNo) {
+          return konu;
+        }
+      }
+    }
+    return null;
+  }
+
+  // dersKonuAdiniAl(dersNo: number, konuNo: number): string | null {
+  //   let sonuc: string = null;
+  //   const ders: DersItem = this.dersBul(dersNo);
+  //   if (ders) {
+  //     let konu: KonuItem = null;
+  //     if (konuNo > 0) {
+  //       konu = this.getKonu(ders, konuNo);
+  //     }
+  //     if (konu) {
+  //       sonuc = `${ders.dersAdi} : ${konu.konuAdi}`;
+  //     } else {
+  //       return ders.dersAdi;
+  //     }
+  //   }
+  //   return sonuc;
+  // }
+  dersKonuAdiniAl(dersAdi: string, konuAdi: string): string | null {
+    let sonuc: string = null;
+    
+    if (dersAdi) {
+      if (konuAdi) {
+        sonuc = `${dersAdi} : ${konuAdi}`;
+      } else {
+        return dersAdi;
+      }
+    }
+    return sonuc;
+  }
+
   formuNesneyeCevirKaydet(formData: FormGroup, degisecekSoru: SoruDegistir | SoruYarat) {
     const kaydedilecekSoru = Object.assign({}, degisecekSoru, formData.getRawValue());
     kaydedilecekSoru.tekDogruluSecenekleri = formData.get('secenekler').value;
     kaydedilecekSoru.hemenElenebilirSecenekSayisi = formData.get('hemenElenebilirSecenekSayisi').value;
     kaydedilecekSoru.baslangic = formData.get('gecerlilik.baslangic').value;
     kaydedilecekSoru.bitis = formData.get('gecerlilik.bitis').value;
-    
+
     this.store.dispatch(new fromSorularStore.UpdateSoru(kaydedilecekSoru));
 
   }
@@ -146,6 +189,6 @@ export class SorularService {
       });
       navItems.push(programItem);
     });
-    
+
   }
 }

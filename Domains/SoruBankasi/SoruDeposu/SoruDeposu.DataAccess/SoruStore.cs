@@ -33,16 +33,18 @@ namespace SoruDeposu.DataAccess
 
 
             store.Sorgu = store.Sorgu
-                    .Include(soru => soru.Sorulari)
-                    .ThenInclude(soru => soru.SoruHedefleri).ThenInclude(shb => shb.Hedefi)
+                    .Include(soru => soru.Sorulari).ThenInclude(soru => soru.Dersi)
+                    .Include(soru => soru.Sorulari).ThenInclude(soru => soru.Konusu)
+                    .Include(soru => soru.Sorulari).ThenInclude(soru => soru.SoruHedefleri).ThenInclude(shb => shb.Hedefi)
                     .Include(soru => soru.Sorulari).ThenInclude(soru => soru.SoruTipi)
                     .Include(soru => soru.Sorulari).ThenInclude(soru => soru.SoruZorluk)
                     .Include(soru => soru.Sorulari).ThenInclude(soru => soru.BilisselDuzeyi)
                     .Include(soru => soru.Sorulari).ThenInclude(soru => soru.TekDogruluSecenekleri);
 
             store.Kayit = store.Kayit
-                    .Include(soru => soru.Sorulari)
-                    .ThenInclude(soru => soru.SoruHedefleri).ThenInclude(shb => shb.Hedefi)
+                    .Include(soru => soru.Sorulari).ThenInclude(soru => soru.Dersi)
+                    .Include(soru => soru.Sorulari).ThenInclude(soru => soru.Konusu)
+                    .Include(soru => soru.Sorulari).ThenInclude(soru => soru.SoruHedefleri).ThenInclude(shb => shb.Hedefi)
                     .Include(soru => soru.Sorulari).ThenInclude(soru => soru.SoruTipi)
                     .Include(soru => soru.Sorulari).ThenInclude(soru => soru.SoruZorluk)
                     .Include(soru => soru.Sorulari).ThenInclude(soru => soru.BilisselDuzeyi)
@@ -229,7 +231,7 @@ namespace SoruDeposu.DataAccess
 
         }
 
-       
+
     }
 
 
@@ -253,6 +255,8 @@ namespace SoruDeposu.DataAccess
             propertyMappingService.AddMap<SoruListeDto, Soru>(SoruPropertyMap.Values);
 
             store.Sorgu = store.Sorgu
+                    .Include(soru => soru.Dersi)
+                    .Include(soru => soru.Konusu)
                     .Include(soru => soru.SoruHedefleri).ThenInclude(shb => shb.Hedefi)
                     .Include(soru => soru.SoruTipi)
                     .Include(soru => soru.SoruZorluk)
@@ -414,7 +418,7 @@ namespace SoruDeposu.DataAccess
 
             var veritabanindakiKayit = await store.Kayit.SingleOrDefaultAsync(s => s.SoruId == degisimBilgisi.SoruNo);
             if (veritabanindakiKayit == null) throw new BadRequestError("Soru bulunamadı");
-            
+
             if (degisimBilgisi.Silindi.HasValue)
             {
                 veritabanindakiKayit.Silindi = true;

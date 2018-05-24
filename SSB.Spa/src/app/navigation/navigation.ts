@@ -18,13 +18,13 @@ export const navigation = [
                 'id': 'sorudeposu',
                 'title': 'Soru Deposu',
                 'type': 'collapse',
-                'icon': 'dashboard',
+                'icon': 'sd_card',
                 'children': [
                     {
                         'id': 'sorularim',
                         'title': 'Sorularım',
                         'type': 'item',
-                        'icon': 'email',
+                        'icon': 'view_list',
                         'url': 'sorudeposu',
                         'badge': {
                             'title': 13,

@@ -3,6 +3,10 @@ import { OgrenimHedefItem } from './birim-program-donem-ders';
 export class SoruKokuListe {
 
     soruKokuId: number;
+    dersNo: number;
+    desAdi?: string;
+    konuNo: number;
+    konuAdi?: String;
     soruKokuMetni: string;
     sorulari: SoruListe[];
 }
@@ -13,6 +17,7 @@ export class SoruListe {
     dersNo: number;
     dersAdi: string | null;
     konuNo?: number;
+    konuAdi?: string;
     soruTipNo: number;
     soruTipAdi: string | null;
     soruZorlukNo: number;
@@ -45,6 +50,7 @@ export class SoruListe {
         this.dersNo = soru.dersNo;
         this.dersAdi = soru.dersAdi;
         this.konuNo = soru.konuNo;
+        this.konuAdi = soru.konuAdi;
         this.soruTipNo = soru.soruTipNo;
         this.soruTipAdi = soru.soruTipAdi;
         this.soruZorlukNo = soru.soruZorlukNo;

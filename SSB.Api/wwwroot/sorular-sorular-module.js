@@ -562,7 +562,7 @@ var AnahtarKelimelerComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n<div id=\"soru\" class=\"page-layout carded left-sidenav\" fusePerfectScrollbar>\n  <!-- TOP BACKGROUND -->\n  <div class=\"top-bg\" style=\"background-color: #E2474C\"></div>\n  <!-- / TOP BACKGROUND -->\n\n  <mat-sidenav-container>\n\n    <div class=\"center\">\n          <!-- CONTENT HEADER -->\n          <div class=\"header\" fxLayout=\"row\" fxLayoutAlign=\"start center\">\n\n            <div class=\"search-wrapper\" fxFlex fxLayout=\"row\" fxLayoutAlign=\"start center\">\n                  <button mat-button class=\"mat-icon-button sidenav-toggle\" fuseMatSidenavToggler=\"carded-left-sidenav\" fxHide.gt-md aria-label=\"Toggle Sidenav\">\n                      <mat-icon>menu</mat-icon>\n                  </button>\n\n                  <div class=\"search\" flex fxLayout=\"row\" fxLayoutAlign=\"start center\">\n                      <mat-icon style=\"color:#2F3A57\">home</mat-icon>\n                      <div class=\"baslik\">\n                          {{baslik}}\n                      </div>\n                  </div>\n\n              </div>\n          </div>\n          <!-- / CONTENT HEADER -->\n\n          <!-- CONTENT CARD -->\n          <div class=\"content-card\" style=\"background-color:#A8D0DA\" [ngClass]=\"{'current-mail-selected':aktifSoru$ | async}\">\n\n              <!-- CONTENT TOOLBAR -->\n              <div class=\"toolbar px-24 py-8\">\n                  <div class=\"mail-selection\" fxFlex=\"row\" fxLayoutAlign=\"start center\">\n\n                      <mat-checkbox (click)=\"toggleSelectAll($event)\" [checked]=\"hasSelectedSorular\" [indeterminate]=\"isIndeterminate\">\n                      </mat-checkbox>\n\n                      <button mat-icon-button [matMenuTriggerFor]=\"selectMenu\">\n                          <mat-icon>arrow_drop_down</mat-icon>\n                      </button>\n                      <mat-menu #selectMenu=\"matMenu\">\n                          <button mat-menu-item (click)=\"tumSorulariSec()\">Tümü</button>\n                          <button mat-menu-item (click)=\"hicSoruSecilmesin()\">Hiçbiri</button>\n                          <!-- <button mat-menu-item (click)=\"selectMailsByParameter('read', true)\">Read</button>\n                          <button mat-menu-item (click)=\"selectMailsByParameter('read', false)\">Unread</button>\n                          <button mat-menu-item (click)=\"selectMailsByParameter('starred', true)\">Starred</button>\n                          <button mat-menu-item (click)=\"selectMailsByParameter('starred', false)\">Unstarred</button>\n                          <button mat-menu-item (click)=\"selectMailsByParameter('important', true)\">Important</button>\n                          <button mat-menu-item (click)=\"selectMailsByParameter('important', false)\">Unimportant</button> -->\n                      </mat-menu>\n\n                      <div class=\"toolbar-separator\" *ngIf=\"hasSelectedSorular\"></div>\n\n                      <button mat-button class=\"mat-icon-button\" (click)=\"seciliSorulariSil()\" *ngIf=\"hasSelectedSorular\">\n                          <mat-icon matTooltip=\"Seçilmiş {{selectedSorularIds.length}} soruyu siler.\">delete</mat-icon>\n                      </button>\n\n                      <span *ngIf=\"hasSelectedSorular\">{{selectedSorularIds.length}} soru seçildi.</span>\n\n                      <!-- <button mat-icon-button [matMenuTriggerFor]=\"folderMenu\" *ngIf=\"hasSelectedSorular\">\n                          <mat-icon>folder</mat-icon>\n                      </button> -->\n                      <!-- <mat-menu #folderMenu=\"matMenu\">\n                          <button mat-menu-item *ngFor=\"let folder of folders$ | async\"\n                                  (click)=\"setFolderOnSelectedMails(folder.id)\">{{folder.title}}\n                          </button>\n                      </mat-menu> -->\n\n                      <!-- <button mat-icon-button [matMenuTriggerFor]=\"labelMenu\" *ngIf=\"hasSelectedSorular\">\n                          <mat-icon>label</mat-icon>\n                      </button>\n                      <mat-menu #labelMenu=\"matMenu\">\n                          <button mat-menu-item *ngFor=\"let label of labels$ | async\"\n                                  (click)=\"toggleLabelOnSelectedMails(label.id)\">{{label.title}}\n                          </button>\n                      </mat-menu> -->\n                  </div>\n\n                  <div *ngIf=\"aktifSoru$ | async\" fxHide.gt-xs>\n                      <button mat-icon-button (click)=\"aktifSoruyuBosYap()\">\n                          <mat-icon>arrow_back</mat-icon>\n                      </button>\n                  </div>\n\n              </div>\n\n              <!-- / CONTENT TOOLBAR -->\n              <!-- CONTENT -->\n              <div class=\"content\" fxLayoutAlign=\"row\">\n                  \n                      <fuse-soru-listesi fusePerfectScrollbar fxFlex [sorular]=\"sorular$ | async\" [aktifSoru]=\"aktifSoru$|async\" (sorudegisti)=\"soruGoster($event)\"></fuse-soru-listesi>\n                      <fuse-soru-detay [soru]=\"aktifSoru$|async\" fusePerfectScrollbar fxflex> </fuse-soru-detay>\n                  \n              </div>\n              <!-- / CONTENT -->\n\n          </div>\n          <!-- / CONTENT CARD -->\n\n      </div>\n      <!-- / SIDENAV -->\n  </mat-sidenav-container>\n</div>"
+module.exports = "<div id=\"mail\" class=\"page-layout carded left-sidenav\" fusePerfectScrollbar>\n\n    <!-- TOP BACKGROUND -->\n    <div class=\"top-bg mat-accent-bg\"></div>\n    <!-- / TOP BACKGROUND -->\n\n    <mat-sidenav-container>\n\n        <!-- SIDENAV -->\n        <!-- <mat-sidenav class=\"sidenav\" position=\"start\" mode=\"side\" opened=\"true\"\n                     fuseMatSidenavHelper=\"carded-left-sidenav\" mat-is-locked-open=\"gt-md\">\n            <fuse-mail-main-sidenav></fuse-mail-main-sidenav>\n        </mat-sidenav> -->\n        <!-- / SIDENAV -->\n\n        <!-- CENTER -->\n        <div class=\"center\">\n\n            <!-- CONTENT HEADER -->\n            <div class=\"header\" fxLayout=\"row\" fxLayoutAlign=\"start center\">\n\n                <div class=\"search-wrapper\" fxFlex fxLayout=\"row\" fxLayoutAlign=\"start center\">\n\n                    <button mat-icon-button class=\"sidenav-toggle\"\n                            fuseMatSidenavToggler=\"carded-left-sidenav\"\n                            fxHide.gt-md aria-label=\"Toggle Sidenav\">\n                        <mat-icon>menu</mat-icon>\n                    </button>\n\n                    <div class=\"search mat-white-bg\" flex fxLayout=\"row\" fxLayoutAlign=\"start center\">\n                        <mat-icon>search</mat-icon>\n                        <!-- <input [formControl]=\"searchInput\" [placeholder]=\"'MAIL.SEARCH_PLACEHOLDER' | translate\" fxFlex> -->\n                        <input [formControl]=\"searchInput\" placeholder=\"Soru ara\" fxFlex>\n                    </div>\n                </div>\n\n            </div>\n            <!-- / CONTENT HEADER -->\n\n            <!-- CONTENT CARD -->\n            <div class=\"content-card mat-white-bg\" [ngClass]=\"{'current-mail-selected':aktifSoru}\">\n\n                <!-- CONTENT TOOLBAR -->\n                <div class=\"toolbar px-24 py-8\">\n\n                    <div class=\"mail-selection\" fxFlex=\"row\" fxLayoutAlign=\"start center\">\n                        <mat-checkbox (click)=\"toogleTumSorulariSec()\" [checked]=\"secilmisSorularVar\"\n                                      [indeterminate]=\"belirlenmemis\"></mat-checkbox>\n\n                        <button mat-icon-button [matMenuTriggerFor]=\"selectMenu\">\n                            <mat-icon>arrow_drop_down</mat-icon>\n                        </button>\n                        <mat-menu #selectMenu=\"matMenu\">\n                            <!-- <button mat-menu-item (click)=\"selectMails()\">All</button>\n                            <button mat-menu-item (click)=\"deselectMails()\">None</button>\n                            <button mat-menu-item (click)=\"selectMails('read', true)\">Read</button>\n                            <button mat-menu-item (click)=\"selectMails('read', false)\">Unread</button>\n                            <button mat-menu-item (click)=\"selectMails('starred', true)\">Starred</button>\n                            <button mat-menu-item (click)=\"selectMails('starred', false)\">Unstarred</button>\n                            <button mat-menu-item (click)=\"selectMails('important', true)\">Important</button>\n                            <button mat-menu-item (click)=\"selectMails('important', false)\">Unimportant</button> -->\n                        </mat-menu>\n\n                        <div class=\"toolbar-separator\" *ngIf=\"secilmisSorularVar\"></div>\n\n                        <!-- <button mat-icon-button (click)=\"setFolderOnSelectedMails(4)\" *ngIf=\"hasSelectedMails\">\n                            <mat-icon>delete</mat-icon>\n                        </button> -->\n                        <button mat-icon-button  *ngIf=\"secilmisSorularVar\">\n                            <mat-icon>delete</mat-icon>\n                        </button>\n\n                        <!-- <button mat-icon-button [matMenuTriggerFor]=\"folderMenu\" *ngIf=\"hasSelectedMails\">\n                            <mat-icon>folder</mat-icon>\n                        </button>\n                        <mat-menu #folderMenu=\"matMenu\">\n                            <button mat-menu-item *ngFor=\"let folder of folders\"\n                                    (click)=\"setFolderOnSelectedMails(folder.id)\">{{folder.title}}\n                            </button>\n                        </mat-menu> -->\n\n                        <!-- <button mat-icon-button [matMenuTriggerFor]=\"labelMenu\" *ngIf=\"hasSelectedMails\">\n                            <mat-icon>label</mat-icon>\n                        </button>\n                        <mat-menu #labelMenu=\"matMenu\">\n                            <button mat-menu-item *ngFor=\"let label of labels\"\n                                    (click)=\"toggleLabelOnSelectedMails(label.id)\">{{label.title}}\n                            </button>\n                        </mat-menu> -->\n                    </div>\n\n                    <div *ngIf=\"aktifSoru\" fxHide.gt-xs>\n                        <button mat-icon-button (click)=\"aktifSoruyuSecilmemisYap()\">\n                            <mat-icon>arrow_back</mat-icon>\n                        </button>\n                    </div>\n                </div>\n                <!-- / CONTENT TOOLBAR -->\n\n                <!-- CONTENT -->\n                <div class=\"content\" fxLayout=\"row\">\n\n                    <fuse-iliskili-soru-listesi fusePerfectScrollbar fxFlex></fuse-iliskili-soru-listesi>\n                    <fuse-iliskili-soru-detay fusePerfectScrollbar fxFlex></fuse-iliskili-soru-detay>\n\n                </div>\n                <!-- / CONTENT -->\n\n            </div>\n            <!-- / CONTENT CARD -->\n\n        </div>\n        <!-- / CENTER -->\n\n    </mat-sidenav-container>\n\n</div>"
 
 /***/ }),
 
@@ -573,7 +573,7 @@ module.exports = "\n<div id=\"soru\" class=\"page-layout carded left-sidenav\" f
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ""
+module.exports = "/**\n * Applies styles for users in high contrast mode. Note that this only applies\n * to Microsoft browsers. Chrome can be included by checking for the `html[hc]`\n * attribute, however Chrome handles high contrast differently.\n */\n/* Theme for the ripple elements.*/\n/* stylelint-disable material/no-prefixes */\n/* stylelint-enable */\n:host {\n  width: 100%; }\n:host .center .header .search-wrapper {\n    box-shadow: 0px 4px 5px -2px rgba(0, 0, 0, 0.2), 0px 7px 10px 1px rgba(0, 0, 0, 0.14), 0px 2px 16px 1px rgba(0, 0, 0, 0.12); }\n:host .center .header .search-wrapper .sidenav-toggle {\n      margin: 0;\n      width: 56px;\n      height: 56px;\n      background: #FFF;\n      border-radius: 0;\n      border-right: 1px solid rgba(0, 0, 0, 0.12); }\n:host .center .header .search-wrapper .search {\n      width: 100%;\n      height: 56px;\n      line-height: 56px;\n      padding: 18px; }\n:host .center .header .search-wrapper .search input {\n        height: 56px;\n        padding-left: 16px;\n        color: rgba(0, 0, 0, 0.54);\n        border: none;\n        outline: none; }\n@media screen and (max-width: 599px) {\n    :host .center .content-card fuse-mail-list {\n      border-right: none; }\n    :host .center .content-card fuse-mail-list,\n    :host .center .content-card fuse-mail-details {\n      flex: 1 0 100%; }\n    :host .center .content-card fuse-mail-details {\n      display: none !important; }\n    :host .center .content-card.current-mail-selected .toolbar {\n      padding-left: 16px !important; }\n      :host .center .content-card.current-mail-selected .toolbar .mail-selection {\n        display: none !important; }\n    :host .center .content-card.current-mail-selected .content fuse-mail-list {\n      display: none !important; }\n    :host .center .content-card.current-mail-selected .content fuse-mail-details {\n      display: flex !important; } }\n"
 
 /***/ }),
 
@@ -590,6 +590,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _fuse_components_confirm_dialog_confirm_dialog_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @fuse/components/confirm-dialog/confirm-dialog.component */ "./src/@fuse/components/confirm-dialog/confirm-dialog.component.ts");
 /* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
+/* harmony import */ var _iliskili_soru_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./iliskili-soru.service */ "./src/app/main/content/apps/sorular/coktan-secmeli-iliskili-soru/iliskili-soru.service.ts");
+/* harmony import */ var _fuse_services_translation_loader_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @fuse/services/translation-loader.service */ "./src/@fuse/services/translation-loader.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -602,24 +606,58 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
+
+
+
 var CoktanSecmeliIliskiliSoruComponent = /** @class */ (function () {
-    function CoktanSecmeliIliskiliSoruComponent(dialog) {
+    function CoktanSecmeliIliskiliSoruComponent(service, dialog, fuseTranslationLoader) {
+        this.service = service;
         this.dialog = dialog;
+        this.fuseTranslationLoader = fuseTranslationLoader;
+        this.searchInput = new _angular_forms__WEBPACK_IMPORTED_MODULE_4__["FormControl"]('');
+        // this.fuseTranslationLoader.loadTranslations(english, turkish);
     }
     CoktanSecmeliIliskiliSoruComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.onSecilmisSorularDegisti =
+            this.service.onSecilmisSorularDegisti
+                .subscribe(function (secilmisSorular) {
+                setTimeout(function () {
+                    _this.secilmisSorularVar = secilmisSorular.length > 0;
+                    _this.belirlenmemis = (secilmisSorular.length !== _this.service.sorular.length && secilmisSorular.length > 0);
+                }, 0);
+            });
+        this.onAktifSoruDegisti =
+            this.service.onAktifSoruDegisti
+                .subscribe(function (aktifSoru) {
+                if (!aktifSoru) {
+                    _this.aktifSoru = null;
+                }
+                else {
+                    _this.aktifSoru = aktifSoru;
+                }
+            });
+        this.searchInput.valueChanges.pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["debounceTime"])(300), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["distinctUntilChanged"])())
+            .subscribe(function (searchText) {
+            _this.service.onAramaCumlesiDegisti.next(searchText);
+        });
     };
-    CoktanSecmeliIliskiliSoruComponent.prototype.toggleSelectAll = function (ev) {
-        ev.preventDefault();
-        if (this.selectedSorularIds.length && this.selectedSorularIds.length > 0) {
-            this.hicSoruSecilmesin();
-        }
-        else {
-            this.tumSorulariSec();
-        }
+    CoktanSecmeliIliskiliSoruComponent.prototype.ngOnDestroy = function () {
+        this.onSecilmisSorularDegisti.unsubscribe();
+        this.onAktifSoruDegisti.unsubscribe();
     };
-    CoktanSecmeliIliskiliSoruComponent.prototype.tumSorulariSec = function () {
+    CoktanSecmeliIliskiliSoruComponent.prototype.toogleTumSorulariSec = function () {
+        this.service.toggleHepsiniSec();
     };
-    CoktanSecmeliIliskiliSoruComponent.prototype.hicSoruSecilmesin = function () {
+    CoktanSecmeliIliskiliSoruComponent.prototype.sorulariSec = function (filterParameter, filterValue) {
+        this.service.sorulariSec(filterParameter, filterValue);
+    };
+    CoktanSecmeliIliskiliSoruComponent.prototype.soruSeciminiUptalEt = function () {
+        this.service.deselectSorular();
+    };
+    CoktanSecmeliIliskiliSoruComponent.prototype.aktifSoruyuSecilmemisYap = function () {
+        this.service.onAktifSoruDegisti.next(null);
     };
     CoktanSecmeliIliskiliSoruComponent.prototype.seciliSorulariSil = function () {
         var dialogRef = this.dialog.open(_fuse_components_confirm_dialog_confirm_dialog_component__WEBPACK_IMPORTED_MODULE_1__["FuseConfirmDialogComponent"], {
@@ -627,7 +665,7 @@ var CoktanSecmeliIliskiliSoruComponent = /** @class */ (function () {
             height: '400',
             data: {
                 onaybasligi: 'Silme onayı!',
-                onaymesaji: "<p>Silinsin derseniz listede se\u00E7ilmi\u015F olan sorular\u0131n (" + this.selectedSorularIds.length + " soru) hepsi sistemden tamamen silinecek!</p> Soru(lar) silinsin mi?",
+                onaymesaji: "<p>Silinsin derseniz listede se\u00E7ilmi\u015F olan sorular\u0131n  hepsi sistemden tamamen silinecek!</p> Soru(lar) silinsin mi?",
                 olumluButonYazisi: 'Silinsin',
                 olumsuzButonYazisi: 'Vazgeçtim'
             }
@@ -643,9 +681,95 @@ var CoktanSecmeliIliskiliSoruComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./coktan-secmeli-iliskili-soru.component.html */ "./src/app/main/content/apps/sorular/coktan-secmeli-iliskili-soru/coktan-secmeli-iliskili-soru.component.html"),
             styles: [__webpack_require__(/*! ./coktan-secmeli-iliskili-soru.component.scss */ "./src/app/main/content/apps/sorular/coktan-secmeli-iliskili-soru/coktan-secmeli-iliskili-soru.component.scss")]
         }),
-        __metadata("design:paramtypes", [_angular_material__WEBPACK_IMPORTED_MODULE_2__["MatDialog"]])
+        __metadata("design:paramtypes", [_iliskili_soru_service__WEBPACK_IMPORTED_MODULE_5__["IliskiliSoruService"],
+            _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatDialog"],
+            _fuse_services_translation_loader_service__WEBPACK_IMPORTED_MODULE_6__["FuseTranslationLoaderService"]])
     ], CoktanSecmeliIliskiliSoruComponent);
     return CoktanSecmeliIliskiliSoruComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/main/content/apps/sorular/coktan-secmeli-iliskili-soru/iliskili-soru-detay/iliskili-soru-detay.component.html":
+/*!*******************************************************************************************************************************!*\
+  !*** ./src/app/main/content/apps/sorular/coktan-secmeli-iliskili-soru/iliskili-soru-detay/iliskili-soru-detay.component.html ***!
+  \*******************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<div *ngIf=\"!soru\" fxLayout=\"column\" fxLayoutAlign=\"center center\" fxFlex>\n  <mat-icon class=\"s-128 mb-16 select-message-icon hint-text\" *fuseIfOnDom\n            [@animate]=\"{value:'*',params:{delay:'300ms',scale:'0.2'}}\">\n      email\n  </mat-icon>\n  <span class=\"select-message-text hint-text\" *fuseIfOnDom [@animate]=\"{value:'*',params:{delay:'400ms'}}\">\n      <!-- <span>{{ 'MAIL.SELECT_A_MESSAGE_TO_READ' | translate }}</span> -->\n      Lütfen bir soru seçin.\n  </span>\n</div>\n\n<div *ngIf=\"soru\">\n\n  <div class=\"mail-header\" fxLayout=\"row\" fxLayoutAlign=\"space-between center\">\n\n      <div>\n          <div class=\"subject\" flex>{{soru.soruMetni}}</div>\n\n          <div class=\"labels\" fxLayout=\"row wrap\">\n              <div class=\"label\" *ngFor=\"let anahtarKelime of soru.anahtarKelimeler\"\n                   fxLayout=\"row\" fxLayoutAlign=\"start center\">\n                  <div class=\"label-color\" [ngStyle]=\"{'background-color': 'red'}\"></div>\n                  <div class=\"label-title\">{{anahtarKelime}}</div>\n              </div>\n          </div>\n\n      </div>\n\n      <div class=\"actions\" fxLayout=\"row\" fxLayoutAlign=\"start center\">\n          <button mat-icon-button (click)=\"toggleStar($event)\" aria-label=\"Toggle star\">\n              <mat-icon class=\"amber-fg\" *ngIf=\"soru.favori\">star</mat-icon>\n              <mat-icon class=\"secondary-text\" *ngIf=\"!soru.favori\">star_outline</mat-icon>\n          </button>\n\n          <button mat-icon-button  aria-label=\"Toggle important\">\n              <mat-icon class=\"red-fg\" *ngIf=\"soru.aktif\">label</mat-icon>\n              <mat-icon class=\"secondary-text\" *ngIf=\"!soru.aktif\">label_outline</mat-icon>\n          </button>\n      </div>\n  </div>\n\n  <div class=\"mail-content\">\n\n      <div class=\"info\" fxLayout=\"row\" fxLayoutAlign=\"space-between start\">\n\n          <div fxFlex fxLayout=\"column\" fxLayoutAlign=\"start start\">\n\n              <div fxLayout=\"row\" fxLayoutAlign=\"start start\">\n\n                  <!-- <div>\n                      <img *ngIf=\"mail.from.avatar\" alt=\"{{mail.from.name}}\"\n                           src=\"{{mail.from.avatar}}\" class=\"avatar\"/>\n\n                      <div *ngIf=\"!mail.from.avatar\" class=\"avatar\" ms-random-class=\"vm.colors\">\n                          {{mail.from.name[0]}}\n                      </div>\n                  </div> -->\n\n                  <div fxLayout=\"column\" fxLayoutAlign=\"start start\">\n\n                      <div class=\"name\">\n                          {{soru.soruMetni}}\n                      </div>\n\n                      <!-- <div class=\"to\" fxLayout=\"row\" fxLayoutAlign=\"start center\">\n                          <div class=\"to-text\">to</div>\n                          <div>{{mail.to[0].name}}</div>\n                      </div> -->\n                  </div>\n              </div>\n\n              <a class=\"toggle-details\" (click)=\"ayrintiyiGoster = !ayrintiyiGoster\">\n                  <span *ngIf=\"!ayrintiyiGoster\">Show Details</span>\n                  <span *ngIf=\"ayrintiyiGoster\">Hide Details</span>\n              </a>\n\n              <div *ngIf=\"ayrintiyiGoster\" class=\"details\" fxLayout=\"row\" fxLayoutAlign=\"start start\">\n\n                  <div fxLayout=\"column\">\n                      <!-- <span class=\"title\">From:</span>\n                      <span class=\"title\">To:</span>\n                      <span class=\"title\">Date:</span> -->\n                  </div>\n\n                  <div fxLayout=\"column\">\n                      <!-- <span class=\"detail\">{{mail.from.email}}</span>\n                      <span class=\"detail\">{{mail.to[0].email}}</span>\n                      <span class=\"detail\">{{mail.time}}</span> -->\n                  </div>\n              </div>\n          </div>\n\n          <button mat-icon-button [matMenuTriggerFor]=\"moreMenu\" aria-label=\"More\" (click)=\"$event.stopPropagation()\">\n              <mat-icon>more_vert</mat-icon>\n          </button>\n\n          <mat-menu #moreMenu=\"matMenu\">\n              <button mat-menu-item aria-label=\"Reply\">\n                  <mat-icon>reply</mat-icon>\n                  <span>Reply</span>\n              </button>\n\n              <button mat-menu-item aria-label=\"Forward\">\n                  <mat-icon>forward</mat-icon>\n                  <span>Forward</span>\n              </button>\n\n              <button mat-menu-item aria-label=\"Print\">\n                  <mat-icon>print</mat-icon>\n                  <span>Print</span>\n              </button>\n          </mat-menu>\n      </div>\n\n      <div [innerHTML]=\"soru.soruMetni\"></div>\n\n  </div>\n\n  <!-- <div *ngIf=\"mail.attachments\" class=\"mail-attachments\">\n\n      <div class=\"title\">\n          <span>Attachments</span>\n          ({{mail.attachments.length}})\n      </div>\n\n      <div class=\"attachment-list\" fxLayout=\"row wrap\">\n\n          <div class=\"attachment\" fxLayout=\"column\"\n               *ngFor=\"let attachment of mail.attachments\">\n\n              <img class=\"preview\" src=\"{{attachment.preview}}\">\n\n              <div fxLayout=\"column\">\n                  <a href=\"#\" onclick=\"event.preventDefault()\">View</a>\n                  <a href=\"#\" onclick=\"event.preventDefault()\">Download</a>\n                  <div class=\"size\">({{attachment.size}})</div>\n              </div>\n\n          </div>\n      </div>\n  </div> -->\n</div>"
+
+/***/ }),
+
+/***/ "./src/app/main/content/apps/sorular/coktan-secmeli-iliskili-soru/iliskili-soru-detay/iliskili-soru-detay.component.scss":
+/*!*******************************************************************************************************************************!*\
+  !*** ./src/app/main/content/apps/sorular/coktan-secmeli-iliskili-soru/iliskili-soru-detay/iliskili-soru-detay.component.scss ***!
+  \*******************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/**\n * Applies styles for users in high contrast mode. Note that this only applies\n * to Microsoft browsers. Chrome can be included by checking for the `html[hc]`\n * attribute, however Chrome handles high contrast differently.\n */\n/* Theme for the ripple elements.*/\n/* stylelint-disable material/no-prefixes */\n/* stylelint-enable */\n:host {\n  display: flex;\n  flex-direction: column;\n  flex: 1;\n  overflow-y: auto;\n  padding: 24px; }\n:host .select-message-text {\n    font-size: 24px;\n    font-weight: 300; }\n:host .mail-header {\n    padding-bottom: 16px;\n    border-bottom: 1px solid rgba(0, 0, 0, 0.12); }\n:host .mail-header .actions {\n      min-width: 88px; }\n:host .mail-header .subject {\n      font-size: 17px;\n      font-weight: 500; }\n:host .mail-header .label {\n      font-size: 11px;\n      border-radius: 2px;\n      margin: 4px 4px 4px 0;\n      padding: 3px 8px;\n      background-color: rgba(0, 0, 0, 0.08); }\n:host .mail-header .label .label-color {\n        width: 8px;\n        height: 8px;\n        margin-right: 8px;\n        border-radius: 50%; }\n:host .mail-content {\n    padding: 24px 0; }\n:host .mail-content .to {\n      color: rgba(0, 0, 0, 0.54); }\n:host .mail-content .to .to-text {\n        margin-right: 4px;\n        text-transform: lowercase; }\n:host .mail-content .info {\n      padding-bottom: 16px; }\n:host .mail-content .info .avatar {\n        margin-right: 16px;\n        background-color: #039be5; }\n:host .mail-content .info .name {\n        margin-right: 8px;\n        font-weight: 500; }\n:host .mail-content .info .toggle-details {\n        -webkit-user-select: none;\n           -moz-user-select: none;\n            -ms-user-select: none;\n                user-select: none;\n        text-decoration: underline;\n        padding-top: 16px;\n        cursor: pointer;\n        font-weight: 500; }\n:host .mail-content .info .details {\n        padding-top: 8px; }\n:host .mail-content .info .details .title {\n          font-weight: 500;\n          margin-right: 6px; }\n:host .mail-content .info .details .detail {\n          color: rgba(0, 0, 0, 0.54); }\n:host .mail-attachments {\n    padding: 24px 0;\n    border-top: 1px solid rgba(0, 0, 0, 0.12); }\n:host .mail-attachments .title {\n      margin-bottom: 16px;\n      font-weight: 500; }\n:host .mail-attachments .attachment .preview {\n      width: 100px;\n      margin: 0 16px 8px 0; }\n:host .mail-attachments .attachment .link {\n      margin-bottom: 2px; }\n:host .mail-attachments .attachment .size {\n      font-size: 11px; }\n"
+
+/***/ }),
+
+/***/ "./src/app/main/content/apps/sorular/coktan-secmeli-iliskili-soru/iliskili-soru-detay/iliskili-soru-detay.component.ts":
+/*!*****************************************************************************************************************************!*\
+  !*** ./src/app/main/content/apps/sorular/coktan-secmeli-iliskili-soru/iliskili-soru-detay/iliskili-soru-detay.component.ts ***!
+  \*****************************************************************************************************************************/
+/*! exports provided: IliskiliSoruDetayComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "IliskiliSoruDetayComponent", function() { return IliskiliSoruDetayComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _iliskili_soru_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../iliskili-soru.service */ "./src/app/main/content/apps/sorular/coktan-secmeli-iliskili-soru/iliskili-soru.service.ts");
+/* harmony import */ var _fuse_animations__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @fuse/animations */ "./src/@fuse/animations/index.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var IliskiliSoruDetayComponent = /** @class */ (function () {
+    function IliskiliSoruDetayComponent(service) {
+        this.service = service;
+        this.ayrintiyiGoster = false;
+    }
+    IliskiliSoruDetayComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.onAktifSoruDegisti =
+            this.service.onAktifSoruDegisti
+                .subscribe(function (gelenSoru) {
+                _this.soru = gelenSoru;
+            });
+    };
+    IliskiliSoruDetayComponent.prototype.ngOnDestroy = function () {
+        this.onAktifSoruDegisti.unsubscribe();
+    };
+    IliskiliSoruDetayComponent.prototype.toggleStar = function (event) {
+        event.stopPropagation();
+        // this.soru.toggleStar();
+        // this.service.updateMail(this.mail);
+    };
+    IliskiliSoruDetayComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'fuse-iliskili-soru-detay',
+            template: __webpack_require__(/*! ./iliskili-soru-detay.component.html */ "./src/app/main/content/apps/sorular/coktan-secmeli-iliskili-soru/iliskili-soru-detay/iliskili-soru-detay.component.html"),
+            styles: [__webpack_require__(/*! ./iliskili-soru-detay.component.scss */ "./src/app/main/content/apps/sorular/coktan-secmeli-iliskili-soru/iliskili-soru-detay/iliskili-soru-detay.component.scss")],
+            animations: _fuse_animations__WEBPACK_IMPORTED_MODULE_2__["fuseAnimations"]
+        }),
+        __metadata("design:paramtypes", [_iliskili_soru_service__WEBPACK_IMPORTED_MODULE_1__["IliskiliSoruService"]])
+    ], IliskiliSoruDetayComponent);
+    return IliskiliSoruDetayComponent;
 }());
 
 
@@ -659,7 +783,7 @@ var CoktanSecmeliIliskiliSoruComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<p>\n  iliskili-soru-item works!\n</p>\n"
+module.exports = "<div fxLayout=\"row\" fxLayoutAlign=\"start center\">\n\n  <mat-checkbox [(ngModel)]=\"selected\" (ngModelChange)=\"onSelectedChange()\"\n                (click)=\"$event.stopPropagation();\"></mat-checkbox>\n\n  <div class=\"info\" fxFlex FlexLayout=\"column\">\n\n      <div class=\"row-1\" fxLayout=\"row\" fxLayoutAlign=\"start center\">\n\n          <div class=\"name\" fxLayout=\"row\" fxLayoutAlign=\"start center\" fxFlex>\n              <!-- <img class=\"avatar\" *ngIf=\"mail.from?.avatar\" alt=\"{{mail.from?.name}}\" src=\"{{mail.from?.avatar}}\"/>\n              <div class=\"avatar\" *ngIf=\"!mail.from?.avatar\">{{mail.from?.name[0]}}</div> -->\n              <span class=\"text-truncate\" *ngIf=\"soru?.soruMetni\">{{soru.soruMetni}}</span>\n              <!-- <mat-icon *ngIf=\"mail.hasAttachments\">attachment</mat-icon> -->\n          </div>\n\n          <div fxLayout=\"row\" fxLayoutAlign=\"start center\">\n\n              <div class=\"time\">{{soru.bitis}}</div>\n\n          </div>\n\n      </div>\n\n      <div class=\"row-2\" fxLayout=\"row\" fxLayoutAlign=\"start center\">\n\n          <div fxLayout=\"column\" fxLayoutAlign=\"start start\">\n<!-- \n              <div class=\"subject text-truncate\">\n                  {{mail.subject}}\n              </div> -->\n\n              <div class=\"message text-truncate\" *ngIf=\"soru?.soruMetni\">\n                  {{soru.soruMetni | htmlToPlaintext | slice:0:180}}{{soru.soruMetni.length > 180 ? '...' : ''}}\n              </div>\n\n              <!-- <div class=\"labels\" fxLayout=\"row wrap\" fxHide fxShow.gt-sm>\n                  <div class=\"label\" *ngFor=\"let labelId of mail.labels\"\n                       fxLayout=\"row\" fxLayoutAlign=\"start center\">\n                      <div class=\"label-color\"\n                           [ngStyle]=\"{'background-color': labels | getById:labelId:'color'}\"></div>\n                      <div class=\"label-title\">{{labels | getById:labelId:'title'}}</div>\n                  </div>\n              </div> -->\n\n          </div>\n\n      </div>\n\n  </div>\n\n</div>"
 
 /***/ }),
 
@@ -670,7 +794,7 @@ module.exports = "<p>\n  iliskili-soru-item works!\n</p>\n"
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ""
+module.exports = "/**\n * Applies styles for users in high contrast mode. Note that this only applies\n * to Microsoft browsers. Chrome can be included by checking for the `html[hc]`\n * attribute, however Chrome handles high contrast differently.\n */\n/* Theme for the ripple elements.*/\n/* stylelint-disable material/no-prefixes */\n/* stylelint-enable */\n:host {\n  flex-shrink: 0;\n  position: relative;\n  padding: 16px 24px;\n  border-bottom: 1px solid rgba(0, 0, 0, 0.12);\n  cursor: pointer; }\n:host.unread {\n    background: #FFFFFF; }\n:host.unread .info .name {\n      font-weight: 700; }\n:host.unread .info .row-2 .subject {\n      font-weight: 700; }\n:host.unread .info .row-2 .labels {\n      background: #FFFFFF; }\n:host.selected {\n    background: #FFF8E1; }\n:host.selected .info .row-2 .labels {\n      background: #FFF8E1; }\n:host.current-mail {\n    background: #E3F2FD; }\n:host.current-mail .info .row-2 .labels {\n      background: #E3F2FD; }\n:host .info {\n    overflow: hidden;\n    width: 0;\n    margin-left: 16px;\n    position: relative; }\n:host .info .row-1 {\n      margin-bottom: 8px; }\n:host .info .row-1 .name {\n        font-size: 15px;\n        font-weight: 500; }\n:host .info .row-1 .name .avatar {\n          min-width: 32px;\n          width: 32px;\n          height: 32px;\n          line-height: 32px;\n          background-color: #039be5; }\n:host .info .row-1 .actions {\n        margin-left: 4px; }\n:host .info .row-1 .actions .mat-icon-button {\n          width: 32px;\n          height: 32px;\n          line-height: 1; }\n:host .info .row-2 .subject,\n    :host .info .row-2 .message {\n      width: 100%; }\n:host .info .row-2 .message {\n      position: relative;\n      color: rgba(0, 0, 0, 0.54); }\n:host .info .row-2 .labels {\n      position: absolute;\n      background: #FFFFFF;\n      bottom: 0;\n      right: 0;\n      padding-left: 6px; }\n:host .info .row-2 .labels .label {\n        font-size: 11px;\n        border-radius: 2px;\n        margin: 0 4px 0 0;\n        padding: 3px 8px;\n        background-color: rgba(0, 0, 0, 0.08); }\n:host .info .row-2 .labels .label .label-color {\n          width: 8px;\n          height: 8px;\n          margin-right: 8px;\n          border-radius: 50%; }\n"
 
 /***/ }),
 
@@ -685,6 +809,8 @@ module.exports = ""
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "IliskiliSoruItemComponent", function() { return IliskiliSoruItemComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _models_soru__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../models/soru */ "./src/app/main/content/apps/sorular/models/soru.ts");
+/* harmony import */ var _iliskili_soru_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../iliskili-soru.service */ "./src/app/main/content/apps/sorular/coktan-secmeli-iliskili-soru/iliskili-soru.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -695,18 +821,56 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
+
 var IliskiliSoruItemComponent = /** @class */ (function () {
-    function IliskiliSoruItemComponent() {
+    function IliskiliSoruItemComponent(service) {
+        this.service = service;
     }
     IliskiliSoruItemComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.soru = new _models_soru__WEBPACK_IMPORTED_MODULE_1__["SoruListe"](this.soru);
+        this.onSecilmisSorularDegisti =
+            this.service.onSecilmisSorularDegisti
+                .subscribe(function (secilmisSorular) {
+                _this.selected = false;
+                if (secilmisSorular.length > 0) {
+                    for (var _i = 0, secilmisSorular_1 = secilmisSorular; _i < secilmisSorular_1.length; _i++) {
+                        var soruItem = secilmisSorular_1[_i];
+                        if (soruItem.id === _this.soru.soruId) {
+                            _this.selected = true;
+                            break;
+                        }
+                    }
+                }
+            });
     };
+    IliskiliSoruItemComponent.prototype.ngOnDestroy = function () {
+        this.onSecilmisSorularDegisti.unsubscribe();
+    };
+    IliskiliSoruItemComponent.prototype.onSelectedChange = function () {
+        this.service.toggleSoruSec(this.soru.soruId);
+    };
+    IliskiliSoruItemComponent.prototype.toggleStar = function (event) {
+        event.stopPropagation();
+        // this.soru.toggleStar();
+        // this.service.updateMail(this.soru);
+    };
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])(),
+        __metadata("design:type", _models_soru__WEBPACK_IMPORTED_MODULE_1__["SoruListe"])
+    ], IliskiliSoruItemComponent.prototype, "soru", void 0);
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["HostBinding"])('class.selected'),
+        __metadata("design:type", Boolean)
+    ], IliskiliSoruItemComponent.prototype, "selected", void 0);
     IliskiliSoruItemComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'fuse-iliskili-soru-item',
             template: __webpack_require__(/*! ./iliskili-soru-item.component.html */ "./src/app/main/content/apps/sorular/coktan-secmeli-iliskili-soru/iliskili-soru-listesi/iliskili-soru-item/iliskili-soru-item.component.html"),
             styles: [__webpack_require__(/*! ./iliskili-soru-item.component.scss */ "./src/app/main/content/apps/sorular/coktan-secmeli-iliskili-soru/iliskili-soru-listesi/iliskili-soru-item/iliskili-soru-item.component.scss")]
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [_iliskili_soru_service__WEBPACK_IMPORTED_MODULE_2__["IliskiliSoruService"]])
     ], IliskiliSoruItemComponent);
     return IliskiliSoruItemComponent;
 }());
@@ -722,7 +886,7 @@ var IliskiliSoruItemComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<p>\n  iliskili-soru-listesi works!\n</p>\n"
+module.exports = "<div *ngIf=\"sorular.length === 0\" fxLayout=\"column\" fxLayoutAlign=\"center center\" fxFlexFill>\r\n    <!-- <span class=\"no-messages-text hint-text\">{{ 'MAIL.NO_MESSAGES' | translate }}</span> -->\r\n    <span class=\"no-messages-text hint-text\">İlişkili soru listesi boş</span>\r\n</div>\r\n\r\n<div class=\"mail-list\" *fuseIfOnDom [@animateStagger]=\"{value:'50'}\" fxLayout=\"column\" fxLayoutAlign=\"start stretch\">\r\n    <div class=\"kart p-24\" style=\"background-color: #DB4549;color:#E2E3DD;\" *ngIf=\"service.soruKokuSonuc.donenNesne.soruKokuMetni\">\r\n        <div fxLayout=\"row\" fxLayoutAlign=\"space-between center\" fxLayoutGap=\"16px\">\r\n            <div fxLayout=\"row\" fxLayoutAlign=\"space-between center\" fxLayoutGap=\"16px\">\r\n                <mat-icon class=\"mat-18\">attachment</mat-icon>\r\n                <h2>Soru Kökü</h2>\r\n            </div>\r\n            <div>\r\n                <button mat-icon-button class=\"mat-icon-button\" (click)=\"$event.stopPropagation();\" aria-label=\"Yeni soru ekle\">\r\n          <mat-icon matTooltip=\"Bu sor kökü ile ilişkili soru ekle\">edit</mat-icon>\r\n        </button>\r\n            </div>\r\n        </div>\r\n\r\n        <div [innerHTML]=\"service.soruKokuSonuc.donenNesne.soruKokuMetni\" style=\"padding:24px;text-align: justify; \"></div>\r\n    </div>\r\n\r\n    <div class=\"kart px-16\" *ngIf=\"service.soruKokuSonuc.donenNesne.soruKokuMetni\">\r\n        <div fxLayout=\"row\" fxLayoutAlign=\"space-between center\" fxLayoutGap=\"16px\">\r\n            <div fxLayout=\"row\" fxLayoutAlign=\"space-between center\" fxLayoutGap=\"16px\">\r\n                <mat-icon class=\"mat-18\">attachment</mat-icon>\r\n                <h2>İlişkili soruları</h2>\r\n            </div>\r\n            <div>\r\n                <button mat-icon-button class=\"mat-icon-button\" (click)=\"$event.stopPropagation();\" aria-label=\"Yeni soru ekle\">\r\n          <mat-icon matTooltip=\"Bu sor kökü ile ilişkili soru ekle\">add</mat-icon>\r\n        </button>\r\n            </div>\r\n        </div>\r\n\r\n    </div>\r\n    <fuse-iliskili-soru-item matRipple *ngFor=\"let soruItem of sorular\" [soru]=\"soruItem\" (click)=\"soruyuOku(soruItem.soruId)\" [ngClass]=\"{'current-mail':soruItem?.soruId == aktifSoru?.soruId}\" [@animate]=\"{value:'*',params:{y:'100%'}}\">\r\n    </fuse-iliskili-soru-item>\r\n\r\n</div>"
 
 /***/ }),
 
@@ -733,7 +897,7 @@ module.exports = "<p>\n  iliskili-soru-listesi works!\n</p>\n"
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ""
+module.exports = ":host {\n  position: relative;\n  display: flex;\n  flex-direction: column;\n  flex: 1;\n  overflow-y: auto;\n  padding: 0;\n  border-right: 1px solid rgba(0, 0, 0, 0.12); }\n  :host .no-messages-text {\n    font-size: 24px;\n    font-weight: 300; }\n  :host .mail-list {\n    position: relative;\n    display: flex;\n    flex-direction: column;\n    flex: 1; }\n  :host .kart {\n    border-radius: 2px;\n    box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n    transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1);\n    background-color: #E2E3DD; }\n"
 
 /***/ }),
 
@@ -748,6 +912,10 @@ module.exports = ""
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "IliskiliSoruListesiComponent", function() { return IliskiliSoruListesiComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var _iliskili_soru_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../iliskili-soru.service */ "./src/app/main/content/apps/sorular/coktan-secmeli-iliskili-soru/iliskili-soru.service.ts");
+/* harmony import */ var _fuse_animations__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @fuse/animations */ "./src/@fuse/animations/index.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -758,20 +926,279 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
+
+
+
 var IliskiliSoruListesiComponent = /** @class */ (function () {
-    function IliskiliSoruListesiComponent() {
+    function IliskiliSoruListesiComponent(route, service, location) {
+        this.route = route;
+        this.service = service;
+        this.location = location;
     }
     IliskiliSoruListesiComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.onSorularDegisti =
+            this.service.onSorularDegisti
+                .subscribe(function (sorular) {
+                _this.sorular = sorular;
+            });
+        this.onAktifSoruDegisti =
+            this.service.onAktifSoruDegisti
+                .subscribe(function (gelenAktifSoru) {
+                if (!gelenAktifSoru) {
+                    // Set the current mail id to null to deselect the current mail
+                    _this.aktifSoru = null;
+                    // Handle the location changes
+                    var labelHandle = _this.route.snapshot.params.labelHandle, filterHandle = _this.route.snapshot.params.filterHandle, folderHandle = _this.route.snapshot.params.folderHandle;
+                    if (labelHandle) {
+                        _this.location.go('apps/mail/label/' + labelHandle);
+                    }
+                    else if (filterHandle) {
+                        _this.location.go('apps/mail/filter/' + filterHandle);
+                    }
+                    else {
+                        _this.location.go('apps/mail/' + folderHandle);
+                    }
+                }
+                else {
+                    _this.aktifSoru = gelenAktifSoru;
+                }
+            });
+    };
+    IliskiliSoruListesiComponent.prototype.ngOnDestroy = function () {
+        this.onAktifSoruDegisti.unsubscribe();
+        this.onSorularDegisti.unsubscribe();
+    };
+    IliskiliSoruListesiComponent.prototype.soruyuOku = function (soruId) {
+        var labelHandle = this.route.snapshot.params.labelHandle, filterHandle = this.route.snapshot.params.filterHandle, folderHandle = this.route.snapshot.params.folderHandle;
+        if (labelHandle) {
+            this.location.go('apps/mail/label/' + labelHandle + '/' + soruId);
+        }
+        else if (filterHandle) {
+            this.location.go('apps/mail/filter/' + filterHandle + '/' + soruId);
+        }
+        else {
+            this.location.go('apps/mail/' + folderHandle + '/' + soruId);
+        }
+        this.service.aktiSoruyuOlarakIsaretle(soruId);
     };
     IliskiliSoruListesiComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'fuse-iliskili-soru-listesi',
             template: __webpack_require__(/*! ./iliskili-soru-listesi.component.html */ "./src/app/main/content/apps/sorular/coktan-secmeli-iliskili-soru/iliskili-soru-listesi/iliskili-soru-listesi.component.html"),
-            styles: [__webpack_require__(/*! ./iliskili-soru-listesi.component.scss */ "./src/app/main/content/apps/sorular/coktan-secmeli-iliskili-soru/iliskili-soru-listesi/iliskili-soru-listesi.component.scss")]
+            styles: [__webpack_require__(/*! ./iliskili-soru-listesi.component.scss */ "./src/app/main/content/apps/sorular/coktan-secmeli-iliskili-soru/iliskili-soru-listesi/iliskili-soru-listesi.component.scss")],
+            animations: _fuse_animations__WEBPACK_IMPORTED_MODULE_4__["fuseAnimations"]
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_2__["ActivatedRoute"],
+            _iliskili_soru_service__WEBPACK_IMPORTED_MODULE_3__["IliskiliSoruService"],
+            _angular_common__WEBPACK_IMPORTED_MODULE_1__["Location"]])
     ], IliskiliSoruListesiComponent);
     return IliskiliSoruListesiComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/main/content/apps/sorular/coktan-secmeli-iliskili-soru/iliskili-soru.service.ts":
+/*!*************************************************************************************************!*\
+  !*** ./src/app/main/content/apps/sorular/coktan-secmeli-iliskili-soru/iliskili-soru.service.ts ***!
+  \*************************************************************************************************/
+/*! exports provided: IliskiliSoruService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "IliskiliSoruService", function() { return IliskiliSoruService; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _models_soru__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../models/soru */ "./src/app/main/content/apps/sorular/models/soru.ts");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var _soru_store_index__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../soru-store/index */ "./src/app/main/content/apps/sorular/soru-store/index.ts");
+/* harmony import */ var _ngrx_store__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @ngrx/store */ "./node_modules/@ngrx/store/fesm5/store.js");
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
+/* harmony import */ var _fuse_utils__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @fuse/utils */ "./src/@fuse/utils/index.ts");
+/* harmony import */ var environments_environment__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! environments/environment */ "./src/environments/environment.ts");
+/* harmony import */ var _core_services_sb_mesaj_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../../../core/services/sb-mesaj.service */ "./src/app/core/services/sb-mesaj.service.ts");
+var __assign = (undefined && undefined.__assign) || Object.assign || function(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+            t[p] = s[p];
+    }
+    return t;
+};
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+
+
+
+var IliskiliSoruService = /** @class */ (function () {
+    function IliskiliSoruService(http, soruStore, mesajService) {
+        this.http = http;
+        this.soruStore = soruStore;
+        this.mesajService = mesajService;
+        this.baseUrl = environments_environment__WEBPACK_IMPORTED_MODULE_7__["environment"].apiUrl;
+        this.soruKokleriUrl = 'sorukokleri';
+        this.searchText = '';
+        this.onSorularDegisti = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"]([]);
+        this.onSecilmisSorularDegisti = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"]([]);
+        this.onAktifSoruDegisti = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"]([]);
+        this.onAramaCumlesiDegisti = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"]('');
+        this.secilmisSorular = [];
+        this.soruTipleri$ = this.soruStore.select(_soru_store_index__WEBPACK_IMPORTED_MODULE_3__["getSoruTipleri"]);
+        this.soruZorluklari$ = this.soruStore.select(_soru_store_index__WEBPACK_IMPORTED_MODULE_3__["getSoruZorluklari"]);
+        this.bilisselDuzeyler$ = this.soruStore.select(_soru_store_index__WEBPACK_IMPORTED_MODULE_3__["getBilisselDuzeyler"]);
+    }
+    IliskiliSoruService.prototype.resolve = function (route, state) {
+        var _this = this;
+        if (route.params && route.params['soruKokuNo']) {
+            this.routeParams = route.params;
+            this.soruKokuNo = route.params['soruKokuNo'];
+        }
+        return new Promise(function (resolve, reject) {
+            Promise.all([
+                _this.getSorular()
+            ]).then(function () {
+                if (_this.routeParams.soruNo) {
+                    _this.aktiSoruyuOlarakIsaretle(_this.routeParams.soruNo);
+                }
+                else {
+                    _this.aktiSoruyuOlarakIsaretle(null);
+                }
+                _this.onAramaCumlesiDegisti.subscribe(function (searchText) {
+                    if (searchText !== '') {
+                        _this.searchText = searchText;
+                        _this.getSorular();
+                    }
+                    else {
+                        _this.searchText = searchText;
+                        _this.getSorular();
+                    }
+                });
+                resolve();
+            }, reject);
+        });
+    };
+    IliskiliSoruService.prototype.getSorular = function () {
+        return this.getSorularBySoruKoku(this.soruKokuNo);
+    };
+    IliskiliSoruService.prototype.getSorularBySoruKoku = function (soruKokuNo) {
+        var _this = this;
+        return new Promise(function (resolve, reject) {
+            var adres = _this.baseUrl + "/" + _this.soruKokleriUrl + "/";
+            _this.http.get(adres + soruKokuNo)
+                .subscribe(function (sonuc) {
+                if (sonuc.basarili) {
+                    _this.soruKokuSonuc = sonuc;
+                    _this.sorular = sonuc.donenNesne.sorulari.map(function (soruListe) {
+                        return new _models_soru__WEBPACK_IMPORTED_MODULE_1__["SoruListe"](soruListe);
+                    });
+                    _this.sorular = _fuse_utils__WEBPACK_IMPORTED_MODULE_6__["FuseUtils"].filterArrayByString(_this.sorular, _this.searchText);
+                    _this.onSorularDegisti.next(_this.sorular);
+                    resolve(_this.sorular);
+                }
+                else {
+                    resolve([]);
+                }
+            }, reject);
+        });
+    };
+    IliskiliSoruService.prototype.toggleHepsiniSec = function () {
+        if (this.secilmisSorular.length > 0) {
+            this.deselectSorular();
+        }
+        else {
+            this.sorulariSec();
+        }
+    };
+    IliskiliSoruService.prototype.toggleSoruSec = function (id) {
+        //  Önce gelen soru secilmis mi kontrol et (soru secilmisse secilmemis yapmak icin)..
+        if (this.secilmisSorular.length > 0) {
+            for (var _i = 0, _a = this.secilmisSorular; _i < _a.length; _i++) {
+                var soru = _a[_i];
+                // ... secilmis soruyu sil
+                if (soru.soruId === id) {
+                    var index = this.secilmisSorular.indexOf(soru);
+                    if (index !== -1) {
+                        this.secilmisSorular.splice(index, 1);
+                        // secilmisoruyu olayini tetikle
+                        this.onSecilmisSorularDegisti.next(this.secilmisSorular);
+                        // don
+                        return;
+                    }
+                }
+            }
+        }
+        //  Eger gelen soru secilmemi ise secilmis yap
+        this.secilmisSorular.push(this.sorular.find(function (soru) {
+            return soru.soruId === id;
+        }));
+        // Tetikle
+        this.onSecilmisSorularDegisti.next(this.sorular);
+    };
+    IliskiliSoruService.prototype.sorulariSec = function (filterParameter, filterValue) {
+        this.secilmisSorular = [];
+        // Eger filtre yoksa hepsini sec
+        if (filterParameter === undefined || filterValue === undefined) {
+            this.secilmisSorular = this.sorular;
+        }
+        else {
+            (_a = this.secilmisSorular).push.apply(_a, this.sorular.filter(function (soru) {
+                return soru[filterParameter] === filterValue;
+            }));
+        }
+        // Sonrakini tetikle
+        this.onSecilmisSorularDegisti.next(this.secilmisSorular);
+        var _a;
+    };
+    IliskiliSoruService.prototype.deselectSorular = function () {
+        this.secilmisSorular = [];
+        // Sonrakini tetikle
+        this.onSecilmisSorularDegisti.next(this.secilmisSorular);
+    };
+    IliskiliSoruService.prototype.aktiSoruyuOlarakIsaretle = function (id) {
+        this.aktifSoru = this.sorular.find(function (soru) {
+            return soru.soruId === id;
+        });
+        this.onAktifSoruDegisti.next(this.aktifSoru);
+    };
+    IliskiliSoruService.prototype.updateMail = function (soru) {
+        var _this = this;
+        return new Promise(function (resolve, reject) {
+            _this.http.post('api/mail-mails/' + soru.soruId, __assign({}, soru))
+                .subscribe(function (response) {
+                _this.getSorular().then(function (sorular) {
+                    if (sorular && _this.aktifSoru) {
+                        _this.aktiSoruyuOlarakIsaretle(_this.aktifSoru.soruId);
+                    }
+                    resolve(sorular);
+                }, reject);
+            });
+        });
+    };
+    IliskiliSoruService = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({
+            providedIn: 'root'
+        }),
+        __metadata("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_5__["HttpClient"],
+            _ngrx_store__WEBPACK_IMPORTED_MODULE_4__["Store"],
+            _core_services_sb_mesaj_service__WEBPACK_IMPORTED_MODULE_8__["SbMesajService"]])
+    ], IliskiliSoruService);
+    return IliskiliSoruService;
 }());
 
 
@@ -2403,11 +2830,12 @@ var AlanKoduItem = /** @class */ (function () {
 /*!**********************************************************!*\
   !*** ./src/app/main/content/apps/sorular/models/soru.ts ***!
   \**********************************************************/
-/*! exports provided: SoruListe, SoruYarat, SoruDegistir, IliskiliSoruListe, IliskiliSoruYarat, IliskiliSoruDegistir, OgrenimHedef, TekDogruluSoruSecenek */
+/*! exports provided: SoruKokuListe, SoruListe, SoruYarat, SoruDegistir, IliskiliSoruListe, IliskiliSoruYarat, IliskiliSoruDegistir, OgrenimHedef, TekDogruluSoruSecenek */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SoruKokuListe", function() { return SoruKokuListe; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SoruListe", function() { return SoruListe; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SoruYarat", function() { return SoruYarat; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SoruDegistir", function() { return SoruDegistir; });
@@ -2426,6 +2854,12 @@ var __extends = (undefined && undefined.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+var SoruKokuListe = /** @class */ (function () {
+    function SoruKokuListe() {
+    }
+    return SoruKokuListe;
+}());
+
 var SoruListe = /** @class */ (function () {
     function SoruListe(soru) {
         this.soruId = soru.soruId;
@@ -6560,12 +6994,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _coktan_secmeli_iliskili_soru_coktan_secmeli_iliskili_soru_component__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./coktan-secmeli-iliskili-soru/coktan-secmeli-iliskili-soru.component */ "./src/app/main/content/apps/sorular/coktan-secmeli-iliskili-soru/coktan-secmeli-iliskili-soru.component.ts");
 /* harmony import */ var _coktan_secmeli_iliskili_soru_iliskili_soru_listesi_iliskili_soru_listesi_component__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./coktan-secmeli-iliskili-soru/iliskili-soru-listesi/iliskili-soru-listesi.component */ "./src/app/main/content/apps/sorular/coktan-secmeli-iliskili-soru/iliskili-soru-listesi/iliskili-soru-listesi.component.ts");
 /* harmony import */ var _coktan_secmeli_iliskili_soru_iliskili_soru_listesi_iliskili_soru_item_iliskili_soru_item_component__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ./coktan-secmeli-iliskili-soru/iliskili-soru-listesi/iliskili-soru-item/iliskili-soru-item.component */ "./src/app/main/content/apps/sorular/coktan-secmeli-iliskili-soru/iliskili-soru-listesi/iliskili-soru-item/iliskili-soru-item.component.ts");
+/* harmony import */ var _coktan_secmeli_iliskili_soru_iliskili_soru_detay_iliskili_soru_detay_component__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! ./coktan-secmeli-iliskili-soru/iliskili-soru-detay/iliskili-soru-detay.component */ "./src/app/main/content/apps/sorular/coktan-secmeli-iliskili-soru/iliskili-soru-detay/iliskili-soru-detay.component.ts");
+/* harmony import */ var _coktan_secmeli_iliskili_soru_iliskili_soru_service__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! ./coktan-secmeli-iliskili-soru/iliskili-soru.service */ "./src/app/main/content/apps/sorular/coktan-secmeli-iliskili-soru/iliskili-soru.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
+
 
 
 
@@ -6637,6 +7075,13 @@ var routes = [
         canActivate: [_soru_store_guards_sorular_resolve_guard__WEBPACK_IMPORTED_MODULE_26__["SorularResolveGuard"]]
     },
     {
+        path: 'iliskilisoru/:soruKokuNo',
+        component: _coktan_secmeli_iliskili_soru_coktan_secmeli_iliskili_soru_component__WEBPACK_IMPORTED_MODULE_31__["CoktanSecmeliIliskiliSoruComponent"],
+        resolve: {
+            mail: _coktan_secmeli_iliskili_soru_iliskili_soru_service__WEBPACK_IMPORTED_MODULE_35__["IliskiliSoruService"]
+        }
+    },
+    {
         path: 'ders/:dersNo/soru/:soruId',
         component: _sorular_component__WEBPACK_IMPORTED_MODULE_2__["SorularComponent"],
         canActivate: [_soru_store_guards_sorular_resolve_guard__WEBPACK_IMPORTED_MODULE_26__["SorularResolveGuard"]]
@@ -6688,7 +7133,8 @@ var SorularModule = /** @class */ (function () {
                 _sorular_side_nav_yeni_soru_btn_yeni_soru_btn_component__WEBPACK_IMPORTED_MODULE_29__["YeniSoruBtnComponent"],
                 _coktan_secmeli_iliskili_soru_coktan_secmeli_iliskili_soru_component__WEBPACK_IMPORTED_MODULE_31__["CoktanSecmeliIliskiliSoruComponent"],
                 _coktan_secmeli_iliskili_soru_iliskili_soru_listesi_iliskili_soru_listesi_component__WEBPACK_IMPORTED_MODULE_32__["IliskiliSoruListesiComponent"],
-                _coktan_secmeli_iliskili_soru_iliskili_soru_listesi_iliskili_soru_item_iliskili_soru_item_component__WEBPACK_IMPORTED_MODULE_33__["IliskiliSoruItemComponent"]
+                _coktan_secmeli_iliskili_soru_iliskili_soru_listesi_iliskili_soru_item_iliskili_soru_item_component__WEBPACK_IMPORTED_MODULE_33__["IliskiliSoruItemComponent"],
+                _coktan_secmeli_iliskili_soru_iliskili_soru_detay_iliskili_soru_detay_component__WEBPACK_IMPORTED_MODULE_34__["IliskiliSoruDetayComponent"]
             ],
             providers: [
                 _soru_store_effects_sorular_effects_service__WEBPACK_IMPORTED_MODULE_5__["SorularEffectsService"],

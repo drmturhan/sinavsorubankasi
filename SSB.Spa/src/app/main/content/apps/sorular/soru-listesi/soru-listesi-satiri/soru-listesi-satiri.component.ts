@@ -1,5 +1,6 @@
 
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostBinding, Input, OnDestroy, OnInit } from '@angular/core';
+
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { SoruListe, SoruDegistir } from '../../models/soru';
@@ -13,6 +14,7 @@ import { SbMesajService } from '../../../../../../core/services/sb-mesaj.service
 import { KayitSonuc } from '../../../../../../models/sonuclar';
 import { CoktanSecmeliSoruComponent } from '../../coktan-secmeli-soru/coktan-secmeli-soru.component';
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'fuse-soru-listesi-satiri',
@@ -27,18 +29,20 @@ export class SoruListesiSatiriComponent implements OnInit, OnDestroy {
   selectedSoruIds$: Observable<any>;
   dialogRef: any;
   constructor(
+
     public dialog: MatDialog,
     private store: Store<fromStore.SoruDepoAppState>,
     private sorularService: SorularService,
     private mesajService: SbMesajService,
     public platform: Platform,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private router: Router
   ) {
     this.selectedSoruIds$ = this.store.select(fromStore.getSelectedSoruNumaralari);
     this.selected = false;
 
   }
-  
+
   ngOnInit() {
     this.soru = new SoruListe(this.soru);
     this.bitisTarihiGecerli = this.soru.baslangic < this.soru.bitis;
@@ -68,6 +72,16 @@ export class SoruListesiSatiriComponent implements OnInit, OnDestroy {
 
 
   soruyuDegistir() {
+    if (this.soru.soruKokuNo > 0) {
+      this.router.navigate(['sorudeposu/iliskilisoru/', this.soru.soruKokuNo]);
+
+    }
+    else {
+      this.iliskisiOlmayanSoruyuDegistir()
+    }
+  }
+
+  iliskisiOlmayanSoruyuDegistir() {
     this.store.dispatch(new fromUIActions.StartLoading());
     const degisecekSoru = this.sorularService.getSoruById(this.soru.soruId)
       .subscribe((sonuc: KayitSonuc<SoruDegistir>) => {
@@ -107,7 +121,7 @@ export class SoruListesiSatiriComponent implements OnInit, OnDestroy {
             const formData: FormGroup = response[1];
             if (!formData.dirty) {
               console.log('Kaydetmeye gerek yok!');
-              
+
               return;
             }
             const kaydedilecekSoru: SoruDegistir = response[2];

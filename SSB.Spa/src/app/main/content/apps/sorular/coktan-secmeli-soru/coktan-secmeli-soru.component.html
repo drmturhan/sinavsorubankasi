@@ -73,11 +73,11 @@
       <mat-tab-group dynamicHeight=false #defter>
         <mat-tab label="Soru Tanımı">
           <ng-template mat-tab-label>
-            <div fxHide fxShow.gt-sm>Soru Tanımı ve Seçenekleri</div>
+            <div fxHide fxShow.gt-sm>Soru cümlesi ve seçenekleri</div>
             <mat-icon fxHide.gt-sm matTooltip="Soru metni ve seçenekleri tanımlamak için seçin.">edit</mat-icon>
           </ng-template>
           <div class="soru-tanim-sayfa-icerik">
-            <fuse-sb-html-editor id="soru-metni" [parentForm]="coktanSecmeliSoruSecenekService.soruForm" parentFormControlName="soruMetni"></fuse-sb-html-editor>
+            <fuse-sb-html-editor id="soru-metni" baslik="SORU CÜMLESİ"  [parentForm]="coktanSecmeliSoruSecenekService.soruForm" parentFormControlName="soruMetni"></fuse-sb-html-editor>
             <fuse-tek-dogrulu-secenek class="doldur"></fuse-tek-dogrulu-secenek>
           </div>
         </mat-tab>
