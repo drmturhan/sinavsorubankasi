@@ -34,6 +34,7 @@ import { IliskiliSoruListesiComponent } from './coktan-secmeli-iliskili-soru/ili
 import { IliskiliSoruItemComponent } from './coktan-secmeli-iliskili-soru/iliskili-soru-listesi/iliskili-soru-item/iliskili-soru-item.component';
 import { IliskiliSoruDetayComponent } from './coktan-secmeli-iliskili-soru/iliskili-soru-detay/iliskili-soru-detay.component';
 import { IliskiliSoruService } from './coktan-secmeli-iliskili-soru/iliskili-soru.service';
+import { SoruKokuEditComponent } from './coktan-secmeli-iliskili-soru/iliskili-soru-listesi/soru-koku-edit/soru-koku-edit.component';
 
 
 
@@ -133,7 +134,8 @@ const routes: Routes = [
     CoktanSecmeliIliskiliSoruComponent,
     IliskiliSoruListesiComponent,
     IliskiliSoruItemComponent,
-    IliskiliSoruDetayComponent
+    IliskiliSoruDetayComponent,
+    SoruKokuEditComponent
   ],
   providers: [
     SorularEffectsService,

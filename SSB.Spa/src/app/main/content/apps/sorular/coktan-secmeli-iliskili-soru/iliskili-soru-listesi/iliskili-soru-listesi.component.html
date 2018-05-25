@@ -1,41 +1,87 @@
 <div *ngIf="sorular.length === 0" fxLayout="column" fxLayoutAlign="center center" fxFlexFill>
-  <!-- <span class="no-messages-text hint-text">{{ 'MAIL.NO_MESSAGES' | translate }}</span> -->
-  <span class="no-messages-text hint-text">İlişkili soru listesi boş</span>
+    <!-- <span class="no-messages-text hint-text">{{ 'MAIL.NO_MESSAGES' | translate }}</span> -->
+    <span class="no-messages-text hint-text">İlişkili soru listesi boş</span>
 </div>
 
 <div class="mail-list" *fuseIfOnDom [@animateStagger]="{value:'50'}" fxLayout="column" fxLayoutAlign="start stretch">
-  <div class="kart p-24" style="background-color: #EDDDE3;color:#424A5E;" *ngIf="service.soruKokuSonuc.donenNesne.soruKokuMetni">
-    <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="16px">
-      <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="16px">
-        <mat-icon class="mat-18">link</mat-icon>
-        <h2>Soru Kökü</h2>
-      </div>
-      <div>
-        <button mat-button class="mat-button" (click)="$event.stopPropagation();" aria-label="Yeni soru ekle">
+    <!-- <div class="kart p-24" style="background-color: #EDDDE3;color:#424A5E;" *ngIf="service.soruKokuSonuc.donenNesne.soruKokuMetni">
+        <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="16px">
+            <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="16px">
+                <mat-icon class="mat-18">link</mat-icon>
+                <h2>Soru Kökü</h2>
+            </div>
+            <div>
+                <button mat-button class="mat-button" (click)="$event.stopPropagation();" aria-label="Yeni soru ekle">
           <mat-icon matTooltip="Soru kökünü değiştir">edit</mat-icon>
         </button>
-      </div>
+            </div>
+        </div>
+
+        <div [innerHTML]="service.soruKokuSonuc.donenNesne.soruKokuMetni" style="padding:24px;text-align: justify; "></div>
+    </div> -->
+    <div class="kart px-16" style="background-color: #C43F4D;color:#F5E5EA" *ngIf="service.soruKokuSonuc.donenNesne.soruKokuMetni">
+        <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="16px">
+            <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="16px">
+                <mat-icon class="mat-18">link</mat-icon>
+                <h2>Soru kökü</h2>
+            </div>
+            <div>
+                <div *ngIf="soruKokuForm?.dirty || soruKokuNo===0">
+                    <button mat-button class="mat-button" (click)="$event.stopPropagation();">
+            <mat-icon matTooltip="Soru kökünde değişiklikler yaptınız. Buradan kaydedebilirsiniz">sd_card</mat-icon>
+          </button>
+                </div>
+                <!-- <button [satPopoverAnchorFor]="soruKokuDuzenle" mat-button class="mat-button" (click)="$event.stopPropagation();soruKokunuDuzenle()"
+          aria-label="Yeni soru ekle">
+          <mat-icon matTooltip="Bu sor kökü ile ilişkili YENİ soru yarat.">edit</mat-icon>
+        </button> -->
+            </div>
+        </div>
+
+
+        <sat-popover #soruKokuDuzenle horizontalAlign="before">
+            <div class="fuse-card form" [formGroup]="soruKokuForm">
+
+                <!-- <img src="assets/images/cards/card1.jpg"> -->
+
+                <div class="p-16">
+                    <div class="h1">İlişkili soru</div>
+                    <div class="Birden fazla sorunun aynı soru köküne bağlanması"></div>
+                </div>
+
+                <div class="p-16  line-height-1.75">
+                    <mat-form-field appearance="legacy">
+                        <mat-label>Soru kökü metni</mat-label>
+                        <textarea fxFlexFill matTextareaAutosize minRows="30" matInput (keydown)="closeOnEnter($event)" formControlName="soruKokuMetni" placeholder="Soru kökü metni"></textarea>
+                        <mat-hint>Lütfen ortak soru kökü metnini girin.</mat-hint>
+                    </mat-form-field>
+
+                </div>
+
+            </div>
+        </sat-popover>
+
     </div>
 
-    <div [innerHTML]="service.soruKokuSonuc.donenNesne.soruKokuMetni" style="padding:24px;text-align: justify; "></div>
-  </div>
+    <div class="kart px-16" style="background-color: #F5E5EA;" *ngIf="service.soruKokuSonuc.donenNesne.soruKokuMetni">
+        <fuse-soru-koku-edit #duzenle [form]="soruKokuForm"></fuse-soru-koku-edit>
+    </div>
 
-  <div class="kart px-16" style="background-color: #424A5E;color:#BECDC4" *ngIf="service.soruKokuSonuc.donenNesne.soruKokuMetni">
-    <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="16px">
-      <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="16px">
-        <mat-icon class="mat-18">link</mat-icon>
-        <h2>Soru kökü ile ilişkili soru listesi</h2>
-      </div>
-      <div>
-        <button mat-button class="mat-button" (click)="$event.stopPropagation();yeniSoruYarat()" aria-label="Yeni soru ekle">
+    <div class="kart px-16" style="background-color: #C43F4D;color: #F5E5EA" *ngIf="service.soruKokuSonuc.donenNesne.soruKokuMetni">
+        <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="16px">
+            <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="16px">
+                <mat-icon class="mat-18">link</mat-icon>
+                <h2>Soru kökü ile ilişkili soru listesi</h2>
+            </div>
+            <div>
+                <button mat-button class="mat-button" (click)="$event.stopPropagation();yeniSoruYarat()" aria-label="Yeni soru ekle">
           <mat-icon matTooltip="Bu sor kökü ile ilişkili YENİ soru yarat.">add</mat-icon>
         </button>
-      </div>
-    </div>
+            </div>
+        </div>
 
-  </div>
-  <fuse-iliskili-soru-item class="px-16" matRipple *ngFor="let soruItem of sorular" [soru]="soruItem" (click)="soruyuOku(soruItem.soruId)"
-    [ngClass]="{'current-mail':soruItem?.soruId == aktifSoru?.soruId}" [@animate]="{value:'*',params:{y:'100%'}}">
-  </fuse-iliskili-soru-item>
+    </div>
+    <fuse-iliskili-soru-item class="px-16" matRipple *ngFor="let soruItem of sorular" [soru]="soruItem" (click)="soruyuOku(soruItem.soruId)" [ngClass]="{'current-mail':soruItem?.soruId == aktifSoru?.soruId}" [@animate]="{value:'*',params:{y:'100%'}}">
+    </fuse-iliskili-soru-item>
 
 </div>

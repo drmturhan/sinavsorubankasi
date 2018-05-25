@@ -37,3 +37,16 @@ D:\GitProjeleri\sinavsorubankasi\Core\Core.KisaMesajServisi\obj\Debug\netcoreapp
 D:\GitProjeleri\sinavsorubankasi\Core\Core.KisaMesajServisi\obj\Debug\netcoreapp2.0\Core.KisaMesajServisi.csproj.CopyComplete
 D:\GitProjeleri\sinavsorubankasi\Core\Core.KisaMesajServisi\obj\Debug\netcoreapp2.0\Core.KisaMesajServisi.dll
 D:\GitProjeleri\sinavsorubankasi\Core\Core.KisaMesajServisi\obj\Debug\netcoreapp2.0\Core.KisaMesajServisi.pdb
+D:\SSB2018\sinavsorubankasi\Core\Core.KisaMesajServisi\bin\Debug\netcoreapp2.0\Properties\Resources.resx
+D:\SSB2018\sinavsorubankasi\Core\Core.KisaMesajServisi\bin\Debug\netcoreapp2.0\Core.KisaMesajServisi.deps.json
+D:\SSB2018\sinavsorubankasi\Core\Core.KisaMesajServisi\bin\Debug\netcoreapp2.0\Core.KisaMesajServisi.dll
+D:\SSB2018\sinavsorubankasi\Core\Core.KisaMesajServisi\bin\Debug\netcoreapp2.0\Core.KisaMesajServisi.pdb
+D:\SSB2018\sinavsorubankasi\Core\Core.KisaMesajServisi\bin\Debug\netcoreapp2.0\Core.Base.dll
+D:\SSB2018\sinavsorubankasi\Core\Core.KisaMesajServisi\bin\Debug\netcoreapp2.0\Core.Base.pdb
+D:\SSB2018\sinavsorubankasi\Core\Core.KisaMesajServisi\obj\Debug\netcoreapp2.0\Core.KisaMesajServisi.csprojAssemblyReference.cache
+D:\SSB2018\sinavsorubankasi\Core\Core.KisaMesajServisi\obj\Debug\netcoreapp2.0\Core.KisaMesajServisi.csproj.CoreCompileInputs.cache
+D:\SSB2018\sinavsorubankasi\Core\Core.KisaMesajServisi\obj\Debug\netcoreapp2.0\Core.KisaMesajServisi.AssemblyInfoInputs.cache
+D:\SSB2018\sinavsorubankasi\Core\Core.KisaMesajServisi\obj\Debug\netcoreapp2.0\Core.KisaMesajServisi.AssemblyInfo.cs
+D:\SSB2018\sinavsorubankasi\Core\Core.KisaMesajServisi\obj\Debug\netcoreapp2.0\Core.KisaMesajServisi.csproj.CopyComplete
+D:\SSB2018\sinavsorubankasi\Core\Core.KisaMesajServisi\obj\Debug\netcoreapp2.0\Core.KisaMesajServisi.dll
+D:\SSB2018\sinavsorubankasi\Core\Core.KisaMesajServisi\obj\Debug\netcoreapp2.0\Core.KisaMesajServisi.pdb

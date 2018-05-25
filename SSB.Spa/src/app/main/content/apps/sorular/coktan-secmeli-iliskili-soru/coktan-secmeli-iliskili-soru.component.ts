@@ -10,7 +10,8 @@ import { IliskiliSoruService } from './iliskili-soru.service';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
 import { SoruDepoVeriService } from '../soru-store/helpers/soru-depo-veri.service';
 import { Router } from '@angular/router';
-
+import { switchMap, catchError } from 'rxjs/operators';
+import { map } from 'rxjs-compat/operator/map';
 
 @Component({
   selector: 'fuse-coktan-secmeli-iliskili-soru',
@@ -43,7 +44,9 @@ export class CoktanSecmeliIliskiliSoruComponent implements OnInit, OnDestroy {
     private fuseTranslationLoader: FuseTranslationLoaderService
   ) {
     this.searchInput = new FormControl('');
-    this.soruDepoService.getBirimler().subscribe((sonuc) => { console.log(sonuc); });
+    this.soruDepoService.checkStore().subscribe();
+    // this.soruDepoService.getBirimler().subscribe((sonuc) => { console.log(sonuc); });
+    // this.soruDepoService.getBirimler().subscribe((sonuc) => { console.log(sonuc); });
     // this.fuseTranslationLoader.loadTranslations(english, turkish);
   }
 
