@@ -20,13 +20,13 @@ namespace SoruDeposu.DataAccess.Dtos
     {
         
         public string SoruKokuMetni { get; set; }
-        public ICollection<SoruYaratDto> Sorulari { get; set; } = new List<SoruYaratDto>();
+        //public ICollection<int> Sorulari { get; set; } = new List<int>();
     }
 
     public class SoruKokuDegistirDto
     {
         public int SoruKokuId { get; set; }
         public string SoruKokuMetni { get; set; }
-        public ICollection<SoruDegistirDto> Sorulari { get; set; } = new List<SoruDegistirDto>();
+        //public ICollection<int> Sorulari { get; set; } = new List<int>();
     }
 }

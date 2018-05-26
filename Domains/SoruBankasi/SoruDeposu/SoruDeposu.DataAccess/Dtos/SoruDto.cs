@@ -48,6 +48,7 @@ namespace SoruDeposu.DataAccess.Dtos
     //Bu sınıfta onaylandı yok. Onaylama süreci ayrıca yönetilecek
     public class SoruYaratDto
     {
+        public int SoruKokuNo { get; set; }
         public int? BirimNo { get; set; }
         public int? ProgramNo { get; set; }
         public int? DonemNo { get; set; }

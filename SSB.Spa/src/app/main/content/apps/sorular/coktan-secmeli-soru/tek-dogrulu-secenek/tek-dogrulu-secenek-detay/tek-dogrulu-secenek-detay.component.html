@@ -30,7 +30,7 @@
   </div>
   <div class="todo-content">
     <form [formGroup]="secenekFormu">
-      <fuse-sb-html-editor   baslik="SEÇENEK METNİ" [parentForm]="secenekFormu" parentFormControlName="secenekMetni"  ></fuse-sb-html-editor>
+      <fuse-sb-html-editor   baslik="SEÇENEK METNİ"   [parentForm]="secenekFormu" parentFormControlName="secenekMetni"  ></fuse-sb-html-editor>
 
       <div class="secenek-ozellik-listesi" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px">
         <mat-checkbox formControlName="dogruSecenek" (change)="toggleDogruSecenek($event)" [disabled]="hemenElenebilirSecenek" >

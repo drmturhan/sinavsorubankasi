@@ -180,4 +180,23 @@ namespace SoruDeposu.DataAccess.Mappers
             return null;
         }
     }
+
+    internal class SoruKokuSorulariYonetici
+    {
+        private readonly SoruKokuDegistirDto d;
+        private readonly SoruKoku e;
+
+
+        List<Soru> silinenler = new List<Soru>();
+        List<Soru> eklenenler = new List<Soru>();
+
+        public SoruKokuSorulariYonetici(SoruKokuDegistirDto dto, SoruKoku entity)
+        {
+            this.d = dto;
+            this.e = entity;
+        }
+        public void Yonet()
+        {
+        }
+    }
 }

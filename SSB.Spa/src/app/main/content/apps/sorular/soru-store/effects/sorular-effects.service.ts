@@ -4,7 +4,7 @@ import { SoruBirimItem, SoruBilisselDuzeyItem, SoruTipItem, SoruZorlukItem } fro
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'environments/environment';
 import { SoruListe, SoruYarat, SoruDegistir } from '../../models/soru';
-import { KayitSonuc, Sonuc } from '../../../../../../models/sonuclar';
+import { KayitSonuc, Sonuc, ListeSonuc } from '../../../../../../models/sonuclar';
 import * as fromRootStore from '../../../../../../store/index';
 import { KullaniciBilgi } from '../../../../../../models/kullanici';
 import { Store } from '@ngrx/store';
@@ -72,9 +72,9 @@ export class SorularEffectsService {
     return this.http.put<Sonuc>(adres, bilgi);
   }
 
-  soruSilindiOlarakIsaretle(soruNo: number) {
-    const adres = `${this.baseUrl}/${this.sorularUrl}/${soruNo}`;
-    return this.http.delete<Sonuc>(adres);
+  soruSilindiOlarakIsaretle(soruNumaralari: string[]) {
+    const adres = `${this.baseUrl}/${this.sorularUrl}/coklusil`;
+    return this.http.post<ListeSonuc<number>>(adres, soruNumaralari);
   }
 
   getSoruTipleri(): Observable<SoruTipItem[]> {

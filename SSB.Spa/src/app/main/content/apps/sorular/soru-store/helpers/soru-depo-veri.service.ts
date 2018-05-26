@@ -6,11 +6,14 @@ import { Observable } from 'rxjs/Observable';
 import { map, switchMap, catchError, tap, take, filter } from 'rxjs/operators';
 import * as fromStore from '../index';
 import * as fromRootStore from '../../../../../../store/index';
+
 @Injectable()
 export class SoruDepoVeriService {
 
 
-    constructor(private store: Store<SoruDepoAppState>) {
+    constructor(
+        private store: Store<SoruDepoAppState>
+       ) {
         this.store.select(fromRootStore.getRouterState).subscribe(routerState => {
             if (routerState) {
                 this.routerState = routerState.state;

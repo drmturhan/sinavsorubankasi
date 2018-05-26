@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Location } from '@angular/common';
-import { SoruListe, SoruDegistir, SoruYarat } from '../../models/soru';
+import { SoruListe, SoruDegistir, SoruYarat, SoruKokuListe, SoruKokuYarat, SoruKokuDuzenle } from '../../models/soru';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { IliskiliSoruService } from '../iliskili-soru.service';
@@ -12,7 +12,7 @@ import { SorularService } from '../../sorular.service';
 import { KayitSonuc } from '../../../../../../models/sonuclar';
 import { SbMesajService } from '../../../../../../core/services/sb-mesaj.service';
 import { Platform } from '@angular/cdk/platform';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatExpansionPanel } from '@angular/material';
 import { CoktanSecmeliSoruComponent } from '../../coktan-secmeli-soru/coktan-secmeli-soru.component';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { DersItem } from '../../models/birim-program-donem-ders';
@@ -25,28 +25,36 @@ import { SatPopover } from '@ncstate/sat-popover';
 })
 export class IliskiliSoruListesiComponent implements OnInit, OnDestroy {
   @ViewChild(SatPopover) popover: SatPopover;
+  @ViewChild(MatExpansionPanel) soruKokuMetiniPaneli: MatExpansionPanel;
+  
   sorular: SoruListe[];
   aktifSoru: SoruListe;
   onSorularDegisti: Subscription;
   onAktifSoruDegisti: Subscription;
   dialogRef: any;
   soruKokuForm: FormGroup;
-
-
-
+  panelOpenState: boolean;
   public get soruKokuNo(): number {
     if (!this.soruKokuForm || !this.soruKokuForm.get('soruKokuId')) {
       return 0;
     } else {
-
       const deger = this.soruKokuForm.get('soruKokuId').value;
-      console.log('deger',deger);
+
       return deger;
     }
-
-
   }
 
+  public get soruKokuMetni(): string {
+    if (!this.soruKokuForm || !this.soruKokuForm.get('soruKokuMetni')) {
+      return '';
+    } else {
+      const deger = this.soruKokuForm.get('soruKokuMetni').value;
+      if (this.panelOpenState === true) {
+        return '';
+      }
+      return deger;
+    }
+  }
 
   constructor(private route: ActivatedRoute,
     private formBuilder: FormBuilder,
@@ -60,17 +68,23 @@ export class IliskiliSoruListesiComponent implements OnInit, OnDestroy {
     private platform: Platform
   ) {
 
-    this.soruKokuForm = this.formBuilder.group({
-      soruKokuId: service.soruKokuSonuc ? service.soruKokuSonuc.donenNesne.soruKokuId : null,
-      soruKokuMetni: [service.soruKokuSonuc ? service.soruKokuSonuc.donenNesne.soruKokuMetni : null, [Validators.required]]
-    });
+  
+    this.soruKokuFormuYarat(service.soruKokuSonuc ? service.soruKokuSonuc.donenNesne.soruKokuId : null,
+      service.soruKokuSonuc ? service.soruKokuSonuc.donenNesne.soruKokuMetni : '');
   }
 
+  soruKokuFormuYarat(id, metin) {
+    this.soruKokuForm = this.formBuilder.group({
+      soruKokuId: id,
+      soruKokuMetni: [metin, [Validators.required]]
+    });
+  }
   ngOnInit() {
     this.onSorularDegisti =
       this.service.onSorularDegisti
         .subscribe(sorular => {
           this.sorular = sorular;
+
         });
 
     this.onAktifSoruDegisti =
@@ -92,13 +106,47 @@ export class IliskiliSoruListesiComponent implements OnInit, OnDestroy {
     this.onSorularDegisti.unsubscribe();
   }
   soruyuOku(soruId) {
-    this.service.aktiSoruyuOlarakIsaretle(soruId);
+    this.service.aktiSoruOlarakIsaretle(soruId);
+  }
+  soruKokunuKaydet() {
+    if (this.soruKokuNo > 0) {
+      const degisecek: SoruKokuDuzenle = Object.assign({}, this.soruKokuForm.value);
+      degisecek.sorulari = this.sorular.map(s => s.soruId);
+      this.service.soruKokuKaydet(degisecek).subscribe((sonuc: KayitSonuc<SoruKokuListe>) => {
+        if (sonuc.basarili) {
+          this.service.onKayitGeldi(sonuc);
+          this.soruKokuForm.patchValue({ soruKokuId: sonuc.donenNesne.soruKokuId, soruKokuMetni: sonuc.donenNesne.soruKokuMetni });
+          this.location.go('sorudeposu/iliskilisoru/' + this.service.soruKokuNo);
+          this.soruKokuForm.markAsPristine();
+        } else {
+          this.mesajService.hata(sonuc.hatalar[0]);
+        }
+      });
+    } else {
+      const yeni: SoruKokuYarat = Object.assign({}, this.soruKokuForm.value);
+      yeni.sorulari = this.sorular.map(s => s.soruId);
+      this.service.soruKokuYarat(yeni).subscribe((sonuc: KayitSonuc<SoruKokuListe>) => {
+        if (sonuc.basarili) {
+          this.service.onKayitGeldi(sonuc);
+          this.soruKokuForm.patchValue({ soruKokuId: sonuc.donenNesne.soruKokuId, soruKokuMetni: sonuc.donenNesne.soruKokuMetni });
+          this.soruKokuForm.markAsPristine();
+        } else {
+          this.mesajService.hata(sonuc.hatalar[0]);
+        }
+      });
+    }
   }
 
   yeniSoruYarat() {
 
+    const soruKokuMetni = this.soruKokuForm.get('soruKokuMetni').value;
+    if (!soruKokuMetni || soruKokuMetni.length === 0) {
+      this.mesajService.hataStr('Lütfen önce soru kökü metnini yazın!');
+      this.soruKokuMetiniPaneli.open();
+      this.panelOpenState = true;
+      return;
+    }
 
-    // this.sorularStore.dispatch(fromSorularStore.gerekl)
     const ders = this.sorularService.dersBul(this.service.soruKokuSonuc.donenNesne.dersNo);
     let en = '70vw';
     let boy = '90vh';
@@ -151,15 +199,33 @@ export class IliskiliSoruListesiComponent implements OnInit, OnDestroy {
 
 
   yeniSoruEkle(formData: FormGroup, ders: DersItem) {
+    let kaydedilecekSoruKoku: SoruKokuListe = null;
+    if (this.soruKokuNo > 0) {
+      kaydedilecekSoruKoku = Object.assign({}, this.soruKokuForm.value);
+    } else {
+      const yeni: SoruKokuYarat = Object.assign({}, this.soruKokuForm.value);
+      yeni.sorulari = this.sorular.map(s => s.soruId);
+      this.service.soruKokuYarat(yeni).subscribe((sonuc: KayitSonuc<SoruKokuListe>) => {
+        if (sonuc.basarili) {
+          kaydedilecekSoruKoku = sonuc.donenNesne;
+          this.service.onKayitGeldi(sonuc);
+        } else {
+          this.mesajService.hata(sonuc.hatalar[0]);
+        }
+      });
+    }
 
-    // this.sorukok
-    // if (this.soruKokuForm.dirty )
+    if (kaydedilecekSoruKoku === null) {
+      this.mesajService.hataStr('Soru kökü bilgisi kaydedilemedi! Değişiklikler kayboldu!');
+      return;
+    }
 
     const yeniSoru: SoruYarat = Object.assign({}, formData.getRawValue());
     yeniSoru.tekDogruluSecenekleri = formData.get('secenekler').value;
     yeniSoru.kabulEdilebilirlikIndeksi = formData.get('kabulEdilebilirlikIndeksi').value;
     yeniSoru.baslangic = formData.get('gecerlilik.baslangic').value;
     yeniSoru.bitis = formData.get('gecerlilik.bitis').value;
+    yeniSoru.soruKokuNo = kaydedilecekSoruKoku.soruKokuId;
     if (yeniSoru.dersNo > 0) {
       if (ders != null) {
         yeniSoru.birimNo = ders.birimNo;
@@ -168,8 +234,9 @@ export class IliskiliSoruListesiComponent implements OnInit, OnDestroy {
         yeniSoru.dersGrubuNo = ders.dersGrubuNo;
       }
     }
+    yeniSoru.soruKokuNo = kaydedilecekSoruKoku.soruKokuId;
     this.sorularStore.dispatch(new fromSorularStore.UpdateSoru(yeniSoru));
-    this.service.yenile();
+
 
   }
   soruKokunuDuzenle() {
@@ -180,11 +247,8 @@ export class IliskiliSoruListesiComponent implements OnInit, OnDestroy {
   closeOnEnter(event: KeyboardEvent) {
 
     if (event.code === 'Enter') {
-
       this.popover.close();
-
     }
-
   }
 
 }

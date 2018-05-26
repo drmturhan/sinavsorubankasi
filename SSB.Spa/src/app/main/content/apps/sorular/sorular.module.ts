@@ -46,43 +46,53 @@ const routes: Routes = [
     canActivate: [SorularResolveGuard]
   },
   {
-    path: 'birim/:birimNo',
+    path: 'birimsorulari/:bilgi',
     component: SorularComponent,
     canActivate: [SorularResolveGuard]
   },
   {
-    path: 'program/:programNo',
+    path: 'programsorulari/:bilgi',
     component: SorularComponent,
     canActivate: [SorularResolveGuard]
   },
   {
-    path: 'program/:programNo/donem/:donemNo',
+    path: 'donemsorulari/:bilgi',
     component: SorularComponent,
     canActivate: [SorularResolveGuard]
   },
   {
-    path: 'program/:programNo/donem/:donemNo/ders/:dersNo',
+    path: 'derssorulari/:bilgi',
 
     component: SorularComponent,
     canActivate: [SorularResolveGuard]
   },
   {
-    path: 'program/:programNo/donem/:donemNo/ders/:dersNo/konu/:konuNo',
+    path: 'konusorulari/:bilgi',
+    component: SorularComponent,
+    canActivate: [SorularResolveGuard]
+  },
+
+  {
+    path: 'ders/:dersNo/konu/:konuNo/soruKoku/:soruKokuNo',
     component: SorularComponent,
     canActivate: [SorularResolveGuard]
   },
   {
-    path: 'ders/:dersNo/konu/:konuNo/soru/:soruId',
-    component: SorularComponent,
-    canActivate: [SorularResolveGuard]
+    path: 'iliskilisoru/ders/:dersNo/konu/:konuNo',
+    component: CoktanSecmeliIliskiliSoruComponent,
+    pathMatch: 'full',
+    resolve: {
+      mail: IliskiliSoruService
+    }
   },
   {
-    path: 'iliskilisoru/:soruKokuNo',
+    path: 'iliskilisoru/ders/:dersNo/konu/:konuNo/sorukoku/:soruKokuNo',
     component: CoktanSecmeliIliskiliSoruComponent,
     resolve: {
       mail: IliskiliSoruService
     }
   },
+
   {
     path: 'ders/:dersNo/soru/:soruId',
     component: SorularComponent,

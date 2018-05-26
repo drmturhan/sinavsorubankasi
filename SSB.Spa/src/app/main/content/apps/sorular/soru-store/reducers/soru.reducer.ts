@@ -111,10 +111,17 @@ export function SorularReducer(state = SorularInitialState, action: SorularActio
         }
 
         case SorularActions.SORU_SIL_TAMAM: {
-            const soruId = action.payload;
+            const soruIdleri = action.payload;
             const arr = Object.keys(state.entities).map(k => state.entities[k]);
-            const loaded = arr.filter(s => s.soruId !== soruId);
-            const entities = loaded.reduce(
+
+            let i = arr.length;
+            while (i--) {
+                if (arr[i] && arr[i].hasOwnProperty('soruId') && soruIdleri.indexOf((arr[i]['soruId']).toString()) > -1) {
+                    arr.splice(i, 1);
+                }
+            }
+
+            const entities = arr.reduce(
                 (_entities: { [soruId: number]: SoruListe }, soru: SoruListe) => {
                     return {
                         ..._entities,
@@ -124,7 +131,7 @@ export function SorularReducer(state = SorularInitialState, action: SorularActio
             return tassign(state, {
                 entities: entities,
                 loading: false,
-                loaded
+                loaded: arr
             });
 
 

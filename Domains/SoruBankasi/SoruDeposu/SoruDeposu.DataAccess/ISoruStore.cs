@@ -16,8 +16,7 @@ namespace SoruDeposu.DataAccess
         Task<Soru> KismenDegistirAsync(SoruAlanDegistirDto degisimBilgisi);
         void Sil(Soru yeniSoru);
         Task<bool> KaydetAsync();
-
-        
+        Task<int[]> CokluSil(int[] soruNumaralari);
     }
     public interface ISoruKokuStore
     {

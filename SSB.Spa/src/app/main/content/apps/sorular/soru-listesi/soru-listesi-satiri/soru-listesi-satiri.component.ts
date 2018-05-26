@@ -73,11 +73,16 @@ export class SoruListesiSatiriComponent implements OnInit, OnDestroy {
 
   soruyuDegistir() {
     if (this.soru.soruKokuNo > 0) {
-      this.router.navigate(['sorudeposu/iliskilisoru/', this.soru.soruKokuNo]);
+      if (this.soru.konuNo > 0) {
+        this.router.navigate([`sorudeposu/iliskilisoru/ders/${this.soru.dersNo}/konu/${this.soru.konuNo}/sorukoku/${this.soru.soruKokuNo}`]);
+      } else {
+
+        this.router.navigate([`sorudeposu/iliskilisoru/ders/${this.soru.dersNo}/konu/`, this.soru.soruKokuNo]);
+      }
 
     }
     else {
-      this.iliskisiOlmayanSoruyuDegistir()
+      this.iliskisiOlmayanSoruyuDegistir();
     }
   }
 
@@ -179,7 +184,7 @@ export class SoruListesiSatiriComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe(result => {
 
       if (result) {
-        this.store.dispatch(new fromStore.SoruSilindiIsaretle(this.soru.soruId));
+        this.store.dispatch(new fromStore.SoruSilindiIsaretle([this.soru.soruId.toString()]));
       }
     });
 

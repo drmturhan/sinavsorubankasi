@@ -7,13 +7,16 @@ import { switchMap, catchError } from 'rxjs/operators';
 import 'rxjs/add/observable/forkJoin';
 import { SoruDepoVeriService } from '../helpers/soru-depo-veri.service';
 
+
 @Injectable()
 export class SorularResolveGuard implements CanActivate {
     routerState: any;
 
     constructor(
-        private helperService: SoruDepoVeriService
-    ) { }
+        private helperService: SoruDepoVeriService,
+    ) { 
+
+    }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
 

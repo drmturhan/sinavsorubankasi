@@ -107,13 +107,40 @@ namespace Psg.Api.Controllers.Api.SoruDepo
 
 
         [AllowAnonymous]
+        [HttpPost("coklusil")]
+        public async Task<IActionResult> CokluSil([FromBody] int[] soruNumaralari)
+        {
+
+            return await KullaniciVarsaCalistir<IActionResult>(async () =>
+            {
+
+                var sonuc = await soruStore.CokluSil(soruNumaralari);
+                try
+                {
+
+                    if (sonuc.Length > 0)
+                    {
+
+                        var kayitSonuc = ListeSonuc<int>.IslemTamam(sonuc);
+                        kayitSonuc.Mesajlar[0]=$"{sonuc.Length} kayıt silindi";
+                        return Ok(kayitSonuc);
+                    }
+                }
+                catch (Exception e)
+                {
+                    throw new InternalServerError("Soru yaratılamadı!");
+                }
+                throw new InternalServerError("Soru yaratılamadı!");
+            });
+        }
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> YeniSoru([FromBody] SoruYaratDto yeniSoruDto)
         {
 
             return await KullaniciVarsaCalistir<IActionResult>(async () =>
             {
-                
+
                 var soru = await soruStore.YaratAsync(yeniSoruDto);
                 try
                 {
@@ -133,6 +160,8 @@ namespace Psg.Api.Controllers.Api.SoruDepo
                 throw new InternalServerError("Soru yaratılamadı!");
             });
         }
+
+
         [AllowAnonymous]
         [HttpPut]
         public async Task<IActionResult> SoruKaydet([FromBody] SoruDegistirDto degisecekSoru)

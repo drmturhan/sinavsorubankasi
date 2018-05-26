@@ -91,7 +91,7 @@ export class SoruDetayComponent implements OnInit, OnChanges {
 
     }
     else {
-      this.iliskisiOlmayanSoruyuDegistir()
+      this.iliskisiOlmayanSoruyuDegistir();
     }
   }
   iliskisiOlmayanSoruyuDegistir() {
@@ -196,7 +196,7 @@ export class SoruDetayComponent implements OnInit, OnChanges {
     dialogRef.afterClosed().subscribe(result => {
 
       if (result) {
-        this.store.dispatch(new fromStore.SoruSilindiIsaretle(this.soru.soruId));
+        this.store.dispatch(new fromStore.SoruSilindiIsaretle([this.soru.soruId.toString()]));
       }
     });
   }

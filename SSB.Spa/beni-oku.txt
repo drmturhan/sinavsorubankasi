@@ -12,3 +12,5 @@ npm install tassign
 
 
 npm install --save @ncstate/sat-popover 
+
+npm i guid-typescript --save

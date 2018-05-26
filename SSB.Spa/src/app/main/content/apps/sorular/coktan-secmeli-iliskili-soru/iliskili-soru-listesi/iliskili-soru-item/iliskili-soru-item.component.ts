@@ -81,7 +81,7 @@ export class IliskiliSoruItemComponent implements OnInit, OnDestroy {
           return;
         }
         const ders = this.sorularService.dersBul(sonuc.donenNesne.dersNo);
-        let en = '70vw';
+        let en = '80vw';
         let boy = '90vh';
         let sinif = 'popup-masaustu';
         if (this.platform.ANDROID || this.platform.IOS) {

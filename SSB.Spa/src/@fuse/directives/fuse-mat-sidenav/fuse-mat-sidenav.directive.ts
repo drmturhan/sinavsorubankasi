@@ -13,7 +13,9 @@ export class FuseMatSidenavHelperDirective implements OnInit, OnDestroy
 {
     matchMediaSubscription: Subscription;
     @HostBinding('class.mat-is-locked-open') isLockedOpen = true;
+    // tslint:disable-next-line:no-input-rename
     @Input('fuseMatSidenavHelper') id: string;
+    // tslint:disable-next-line:no-input-rename
     @Input('mat-is-locked-open') matIsLockedOpenBreakpoint: string;
 
     constructor(
@@ -69,6 +71,7 @@ export class FuseMatSidenavHelperDirective implements OnInit, OnDestroy
 })
 export class FuseMatSidenavTogglerDirective
 {
+    // tslint:disable-next-line:no-input-rename
     @Input('fuseMatSidenavToggler') id;
 
     constructor(private fuseMatSidenavService: FuseMatSidenavHelperService)

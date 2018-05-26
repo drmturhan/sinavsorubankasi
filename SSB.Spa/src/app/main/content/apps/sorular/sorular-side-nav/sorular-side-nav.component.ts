@@ -19,6 +19,7 @@ import { SoruYarat } from '../models/soru';
 import { SorularService } from '../sorular.service';
 import { DialMenuModel } from '../../../../../models/dial-menu-model';
 import { SbNavitaionItem } from '../../../../../models/sb-navigation';
+import { SoruDepoResolverService } from '../soru-depo-resolver.service';
 
 
 @Component({
@@ -36,8 +37,8 @@ export class SorularSideNavComponent implements OnInit, AfterViewChecked {
   navigation: any;
 
   yenimenuItems: DialMenuModel[] = [
-    { name: 'basit', icon: 'add', title: 'Yeni soru' },
-    { name: 'iliskili', icon: 'attachment', title: 'Yeni ilişkili soru' }
+    { name: 'basit', icon: 'add', title: 'Yeni soru', arkaplanrengi: '#424A5E', renk: '#BD3D4B' },
+    { name: 'iliskili', icon: 'attachment', title: 'Yeni ilişkili soru', arkaplanrengi: '#CCB8C7', renk: '#BD3D4B' }
   ];
 
   private _seciliBirim: SoruBirimItem;
@@ -65,7 +66,7 @@ export class SorularSideNavComponent implements OnInit, AfterViewChecked {
     private store: Store<fromRootStore.State>,
     private mesajService: SbMesajService,
     private helperService: SoruDepoVeriService,
-
+    private resolverBilgi: SoruDepoResolverService,
     private router: Router) {
     this.store.select(fromRootStore.getRouterState).subscribe(routerState => {
       if (routerState) {
@@ -225,12 +226,16 @@ export class SorularSideNavComponent implements OnInit, AfterViewChecked {
   yeniSoruYarat(islem) {
     switch (islem) {
       case 'iliskili':
-
+        this.router.navigate([`sorudeposu/iliskilisoru/ders/${this.dersNo}/konu/${this.konuNo}`]);
         break;
 
       default:
         this.composeDialog();
         break;
     }
+  }
+
+  programBilgisiOlustur(program) {
+    this.resolverBilgi.bilgiKoy(program);
   }
 }

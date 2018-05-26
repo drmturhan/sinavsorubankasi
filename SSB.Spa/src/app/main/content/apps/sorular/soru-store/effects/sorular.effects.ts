@@ -19,21 +19,25 @@ import { SbMesajService } from '../../../../../../core/services/sb-mesaj.service
 import { KayitSonuc, Sonuc } from '../../../../../../models/sonuclar';
 import * as fromRootStore from '../../../../../../store/index';
 import { SorularEffectsService } from './sorular-effects.service';
+import { SoruDepoResolverService } from '../../soru-depo-resolver.service';
+import { ResolveInfo } from '../../../../../../models/resolve-model';
 
 @Injectable()
 export class SorularEffect {
     routerState: any;
     aktifBirim: SoruBirimItem;
-
+    bilgi: ResolveInfo;
     constructor(
         private actions: Actions,
         private service: SorularEffectsService,
         private store: Store<fromRootStore.State>,
-        private mesajService: SbMesajService
+        private mesajService: SbMesajService,
+        private resolverBilgi: SoruDepoResolverService
     ) {
         this.store.select(fromRootStore.getRouterState).subscribe(routerState => {
             if (routerState) {
                 this.routerState = routerState.state;
+                // this.bilgi = resolverBilgi.bilgiAl(routerState.state.bilgi)
             }
         });
         this.store.select(getAktifBirim).subscribe((birim: SoruBirimItem) => this.aktifBirim = birim);
@@ -97,7 +101,7 @@ export class SorularEffect {
                                 this.mesajService.hatalar(sonuc.hatalar);
                             }
 
-                        }).catch(err =>  of(new fromSorularActions.GetSorularBasarisiz(err)));
+                        }).catch(err => of(new fromSorularActions.GetSorularBasarisiz(err)));
                 })
             );
 

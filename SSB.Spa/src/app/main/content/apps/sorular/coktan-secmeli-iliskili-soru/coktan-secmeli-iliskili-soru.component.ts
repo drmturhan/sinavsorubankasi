@@ -45,9 +45,7 @@ export class CoktanSecmeliIliskiliSoruComponent implements OnInit, OnDestroy {
   ) {
     this.searchInput = new FormControl('');
     this.soruDepoService.checkStore().subscribe();
-    // this.soruDepoService.getBirimler().subscribe((sonuc) => { console.log(sonuc); });
-    // this.soruDepoService.getBirimler().subscribe((sonuc) => { console.log(sonuc); });
-    // this.fuseTranslationLoader.loadTranslations(english, turkish);
+
   }
 
   ngOnInit() {
@@ -57,7 +55,7 @@ export class CoktanSecmeliIliskiliSoruComponent implements OnInit, OnDestroy {
 
           setTimeout(() => {
             this.secilmisSorularVar = secilmisSorular.length > 0;
-            this.belirlenmemis = (secilmisSorular.length !== this.service.sorular.length && secilmisSorular.length > 0);
+            this.belirlenmemis = secilmisSorular.length > 0 && this.service.sorular && this.service.sorular.length > 0 && secilmisSorular.length !== this.service.sorular.length;
           }, 0);
         });
     this.onAktifSoruDegisti =
@@ -120,6 +118,6 @@ export class CoktanSecmeliIliskiliSoruComponent implements OnInit, OnDestroy {
 
   }
   soruDepoAnaSayfayaGit() {
-    this.router.navigate(['sorudeposu']);
+    this.router.navigate([`sorudeposu/`]);
   }
 }

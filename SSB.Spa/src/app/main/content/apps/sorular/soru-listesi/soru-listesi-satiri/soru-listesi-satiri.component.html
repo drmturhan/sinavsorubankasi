@@ -2,8 +2,12 @@
 
     <mat-checkbox [checked]="selected" (change)="onSelectedChange()" (click)="$event.stopPropagation();" style="margin-right: 8px">
     </mat-checkbox>
-    <button mat-button class="mat-icon-button" (click)="$event.stopPropagation()" (click)=" soruyuDegistir()">
+    <button *ngIf="soru?.soruKokuSorulariSayisi===0" mat-button class="mat-icon-button" (click)="$event.stopPropagation()" (click)=" soruyuDegistir()">
         <mat-icon matTooltip="Düzenleme ekranını aç">edit</mat-icon>
+    </button>
+
+    <button *ngIf="soru?.soruKokuSorulariSayisi>0" mat-button class="mat-icon-button" (click)="$event.stopPropagation()" (click)=" soruyuDegistir()">
+        <mat-icon style="color:#E2474C" *ngIf="soru?.soruKokuSorulariSayisi>0" matTooltip="İlişkili sorudur. Yani aynı soru köküne bağlı birden fazla soru var. Bu soru da onlardan biridir.">link</mat-icon>
     </button>
     <div class="info" fxFlex FlexLayout="column">
 
@@ -26,10 +30,7 @@
         <div fxLayout="row" fxLayoutAlign="space-betwwen center">
             <div class="aciklama" *ngIf="soru?.soruMetni" fxFlex fxLayout="row" fxLayoutAlign="star start" fxLayoutGap="10px">
 
-                <div class="mx-4">
-                    <mat-icon style="color:#E2474C" *ngIf="soru?.soruKokuSorulariSayisi>0" matTooltip="İlişkili sorudur. Yani aynı soru köküne bağlı birden fazla soru var. Bu soru da onlardan biridir.">link</mat-icon>
-                    <!-- <mat-icon style="color:#252D43" *ngIf="soru?.soruKokuSorulariSayisi===0" matTooltip="Bağlantısız soru. İlişkili olduğu soru yok. ">label_outline</mat-icon> -->
-                </div>
+
                 {{soru?.soruMetni | htmlToPlaintext | slice:0:500}}{{soru?.soruMetni.length > 500 ? '...' : ''}}
                 <!-- <div *ngIf="soru.baslangic" fxHide fxShow.gt-lg>
                         <div matTooltip="Gecerlilik başlangıç - bitiş tarihi" class="time">
@@ -48,7 +49,8 @@
                 <button fxHide fxShow.gt-lg mat-icon-button (click)="$event.stopPropagation();" aria-label="Toggle star">
                     <mat-icon *ngIf="!bitisTarihiGecerli" matTooltip="Aksi belirtilene kadar soru geçerli.">all_inclusive</mat-icon>
                 </button>
-                <button fxHide fxShow.gt-lg mat-icon-button *ngIf="!bitisTarihiGecerli" (click)="$event.stopPropagation();favoriToogle()" aria-label="Toggle star">
+                <button fxHide fxShow.gt-lg mat-icon-button *ngIf="!bitisTarihiGecerli" (click)="$event.stopPropagation();favoriToogle()"
+                    aria-label="Toggle star">
                     <mat-icon *ngIf="soru?.favori" matTooltip="Bu soru sizin favori sorunuz.">star</mat-icon>
                     <mat-icon *ngIf="!soru?.favori" matTooltip="Bu soru sizin için favori olmayan bir sorudur.">star_outline</mat-icon>
                 </button>

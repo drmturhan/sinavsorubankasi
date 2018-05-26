@@ -243,10 +243,7 @@ export class SorularComponent implements OnInit, OnDestroy {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        for (let index = 0; index < this.selectedSorularIds.length; index++) {
-          const soruNo = this.selectedSorularIds[index];
-          this.store.dispatch(new fromSorularStore.SoruSilindiIsaretle(+soruNo));
-        }
+          this.store.dispatch(new fromSorularStore.SoruSilindiIsaretle(this.selectedSorularIds));
       }
     });
 

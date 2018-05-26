@@ -137,14 +137,14 @@ export class UpdateSorular implements Action {
 
 export class SoruSilindiIsaretle implements Action {
     readonly type = SORU_SIL;
-    constructor(public payload: number) {
+    constructor(public payload: string[]) {
     }
 
 }
 export class SoruSilindi implements Action {
     readonly type = SORU_SIL_TAMAM;
 
-    constructor(public payload: number) {
+    constructor(public payload: string[]) {
     }
 }
 

@@ -219,6 +219,9 @@ export class CoktanSecmeliSoruSecenekService {
     // Trigger the next event
     this.onSelectedTodosChanged.next(this.selectedTodos);
   }
+
+
+  
   oncekiSonrakiSecenegeGit(adim: number) {
     const indeks = this.secenekIndeksiBul(this.currentTodo.get('tekDogruluSoruSecenekId').value);
     const seceneklerArray: FormArray = <FormArray>this.soruForm.get('secenekler');

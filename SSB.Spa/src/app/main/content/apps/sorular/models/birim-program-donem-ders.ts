@@ -45,6 +45,7 @@ export class DersItem {
 }
 export class KonuItem {
     konuId: number;
+    ders: DersItem;
     konuAdi: string;
     ogrenimHedefleri?: OgrenimHedefItem[];
     hocalari?: HocaItem[];
@@ -68,7 +69,7 @@ export class SoruBilisselDuzeyItem {
 export class OgrenimHedefItem {
     ogrenimHedefId: number;
     ogrenimHedefAdi: String;
-    
+
 }
 export class HocaItem {
     dersHocaId: number;

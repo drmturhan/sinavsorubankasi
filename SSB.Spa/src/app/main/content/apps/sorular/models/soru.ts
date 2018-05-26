@@ -11,6 +11,14 @@ export class SoruKokuListe {
     sorulari: SoruListe[];
 }
 
+export class SoruKokuYarat {
+    soruKokuId: number;
+    soruKokuMetni: string;
+    sorulari: number[];
+}
+export class SoruKokuDuzenle extends SoruKokuYarat {
+    soruKokuId: number;
+}
 export class SoruListe {
     soruId: number;
     birimNo: number;

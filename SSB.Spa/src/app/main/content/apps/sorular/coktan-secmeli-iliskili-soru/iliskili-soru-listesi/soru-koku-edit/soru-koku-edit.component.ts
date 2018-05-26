@@ -9,7 +9,7 @@ import { SatPopover } from '@ncstate/sat-popover';
 })
 export class SoruKokuEditComponent implements OnInit {
 
-  @Input() form: FormGroup
+  @Input() form: FormGroup;
   soruKokuMetni: string;
   constructor() {
   }

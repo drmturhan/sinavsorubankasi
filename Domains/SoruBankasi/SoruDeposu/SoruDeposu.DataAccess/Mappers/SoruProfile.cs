@@ -93,12 +93,22 @@ namespace SoruDeposu.DataAccess.Mappers
                     {
                         d.DersAdi = ilkSoru.Konusu.KonuAdi;
                         d.KonuNo = ilkSoru.KonuNo;
-
+                    }
+                    var silinecekListe = e.Sorulari.Where(s => s.Silindi == true).Select(s => s.SoruId).ToList();
+                    var liste = e.Sorulari.ToList();
+                    for (int i = 0; i < d.Sorulari.Count; i++)
+                    {
+                        var item = d.Sorulari.ElementAt(i);
+                        if (silinecekListe.Contains(item.SoruId))
+                        {
+                            d.Sorulari.Remove(item);
+                            i--;
+                        }
                     }
 
                 }
             });
-            CreateMap<SoruKoku, SoruKokuDegistirDto>();
+
         }
 
         private void CreateResourceToEntityMap()

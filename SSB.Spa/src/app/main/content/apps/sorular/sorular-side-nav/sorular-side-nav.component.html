@@ -57,7 +57,7 @@
             </div>
 
             <div class="nav-item" *ngFor="let program of seciliBirim.programlari">
-                <a class="nav-link program" matRipple [routerLink]="'/sorudeposu/program/' + program.programId" (click)="$event.stopPropagation()"
+                <a class="nav-link program" matRipple  (click)="$event.stopPropagation();programBilgisiOlustur(program)"  [routerLink]="'/sorudeposu/program/' + program.programId" 
                     routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
                     <mat-icon class="nav-link-icon" matTooltip="{{seciliBirim.birimAdi +','+program.programAdi+' programı'}}">account_balance</mat-icon>
                     <span matTooltip="{{'Program adı: '+program.programAdi}}">{{program.programAdi|ozet}}</span>
