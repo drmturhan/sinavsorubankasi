@@ -44,9 +44,10 @@ export class CoktanSecmeliIliskiliSoruComponent implements OnInit, OnDestroy {
     private fuseTranslationLoader: FuseTranslationLoaderService
   ) {
     this.searchInput = new FormControl('');
-    this.soruDepoService.checkStore().subscribe();
+
 
   }
+
 
   ngOnInit() {
     this.onSecilmisSorularDegisti =
@@ -76,6 +77,7 @@ export class CoktanSecmeliIliskiliSoruComponent implements OnInit, OnDestroy {
       .subscribe(searchText => {
         this.service.onAramaCumlesiDegisti.next(searchText);
       });
+    this.service.checkStore().subscribe();
   }
 
   ngOnDestroy() {

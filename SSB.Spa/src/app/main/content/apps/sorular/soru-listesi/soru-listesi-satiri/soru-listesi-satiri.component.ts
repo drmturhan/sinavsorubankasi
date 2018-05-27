@@ -8,13 +8,15 @@ import { SorularService } from '../../sorular.service';
 import { MatDialog } from '@angular/material';
 import { FormGroup } from '@angular/forms';
 import { Platform } from '@angular/cdk/platform';
-import * as fromStore from '../../soru-store';
+import * as fromRootStore from 'app/store/index';
+import * as fromSoruStore from '../../soru-store';
 import * as fromUIActions from '../../../../../../store/actions/ui.actions';
 import { SbMesajService } from '../../../../../../core/services/sb-mesaj.service';
 import { KayitSonuc } from '../../../../../../models/sonuclar';
 import { CoktanSecmeliSoruComponent } from '../../coktan-secmeli-soru/coktan-secmeli-soru.component';
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
 import { Router } from '@angular/router';
+import { SoruDepoResolverService } from '../../soru-depo-resolver.service';
 
 @Component({
   selector: 'fuse-soru-listesi-satiri',
@@ -28,19 +30,30 @@ export class SoruListesiSatiriComponent implements OnInit, OnDestroy {
   bitisTarihiGecerli: boolean;
   selectedSoruIds$: Observable<any>;
   dialogRef: any;
+  bilgi: any;
+  routerState: any;
   constructor(
 
     public dialog: MatDialog,
-    private store: Store<fromStore.SoruDepoAppState>,
+    private store: Store<fromSoruStore.SoruDepoAppState>,
+    private rootStore: Store<fromRootStore.State>,
     private sorularService: SorularService,
     private mesajService: SbMesajService,
     public platform: Platform,
     private cd: ChangeDetectorRef,
-    private router: Router
+    private router: Router,
+    private resolverBilgi: SoruDepoResolverService,
   ) {
-    this.selectedSoruIds$ = this.store.select(fromStore.getSelectedSoruNumaralari);
+    this.selectedSoruIds$ = this.store.select(fromSoruStore.getSelectedSoruNumaralari);
     this.selected = false;
-
+    this.rootStore.select(fromRootStore.getRouterState).subscribe(routerState => {
+      if (routerState) {
+        this.routerState = routerState.state;
+        if (routerState.state.params['bilgi']) {
+          this.bilgi = this.resolverBilgi.bilgiAl(routerState.state.params['bilgi']);
+        }
+      }
+    });
   }
 
   ngOnInit() {
@@ -53,7 +66,7 @@ export class SoruListesiSatiriComponent implements OnInit, OnDestroy {
       this.selected = selectedMailIds.length > 0 && sonuc !== undefined;
       // tslint:disable-next-line:triple-equals
       if (selectedMailIds.length == 1) {
-        this.store.dispatch(new fromStore.SetAktifSoru(selectedMailIds[0]));
+        this.store.dispatch(new fromSoruStore.SetAktifSoru(selectedMailIds[0]));
       }
       this.refresh();
     });
@@ -64,7 +77,7 @@ export class SoruListesiSatiriComponent implements OnInit, OnDestroy {
   }
 
   onSelectedChange() {
-    this.store.dispatch(new fromStore.SoruSecimiDegistir(this.soru.soruId.toString()));
+    this.store.dispatch(new fromSoruStore.SoruSecimiDegistir(this.soru.soruId.toString()));
   }
 
   ngOnDestroy() {
@@ -73,13 +86,8 @@ export class SoruListesiSatiriComponent implements OnInit, OnDestroy {
 
   soruyuDegistir() {
     if (this.soru.soruKokuNo > 0) {
-      if (this.soru.konuNo > 0) {
-        this.router.navigate([`sorudeposu/iliskilisoru/ders/${this.soru.dersNo}/konu/${this.soru.konuNo}/sorukoku/${this.soru.soruKokuNo}`]);
-      } else {
-
-        this.router.navigate([`sorudeposu/iliskilisoru/ders/${this.soru.dersNo}/konu/`, this.soru.soruKokuNo]);
-      }
-
+      const bilgiStr = this.resolverBilgi.bilgiKoy(this.soru);
+      this.router.navigate([`sorudeposu/iliskilisoru/${bilgiStr}`]);
     }
     else {
       this.iliskisiOlmayanSoruyuDegistir();
@@ -154,10 +162,10 @@ export class SoruListesiSatiriComponent implements OnInit, OnDestroy {
     this.sorularService.formuNesneyeCevirKaydet(formData, degisecekSoru);
   }
   soruyuKapat() {
-    this.store.dispatch(new fromStore.SoruAcKapa({ soruNo: this.soru.soruId, ac: false }));
+    this.store.dispatch(new fromSoruStore.SoruAcKapa({ soruNo: this.soru.soruId, ac: false }));
   }
   soruyuAc() {
-    this.store.dispatch(new fromStore.SoruAcKapa({ soruNo: this.soru.soruId, ac: true }));
+    this.store.dispatch(new fromSoruStore.SoruAcKapa({ soruNo: this.soru.soruId, ac: true }));
   }
   favoriToogle() {
     if (this.soru.favori) {
@@ -165,10 +173,10 @@ export class SoruListesiSatiriComponent implements OnInit, OnDestroy {
     } else { this.soruyuFavoriYap(); }
   }
   soruyuFavoriYap() {
-    this.store.dispatch(new fromStore.SoruFavoriDegistir({ soruNo: this.soru.soruId, favori: true }));
+    this.store.dispatch(new fromSoruStore.SoruFavoriDegistir({ soruNo: this.soru.soruId, favori: true }));
   }
   soruyuSiradanYap() {
-    this.store.dispatch(new fromStore.SoruFavoriDegistir({ soruNo: this.soru.soruId, favori: true }));
+    this.store.dispatch(new fromSoruStore.SoruFavoriDegistir({ soruNo: this.soru.soruId, favori: true }));
   }
   soruyuSilindiYap() {
     const dialogRef = this.dialog.open(FuseConfirmDialogComponent, {
@@ -184,7 +192,7 @@ export class SoruListesiSatiriComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe(result => {
 
       if (result) {
-        this.store.dispatch(new fromStore.SoruSilindiIsaretle([this.soru.soruId.toString()]));
+        this.store.dispatch(new fromSoruStore.SoruSilindiIsaretle([this.soru.soruId.toString()]));
       }
     });
 

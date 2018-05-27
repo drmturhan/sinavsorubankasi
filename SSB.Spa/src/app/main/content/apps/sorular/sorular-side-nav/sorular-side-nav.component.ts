@@ -10,7 +10,7 @@ import 'rxjs/add/operator/map';
 import { FormGroup } from '@angular/forms';
 
 import { Platform } from '@angular/cdk/platform';
-import { SoruBirimItem, DersItem } from '../models/birim-program-donem-ders';
+import { SoruBirimItem, DersItem, KonuItem, DersGrupItem, ProgramDonemItem, SoruProgramItem } from '../models/birim-program-donem-ders';
 import { SorularEffectsService } from '../soru-store/effects/sorular-effects.service';
 import { SbMesajService } from '../../../../../core/services/sb-mesaj.service';
 import { SoruDepoVeriService } from '../soru-store/helpers/soru-depo-veri.service';
@@ -31,8 +31,12 @@ import { SoruDepoResolverService } from '../soru-depo-resolver.service';
 export class SorularSideNavComponent implements OnInit, AfterViewChecked {
 
   routerState: any;
-  dersNo: number = null;
-  konuNo: number = null;
+  bilgi: any;
+  // birimSorulariGorunsun = !this.program 
+  //  && !this.donem 
+  //  && !this.dersGrubu 
+  //  && !this.ders 
+  //  && !this.konu;
   dialogRef: any;
   navigation: any;
 
@@ -71,15 +75,10 @@ export class SorularSideNavComponent implements OnInit, AfterViewChecked {
     this.store.select(fromRootStore.getRouterState).subscribe(routerState => {
       if (routerState) {
         this.routerState = routerState.state;
-        const handle: any[] = this.effectsService.soruHandleYarat(this.routerState);
-        handle.forEach(h => {
-          if (h.id === 'dersNo') {
-            this.dersNo = h.value;
-          }
-          if (h.id === 'konuNo') {
-            this.konuNo = h.value;
-          }
-        });
+        if (routerState.state.params['bilgi']) {
+          this.bilgi = this.resolverBilgi.bilgiAl(routerState.state.params['bilgi']);
+
+        }
       }
     });
     this.birimler$ = this.store.select(fromSorularStore.getBirimlerArr);
@@ -122,10 +121,12 @@ export class SorularSideNavComponent implements OnInit, AfterViewChecked {
           && value.programlari[0].donemleri[0].dersGruplari.length > 0
           && value.programlari[0].donemleri[0].dersGruplari[0].dersleri.length > 0) {
           ders = value.programlari[0].donemleri && value.programlari[0].donemleri[0].dersGruplari[0].dersleri[0];
+
         }
       }
     }
     if (ders != null) {
+
       this.store.dispatch(new fromSorularStore.SecAktifDers(ders));
       this.store.dispatch(new fromSorularStore.GetSorular());
       if (ders.konulari.length > 0) {
@@ -146,12 +147,13 @@ export class SorularSideNavComponent implements OnInit, AfterViewChecked {
   }
 
   composeDialog() {
-    const ders = this.sorularService.dersBul(this.dersNo);
+    const konu = this.bilgi.hasOwnProperty('konuId') ? this.bilgi : null;
+    const ders = konu ? this.sorularService.dersBul(konu.dersNo) : this.bilgi;
     if (!ders) {
       this.mesajService.hataStr('Ders bilgisi alınamadığı için yeni soru ekranı açılamadı.');
       return;
     }
-    if (ders && ders.konulari.length > 0 && !(this.konuNo && this.konuNo > 0)) {
+    if (ders && ders.konulari.length > 0 && !konu) {
       this.mesajService.goster(`${ders.dersAdi} adlı dersin konuları mevcut. Lütfen bir konu seçin.`);
       return;
     }
@@ -167,9 +169,8 @@ export class SorularSideNavComponent implements OnInit, AfterViewChecked {
     this.dialogRef = this.dialog.open(CoktanSecmeliSoruComponent,
       {
         data: {
-          dersNo: this.dersNo,
-          konuNo: this.konuNo,
           ders: ders,
+          konu: konu,
           yeni: true
         },
         height: boy,
@@ -226,7 +227,13 @@ export class SorularSideNavComponent implements OnInit, AfterViewChecked {
   yeniSoruYarat(islem) {
     switch (islem) {
       case 'iliskili':
-        this.router.navigate([`sorudeposu/iliskilisoru/ders/${this.dersNo}/konu/${this.konuNo}`]);
+        const aktifKonu: KonuItem = this.bilgi.hasOwnProperty('konuId') ? this.bilgi : null;
+        const aktifDers: DersItem = aktifKonu ? this.sorularService.dersBul(aktifKonu.dersNo) : this.bilgi;
+        if (aktifKonu) {
+          this.router.navigate([`sorudeposu/iliskilisoru/ders/${aktifDers.dersId}/konu/${aktifKonu.konuId}`]);
+        } else {
+          this.router.navigate([`sorudeposu/iliskilisoru/ders/${aktifDers.dersId}`]);
+        }
         break;
 
       default:
@@ -235,7 +242,35 @@ export class SorularSideNavComponent implements OnInit, AfterViewChecked {
     }
   }
 
-  programBilgisiOlustur(program) {
-    this.resolverBilgi.bilgiKoy(program);
+  programSorulariniGoster(program: SoruProgramItem) {
+
+    const key = this.resolverBilgi.bilgiKoy(program);
+    this.router.navigate(['sorudeposu/programsorulari/', key]);
+  }
+  donemSorulariniGoster(donem: ProgramDonemItem) {
+
+    const key = this.resolverBilgi.bilgiKoy(donem);
+    this.router.navigate(['sorudeposu/donemsorulari/', key]);
+  }
+  dersGrubuSorulariniGoster(dersgrubu: DersGrupItem) {
+
+    const key = this.resolverBilgi.bilgiKoy(dersgrubu);
+    this.router.navigate(['sorudeposu/dersgrubusorulari/', key]);
+  }
+  dersinSorulariniGoster(ders: DersItem) {
+
+    const key = this.resolverBilgi.bilgiKoy(ders);
+    this.router.navigate(['sorudeposu/dersinsorulari/', key]);
+  }
+  konununSorulariniGoster(konu: KonuItem) {
+
+    const key = this.resolverBilgi.bilgiKoy(konu);
+    this.router.navigate(['sorudeposu/konusorulari/', key]);
+  }
+  yeniSoruEkelenebilirmi() {
+    if (this.bilgi === null || this.bilgi === undefined) {
+      return false;
+    }
+    return this.bilgi.hasOwnProperty('konuId') || this.bilgi.hasOwnProperty('dersId');
   }
 }

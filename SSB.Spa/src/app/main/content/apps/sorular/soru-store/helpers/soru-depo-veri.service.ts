@@ -7,7 +7,9 @@ import { map, switchMap, catchError, tap, take, filter } from 'rxjs/operators';
 import * as fromStore from '../index';
 import * as fromRootStore from '../../../../../../store/index';
 
-@Injectable()
+@Injectable({
+    providedIn: 'root'
+  })
 export class SoruDepoVeriService {
 
 
@@ -23,27 +25,7 @@ export class SoruDepoVeriService {
     routerState: any;
 
 
-    checkStore(): Observable<any> {
-        return Observable
-            .forkJoin(
-                this.getBirimler(),
-                this.getSoruTipleri(),
-                this.getSoruBilisselDuzeyleri(),
-                this.getSoruZorluklari()
-            )
-            .pipe(
-                filter(([birimlerLoaded, soruTipleriLoaded, soruZorluklariLoaded, bilisselDuzeylerLoaded]) =>
-                    birimlerLoaded && soruTipleriLoaded && soruZorluklariLoaded && bilisselDuzeylerLoaded),
-                take(1),
-                switchMap(() =>
-                    this.getSorular()
-                ),
-                take(1),
-                map(() => {
-                    this.store.dispatch(new fromStore.SetAktifSoru(this.routerState.params.soruId));
-                })
-            );
-    }
+   
 
     getBirimler() {
         return this.store.select(fromStore.getBirimlerLoaded)

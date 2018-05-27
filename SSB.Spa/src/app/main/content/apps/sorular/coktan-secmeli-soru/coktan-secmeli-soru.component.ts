@@ -106,7 +106,7 @@ export class CoktanSecmeliSoruComponent implements OnInit, AfterViewInit, OnDest
     this.mobileQuery.addListener(this._mobileQueryListener);
 
 
-    this.konu = this.konuBul();
+    this.konu = this.data.konu;
     this.soruTipleri$ = this.store.select(fromSoruStore.getSoruTipleri);
     this.soruZorluklari$ = this.store.select(fromSoruStore.getSoruZorluklari);
     this.bilisselDuzeyler$ = this.store.select(fromSoruStore.getBilisselDuzeyler);
@@ -168,21 +168,16 @@ export class CoktanSecmeliSoruComponent implements OnInit, AfterViewInit, OnDest
 
   secilebilirOgrenimHedefleriniAyarla() {
     const sonuc: OgrenimHedefItem[] = [];
-    const konuNumarasi = this.coktanSecmeliSoruSecenekService.soruForm.get('konuNo').value;
+    
     if (this.data.ders && this.data.ders.konulari.length > 0) {
-      let konu = null;
-      if (konuNumarasi > 0) {
-        // tslint:disable-next-line:triple-equals
-        konu = this.data.ders.konulari.find(d => d.konuId == konuNumarasi);
-      }
-      if (konu === null) {
+      if (this.data.konu === null) {
         this.data.ders.konulari.forEach(k => {
           k.ogrenimHedefleri.forEach(hedef => {
             sonuc.push(hedef);
           });
         });
       } else {
-        konu.ogrenimHedefleri.forEach(hedef => {
+        this.data.konu.ogrenimHedefleri.forEach(hedef => {
           sonuc.push(hedef);
         });
       }
@@ -285,17 +280,17 @@ export class CoktanSecmeliSoruComponent implements OnInit, AfterViewInit, OnDest
   }
 
 
-  konuBul(): KonuItem {
-    let donecekKonu = null;
-    if (this.data.konuNo <= 0 || this.data.ders == null || !this.data.ders.konulari.length) {
-      return donecekKonu;
-    } else {
+  // konuBul(): KonuItem {
+  //   let donecekKonu = null;
+  //   if (this.data.konuNo <= 0 || this.data.ders == null || !this.data.ders.konulari.length) {
+  //     return donecekKonu;
+  //   } else {
 
-      // tslint:disable-next-line:triple-equals
-      donecekKonu = this.data.ders.konulari.find(k => k.konuId == this.data.konuNo);
-      return donecekKonu;
-    }
-  }
+  //     // tslint:disable-next-line:triple-equals
+  //     donecekKonu = this.data.ders.konulari.find(k => k.konuId == this.data.konuNo);
+  //     return donecekKonu;
+  //   }
+  // }
 
   cevaplamaSuresiDegisti(deger) {
     console.log(deger);

@@ -1,6 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { SoruBirimItem, SoruBilisselDuzeyItem, SoruTipItem, SoruZorlukItem } from '../../models/birim-program-donem-ders';
+import { 
+  SoruBirimItem, 
+  SoruBilisselDuzeyItem, 
+  SoruTipItem, 
+  SoruZorlukItem, 
+  SoruProgramItem, 
+  ProgramDonemItem, 
+  DersGrupItem, 
+  DersItem, 
+  KonuItem } from '../../models/birim-program-donem-ders';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'environments/environment';
 import { SoruListe, SoruYarat, SoruDegistir } from '../../models/soru';
@@ -8,6 +17,7 @@ import { KayitSonuc, Sonuc, ListeSonuc } from '../../../../../../models/sonuclar
 import * as fromRootStore from '../../../../../../store/index';
 import { KullaniciBilgi } from '../../../../../../models/kullanici';
 import { Store } from '@ngrx/store';
+import { ResolveInfo } from '../../../../../../models/resolve-model';
 
 
 @Injectable({
@@ -37,9 +47,13 @@ export class SorularEffectsService {
     const adres = `${this.baseUrl}/${this.bilisselDuzeylerUrl}/`;
     return this.http.get<SoruBilisselDuzeyItem[]>(adres);
   }
-  getKullanicininSorulari(handle: any[]): Observable<SoruListe[]> {
+  getKullanicininSorulari(bilgi: any): Observable<SoruListe[]> {
+
+
     const adres = `${this.baseUrl}/${this.sorularUrl}/kullanicininsorulari/`;
-    return this.http.get<SoruListe[]>(adres + this.createQuery(handle));
+    const query = this.createQuery(bilgi);
+    console.log('sorgu', query);
+    return this.http.get<SoruListe[]>(adres + query);
   }
 
   updateSoru(soru): Observable<KayitSonuc<SoruListe>> {
@@ -88,26 +102,40 @@ export class SorularEffectsService {
   }
 
 
-  private createQuery(handle: any[]) {
-    let str = '?';
-    handle.forEach(h => {
-      str = str + `${h.id}=${h.value}&`;
-    });
-    return str.substr(0, str.length - 1);
+  private createQuery(gelenBilgi: any) {
+    if (gelenBilgi.hasOwnProperty('birimId')) {
+      return `?birimNo=${(gelenBilgi as SoruBirimItem).birimId}`;
+    }
+    if (gelenBilgi.hasOwnProperty('programId')) {
+      return `?programNo=${(gelenBilgi as SoruProgramItem).programId}`;
+    }
+    if (gelenBilgi.hasOwnProperty('donemId')) {
+      return `?donemNo=${(gelenBilgi as ProgramDonemItem).donemId}`;
+    }
+    if (gelenBilgi.hasOwnProperty('dersGrupId')) {
+      return `?dersGrupNo=${(gelenBilgi as DersGrupItem).dersGrupId}`;
+    }
+    if (gelenBilgi.hasOwnProperty('dersId')) {
+      return `?dersNo=${(gelenBilgi as DersItem).dersId}`;
+    }
+    if (gelenBilgi.hasOwnProperty('konuId')) {
+      return `?konuNo=${(gelenBilgi as KonuItem).konuId}`;
+    }
+    
   }
 
-  soruHandleYarat(routerState: any): any[] {
-    const handle: any[] = [];
-    const routeParams = Observable.of('programNo', 'donemNo', 'dersNo', 'konuNo', 'soruId');
-    routeParams.subscribe(param => {
-      if (routerState.params[param]) {
-        handle.push({
-          id: param,
-          value: routerState.params[param]
-        });
-      }
-    });
-    return handle;
-  }
+  // soruHandleYarat(routerState: any): any[] {
+  //   const handle: any[] = [];
+  //   const routeParams = Observable.of('programNo', 'donemNo', 'dersNo', 'konuNo', 'soruId');
+  //   routeParams.subscribe(param => {
+  //     if (routerState.params[param]) {
+  //       handle.push({
+  //         id: param,
+  //         value: routerState.params[param]
+  //       });
+  //     }
+  //   });
+  //   return handle;
+  // }
 
 }

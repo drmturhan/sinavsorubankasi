@@ -61,7 +61,12 @@ const routes: Routes = [
     canActivate: [SorularResolveGuard]
   },
   {
-    path: 'derssorulari/:bilgi',
+    path: 'dersgrubusorulari/:bilgi',
+    component: SorularComponent,
+    canActivate: [SorularResolveGuard]
+  },
+  {
+    path: 'dersinsorulari/:bilgi',
 
     component: SorularComponent,
     canActivate: [SorularResolveGuard]
@@ -78,15 +83,7 @@ const routes: Routes = [
     canActivate: [SorularResolveGuard]
   },
   {
-    path: 'iliskilisoru/ders/:dersNo/konu/:konuNo',
-    component: CoktanSecmeliIliskiliSoruComponent,
-    pathMatch: 'full',
-    resolve: {
-      mail: IliskiliSoruService
-    }
-  },
-  {
-    path: 'iliskilisoru/ders/:dersNo/konu/:konuNo/sorukoku/:soruKokuNo',
+    path: 'iliskilisoru/:bilgi',
     component: CoktanSecmeliIliskiliSoruComponent,
     resolve: {
       mail: IliskiliSoruService

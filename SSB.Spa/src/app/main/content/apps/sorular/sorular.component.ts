@@ -64,36 +64,36 @@ export class SorularComponent implements OnInit, OnDestroy {
 
     this.rootStore.select(fromRootStore.getRouterState).subscribe(routerState => {
 
-      if (routerState) {
-        this.routerState = routerState.state;
-        const handle: any[] = this.effectsService.soruHandleYarat(this.routerState);
-        let aktifDersNo = 0;
-        let aktifKonuNo = 0;
-        handle.forEach(h => {
-          if (h.id === 'dersNo') {
-            aktifDersNo = h.value;
-          }
-          if (h.id === 'konuNo') {
-            aktifKonuNo = h.value;
-          }
-        });
-        if (aktifDersNo > 0) {
-          this.aktifders = this.sorularService.dersBul(aktifDersNo);
-        }
-        else {
-          this.aktifders = null;
-        }
-        if (this.aktifders && aktifKonuNo > 0) {
-          const konular = this.aktifders.konulari.filter(k => k.konuId == aktifKonuNo);
-          if (konular && konular.length === 1) {
-            this.aktifKonu = konular[0];
-          }
-          else {
-            this.aktifKonu = null;
-          }
-        }
-        this.soruBasliginiOlustur();
-      }
+      // if (routerState) {
+      //   this.routerState = routerState.state;
+      //   const handle: any[] = this.effectsService.soruHandleYarat(this.routerState);
+      //   let aktifDersNo = 0;
+      //   let aktifKonuNo = 0;
+      //   handle.forEach(h => {
+      //     if (h.id === 'dersNo') {
+      //       aktifDersNo = h.value;
+      //     }
+      //     if (h.id === 'konuNo') {
+      //       aktifKonuNo = h.value;
+      //     }
+      //   });
+      //   if (aktifDersNo > 0) {
+      //     this.aktifders = this.sorularService.dersBul(aktifDersNo);
+      //   }
+      //   else {
+      //     this.aktifders = null;
+      //   }
+      //   if (this.aktifders && aktifKonuNo > 0) {
+      //     const konular = this.aktifders.konulari.filter(k => k.konuId == aktifKonuNo);
+      //     if (konular && konular.length === 1) {
+      //       this.aktifKonu = konular[0];
+      //     }
+      //     else {
+      //       this.aktifKonu = null;
+      //     }
+      //   }
+      //   this.soruBasliginiOlustur();
+      // }
     });
     this.store.select(fromSorularStore.getAktifBirim).subscribe(birim => {
       if (birim) {
@@ -196,9 +196,9 @@ export class SorularComponent implements OnInit, OnDestroy {
       }
     }
     this.baslik = this.baslik + ' Soruları';
-    this.store.dispatch(new fromSorularStore.GetSorular());
-    this.store.dispatch(new fromSorularStore.SetSorularAramaCumlesi(''));
-    this.store.dispatch(new fromSorularStore.DeselectSorularTumu());
+    // this.store.dispatch(new fromSorularStore.GetSorular());
+    // this.store.dispatch(new fromSorularStore.SetSorularAramaCumlesi(''));
+    // this.store.dispatch(new fromSorularStore.DeselectSorularTumu());
   }
   yukle() {
     // this.store.dispatch(new UI.StartLoading());

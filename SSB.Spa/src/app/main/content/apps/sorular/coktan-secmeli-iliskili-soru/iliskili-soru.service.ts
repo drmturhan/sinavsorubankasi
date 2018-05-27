@@ -3,8 +3,10 @@ import { SoruListe, SoruKokuListe, SoruKokuYarat, SoruKokuDuzenle } from '../mod
 import { BehaviorSubject } from 'rxjs';
 
 import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { Observable } from 'rxjs/internal/Observable';
-import { of } from 'rxjs/observable/of';
+// import { Observable } from 'rxjs/internal/Observable';
+// import { of } from 'rxjs/observable/of';
+import 'rxjs/add/observable/forkJoin';
+import { Observable, forkJoin, of } from 'rxjs';
 import { map, switchMap, catchError, tap, take, filter } from 'rxjs/operators';
 import * as fromSoruStore from '../soru-store/index';
 import { Store } from '@ngrx/store';
@@ -15,6 +17,7 @@ import { environment } from 'environments/environment';
 import { KayitSonuc } from '../../../../../models/sonuclar';
 import { SbMesajService } from '../../../../../core/services/sb-mesaj.service';
 import { SoruDepoVeriService } from '../soru-store/helpers/soru-depo-veri.service';
+import { SoruDepoResolverService } from '../soru-depo-resolver.service';
 
 @Injectable({
   providedIn: 'root'
@@ -46,13 +49,15 @@ export class IliskiliSoruService {
   onAktifSoruDegisti: BehaviorSubject<any> = new BehaviorSubject([]);
 
   onAramaCumlesiDegisti: BehaviorSubject<any> = new BehaviorSubject('');
-  
 
+  bilgi: any;
 
   constructor(
     private http: HttpClient,
     private soruStore: Store<fromSoruStore.SoruDepoAppState>,
-    private mesajService: SbMesajService) {
+    private resolverBilgi: SoruDepoResolverService,
+    private mesajService: SbMesajService,
+    private soruDepoVeriService: SoruDepoVeriService) {
 
     this.secilmisSorular = [];
     this.soruTipleri$ = this.soruStore.select(fromSoruStore.getSoruTipleri);
@@ -73,7 +78,20 @@ export class IliskiliSoruService {
     });
 
   }
-
+  checkStore(): Observable<any> {
+    
+      return forkJoin(
+        this.soruDepoVeriService.getBirimler(),
+        this.soruDepoVeriService.getSoruTipleri(),
+        this.soruDepoVeriService.getSoruBilisselDuzeyleri(),
+        this.soruDepoVeriService.getSoruZorluklari()
+      )
+      .pipe(
+        filter(([birimlerLoaded, soruTipleriLoaded, soruZorluklariLoaded, bilisselDuzeylerLoaded]) =>
+          birimlerLoaded && soruTipleriLoaded && soruZorluklariLoaded && bilisselDuzeylerLoaded),
+        take(1),
+      );
+  }
 
 
   yenile(soruKokuNo: number) {
@@ -82,10 +100,13 @@ export class IliskiliSoruService {
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | Promise<any> | any {
     if (route.params) {
       this.routeParams = route.params;
-      if (route.params['soruKokuNo']) {
-        this.soruKokuNo = route.params['soruKokuNo'];
+
+      if (route.params['bilgi']) {
+        this.bilgi = this.resolverBilgi.bilgiAl(route.params['bilgi']);
+        this.soruKokuNo = this.bilgi['soruKokuNo'];
       } else {
         this.soruKokuNo = 0;
+
       }
     }
 
@@ -260,7 +281,7 @@ export class IliskiliSoruService {
     }
 
     this.onAktifSoruDegisti.next(this.aktifSoru);
-
   }
+
 
 }

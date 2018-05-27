@@ -154,6 +154,7 @@ namespace SoruDeposu.DataAccess.Dtos
     public class KonuDto
     {
         public int KonuId { get; set; }
+        public int DersNo { get; set; }
         public string KonuAdi { get; set; }
         public List<OgrenimHedefDto> OgrenimHedefleri { get; set; } = new List<OgrenimHedefDto>();
         public List<HocaDto> AnlatanHocalar { get; set; } = new List<HocaDto>();

@@ -1,5 +1,6 @@
 <!-- SIDENAV HEADER -->
-<div fxLayout="column" style="background-color:#A3C9D3!important;" fxLayoutAlign="space-between start" class="header p-24 pb-4" ngClass="kucuk-ekran" ngClass.gt-md="buyuk-ekran">
+<div fxLayout="column" style="background-color:#A3C9D3!important;" fxLayoutAlign="space-between start" class="header p-24 pb-4"
+    ngClass="kucuk-ekran" ngClass.gt-md="buyuk-ekran">
     <!-- <div class="logo" fxFlex fxLayout="row" fxLayoutAlign="start center" matTooltip="Sayfayı tazelemek için tıklayın">
         <button class="logo">
             <mat-icon>sd_card</mat-icon>
@@ -22,10 +23,11 @@
 
 
 <!-- SIDENAV CONTENT -->
-<div class="content" style="background-color:#E2E3DD!important;"  ngClass="kucuk-ekran" ngClass.gt-md="buyuk-ekran" fusePerfectScrollbar>
+<div class="content" style="background-color:#E2E3DD!important;" ngClass="kucuk-ekran" ngClass.gt-md="buyuk-ekran" fusePerfectScrollbar>
 
     <div class="p-12">
-        <fuse-yeni-soru-btn [menuItems]="yenimenuItems" [gecerli]="dersNo>0" (islem)="yeniSoruYarat($event)" ipucu="Bir ders veya konu için soru yaratabilirsiniz. Lütfen ders veya konu seçiniz.">
+        <fuse-yeni-soru-btn [menuItems]="yenimenuItems" [gecerli]="yeniSoruEkelenebilirmi()"
+            (islem)="yeniSoruYarat($event)" ipucu="Bir ders veya konu için soru yaratabilirsiniz. Lütfen ders veya konu seçiniz.">
 
         </fuse-yeni-soru-btn>
         <!-- <button [matMenuTriggerFor]="yeniMenu" x-position="after"  mat-raised-button fxFlex class="compose-dialog-button" #yeniButon aria-label="Compose"
@@ -39,7 +41,7 @@
             <button mat-menu-item>İlişkili Soru</button>
         </mat-menu> -->
     </div>
-    <div class="navbar-content" fusePerfectScrollbar >
+    <div class="navbar-content" fusePerfectScrollbar>
         <fuse-navigation [navigation]="navigation" layout="vertical"></fuse-navigation>
     </div>
 
@@ -57,47 +59,52 @@
             </div>
 
             <div class="nav-item" *ngFor="let program of seciliBirim.programlari">
-                <a class="nav-link program" matRipple  (click)="$event.stopPropagation();programBilgisiOlustur(program)"  [routerLink]="'/sorudeposu/program/' + program.programId" 
-                    routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+                <a class="nav-link program" [class.active]="bilgi && bilgi.hasOwnProperty('programId') && bilgi.programId===program.programId"
+                    matRipple (click)="$event.stopPropagation();programSorulariniGoster(program)">
                     <mat-icon class="nav-link-icon" matTooltip="{{seciliBirim.birimAdi +','+program.programAdi+' programı'}}">account_balance</mat-icon>
                     <span matTooltip="{{'Program adı: '+program.programAdi}}">{{program.programAdi|ozet}}</span>
                 </a>
                 <div class="nav-item" *ngFor="let donem of program.donemleri">
-                    <a class="nav-link" matRipple [routerLink]="'/sorudeposu/program/' + program.programId+'/donem/'+donem.donemId" (click)="$event.stopPropagation()"
-                        routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+                    <a class="nav-link" matRipple (click)="$event.stopPropagation();donemSorulariniGoster(donem)" [class.active]="bilgi && bilgi.hasOwnProperty('donemId') && bilgi.donemId===donem.donemId">
                         <div class="donem">
                             <mat-icon class="nav-link-icon" matTooltip="{{donem.donemAdi}}">event</mat-icon>
                             <span matTooltip="{{donem.sinifi+' .sınıf,'+ donem.donemAdi}}">{{donem.sinifi+'. Sınıf, '+donem.donemAdi|ozet}}</span>
                         </div>
                     </a>
-                    <div *ngIf="donem.dersGruplari">
-                        <div *ngFor="let dersGrubu of donem.dersGruplari">
-                            <div class="nav-item" *ngFor="let ders of dersGrubu.dersleri">
-                                <a class="nav-link" matRipple [routerLink]="'/sorudeposu/program/'+program.programId+'/donem/'+donem.donemId+'/ders/' + ders.dersId"
-                                    routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" (click)="$event.stopPropagation()">
-                                    <div class="ders">
-                                        <mat-icon class="nav-link-icon" matTooltip="{{program.programAdi}} - {{donem.donemAdi}}:{{dersGrubu.dersGrubuAdi}} dersi">import_contacts</mat-icon>
-                                        <span matTooltip="Ders:{{ders.dersAdi}}">{{ders.dersAdi|ozet:50}}</span>
-                                    </div>
-                                </a>
+
+                    <div class="nav-item" *ngFor="let dersGrubu of donem.dersGruplari">
+                        <a  class="nav-link" matRipple [class.active]="bilgi && bilgi.hasOwnProperty('dersGrupId') && bilgi.dersGrupId===dersGrubu.dersGrupId"
+                            (click)="$event.stopPropagation();dersGrubuSorulariniGoster(dersGrubu)">
+                            <div class="dersgrubu">
+                                <mat-icon class="nav-link-icon" matTooltip="{{program.programAdi}} - {{donem.donemAdi}}:{{dersGrubu.grupAdi}}{{dersGrubu.staj?' stajı':''}}{{dersGrubu.dersKurulu?' ders kurulu':''}}  ">import_contacts</mat-icon>
+                                <span matTooltip="{{dersGrubu.grupAdi}}">{{dersGrubu.grupAdi |ozet:50}}</span>
+                            </div>
+                        </a>
+                        <div class="nav-item" *ngFor="let ders of dersGrubu.dersleri">
+                            <a class="nav-link" matRipple [class.active]="bilgi && bilgi.hasOwnProperty('dersId') && bilgi.dersId===ders.dersId" (click)="$event.stopPropagation();dersinSorulariniGoster(ders)">
+                                <div class="ders">
+                                    <mat-icon class="nav-link-icon" matTooltip="{{program.programAdi}} - {{donem.donemAdi}}:{{dersGrubu.dersGrubuAdi}} dersi">import_contacts</mat-icon>
+                                    <span matTooltip="Ders:{{ders.dersAdi}}">{{ders.dersAdi|ozet:50}}</span>
+                                </div>
+                            </a>
 
 
-                                <div class="nav-item" *ngFor="let konu of ders.konulari">
-                                    <a class="nav-link" matRipple [routerLink]="'/sorudeposu/program/'+program.programId+'/donem/'+donem.donemId+'/ders/' + ders.dersId+'/konu/'+konu.konuId"
-                                        routerLinkActive="active" (click)="$event.stopPropagation()">
-                                        <div class="konu">
-                                            <mat-icon class="nav-link-icon" matTooltip="{{program.programAdi}} - {{donem.donemAdi}}, 
+                            <div class="nav-item" *ngFor="let konu of ders.konulari">
+                                <a class="nav-link" matRipple (click)="$event.stopPropagation();konununSorulariniGoster(konu)" [class.active]="bilgi && bilgi.hasOwnProperty('konuId') && bilgi.konuId===konu.konuId">
+                                    <div class="konu">
+                                        <mat-icon class="nav-link-icon" matTooltip="{{program.programAdi}} - {{donem.donemAdi}}, 
                                         {{ders.dersAdi}} {{dersGrubu.staj?' stajı' :''}} 
                                         {{dersGrubu.dersKurulu?' komitesi':''}}
                                         {{!dersGrubu.staj &&  !dersGrubu.dersKurulu?' dersi':''}}
                                          {{konu.konuAdi}} konusu">label</mat-icon>
-                                            <span matTooltip="Konu:{{konu.konuAdi}}">{{konu.konuAdi|ozet:30}}</span>
-                                        </div>
-                                    </a>
-                                </div>
+                                        <span matTooltip="Konu:{{konu.konuAdi}}">{{konu.konuAdi|ozet:30}}</span>
+                                    </div>
+                                </a>
                             </div>
                         </div>
+
                     </div>
+
                 </div>
             </div>
         </div>
