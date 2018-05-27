@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { Location } from '@angular/common';
+
 import { Store } from '@ngrx/store';
 
 import { SoruListe, SoruDegistir } from '../models/soru';
@@ -27,7 +27,6 @@ import { fuseAnimations } from '@fuse/animations';
 })
 export class SoruDetayComponent implements OnInit, OnChanges {
 
-
   labels$: Observable<any>;
   @Input('soru') soru: SoruListe;
   detayGoster = false;
@@ -52,11 +51,8 @@ export class SoruDetayComponent implements OnInit, OnChanges {
     return this._dersKonuAdi;
   }
 
-
-
   dialogRef: any;
   constructor(
-    private location: Location,
     public dialog: MatDialog,
     private sorularService: SorularService,
     private store: Store<fromStore.SoruDepoAppState>,
@@ -87,8 +83,8 @@ export class SoruDetayComponent implements OnInit, OnChanges {
 
   soruyuDegistir() {
     if (this.soru.soruKokuNo > 0) {
-      this.location.go('sorudeposu/iliskilisoru/' + this.soru.soruKokuNo);
 
+      // Murat
     }
     else {
       this.iliskisiOlmayanSoruyuDegistir();

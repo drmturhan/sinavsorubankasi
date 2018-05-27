@@ -32,8 +32,8 @@
         .mat-tab-group {
             background-color: #D8E8E9;
             width: 100%;
-            height: 100% !important;
-            box-shadow: 0 3px 1px -2px rgba(0, 0, 0, .2), 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12);
+            height: 100vh !important;
+            // box-shadow: 0 3px 1px -2px rgba(0, 0, 0, .2), 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12);
             transition: box-shadow 280ms cubic-bezier(.4, 0, .2, 1);
         }
     }
@@ -198,9 +198,9 @@
     border-radius: 4px;
     box-shadow: 0 5px 2px -4px rgba(0, 0, 0, .4), 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12);
     transition: box-shadow 560ms cubic-bezier(.4, 0, .2, 1);
-    padding: 12px;
-    margin: 12px;
-    padding-bottom: 24px;
+    padding: 16px;
+    margin: 16px;
+    
     @include media-breakpoint-down('sm') {
         margin-right: 10%;
         padding: 12px;
@@ -208,9 +208,9 @@
     }
     h2 {
         font-weight: 400;
-        color: #252D43;
+        color: #D8464C;
     }
-    background-color: #D8E8E9;
+    background-color: #DBDCD6;
     color: #252D43;
     .mat-input-element {
         overflow-y: hidden;

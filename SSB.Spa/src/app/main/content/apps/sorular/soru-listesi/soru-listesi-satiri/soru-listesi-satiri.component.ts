@@ -29,11 +29,15 @@ import { DersItem, KonuItem } from '../../models/birim-program-donem-ders';
 export class SoruListesiSatiriComponent implements OnInit, OnDestroy {
   @Input() soru: SoruListe;
   @HostBinding('class.selected') selected: boolean;
+  
   bitisTarihiGecerli: boolean;
   selectedSoruIds$: Observable<any>;
+  
   dialogRef: any;
+  
   bilgi: ResolveInfo;
   routerState: any;
+  
   constructor(
 
     public dialog: MatDialog,
@@ -74,6 +78,9 @@ export class SoruListesiSatiriComponent implements OnInit, OnDestroy {
     });
 
   }
+  ngOnDestroy() {
+  }
+
   refresh() {
     this.cd.markForCheck();
   }
@@ -81,10 +88,6 @@ export class SoruListesiSatiriComponent implements OnInit, OnDestroy {
   onSelectedChange() {
     this.store.dispatch(new fromSoruStore.SoruSecimiDegistir(this.soru.soruId.toString()));
   }
-
-  ngOnDestroy() {
-  }
-
 
   soruyuDegistir() {
     if (this.soru.soruKokuNo > 0) {

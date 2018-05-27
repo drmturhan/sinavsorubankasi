@@ -18,7 +18,7 @@ export class SbMesajService {
     yansit(mesajlar: string[], action?: string, sure?: number): MatSnackBarRef<SimpleSnackBar> | null {
         if (mesajlar && mesajlar.length > 0) {
             if (sure == null) {
-                sure = 4000;
+                sure = 6000;
             }
             setTimeout(() => {
                 return this.snackBar.open(mesajlar[0], action,
@@ -43,7 +43,7 @@ export class SbMesajService {
     }
     hatalar(hatalar: Hata[], action?: string, sure?: number): MatSnackBarRef<SimpleSnackBar> | null {
         if (sure == null) {
-            sure = 4000;
+            sure = 6000;
         }
         if (hatalar && hatalar.length > 0) {
             setTimeout(() => {

@@ -103,7 +103,7 @@ export class IliskiliSoruService {
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | Promise<any> | any {
     this.secilmisSorular = [];
-    
+
     this.yukleniyor = true;
     this.aktifSoru = null;
     this.onAktifSoruDegisti.next(this.aktifSoru);
@@ -117,53 +117,52 @@ export class IliskiliSoruService {
 
         if (this.bilgi) {
           this.soruKokuNo = this.bilgi.sayfaBilgisi['soruKokuNo'];
-          this.soruKokuBilgisiAl(this.soruKokuNo).subscribe(sonuc => {
+          if (this.soruKokuNo) {
+            this.soruKokuBilgisiAl(this.soruKokuNo).subscribe(sonuc => {
 
-            if (sonuc.basarili) {
-              this.bilgi = this.resolverBilgi.bilgiDegistir(this.bilgi.id, this.bilgi.url, sonuc.donenNesne);
-              this.onKayitGeldi(sonuc);
-              this.soruStore.dispatch(new fromSoruStore.UpdateSorularTamam(sonuc.donenNesne.sorulari));
+              if (sonuc.basarili) {
+                this.bilgi = this.resolverBilgi.bilgiDegistir(this.bilgi.id, this.bilgi.url, sonuc.donenNesne);
+                this.onKayitGeldi(sonuc);
+                this.soruStore.dispatch(new fromSoruStore.UpdateSorularTamam(sonuc.donenNesne.sorulari));
 
-            } else {
-              const aksiyon = this.mesajService.hataStr('Sorular yüklenirken bir hata oluştu!', 'Yeniden dene');
-              aksiyon.onAction().subscribe(() => { this.resolve(route, state); });
-            }
-          },
-            (hata) => {
-              const aksiyon = this.mesajService.hataStr('Sorular yüklenirken bir hata oluştu!', 'Yeniden dene');
-              aksiyon.onAction().subscribe(() => { this.resolve(route, state); });
+              } else {
+                const aksiyon = this.mesajService.hataStr('Sorular yüklenirken bir hata oluştu!', 'Yeniden dene');
+                aksiyon.onAction().subscribe(() => { this.resolve(route, state); });
+              }
             },
-            () => this.yukleniyor = false);
-        } else {
-          // Direkt bu sayafaya gelmek istenmiş
-          this.mesajService.hataStr('Bu sayfaya ilişkili soru seçerek veya yaratarak gelebilirsiniz!');
-          this.router.navigate(['sorudeposu']);
+              (hata) => {
+                this.mesajService.hataStr('Sorular yüklenirken bir hata oluştu!');
+              },
+              () => this.yukleniyor = false);
+            return;
+          } else {
+            // YENİ SORU KOKU
+            this.yukleniyor = false;
+            this.soruKokuNo = 0;
+            const yeniKayit = new KayitSonuc<SoruKokuListe>();
+            yeniKayit.basarili = true;
+            yeniKayit.donenNesne = new SoruKokuListe();
+            yeniKayit.donenNesne.soruKokuId = 0;
+            yeniKayit.donenNesne.sorulari = [];
+            this.soruKokuNo = yeniKayit.donenNesne.soruKokuId;
+            if (this.bilgi.sayfaBilgisi.hasOwnProperty('dersNo')) {
+              yeniKayit.donenNesne.dersNo = this.bilgi.sayfaBilgisi.dersNo;
+            }
+            if (this.bilgi.sayfaBilgisi.hasOwnProperty('konuNo')) {
+              yeniKayit.donenNesne.konuNo = this.bilgi.sayfaBilgisi.konuNo;
+            }
+            yeniKayit.donenNesne.soruKokuMetni = '';
+            this.onKayitGeldi(yeniKayit);
+            this.onSorularDegisti.next([]);
+            this.mesajService.goster('Lütfen yeni soru kökünü girdikten sonra ilişkili soruları girin..');
+            return;
+          }
         }
-
-      } else {
-
-        // YENİ SORU KOKU
-        this.yukleniyor = false;
-        this.soruKokuNo = 0;
-        const yeniKayit = new KayitSonuc<SoruKokuListe>();
-        yeniKayit.basarili = true;
-        yeniKayit.donenNesne = new SoruKokuListe();
-        yeniKayit.donenNesne.soruKokuId = 0;
-        yeniKayit.donenNesne.sorulari = [];
-        this.soruKokuNo = yeniKayit.donenNesne.soruKokuId;
-        if (this.bilgi.sayfaBilgisi.hasOwnProperty('dersNo')) {
-          yeniKayit.donenNesne.dersNo = this.bilgi.sayfaBilgisi.dersNo;
-        }
-        if (this.bilgi.sayfaBilgisi.hasOwnProperty('konuNo')) {
-          yeniKayit.donenNesne.konuNo = this.bilgi.sayfaBilgisi.konuNo;
-        }
-        yeniKayit.donenNesne.soruKokuMetni = '';
-        this.onKayitGeldi(yeniKayit);
       }
-
     }
-
-
+    // Direkt bu sayafaya gelmek istenmiş
+    this.mesajService.hataStr('Bu sayfaya ilişkili soru seçerek veya yaratarak gelebilirsiniz!');
+    this.router.navigate(['sorudeposu']);
 
 
     // return new Promise((resolve, reject) => {

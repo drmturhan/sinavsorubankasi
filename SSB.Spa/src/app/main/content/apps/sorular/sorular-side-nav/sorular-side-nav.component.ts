@@ -15,7 +15,7 @@ import { SorularEffectsService } from '../soru-store/effects/sorular-effects.ser
 import { SbMesajService } from '../../../../../core/services/sb-mesaj.service';
 import { SoruDepoVeriService } from '../soru-store/helpers/soru-depo-veri.service';
 import { CoktanSecmeliSoruComponent } from '../coktan-secmeli-soru/coktan-secmeli-soru.component';
-import { SoruYarat } from '../models/soru';
+import { SoruYarat, SoruKokuDuzenle, SoruKokuListe } from '../models/soru';
 import { SorularService } from '../sorular.service';
 import { DialMenuModel } from '../../../../../models/dial-menu-model';
 import { SbNavitaionItem } from '../../../../../models/sb-navigation';
@@ -230,10 +230,16 @@ export class SorularSideNavComponent implements OnInit, AfterViewChecked {
       case 'iliskili':
         const aktifKonu: KonuItem = this.bilgi.sayfaBilgisi.hasOwnProperty('konuId') ? this.bilgi.sayfaBilgisi : null;
         const aktifDers: DersItem = aktifKonu ? this.sorularService.dersBul(aktifKonu.dersNo) : this.bilgi.sayfaBilgisi;
+        const soruKoku = new SoruKokuListe();
         if (aktifKonu) {
-          this.router.navigate([`sorudeposu/iliskilisoru/ders/${aktifDers.dersId}/konu/${aktifKonu.konuId}`]);
+          soruKoku.konuNo = aktifKonu.konuId;
+          soruKoku.dersNo = aktifKonu.dersNo;
+          const bilgi = this.resolverBilgi.bilgiKoy(soruKoku, 'iliskilisoru');
+          this.router.navigate([`sorudeposu/iliskilisoru/${bilgi.id}`]);
         } else {
-          this.router.navigate([`sorudeposu/iliskilisoru/ders/${aktifDers.dersId}`]);
+          soruKoku.dersNo = aktifKonu.dersNo;
+          const bilgi = this.resolverBilgi.bilgiKoy(soruKoku, 'iliskilisoru');
+          this.router.navigate([`sorudeposu/iliskilisoru/${bilgi.id}`]);
         }
         break;
 

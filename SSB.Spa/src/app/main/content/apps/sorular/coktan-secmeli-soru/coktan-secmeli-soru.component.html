@@ -70,14 +70,14 @@
 
     </div>
     <div fxLayout="column">
-      <mat-tab-group dynamicHeight=false #defter>
+      <mat-tab-group dynamicHeight=false style="height: 100vh;">
         <mat-tab label="Soru Tanımı">
           <ng-template mat-tab-label>
             <div fxHide fxShow.gt-sm>Soru cümlesi ve seçenekleri</div>
             <mat-icon fxHide.gt-sm matTooltip="Soru metni ve seçenekleri tanımlamak için seçin.">edit</mat-icon>
           </ng-template>
           <div class="soru-tanim-sayfa-icerik">
-            <fuse-sb-html-editor id="soru-metni" baslik="SORU CÜMLESİ"  [parentForm]="coktanSecmeliSoruSecenekService.soruForm" parentFormControlName="soruMetni"></fuse-sb-html-editor>
+            <fuse-sb-html-editor id="soru-metni" baslik="SORU CÜMLESİ" [parentForm]="coktanSecmeliSoruSecenekService.soruForm" parentFormControlName="soruMetni"></fuse-sb-html-editor>
             <fuse-tek-dogrulu-secenek class="doldur"></fuse-tek-dogrulu-secenek>
           </div>
         </mat-tab>
@@ -86,7 +86,87 @@
             <div fxHide fxShow.gt-sm>Özellikler</div>
             <mat-icon fxHide.gt-sm matTooltip="Özellikleri ayrıntılı olarak tanımlamak için seçin">settings</mat-icon>
           </ng-template>
-          <div class="soru-ozellik-sayfa-icerik" fxLayout="column wrap" fxLayoutAlign="row" fxFlex>
+
+          <div fxLayout="column" fxLayoutAlign="start stretch" fxFlex="1 0 auto" style="height:600px;">
+            <div fxLayout="row wrap" fxLayoutAlign="center stretch" fxFlex="1 0 auto">
+              <div class="kart-sari" fxFlex="400px" fxLayout="column" fxLayoutAlign="start stretch">
+                <h2>Özellikler</h2>
+                <mat-form-field>
+                  <mat-select placeholder="Zorluk derecesi" [formControl]="coktanSecmeliSoruSecenekService.soruForm.get('soruZorlukNo')">
+                    <mat-option>Zorluk derecesini seçin</mat-option>
+                    <mat-option *ngFor="let zorluk of (soruZorluklari$|async)" [value]="zorluk.zorlukId">
+                      {{zorluk.zorlukAdi}}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="displayMessage.soruZorlukNo">{{displayMessage.soruZorlukNo}}</mat-error>
+                </mat-form-field>
+
+                <mat-form-field>
+                  <mat-select placeholder="Soru tipi" [formControl]="coktanSecmeliSoruSecenekService.soruForm.get('soruTipNo')">
+                    <mat-option>Soru tipini seçin</mat-option>
+                    <mat-option *ngFor="let tip of (soruTipleri$|async)" [value]="tip.soruTipId">
+                      {{tip.soruTipAdi}}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="displayMessage.soruTipNo">{{displayMessage.soruTipNo}}</mat-error>
+                </mat-form-field>
+
+                <mat-form-field>
+                  <mat-select placeholder="Bilişsel düzey" [formControl]="coktanSecmeliSoruSecenekService.soruForm.get('bilisselDuzeyNo')">
+                    <mat-option>Bilişsel düzey seçin</mat-option>
+                    <mat-option *ngFor="let bd of (bilisselDuzeyler$|async)" [value]="bd.bilisselDuzeyId">
+                      {{bd.duzeyAdi}}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="displayMessage.bilisselDuzeyId">{{displayMessage.bilisselDuzeyId}}</mat-error>
+                </mat-form-field>
+
+              </div>
+              <div class="kart-sari" fxFlex="400px" fxLayout="column" fxLayoutAlign="start stretch">
+                <h2>Geçerlilik ve cevaplama süreleri</h2>
+                <mat-form-field formGroupName="gecerlilik">
+                  <input matInput #baslangic [matDatepicker]="pickerBaslangic" placeholder="Başlangıç tarihi" formControlName="baslangic">
+                  <mat-datepicker-toggle matSuffix [for]="pickerBaslangic"></mat-datepicker-toggle>
+                  <mat-datepicker #pickerBaslangic startView="year" [startAt]="onTanimBaslangicTarihi"></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field formGroupName="gecerlilik">
+                  <input matInput [matDatepicker]="pickerBitis" placeholder="Bitiş tarihi" formControlName="bitis">
+                  <mat-datepicker-toggle matSuffix [for]="pickerBitis"></mat-datepicker-toggle>
+                  <mat-datepicker #pickerBitis [startAt]="baslangic.value"></mat-datepicker>
+                </mat-form-field>
+                <mat-error *ngIf="displayMessage.gecerlilik">{{displayMessage.gecerlilik}}</mat-error>
+                <mat-form-field>
+                  <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px">
+                    <input matInput #cevapSuresi placeholder="Cevaplama süresi" formControlName="cevaplamaSuresi" fxFlex="50px" (keyup)="sureSlider.value=cevapSuresi.value">
+                    <mat-slider #sureSlider [max]="360" [min]="20" [step]="1" [thumbLabel]="true" [tickInterval]="20" fxFlex="auto" (change)="cevaplamaSuresiDegisti($event)">
+                    </mat-slider>
+                  </div>
+                  <mat-error *ngIf="displayMessage.cevaplamaSuresi">{{displayMessage.cevaplamaSuresi}}</mat-error>
+                  <mat-hint>Cevaplama süresini saniye olarak (20-180 sn) seçin.</mat-hint>
+                </mat-form-field>
+              </div>
+            </div>
+            <div  class="kart-sari p-32 m-32" fxLayout="column wrap" fxLayoutAlign="start stretch" fxFlex="1 0 auto">
+              <h2>Kaynakça ve cevap açıklaması</h2>
+
+              <div class="px-12" fxLayout="column" fxLayoutAlign="start stretch">
+                <mat-form-field>
+                  <textarea matInput matTextareaAutosize matAutosizeMinRows="4" formControlName="kaynakca" placeholder="Kaynakça"></textarea>
+                  <mat-error *ngIf="displayMessage.kaynakca">{{displayMessage.kaynajca}}</mat-error>
+                </mat-form-field>
+                <mat-form-field>
+                  <textarea matInput matTextareaAutosize matAutosizeMinRows="4" formControlName="aciklama" placeholder="Cevap açıklaması"></textarea>
+                  <mat-error *ngIf="displayMessage.aciklama">{{displayMessage.aciklama}}</mat-error>
+                </mat-form-field>
+
+
+              </div>
+            </div>
+          </div>
+
+
+          <!-- <div class="soru-ozellik-sayfa-icerik" fxLayout="column wrap" fxLayoutAlign="row" fxFlex>
 
             <div class="kart-sari" fxFlex>
               <h2>Özellikler</h2>
@@ -102,8 +182,8 @@
                 </mat-form-field>
                 <mat-form-field>
                   <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px">
-                    <input matInput #cevapSuresi placeholder="Cevaplama süresi" formControlName="cevaplamaSuresi"  fxFlex="50px"  (keyup)="sureSlider.value=cevapSuresi.value" >
-                    <mat-slider  #sureSlider [max]="360" [min]="20" [step]="1" [thumbLabel]="true"  [tickInterval]="20" fxFlex="auto" (change)="cevaplamaSuresiDegisti($event)">
+                    <input matInput #cevapSuresi placeholder="Cevaplama süresi" formControlName="cevaplamaSuresi" fxFlex="50px" (keyup)="sureSlider.value=cevapSuresi.value">
+                    <mat-slider #sureSlider [max]="360" [min]="20" [step]="1" [thumbLabel]="true" [tickInterval]="20" fxFlex="auto" (change)="cevaplamaSuresiDegisti($event)">
                     </mat-slider>
                   </div>
                   <mat-error *ngIf="displayMessage.cevaplamaSuresi">{{displayMessage.cevaplamaSuresi}}</mat-error>
@@ -164,7 +244,7 @@
 
               </div>
             </div>
-          </div>
+          </div> -->
         </mat-tab>
         <mat-tab label="Hedefleri">
           <ng-template mat-tab-label>

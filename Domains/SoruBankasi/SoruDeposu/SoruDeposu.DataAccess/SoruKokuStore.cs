@@ -59,6 +59,7 @@ namespace SoruDeposu.DataAccess
             var veritabanindakiKayit = await store.Kayit.SingleOrDefaultAsync(s => s.SoruKokuId == degisecekKayit.SoruKokuId);
             if (veritabanindakiKayit == null) throw new BadRequestError("Soru bulunamadı");
             degisecekKayit.Yaz(veritabanindakiKayit);
+            store.Context.Update(veritabanindakiKayit);
             return veritabanindakiKayit;
         }
 

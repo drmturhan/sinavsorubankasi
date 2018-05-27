@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, AfterViewChecked } from '@angular/core';
 import { Location } from '@angular/common';
 import { SoruListe, SoruDegistir, SoruYarat, SoruKokuListe, SoruKokuYarat, SoruKokuDuzenle } from '../../models/soru';
 import { Subscription } from 'rxjs';
@@ -24,17 +24,24 @@ import { StartLoading } from '../../../../../../store/index';
   styleUrls: ['./iliskili-soru-listesi.component.scss'],
   animations: fuseAnimations
 })
-export class IliskiliSoruListesiComponent implements OnInit, OnDestroy {
+export class IliskiliSoruListesiComponent implements OnInit, AfterViewChecked, OnDestroy {
+
   @ViewChild(SatPopover) popover: SatPopover;
   @ViewChild(MatExpansionPanel) soruKokuMetiniPaneli: MatExpansionPanel;
 
+
   sorular: SoruListe[];
   aktifSoru: SoruListe;
+
   onSorularDegisti: Subscription;
   onAktifSoruDegisti: Subscription;
+
+  yukleniyor: boolean;
   dialogRef: any;
+
   soruKokuForm: FormGroup;
   panelOpenState: boolean;
+
   public get soruKokuNo(): number {
     if (!this.soruKokuForm || !this.soruKokuForm.get('soruKokuId')) {
       return 0;
@@ -50,9 +57,6 @@ export class IliskiliSoruListesiComponent implements OnInit, OnDestroy {
       return '';
     } else {
       const deger = this.soruKokuForm.get('soruKokuMetni').value;
-      if (this.panelOpenState === true) {
-        return '';
-      }
       return deger;
     }
   }
@@ -68,8 +72,6 @@ export class IliskiliSoruListesiComponent implements OnInit, OnDestroy {
     public dialog: MatDialog,
     private platform: Platform
   ) {
-
-
     this.formyarat();
   }
 
@@ -105,6 +107,14 @@ export class IliskiliSoruListesiComponent implements OnInit, OnDestroy {
           }
         });
   }
+  ngAfterViewChecked(): void {
+    if (this.soruKokuMetiniPaneli && !this.soruKokuMetni) {
+      setTimeout(() => {
+        this.panelOpenState = true;
+        this.soruKokuMetiniPaneli.open();
+      });
+    }
+  }
   ngOnDestroy() {
     this.onAktifSoruDegisti.unsubscribe();
     this.onSorularDegisti.unsubscribe();
@@ -112,34 +122,40 @@ export class IliskiliSoruListesiComponent implements OnInit, OnDestroy {
   soruyuOku(soruId) {
     this.service.aktiSoruOlarakIsaretle(soruId);
   }
-  // soruKokunuKaydet() {
-  //   if (this.soruKokuNo > 0) {
-  //     const degisecek: SoruKokuDuzenle = Object.assign({}, this.soruKokuForm.value);
-  //     degisecek.sorulari = this.sorular.map(s => s.soruId);
-  //     this.service.soruKokuKaydet(degisecek).subscribe((sonuc: KayitSonuc<SoruKokuListe>) => {
-  //       if (sonuc.basarili) {
-  //         this.service.onKayitGeldi(sonuc);
-  //         this.soruKokuForm.patchValue({ soruKokuId: sonuc.donenNesne.soruKokuId, soruKokuMetni: sonuc.donenNesne.soruKokuMetni });
-  //         this.location.go('sorudeposu/iliskilisoru/' + this.service.soruKokuNo);
-  //         this.soruKokuForm.markAsPristine();
-  //       } else {
-  //         this.mesajService.hata(sonuc.hatalar[0]);
-  //       }
-  //     });
-  //   } else {
-  //     const yeni: SoruKokuYarat = Object.assign({}, this.soruKokuForm.value);
-  //     yeni.sorulari = this.sorular.map(s => s.soruId);
-  //     this.service.soruKokuYarat(yeni).subscribe((sonuc: KayitSonuc<SoruKokuListe>) => {
-  //       if (sonuc.basarili) {
-  //         this.service.onKayitGeldi(sonuc);
-  //         this.soruKokuForm.patchValue({ soruKokuId: sonuc.donenNesne.soruKokuId, soruKokuMetni: sonuc.donenNesne.soruKokuMetni });
-  //         this.soruKokuForm.markAsPristine();
-  //       } else {
-  //         this.mesajService.hata(sonuc.hatalar[0]);
-  //       }
-  //     });
-  //   }
-  // }
+  soruKokunuKaydet() {
+    this.uiStore.dispatch(new fromRootStore.StartLoading());
+    if (this.soruKokuNo > 0) {
+      const degisecek: SoruKokuDuzenle = Object.assign({}, this.soruKokuForm.value);
+      degisecek.sorulari = this.sorular.map(s => s.soruId);
+      this.service.soruKokuKaydet(degisecek).subscribe((sonuc: KayitSonuc<SoruKokuListe>) => {
+        this.uiStore.dispatch(new fromRootStore.StopLoading());
+        if (sonuc.basarili) {
+          this.service.onKayitGeldi(sonuc);
+          this.soruKokuForm.patchValue({ soruKokuId: sonuc.donenNesne.soruKokuId, soruKokuMetni: sonuc.donenNesne.soruKokuMetni });
+          this.soruKokuForm.markAsPristine();
+          this.mesajService.goster('Soru kökü kaydedildi.');
+        } else {
+          this.mesajService.hata(sonuc.hatalar[0]);
+        }
+      }, (hata) => this.mesajService.hataStr('Kaydedilemedi!'),
+        () => this.uiStore.dispatch(new fromRootStore.StopLoading()));
+    } else {
+      const yeni: SoruKokuYarat = Object.assign({}, this.soruKokuForm.value);
+      // yeni.sorulari = this.sorular.map(s => s.soruId);
+      this.service.soruKokuYarat(yeni).subscribe((sonuc: KayitSonuc<SoruKokuListe>) => {
+        this.uiStore.dispatch(new fromRootStore.StopLoading());
+        if (sonuc.basarili) {
+          this.service.onKayitGeldi(sonuc);
+          this.soruKokuForm.patchValue({ soruKokuId: sonuc.donenNesne.soruKokuId, soruKokuMetni: sonuc.donenNesne.soruKokuMetni });
+          this.soruKokuForm.markAsPristine();
+          this.mesajService.goster('Soru kökü kaydedildi.');
+        } else {
+          this.mesajService.hata(sonuc.hatalar[0]);
+        }
+      }, (hata) => this.mesajService.hataStr('Kaydedilemedi!'),
+        () => this.uiStore.dispatch(new fromRootStore.StopLoading()));
+    }
+  }
 
   yeniSoruYaratmaEkrani(soru: SoruYarat = null) {
 
@@ -259,15 +275,15 @@ export class IliskiliSoruListesiComponent implements OnInit, OnDestroy {
     }
 
     // Yeni soru kaydı buarada yapılıyor;
-    const yeniSoru: SoruYarat = Object.assign({}, formData.getRawValue());
+    const yeniSoru: SoruYarat = Object.assign({}, yaratilacakSoru, formData.getRawValue());
     yeniSoru.soruKokuNo = soruKokuId;
     this.sorularService.formuNesneyeCevirKaydet(formData, yeniSoru);
-    
+
     // yeniSoru.tekDogruluSecenekleri = formData.get('secenekler').value;
     // yeniSoru.kabulEdilebilirlikIndeksi = formData.get('kabulEdilebilirlikIndeksi').value;
     // yeniSoru.baslangic = formData.get('gecerlilik.baslangic').value;
     // yeniSoru.bitis = formData.get('gecerlilik.bitis').value;
-    
+
     // if (yeniSoru.dersNo > 0) {
     //   if (ders != null) {
     //     yeniSoru.birimNo = ders.birimNo;

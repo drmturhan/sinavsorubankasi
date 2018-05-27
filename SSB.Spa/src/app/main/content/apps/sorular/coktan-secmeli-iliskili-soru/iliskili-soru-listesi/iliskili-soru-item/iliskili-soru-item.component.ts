@@ -1,8 +1,9 @@
-import { Component, OnInit, Input, HostBinding, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, HostBinding, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { SoruListe, SoruDegistir } from '../../../models/soru';
 import { Subscription } from 'rxjs';
 import { IliskiliSoruService } from '../../iliskili-soru.service';
 import * as fromRootStore from '../../../../../../../store/index';
+import * as fromSoruStore from '../../../soru-store/index';
 import { Store } from '@ngrx/store';
 import { SorularService } from '../../../sorular.service';
 import { KayitSonuc } from '../../../../../../../models/sonuclar';
@@ -24,21 +25,27 @@ export class IliskiliSoruItemComponent implements OnInit, OnDestroy {
 
   @HostBinding('class.selected') selected: boolean;
 
+  bitisTarihiGecerli: boolean;
+
   onSecilmisSorularDegisti: Subscription;
 
   dialogRef: any;
   constructor(
     private uiStore: Store<fromRootStore.UIState>,
+    private soruStore: Store<fromSoruStore.SoruDepoAppState>,
     private service: IliskiliSoruService,
     private sorularService: SorularService,
     private mesajService: SbMesajService,
     private platform: Platform,
+    private cd: ChangeDetectorRef,
     public dialog: MatDialog,
 
   ) { }
 
   ngOnInit() {
     this.soru = new SoruListe(this.soru);
+
+    this.bitisTarihiGecerli = this.soru.baslangic < this.soru.bitis;
 
     this.onSecilmisSorularDegisti =
       this.service.onSecilmisSorularDegisti
@@ -47,21 +54,16 @@ export class IliskiliSoruItemComponent implements OnInit, OnDestroy {
           this.selected = benVarmiyim && benVarmiyim.length === 1 ? true : false;
         });
 
-
+    this.refresh();
   }
   ngOnDestroy() {
     this.onSecilmisSorularDegisti.unsubscribe();
   }
+  refresh() {
+    this.cd.markForCheck();
+  }
   onSelectedChange() {
     this.service.toggleSoruSec(this.soru.soruId);
-  }
-
-  toggleStar(event) {
-    event.stopPropagation();
-
-    // this.soru.toggleStar();
-
-    // this.service.updateMail(this.soru);
   }
   soruDegistirmeEkrani() {
 
@@ -133,11 +135,21 @@ export class IliskiliSoruItemComponent implements OnInit, OnDestroy {
   soruDegisiklikKaydet(formData: FormGroup, degisecekSoru: SoruDegistir) {
     this.sorularService.formuNesneyeCevirKaydet(formData, degisecekSoru);
   }
-  soruyuKapat() {
+  toggleStar(event) {
+    event.stopPropagation();
 
+    // this.soru.toggleStar();
+
+    // this.service.updateMail(this.soru);
+  }
+
+  soruyuKapat() {
+    event.stopPropagation();
+    this.soruStore.dispatch(new fromSoruStore.SoruAcKapa({ soruNo: this.soru.soruId, ac: false }));
   }
   soruyuAc() {
-
+    event.stopPropagation();
+    this.soruStore.dispatch(new fromSoruStore.SoruAcKapa({ soruNo: this.soru.soruId, ac: true }));
   }
   favoriToogle() {
     if (this.soru.favori) {
@@ -145,10 +157,10 @@ export class IliskiliSoruItemComponent implements OnInit, OnDestroy {
     } else { this.soruyuFavoriYap(); }
   }
   soruyuFavoriYap() {
-
+    this.soruStore.dispatch(new fromSoruStore.SoruFavoriDegistir({ soruNo: this.soru.soruId, favori: true }));
   }
   soruyuSiradanYap() {
-
+    this.soruStore.dispatch(new fromSoruStore.SoruFavoriDegistir({ soruNo: this.soru.soruId, favori: true }));
   }
   soruyuSilindiYap() {
     const dialogRef = this.dialog.open(FuseConfirmDialogComponent, {
@@ -164,7 +176,7 @@ export class IliskiliSoruItemComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe(result => {
 
       if (result) {
-
+        this.soruStore.dispatch(new fromSoruStore.SoruSilindiIsaretle([this.soru.soruId.toString()]));
       }
     });
 

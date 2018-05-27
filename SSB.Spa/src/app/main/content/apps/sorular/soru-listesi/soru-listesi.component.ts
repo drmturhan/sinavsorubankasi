@@ -13,8 +13,9 @@ import { Store } from '@ngrx/store';
 export class SoruListesiComponent {
   @Input() sorular: SoruListe[];
   @Input() aktifSoru: SoruListe;
-  yukleniyor: boolean;
   @Output() sorudegisti = new EventEmitter();
+
+  yukleniyor: boolean;
   constructor(private store: Store<fromSorularStore.SoruDepoAppState>) {
     this.store.select(fromSorularStore.getSorularLoading).subscribe(loading => {
       this.yukleniyor = loading;

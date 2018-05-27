@@ -2,11 +2,11 @@
 
     <mat-checkbox [checked]="selected" (change)="onSelectedChange()" (click)="$event.stopPropagation();" style="margin-right: 8px">
     </mat-checkbox>
-    <button *ngIf="soru?.soruKokuSorulariSayisi===0" mat-button class="mat-icon-button" (click)="$event.stopPropagation()" (click)=" soruyuDegistir()">
+    <button *ngIf="soru?.soruKokuSorulariSayisi===0" mat-button class="mat-icon-button" (click)="$event.stopPropagation()" (click)="soruyuDegistir()">
         <mat-icon matTooltip="Düzenleme ekranını aç">edit</mat-icon>
     </button>
 
-    <button *ngIf="soru?.soruKokuSorulariSayisi>0" mat-button class="mat-icon-button" (click)="$event.stopPropagation()" (click)=" soruyuDegistir()">
+    <button *ngIf="soru?.soruKokuSorulariSayisi>0" mat-button class="mat-icon-button" (click)="$event.stopPropagation()" (click)="soruyuDegistir()">
         <mat-icon style="color:#E2474C" *ngIf="soru?.soruKokuSorulariSayisi>0" matTooltip="İlişkili sorudur. Yani aynı soru köküne bağlı birden fazla soru var. Bu soru da onlardan biridir.">link</mat-icon>
     </button>
     <div class="info" fxFlex FlexLayout="column">
