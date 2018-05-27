@@ -33,6 +33,7 @@ import { SorularService } from './sorular.service';
 
 })
 export class SorularComponent implements OnInit, OnDestroy {
+
   routerState: any;
   hasSelectedSorular: boolean;
   isIndeterminate: boolean;
@@ -47,7 +48,7 @@ export class SorularComponent implements OnInit, OnDestroy {
   searchText$: Observable<string>;
   sorular: SoruListe[];
   selectedSorularIds: string[];
-
+  bilgi: any;
   private kullaniciTakip$: Subscription;
   constructor(
     private configService: FuseConfigService,
@@ -64,6 +65,10 @@ export class SorularComponent implements OnInit, OnDestroy {
 
     this.rootStore.select(fromRootStore.getRouterState).subscribe(routerState => {
 
+      if (routerState['bilgi']) {
+
+
+      }
       // if (routerState) {
       //   this.routerState = routerState.state;
       //   const handle: any[] = this.effectsService.soruHandleYarat(this.routerState);
@@ -200,6 +205,8 @@ export class SorularComponent implements OnInit, OnDestroy {
     // this.store.dispatch(new fromSorularStore.SetSorularAramaCumlesi(''));
     // this.store.dispatch(new fromSorularStore.DeselectSorularTumu());
   }
+
+  
   yukle() {
     // this.store.dispatch(new UI.StartLoading());
 
@@ -243,7 +250,7 @@ export class SorularComponent implements OnInit, OnDestroy {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-          this.store.dispatch(new fromSorularStore.SoruSilindiIsaretle(this.selectedSorularIds));
+        this.store.dispatch(new fromSorularStore.SoruSilindiIsaretle(this.selectedSorularIds));
       }
     });
 

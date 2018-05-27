@@ -129,7 +129,7 @@ export class CoktanSecmeliSoruComponent implements OnInit, AfterViewInit, OnDest
   ngOnInit() {
     this.validationMessages = CoktanSecmeliSoruValidasyonMesajlari_tr();
     this.genericValidator = new GenericValidator(this.validationMessages);
-    if (this.data.degisecekSoru === undefined) {
+    if (!this.data.degisecekSoru) {
 
       // if (environment.production === false) {
       this.data.degisecekSoru = this.denemeSoruYarat();
@@ -168,7 +168,7 @@ export class CoktanSecmeliSoruComponent implements OnInit, AfterViewInit, OnDest
 
   secilebilirOgrenimHedefleriniAyarla() {
     const sonuc: OgrenimHedefItem[] = [];
-    
+
     if (this.data.ders && this.data.ders.konulari.length > 0) {
       if (this.data.konu === null) {
         this.data.ders.konulari.forEach(k => {

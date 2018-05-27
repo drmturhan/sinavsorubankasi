@@ -19,6 +19,8 @@ export const SORU_FAVORI_DEGISTIR = '[SORULAR] SORU FAVORI DEGISTIR';
 export const UPDATE_SORULAR = '[SORULAR] UPDATE SORULAR';
 export const UPDATE_SORULAR_TAMAM = '[SORULAR] UPDATE SORULAR TAMAM';
 
+export const SORULAR_YUKLENSIN = '[SORULAR] YUKLE SORULAR';
+
 export const SORU_SIL = '[SORULAR] SORU SILINDI OLARAK ISARETLE';
 export const SORU_SIL_TAMAM = '[SORULAR] SORU SILINDI TAMAM';
 
@@ -120,6 +122,12 @@ export class SoruFavoriDegistir implements Action {
     }
 }
 
+export class SorulariYenidenYukle implements Action {
+    readonly type = SORULAR_YUKLENSIN;
+    constructor() {
+    }
+
+}
 
 
 export class UpdateSoruTamam implements Action {
@@ -152,7 +160,7 @@ export class SoruSilindi implements Action {
 export class UpdateSorularTamam implements Action {
     readonly type = UPDATE_SORULAR_TAMAM;
 
-    constructor() {
+    constructor(public payload: SoruListe[]) {
     }
 }
 
@@ -180,6 +188,7 @@ export type SorularActionsAll
     | UpdateSoruTamam
     | UpdateSorular
     | UpdateSorularTamam
+    | SorulariYenidenYukle
     | SoruSilindi
     | SoruSilindiIsaretle
     | SoruSecimiDegistir;

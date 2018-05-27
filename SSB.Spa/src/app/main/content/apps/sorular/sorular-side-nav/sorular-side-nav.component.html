@@ -59,13 +59,14 @@
             </div>
 
             <div class="nav-item" *ngFor="let program of seciliBirim.programlari">
-                <a class="nav-link program" [class.active]="bilgi && bilgi.hasOwnProperty('programId') && bilgi.programId===program.programId"
+                <a class="nav-link program" [class.active]="bilgi && bilgi.sayfaBilgisi.hasOwnProperty('programId') && bilgi.sayfaBilgisi.programId===program.programId"
                     matRipple (click)="$event.stopPropagation();programSorulariniGoster(program)">
                     <mat-icon class="nav-link-icon" matTooltip="{{seciliBirim.birimAdi +','+program.programAdi+' programı'}}">account_balance</mat-icon>
                     <span matTooltip="{{'Program adı: '+program.programAdi}}">{{program.programAdi|ozet}}</span>
                 </a>
                 <div class="nav-item" *ngFor="let donem of program.donemleri">
-                    <a class="nav-link" matRipple (click)="$event.stopPropagation();donemSorulariniGoster(donem)" [class.active]="bilgi && bilgi.hasOwnProperty('donemId') && bilgi.donemId===donem.donemId">
+                    <a class="nav-link" matRipple (click)="$event.stopPropagation();donemSorulariniGoster(donem)" 
+                    [class.active]="bilgi && bilgi.sayfaBilgisi.hasOwnProperty('donemId') && bilgi.sayfaBilgisi.donemId===donem.donemId">
                         <div class="donem">
                             <mat-icon class="nav-link-icon" matTooltip="{{donem.donemAdi}}">event</mat-icon>
                             <span matTooltip="{{donem.sinifi+' .sınıf,'+ donem.donemAdi}}">{{donem.sinifi+'. Sınıf, '+donem.donemAdi|ozet}}</span>
@@ -73,7 +74,7 @@
                     </a>
 
                     <div class="nav-item" *ngFor="let dersGrubu of donem.dersGruplari">
-                        <a  class="nav-link" matRipple [class.active]="bilgi && bilgi.hasOwnProperty('dersGrupId') && bilgi.dersGrupId===dersGrubu.dersGrupId"
+                        <a  class="nav-link" matRipple [class.active]="bilgi && bilgi.sayfaBilgisi.hasOwnProperty('dersGrupId') && bilgi.sayfaBilgisi.dersGrupId===dersGrubu.dersGrupId"
                             (click)="$event.stopPropagation();dersGrubuSorulariniGoster(dersGrubu)">
                             <div class="dersgrubu">
                                 <mat-icon class="nav-link-icon" matTooltip="{{program.programAdi}} - {{donem.donemAdi}}:{{dersGrubu.grupAdi}}{{dersGrubu.staj?' stajı':''}}{{dersGrubu.dersKurulu?' ders kurulu':''}}  ">import_contacts</mat-icon>
@@ -81,7 +82,7 @@
                             </div>
                         </a>
                         <div class="nav-item" *ngFor="let ders of dersGrubu.dersleri">
-                            <a class="nav-link" matRipple [class.active]="bilgi && bilgi.hasOwnProperty('dersId') && bilgi.dersId===ders.dersId" (click)="$event.stopPropagation();dersinSorulariniGoster(ders)">
+                            <a class="nav-link" matRipple [class.active]="bilgi && bilgi.sayfaBilgisi.hasOwnProperty('dersId') && bilgi.sayfaBilgisi.dersId===ders.dersId" (click)="$event.stopPropagation();dersinSorulariniGoster(ders)">
                                 <div class="ders">
                                     <mat-icon class="nav-link-icon" matTooltip="{{program.programAdi}} - {{donem.donemAdi}}:{{dersGrubu.dersGrubuAdi}} dersi">import_contacts</mat-icon>
                                     <span matTooltip="Ders:{{ders.dersAdi}}">{{ders.dersAdi|ozet:50}}</span>
@@ -90,7 +91,7 @@
 
 
                             <div class="nav-item" *ngFor="let konu of ders.konulari">
-                                <a class="nav-link" matRipple (click)="$event.stopPropagation();konununSorulariniGoster(konu)" [class.active]="bilgi && bilgi.hasOwnProperty('konuId') && bilgi.konuId===konu.konuId">
+                                <a class="nav-link" matRipple (click)="$event.stopPropagation();konununSorulariniGoster(konu)" [class.active]="bilgi && bilgi.sayfaBilgisi.hasOwnProperty('konuId') && bilgi.sayfaBilgisi.konuId===konu.konuId">
                                     <div class="konu">
                                         <mat-icon class="nav-link-icon" matTooltip="{{program.programAdi}} - {{donem.donemAdi}}, 
                                         {{ders.dersAdi}} {{dersGrubu.staj?' stajı' :''}} 

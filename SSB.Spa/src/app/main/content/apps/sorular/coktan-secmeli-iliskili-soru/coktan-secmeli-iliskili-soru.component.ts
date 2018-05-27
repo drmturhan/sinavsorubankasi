@@ -77,7 +77,7 @@ export class CoktanSecmeliIliskiliSoruComponent implements OnInit, OnDestroy {
       .subscribe(searchText => {
         this.service.onAramaCumlesiDegisti.next(searchText);
       });
-    this.service.checkStore().subscribe();
+    
   }
 
   ngOnDestroy() {

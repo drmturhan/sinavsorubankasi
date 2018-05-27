@@ -48,7 +48,7 @@ namespace SSB.Api.Controllers.Api.SoruDepo
         }
 
         [HttpGet("{id}", Name = "SoruKokuListeOku")]
-        public async Task<IActionResult> Get(int id)
+        public async Task<IActionResult> Get(int id, [FromQuery] SoruKokuSorgu sorgu)
         {
             return await KullaniciVarsaCalistir<IActionResult>(async () =>
             {
@@ -57,7 +57,7 @@ namespace SSB.Api.Controllers.Api.SoruDepo
                     return NotFound("Soru kökü bulunamadı");
 
                 var sonuc = KayitSonuc<SoruKokuListeDto>.IslemTamam(soruKoku.ToDto());
-                return Ok(sonuc);
+                return Ok(sonuc.ShapeData(sorgu.Alanlar));
             });
         }
 
@@ -139,7 +139,7 @@ namespace SSB.Api.Controllers.Api.SoruDepo
                 if (dbdekiKayit == null)
                     return NotFound("Soru kökü bulunamadı!");
 
-                
+
 
                 //soruStore.Sil(dbdekiKayit);
                 SoruKokuAlanDegistirDto silmeBilgisi = new SoruKokuAlanDegistirDto();

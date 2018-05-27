@@ -20,6 +20,7 @@ import { SorularService } from '../sorular.service';
 import { DialMenuModel } from '../../../../../models/dial-menu-model';
 import { SbNavitaionItem } from '../../../../../models/sb-navigation';
 import { SoruDepoResolverService } from '../soru-depo-resolver.service';
+import { ResolveInfo } from '../../../../../models/resolve-model';
 
 
 @Component({
@@ -31,7 +32,7 @@ import { SoruDepoResolverService } from '../soru-depo-resolver.service';
 export class SorularSideNavComponent implements OnInit, AfterViewChecked {
 
   routerState: any;
-  bilgi: any;
+  bilgi: ResolveInfo;
   // birimSorulariGorunsun = !this.program 
   //  && !this.donem 
   //  && !this.dersGrubu 
@@ -76,7 +77,7 @@ export class SorularSideNavComponent implements OnInit, AfterViewChecked {
       if (routerState) {
         this.routerState = routerState.state;
         if (routerState.state.params['bilgi']) {
-          this.bilgi = this.resolverBilgi.bilgiAl(routerState.state.params['bilgi']);
+          this.bilgi = this.resolverBilgi.bilgiAl(routerState.state.params['bilgi'], 'soru');
 
         }
       }
@@ -102,11 +103,11 @@ export class SorularSideNavComponent implements OnInit, AfterViewChecked {
     this.refresh();
   }
   sayfayiTazele() {
+    this.resolverBilgi.sil('soru');
     this.store.dispatch(new fromSorularStore.BirimleriSifirla());
     this.store.dispatch(new fromSorularStore.GetBirimler([]));
     this.store.dispatch(new fromSorularStore.SorulariSifirla());
     this.store.dispatch(new fromSorularStore.GetSorular());
-
   }
 
   private birimSecimiDegisti() {
@@ -147,8 +148,8 @@ export class SorularSideNavComponent implements OnInit, AfterViewChecked {
   }
 
   composeDialog() {
-    const konu = this.bilgi.hasOwnProperty('konuId') ? this.bilgi : null;
-    const ders = konu ? this.sorularService.dersBul(konu.dersNo) : this.bilgi;
+    const konu = this.bilgi.sayfaBilgisi.hasOwnProperty('konuId') ? this.bilgi.sayfaBilgisi : null;
+    const ders = konu ? this.sorularService.dersBul(konu.dersNo) : this.bilgi.sayfaBilgisi;
     if (!ders) {
       this.mesajService.hataStr('Ders bilgisi alınamadığı için yeni soru ekranı açılamadı.');
       return;
@@ -227,8 +228,8 @@ export class SorularSideNavComponent implements OnInit, AfterViewChecked {
   yeniSoruYarat(islem) {
     switch (islem) {
       case 'iliskili':
-        const aktifKonu: KonuItem = this.bilgi.hasOwnProperty('konuId') ? this.bilgi : null;
-        const aktifDers: DersItem = aktifKonu ? this.sorularService.dersBul(aktifKonu.dersNo) : this.bilgi;
+        const aktifKonu: KonuItem = this.bilgi.sayfaBilgisi.hasOwnProperty('konuId') ? this.bilgi.sayfaBilgisi : null;
+        const aktifDers: DersItem = aktifKonu ? this.sorularService.dersBul(aktifKonu.dersNo) : this.bilgi.sayfaBilgisi;
         if (aktifKonu) {
           this.router.navigate([`sorudeposu/iliskilisoru/ders/${aktifDers.dersId}/konu/${aktifKonu.konuId}`]);
         } else {
@@ -244,33 +245,33 @@ export class SorularSideNavComponent implements OnInit, AfterViewChecked {
 
   programSorulariniGoster(program: SoruProgramItem) {
 
-    const key = this.resolverBilgi.bilgiKoy(program);
-    this.router.navigate(['sorudeposu/programsorulari/', key]);
+    const bilgi = this.resolverBilgi.bilgiKoy(program, 'soru');
+    this.router.navigate(['sorudeposu/programsorulari/', bilgi.id]);
   }
   donemSorulariniGoster(donem: ProgramDonemItem) {
 
-    const key = this.resolverBilgi.bilgiKoy(donem);
-    this.router.navigate(['sorudeposu/donemsorulari/', key]);
+    const bilgi = this.resolverBilgi.bilgiKoy(donem, 'soru');
+    this.router.navigate(['sorudeposu/donemsorulari/', bilgi.id]);
   }
   dersGrubuSorulariniGoster(dersgrubu: DersGrupItem) {
 
-    const key = this.resolverBilgi.bilgiKoy(dersgrubu);
-    this.router.navigate(['sorudeposu/dersgrubusorulari/', key]);
+    const bilgi = this.resolverBilgi.bilgiKoy(dersgrubu, 'soru');
+    this.router.navigate(['sorudeposu/dersgrubusorulari/', bilgi.id]);
   }
   dersinSorulariniGoster(ders: DersItem) {
 
-    const key = this.resolverBilgi.bilgiKoy(ders);
-    this.router.navigate(['sorudeposu/dersinsorulari/', key]);
+    const bilgi = this.resolverBilgi.bilgiKoy(ders, 'soru');
+    this.router.navigate(['sorudeposu/dersinsorulari/', bilgi.id]);
   }
   konununSorulariniGoster(konu: KonuItem) {
 
-    const key = this.resolverBilgi.bilgiKoy(konu);
-    this.router.navigate(['sorudeposu/konusorulari/', key]);
+    const bilgi = this.resolverBilgi.bilgiKoy(konu, 'soru');
+    this.router.navigate(['sorudeposu/konusorulari/', bilgi.id]);
   }
   yeniSoruEkelenebilirmi() {
     if (this.bilgi === null || this.bilgi === undefined) {
       return false;
     }
-    return this.bilgi.hasOwnProperty('konuId') || this.bilgi.hasOwnProperty('dersId');
+    return this.bilgi.sayfaBilgisi.hasOwnProperty('konuId') || this.bilgi.sayfaBilgisi.hasOwnProperty('dersId');
   }
 }

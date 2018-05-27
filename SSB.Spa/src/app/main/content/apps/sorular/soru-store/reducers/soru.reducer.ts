@@ -110,6 +110,29 @@ export function SorularReducer(state = SorularInitialState, action: SorularActio
 
         }
 
+
+        case SorularActions.UPDATE_SORULAR_TAMAM: {
+
+            const sorular = tassign(state.entities);
+            const degismisSorular = action.payload;
+            degismisSorular.forEach(s => sorular[s.soruId] = s);
+            return tassign(
+                state, {
+                    entities: tassign(sorular),
+                    selectedSoruIds: [],
+                    currentSoru: action.payload
+                });
+
+        }
+
+        case SorularActions.SORULAR_YUKLENSIN: {
+            return tassign(
+                state, {
+                    entities: tassign(state.entities)
+                });
+
+        }
+
         case SorularActions.SORU_SIL_TAMAM: {
             const soruIdleri = action.payload;
             const arr = Object.keys(state.entities).map(k => state.entities[k]);

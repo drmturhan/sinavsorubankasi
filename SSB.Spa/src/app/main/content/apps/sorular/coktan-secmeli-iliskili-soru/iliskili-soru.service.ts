@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { SoruListe, SoruKokuListe, SoruKokuYarat, SoruKokuDuzenle } from '../models/soru';
 import { BehaviorSubject } from 'rxjs';
 
-import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
 // import { Observable } from 'rxjs/internal/Observable';
 // import { of } from 'rxjs/observable/of';
 import 'rxjs/add/observable/forkJoin';
@@ -18,6 +18,7 @@ import { KayitSonuc } from '../../../../../models/sonuclar';
 import { SbMesajService } from '../../../../../core/services/sb-mesaj.service';
 import { SoruDepoVeriService } from '../soru-store/helpers/soru-depo-veri.service';
 import { SoruDepoResolverService } from '../soru-depo-resolver.service';
+import { ResolveInfo } from '../../../../../models/resolve-model';
 
 @Injectable({
   providedIn: 'root'
@@ -26,9 +27,10 @@ export class IliskiliSoruService {
 
   baseUrl = environment.apiUrl;
   soruKokleriUrl = 'sorukokleri';
-
+  yukleniyor = false;
   soruKokuNo: number;
   dersler: DersItem[];
+  bilgi: ResolveInfo;
   ders: DersItem;
   konu: KonuItem;
   soruKokuSonuc: KayitSonuc<SoruKokuListe>;
@@ -50,10 +52,11 @@ export class IliskiliSoruService {
 
   onAramaCumlesiDegisti: BehaviorSubject<any> = new BehaviorSubject('');
 
-  bilgi: any;
+
 
   constructor(
     private http: HttpClient,
+    private router: Router,
     private soruStore: Store<fromSoruStore.SoruDepoAppState>,
     private resolverBilgi: SoruDepoResolverService,
     private mesajService: SbMesajService,
@@ -65,7 +68,7 @@ export class IliskiliSoruService {
     this.bilisselDuzeyler$ = this.soruStore.select(fromSoruStore.getBilisselDuzeyler);
 
     this.soruStore.select(fromSoruStore.getSorularState).subscribe(sonuc => {
-
+      if (this.yukleniyor) { return; }
       if (this.soruKokuNo !== undefined) {
         const arr = Object.keys(sonuc.entities).map(k => sonuc.entities[k]);
         // tslint:disable-next-line:triple-equals
@@ -79,62 +82,113 @@ export class IliskiliSoruService {
 
   }
   checkStore(): Observable<any> {
-    
-      return forkJoin(
-        this.soruDepoVeriService.getBirimler(),
-        this.soruDepoVeriService.getSoruTipleri(),
-        this.soruDepoVeriService.getSoruBilisselDuzeyleri(),
-        this.soruDepoVeriService.getSoruZorluklari()
-      )
+
+    return forkJoin(
+      this.soruDepoVeriService.getBirimler(),
+      this.soruDepoVeriService.getSoruTipleri(),
+      this.soruDepoVeriService.getSoruBilisselDuzeyleri(),
+      this.soruDepoVeriService.getSoruZorluklari()
+    )
       .pipe(
         filter(([birimlerLoaded, soruTipleriLoaded, soruZorluklariLoaded, bilisselDuzeylerLoaded]) =>
           birimlerLoaded && soruTipleriLoaded && soruZorluklariLoaded && bilisselDuzeylerLoaded),
         take(1),
-      );
+    );
   }
 
 
   yenile(soruKokuNo: number) {
     this.getSorularBySoruKoku(soruKokuNo);
   }
+
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | Promise<any> | any {
+    this.secilmisSorular = [];
+    
+    this.yukleniyor = true;
+    this.aktifSoru = null;
+    this.onAktifSoruDegisti.next(this.aktifSoru);
+    this.checkStore();
     if (route.params) {
       this.routeParams = route.params;
-
       if (route.params['bilgi']) {
-        this.bilgi = this.resolverBilgi.bilgiAl(route.params['bilgi']);
-        this.soruKokuNo = this.bilgi['soruKokuNo'];
-      } else {
-        this.soruKokuNo = 0;
+        // Gelen sorudan sorukoku bilgisi alındı.
 
+        this.bilgi = this.resolverBilgi.bilgiAl(route.params['bilgi'], 'iliskilisoru');
+
+        if (this.bilgi) {
+          this.soruKokuNo = this.bilgi.sayfaBilgisi['soruKokuNo'];
+          this.soruKokuBilgisiAl(this.soruKokuNo).subscribe(sonuc => {
+
+            if (sonuc.basarili) {
+              this.bilgi = this.resolverBilgi.bilgiDegistir(this.bilgi.id, this.bilgi.url, sonuc.donenNesne);
+              this.onKayitGeldi(sonuc);
+              this.soruStore.dispatch(new fromSoruStore.UpdateSorularTamam(sonuc.donenNesne.sorulari));
+
+            } else {
+              const aksiyon = this.mesajService.hataStr('Sorular yüklenirken bir hata oluştu!', 'Yeniden dene');
+              aksiyon.onAction().subscribe(() => { this.resolve(route, state); });
+            }
+          },
+            (hata) => {
+              const aksiyon = this.mesajService.hataStr('Sorular yüklenirken bir hata oluştu!', 'Yeniden dene');
+              aksiyon.onAction().subscribe(() => { this.resolve(route, state); });
+            },
+            () => this.yukleniyor = false);
+        } else {
+          // Direkt bu sayafaya gelmek istenmiş
+          this.mesajService.hataStr('Bu sayfaya ilişkili soru seçerek veya yaratarak gelebilirsiniz!');
+          this.router.navigate(['sorudeposu']);
+        }
+
+      } else {
+
+        // YENİ SORU KOKU
+        this.yukleniyor = false;
+        this.soruKokuNo = 0;
+        const yeniKayit = new KayitSonuc<SoruKokuListe>();
+        yeniKayit.basarili = true;
+        yeniKayit.donenNesne = new SoruKokuListe();
+        yeniKayit.donenNesne.soruKokuId = 0;
+        yeniKayit.donenNesne.sorulari = [];
+        this.soruKokuNo = yeniKayit.donenNesne.soruKokuId;
+        if (this.bilgi.sayfaBilgisi.hasOwnProperty('dersNo')) {
+          yeniKayit.donenNesne.dersNo = this.bilgi.sayfaBilgisi.dersNo;
+        }
+        if (this.bilgi.sayfaBilgisi.hasOwnProperty('konuNo')) {
+          yeniKayit.donenNesne.konuNo = this.bilgi.sayfaBilgisi.konuNo;
+        }
+        yeniKayit.donenNesne.soruKokuMetni = '';
+        this.onKayitGeldi(yeniKayit);
       }
+
     }
 
 
 
-    return new Promise((resolve, reject) => {
-      Promise.all([
-        this.getSorular()
-      ]).then(
-        () => {
+
+    // return new Promise((resolve, reject) => {
+    //   Promise.all([
+    //     this.getSorular()
+    //   ]).then(
+    //     () => {
 
 
-          this.onAramaCumlesiDegisti.subscribe(searchText => {
-            if (searchText !== '') {
-              this.searchText = searchText;
-              this.getSorular();
-            }
-            else {
-              this.searchText = searchText;
-              this.getSorular();
-            }
-          });
+    //       this.onAramaCumlesiDegisti.subscribe(searchText => {
+    //         if (searchText !== '') {
+    //           this.searchText = searchText;
+    //           this.getSorular();
+    //         }
+    //         else {
+    //           this.searchText = searchText;
+    //           this.getSorular();
+    //         }
+    //       });
 
-          resolve();
-        },
-        reject
-      );
-    });
+    //       resolve();
+    //     },
+    //     reject
+    //   );
+    // });
   }
 
   getSorular(): Promise<SoruListe[]> {
@@ -185,15 +239,24 @@ export class IliskiliSoruService {
 
     this.soruKokuNo = sonuc.donenNesne.soruKokuId;
     this.soruKokuSonuc = sonuc;
-    this.sorular = sonuc.donenNesne.sorulari.map(soruListe => {
-      return new SoruListe(soruListe);
-    });
+    // this.sorular = sonuc.donenNesne.sorulari.map(soruListe => {
+    //   return new SoruListe(soruListe);
+    // });
 
-    this.sorular = FuseUtils.filterArrayByString(this.sorular, this.searchText);
-    this.onSorularDegisti.next(this.sorular);
+    // this.sorular = FuseUtils.filterArrayByString(this.sorular, this.searchText);
+
+    // this.onSorularDegisti.next(this.sorular);
+    // this.onAktifSoruDegisti.next(null);
 
   }
 
+  soruKokuBilgisiAl(id: number, alanAdlari: string = null): Observable<KayitSonuc<SoruKokuListe>> {
+    let adres = `${this.baseUrl}/${this.soruKokleriUrl}/${id}`;
+    if (alanAdlari) {
+      adres = adres + `?alanlar=${alanAdlari})`;
+    }
+    return this.http.get<KayitSonuc<SoruKokuListe>>(adres);
+  }
   soruKokuYarat(soruKoku: SoruKokuYarat): Observable<KayitSonuc<SoruKokuListe>> {
 
     const adres = `${this.baseUrl}/${this.soruKokleriUrl}/`;
@@ -245,7 +308,7 @@ export class IliskiliSoruService {
     );
 
     // Tetikle
-    this.onSecilmisSorularDegisti.next(this.sorular);
+    this.onSecilmisSorularDegisti.next(this.secilmisSorular);
   }
 
   sorulariSec(filterParameter?, filterValue?) {

@@ -8,7 +8,11 @@
     background: #EDDDE3;
     color: #424A5E;
     &.selected {
-        background: #C5D4CB;
+        background: #A4939F;
+        color: #EAEAF2;
+        .aciklama{
+            color: #EAEAF2;
+        }
     }
     &.current-mail {
         background: #BECDC4;

@@ -2,6 +2,7 @@
 
 export class ResolveInfo {
     id: string;
-    bilgi: any;
+    sayfaBilgisi: any;
+    url: string;
     silinecek: boolean;
 }

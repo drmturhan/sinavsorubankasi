@@ -26,7 +26,7 @@ import { ResolveInfo } from '../../../../../../models/resolve-model';
 export class SorularEffect {
     routerState: any;
     aktifBirim: SoruBirimItem;
-    bilgi: any = null;
+    bilgi: ResolveInfo = null;
     constructor(
         private actions: Actions,
         private service: SorularEffectsService,
@@ -38,8 +38,8 @@ export class SorularEffect {
             if (routerState) {
                 this.routerState = routerState.state;
                 if (routerState.state.params['bilgi']) {
-                    this.bilgi = this.resolverBilgi.bilgiAl(routerState.state.params['bilgi']);
-                    
+                    this.bilgi = this.resolverBilgi.bilgiAl(routerState.state.params['bilgi'], 'soru');
+
                 }
             }
         });
@@ -56,24 +56,26 @@ export class SorularEffect {
                     // if (this.bilgi == null && this.aktifBirim !== null && this.aktifBirim.programlari && this.aktifBirim.programlari.length > 0) {
                     // handle.push({ id: 'birimNo', value: this.aktifBirim.birimId });
                     this.store.dispatch(new fromRootStore.StartLoading());
-                    if (!this.bilgi  && this.aktifBirim) {
-                        const key = this.resolverBilgi.bilgiKoy(this.aktifBirim);
-                        this.bilgi = this.resolverBilgi.bilgiAl(key);
+                    if (!this.bilgi) {
+                        if (this.aktifBirim) {
+                            this.bilgi = this.resolverBilgi.bilgiKoy(this.aktifBirim, 'soru');
+                        } else {
+                            this.store.dispatch(new fromRootStore.StopLoading());
+                            return of(new fromSorularActions.GetSorularBasarisiz('Birim seçilmemiş'));
+                        }
                     }
                     if (this.bilgi) {
-                    return this.service.getKullanicininSorulari(this.bilgi)
-                        .map((sorular: SoruListe[]) => {
+                        return this.service.getKullanicininSorulari(this.bilgi)
+                            .map((sorular: SoruListe[]) => {
 
-                            this.store.dispatch(new fromRootStore.StopLoading());
-                            this.mesajService.goster('Soru listesi alındı.');
+                                this.store.dispatch(new fromRootStore.StopLoading());
+                                return new fromSorularActions.GetSorularTamam({
+                                    loaded: this.bilgi,
+                                    sorular: sorular
+                                });
 
-                            return new fromSorularActions.GetSorularTamam({
-                                loaded: this.bilgi,
-                                sorular: sorular
-                            });
-
-                        })
-                        .catch((err) => of(new fromSorularActions.GetSorularBasarisiz(err)));
+                            })
+                            .catch((err) => of(new fromSorularActions.GetSorularBasarisiz(err)));
                     }
                     else {
                         this.store.dispatch(new fromRootStore.StopLoading());

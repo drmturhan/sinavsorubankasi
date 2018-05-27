@@ -51,7 +51,7 @@ export class SorularEffectsService {
 
 
     const adres = `${this.baseUrl}/${this.sorularUrl}/kullanicininsorulari/`;
-    const query = this.createQuery(bilgi);
+    const query = this.createQuery(bilgi.sayfaBilgisi);
     console.log('sorgu', query);
     return this.http.get<SoruListe[]>(adres + query);
   }

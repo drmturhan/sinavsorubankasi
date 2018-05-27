@@ -17,6 +17,8 @@ import { CoktanSecmeliSoruComponent } from '../../coktan-secmeli-soru/coktan-sec
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
 import { Router } from '@angular/router';
 import { SoruDepoResolverService } from '../../soru-depo-resolver.service';
+import { ResolveInfo } from '../../../../../../models/resolve-model';
+import { DersItem, KonuItem } from '../../models/birim-program-donem-ders';
 
 @Component({
   selector: 'fuse-soru-listesi-satiri',
@@ -30,7 +32,7 @@ export class SoruListesiSatiriComponent implements OnInit, OnDestroy {
   bitisTarihiGecerli: boolean;
   selectedSoruIds$: Observable<any>;
   dialogRef: any;
-  bilgi: any;
+  bilgi: ResolveInfo;
   routerState: any;
   constructor(
 
@@ -50,7 +52,7 @@ export class SoruListesiSatiriComponent implements OnInit, OnDestroy {
       if (routerState) {
         this.routerState = routerState.state;
         if (routerState.state.params['bilgi']) {
-          this.bilgi = this.resolverBilgi.bilgiAl(routerState.state.params['bilgi']);
+          this.bilgi = this.resolverBilgi.bilgiAl(routerState.state.params['bilgi'], 'soru');
         }
       }
     });
@@ -86,8 +88,8 @@ export class SoruListesiSatiriComponent implements OnInit, OnDestroy {
 
   soruyuDegistir() {
     if (this.soru.soruKokuNo > 0) {
-      const bilgiStr = this.resolverBilgi.bilgiKoy(this.soru);
-      this.router.navigate([`sorudeposu/iliskilisoru/${bilgiStr}`]);
+      const bilgi = this.resolverBilgi.bilgiKoy(this.soru, 'iliskilisoru');
+      this.router.navigate([`sorudeposu/iliskilisoru/${bilgi.id}`]);
     }
     else {
       this.iliskisiOlmayanSoruyuDegistir();
@@ -103,7 +105,16 @@ export class SoruListesiSatiriComponent implements OnInit, OnDestroy {
           this.mesajService.hatalar(sonuc.hatalar);
           return;
         }
-        const ders = this.sorularService.dersBul(sonuc.donenNesne.dersNo);
+        let ders: DersItem;
+        let konu: KonuItem;
+        try {
+          ders = this.sorularService.dersBul(sonuc.donenNesne.dersNo);
+          konu = this.sorularService.getKonu(ders, sonuc.donenNesne.konuNo);
+        } catch (hata) {
+          this.mesajService.hataStr('Ders ve konu bilgisi alınırken bir hata oluştu!');
+          return;
+        }
+
         let en = '70vw';
         let boy = '90vh';
         let sinif = 'popup-masaustu';
@@ -115,9 +126,8 @@ export class SoruListesiSatiriComponent implements OnInit, OnDestroy {
         this.dialogRef = this.dialog.open(CoktanSecmeliSoruComponent,
           {
             data: {
-              dersNo: this.soru.dersNo,
-              konuNo: this.soru.konuNo,
               ders: ders,
+              konu: konu,
               degisecekSoru: sonuc.donenNesne
             },
             height: boy,

@@ -1,7 +1,7 @@
 <div fxLayout="row" fxLayoutAlign="start center">
 
     <mat-checkbox   class="pr-4" [(ngModel)]="selected" (ngModelChange)="onSelectedChange()" (click)="$event.stopPropagation();"></mat-checkbox>
-    <button  mat-button class="mat-icon-button pr-4" (click)="$event.stopPropagation()" (click)="soruyuDegistir()">
+    <button  mat-button class="mat-icon-button pr-4" (click)="$event.stopPropagation()" (click)="soruDegistirmeEkrani()">
         <mat-icon matTooltip="Düzenleme ekranını aç">edit</mat-icon>
     </button>
     <div class="info" fxFlex FlexLayout="column">
@@ -52,7 +52,7 @@
                         <mat-icon>fast_forward</mat-icon>
                         <span matTooltip="Aktif yaptığınız sorular sınavlarda onaylandıktan sonra çıkabilir.">Aktif yap</span>
                     </button>
-                    <button mat-menu-item aria-label="Reply" (click)="soruyuDegistir()">
+                    <button mat-menu-item aria-label="Reply" (click)="soruDegistirmeEkrani()">
                         <mat-icon matTooltip="Düzenleme ekranını aç">edit</mat-icon>
                         <span>Düzelt</span>
                     </button>

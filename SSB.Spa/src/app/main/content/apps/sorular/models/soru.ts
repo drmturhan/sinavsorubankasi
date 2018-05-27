@@ -12,7 +12,7 @@ export class SoruKokuListe {
 }
 
 export class SoruKokuYarat {
-    soruKokuId: number;
+    
     soruKokuMetni: string;
     sorulari: number[];
 }

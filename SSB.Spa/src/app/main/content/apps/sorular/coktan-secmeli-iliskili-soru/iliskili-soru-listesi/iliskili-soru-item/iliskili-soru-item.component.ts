@@ -25,7 +25,7 @@ export class IliskiliSoruItemComponent implements OnInit, OnDestroy {
   @HostBinding('class.selected') selected: boolean;
 
   onSecilmisSorularDegisti: Subscription;
-  
+
   dialogRef: any;
   constructor(
     private uiStore: Store<fromRootStore.UIState>,
@@ -43,16 +43,8 @@ export class IliskiliSoruItemComponent implements OnInit, OnDestroy {
     this.onSecilmisSorularDegisti =
       this.service.onSecilmisSorularDegisti
         .subscribe(secilmisSorular => {
-          this.selected = false;
-
-          if (secilmisSorular.length > 0) {
-            for (const soruItem of secilmisSorular) {
-              if (soruItem.id === this.soru.soruId) {
-                this.selected = true;
-                break;
-              }
-            }
-          }
+          const benVarmiyim = secilmisSorular.filter(ss => ss.soruId === this.soru.soruId);
+          this.selected = benVarmiyim && benVarmiyim.length === 1 ? true : false;
         });
 
 
@@ -71,7 +63,8 @@ export class IliskiliSoruItemComponent implements OnInit, OnDestroy {
 
     // this.service.updateMail(this.soru);
   }
-  soruyuDegistir() {
+  soruDegistirmeEkrani() {
+
     this.uiStore.dispatch(new fromRootStore.StartLoading());
     const degisecekSoru = this.sorularService.getSoruById(this.soru.soruId)
       .subscribe((sonuc: KayitSonuc<SoruDegistir>) => {
@@ -80,7 +73,10 @@ export class IliskiliSoruItemComponent implements OnInit, OnDestroy {
           this.mesajService.hatalar(sonuc.hatalar);
           return;
         }
+
         const ders = this.sorularService.dersBul(sonuc.donenNesne.dersNo);
+        const konu = sonuc.donenNesne.konuNo > 0 && ders ? this.sorularService.getKonu(ders, this.service.bilgi.sayfaBilgisi.konuNo) : null;
+
         let en = '80vw';
         let boy = '90vh';
         let sinif = 'popup-masaustu';
@@ -92,9 +88,8 @@ export class IliskiliSoruItemComponent implements OnInit, OnDestroy {
         this.dialogRef = this.dialog.open(CoktanSecmeliSoruComponent,
           {
             data: {
-              dersNo: this.soru.dersNo,
-              konuNo: this.soru.konuNo,
               ders: ders,
+              konu: konu,
               degisecekSoru: sonuc.donenNesne
             },
             height: boy,
@@ -139,10 +134,10 @@ export class IliskiliSoruItemComponent implements OnInit, OnDestroy {
     this.sorularService.formuNesneyeCevirKaydet(formData, degisecekSoru);
   }
   soruyuKapat() {
-    
+
   }
   soruyuAc() {
-    
+
   }
   favoriToogle() {
     if (this.soru.favori) {
@@ -150,10 +145,10 @@ export class IliskiliSoruItemComponent implements OnInit, OnDestroy {
     } else { this.soruyuFavoriYap(); }
   }
   soruyuFavoriYap() {
-    
+
   }
   soruyuSiradanYap() {
-    
+
   }
   soruyuSilindiYap() {
     const dialogRef = this.dialog.open(FuseConfirmDialogComponent, {
@@ -169,7 +164,7 @@ export class IliskiliSoruItemComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe(result => {
 
       if (result) {
-        
+
       }
     });
 
