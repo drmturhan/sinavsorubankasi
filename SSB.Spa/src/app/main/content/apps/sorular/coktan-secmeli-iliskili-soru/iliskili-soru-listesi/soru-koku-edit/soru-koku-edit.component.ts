@@ -11,6 +11,11 @@ export class SoruKokuEditComponent implements OnInit {
 
   @Input() form: FormGroup;
   soruKokuMetni: string;
+
+  config: Object = {
+    charCounterCount: false,
+    language: 'tr'
+  };
   constructor() {
   }
 

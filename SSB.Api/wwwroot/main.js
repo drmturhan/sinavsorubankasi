@@ -6722,7 +6722,7 @@ var SbMesajService = /** @class */ (function () {
         var _this = this;
         if (mesajlar && mesajlar.length > 0) {
             if (sure == null) {
-                sure = 4000;
+                sure = 6000;
             }
             setTimeout(function () {
                 return _this.snackBar.open(mesajlar[0], action, {
@@ -6746,7 +6746,7 @@ var SbMesajService = /** @class */ (function () {
     SbMesajService.prototype.hatalar = function (hatalar, action, sure) {
         var _this = this;
         if (sure == null) {
-            sure = 4000;
+            sure = 6000;
         }
         if (hatalar && hatalar.length > 0) {
             setTimeout(function () {
@@ -19698,7 +19698,7 @@ module.exports = "<mat-toolbar class=\"p-0 mat-elevation-z1\">\r\n\r\n    <mat-p
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "/**\n * Applies styles for users in high contrast mode. Note that this only applies\n * to Microsoft browsers. Chrome can be included by checking for the `html[hc]`\n * attribute, however Chrome handles high contrast differently.\n */\n/* Theme for the ripple elements.*/\n/* stylelint-disable material/no-prefixes */\n/* stylelint-enable */\n:host {\n  position: relative;\n  display: flex;\n  flex: 0 0 auto;\n  z-index: 4; }\n:host.below {\n    z-index: 2; }\n:host .mat-toolbar {\n    background: inherit;\n    color: inherit;\n    position: relative; }\n:host .mat-toolbar .loading-bar {\n      position: absolute;\n      height: 16px;\n      top: 0;\n      left: 0;\n      right: 0;\n      width: 100%; }\n:host .logo {\n    display: flex;\n    align-items: center; }\n:host .logo .logo-icon {\n      width: 38px; }\n:host .user-button,\n  :host fuse-search-bar,\n  :host .language-button,\n  :host .quick-panel-toggle-button {\n    min-width: 64px;\n    height: 64px; }\n@media (max-width: 599px) {\n      :host .user-button,\n      :host fuse-search-bar,\n      :host .language-button,\n      :host .quick-panel-toggle-button {\n        height: 56px; } }\n:host .toggle-button-navbar {\n    min-width: 56px;\n    height: 56px; }\n:host .toolbar-separator {\n    height: 64px;\n    width: 1px;\n    background: rgba(0, 0, 0, 0.12); }\n@media (max-width: 599px) {\n      :host .toolbar-separator {\n        height: 56px; } }\n"
+module.exports = "/**\n * Applies styles for users in high contrast mode. Note that this only applies\n * to Microsoft browsers. Chrome can be included by checking for the `html[hc]`\n * attribute, however Chrome handles high contrast differently.\n */\n/* Theme for the ripple elements.*/\n/* stylelint-disable material/no-prefixes */\n/* stylelint-enable */\n:host {\n  position: relative;\n  display: flex;\n  flex: 0 0 auto;\n  z-index: 4; }\n:host.below {\n    z-index: 2; }\n:host .mat-toolbar {\n    background: inherit;\n    color: inherit;\n    position: relative; }\n:host .mat-toolbar .loading-bar {\n      position: absolute;\n      z-index: 100;\n      bottom: 0;\n      left: 0;\n      right: 0;\n      width: 100%; }\n:host .logo {\n    display: flex;\n    align-items: center; }\n:host .logo .logo-icon {\n      width: 38px; }\n:host .user-button,\n  :host fuse-search-bar,\n  :host .language-button,\n  :host .quick-panel-toggle-button {\n    min-width: 64px;\n    height: 64px; }\n@media (max-width: 599px) {\n      :host .user-button,\n      :host fuse-search-bar,\n      :host .language-button,\n      :host .quick-panel-toggle-button {\n        height: 56px; } }\n:host .toggle-button-navbar {\n    min-width: 56px;\n    height: 56px; }\n:host .toolbar-separator {\n    height: 64px;\n    width: 1px;\n    background: rgba(0, 0, 0, 0.12); }\n@media (max-width: 599px) {\n      :host .toolbar-separator {\n        height: 56px; } }\n"
 
 /***/ }),
 
@@ -20304,13 +20304,13 @@ var navigation = [
                 'id': 'sorudeposu',
                 'title': 'Soru Deposu',
                 'type': 'collapse',
-                'icon': 'dashboard',
+                'icon': 'sd_card',
                 'children': [
                     {
                         'id': 'sorularim',
                         'title': 'Sorularım',
                         'type': 'item',
-                        'icon': 'email',
+                        'icon': 'view_list',
                         'url': 'sorudeposu',
                         'badge': {
                             'title': 13,

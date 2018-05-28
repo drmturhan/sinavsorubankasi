@@ -29,6 +29,8 @@ import localeTrExtra from '@angular/common/locales/extra/tr';
 
 import { registerLocaleData } from '@angular/common';
 
+import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
+
 registerLocaleData(localeTr, 'tr');
 registerLocaleData(localeTr, 'tr-TR', localeTrExtra);
 
@@ -59,6 +61,7 @@ const appRoutes: Routes = [
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
+        FroalaEditorModule.forRoot(), FroalaViewModule.forRoot(),
         HttpClientModule,
         MaterialModule,
         RouterModule.forRoot(appRoutes),

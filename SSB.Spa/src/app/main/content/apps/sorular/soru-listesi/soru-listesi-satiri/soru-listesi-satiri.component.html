@@ -31,7 +31,7 @@
             <div class="aciklama" *ngIf="soru?.soruMetni" fxFlex fxLayout="row" fxLayoutAlign="star start" fxLayoutGap="10px">
 
 
-                {{soru?.soruMetni | htmlToPlaintext | slice:0:500}}{{soru?.soruMetni.length > 500 ? '...' : ''}}
+                <span  [innerHTML]="soru?.soruMetni"></span>
                 <!-- <div *ngIf="soru.baslangic" fxHide fxShow.gt-lg>
                         <div matTooltip="Gecerlilik başlangıç - bitiş tarihi" class="time">
                             <span> {{soru.baslangic| date: 'MMMM yyyy'}}</span>

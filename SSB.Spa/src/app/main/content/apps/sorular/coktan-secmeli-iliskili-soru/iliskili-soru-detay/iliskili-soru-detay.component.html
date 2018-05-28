@@ -131,7 +131,7 @@
                     <span class="detail">{{Ders.dersAdi}}</span>
                     <span *ngIf="soru.konuNo" class="detail">{{sorularService.getKonu(Ders,soru.konuNo).konuAdi}}</span>
                     <span class="detail">{{soru.soruZorlukAdi}}</span>
-                    <span class="detail">{{soru.cevaplamaSuresi+' saniye.'}}</span>
+                    <span class="detail">{{soru.cevaplamaSuresi+' saniye'}}</span>
                     <span *ngIf="soru.hemenElenebilirSecenekSayisi===0" class="detail">Yok</span>
                     <span *ngIf="soru.hemenElenebilirSecenekSayisi>0" class="detail">{{soru.hemenElenebilirSecenekSayisi}}</span>
                     <span class="detail">{{soru.kabulEdilebilirlikIndeksi}}</span>
@@ -152,7 +152,7 @@
                 <h2>Soru metni ve seçenekler</h2>
             </div>
             <mat-divider></mat-divider>
-            <div class="soru-metni kart">{{soru.soruMetni}}</div>
+            <div class="soru-metni kart"class="soru-metni kart" [innerHTML]="soru.soruMetni"></div>
             <ol *ngIf="soru.tekDogruluSecenekleri" class="rectangle-list soru-secenekler kart ">
                 <li *ngFor="let secenek of soru.tekDogruluSecenekleri ">
                     <a [ngStyle]="{ 'border-right': secenek.dogruSecenek===true? '5px solid #5BA36F': '5px solid #E2474C'} ">

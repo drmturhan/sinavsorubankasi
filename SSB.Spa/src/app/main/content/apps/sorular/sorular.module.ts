@@ -35,6 +35,7 @@ import { IliskiliSoruItemComponent } from './coktan-secmeli-iliskili-soru/iliski
 import { IliskiliSoruDetayComponent } from './coktan-secmeli-iliskili-soru/iliskili-soru-detay/iliskili-soru-detay.component';
 import { IliskiliSoruService } from './coktan-secmeli-iliskili-soru/iliskili-soru.service';
 import { SoruKokuEditComponent } from './coktan-secmeli-iliskili-soru/iliskili-soru-listesi/soru-koku-edit/soru-koku-edit.component';
+import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
 
 
 
@@ -111,6 +112,7 @@ const routes: Routes = [
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
+    FroalaEditorModule, FroalaViewModule,
     SoruStoreModule,
     MaterialModule,
     FuseSharedModule,

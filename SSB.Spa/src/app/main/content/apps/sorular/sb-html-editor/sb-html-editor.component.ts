@@ -17,12 +17,15 @@ export class SbHtmlEditorComponent implements OnInit {
   @Input() minSatir = 2;
   @Input() maksSatir = 10;
   @Input() baslik = '';
-  
+
 
   @ViewChild('metinAlani') metinAlani;
   @ViewChild('editorum') ckeditor: any;
 
-
+  config: Object = {
+    charCounterCount: false,
+    language: 'tr'
+  };
   constructor() { }
 
   ngOnInit() {
@@ -31,7 +34,8 @@ export class SbHtmlEditorComponent implements OnInit {
   closeOnEnter(event: KeyboardEvent) {
 
     if (event.code === 'Enter') {
-  
+
     }
   }
+
 }
