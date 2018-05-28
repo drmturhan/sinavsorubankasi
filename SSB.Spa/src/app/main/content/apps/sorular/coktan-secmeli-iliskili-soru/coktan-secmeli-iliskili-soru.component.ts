@@ -3,7 +3,7 @@ import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/conf
 import { MatDialog } from '@angular/material';
 import { Observable } from 'rxjs/internal/Observable';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { SoruListe } from '../models/soru';
+import { SoruListe, SoruKokuListe } from '../models/soru';
 import { FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { IliskiliSoruService } from './iliskili-soru.service';
@@ -12,7 +12,12 @@ import { SoruDepoVeriService } from '../soru-store/helpers/soru-depo-veri.servic
 import { Router } from '@angular/router';
 import { switchMap, catchError } from 'rxjs/operators';
 import { map } from 'rxjs-compat/operator/map';
-
+import { SbMesajService } from '../../../../../core/services/sb-mesaj.service';
+import * as fromUIStore from '../../../../../store/index';
+import { Store } from '@ngrx/store';
+import { KonuItem } from '../models/birim-program-donem-ders';
+import { SoruDepoResolverService } from '../soru-depo-resolver.service';
+import { SorularService } from '../sorular.service';
 @Component({
   selector: 'fuse-coktan-secmeli-iliskili-soru',
   templateUrl: './coktan-secmeli-iliskili-soru.component.html',
@@ -39,8 +44,12 @@ export class CoktanSecmeliIliskiliSoruComponent implements OnInit, OnDestroy {
   constructor(
     private service: IliskiliSoruService,
     private soruDepoService: SoruDepoVeriService,
+    private sorularService: SorularService,
     public dialog: MatDialog,
     private router: Router,
+    private uiStore: Store<fromUIStore.UIState>,
+    private mesajService: SbMesajService,
+    private resolverBilgiService: SoruDepoResolverService,
     private fuseTranslationLoader: FuseTranslationLoaderService
   ) {
     this.searchInput = new FormControl('');
@@ -77,7 +86,7 @@ export class CoktanSecmeliIliskiliSoruComponent implements OnInit, OnDestroy {
       .subscribe(searchText => {
         this.service.onAramaCumlesiDegisti.next(searchText);
       });
-    
+
   }
 
   ngOnDestroy() {
@@ -121,5 +130,64 @@ export class CoktanSecmeliIliskiliSoruComponent implements OnInit, OnDestroy {
   }
   soruDepoAnaSayfayaGit() {
     this.router.navigate([`sorudeposu/`]);
+  }
+  soruKokunuSil() {
+
+    if (this.service.soruKokuNo && this.service.soruKokuNo > 0) {
+      const dialogRef = this.dialog.open(FuseConfirmDialogComponent, {
+        width: '600px',
+        height: '400',
+        data: {
+          onaybasligi: 'Soru kökü silme onayı!',
+          onaymesaji: `<p>Silinsin derseniz soru kökü ve ilişkili soruların  hepsi sistemden tamamen silinecek!</p> Sorukökü ve ilişikili soru(lar) silinsin mi?`,
+          olumluButonYazisi: 'Silinsin',
+          olumsuzButonYazisi: 'Vazgeçtim'
+        }
+      }).afterClosed().subscribe(result => {
+
+        if (result) {
+          this.uiStore.dispatch(new fromUIStore.StartLoading());
+          this.service.soruKokuSil(this.service.soruKokuNo).subscribe((sonuc) => {
+            if (sonuc.basarili) {
+              this.mesajService.goster('Sor kökü ve ilişkili soruları silindi!');
+              this.router.navigate(['sorudeposu']);
+            } else {
+              this.mesajService.hataStr('Silme işlem başarısız!');
+            }
+
+          }, (hata) => {
+            this.mesajService.hataStr('Soru kokü ve soruları silienemedi!');
+          }, () =>
+              this.uiStore.dispatch(new fromUIStore.StopLoading()));
+        }
+      });
+
+
+    } else {
+      this.yenile();
+    }
+  }
+  yenile() {
+    let bilgi = this.service.bilgi;
+    if (!bilgi.sayfaBilgisi.hasOwnProperty('konuNo')) {
+      this.mesajService.hataStr('Ders konu bilgisi yok!');
+      return;
+    }
+    const aktifDers = this.sorularService.dersBul(bilgi.sayfaBilgisi.dersNo);
+    let aktifKonu: KonuItem;
+    if (aktifDers && bilgi.sayfaBilgisi['konuNo']) {
+      aktifKonu = this.sorularService.getKonu(aktifDers, bilgi.sayfaBilgisi['konuNo']);
+    }
+    const soruKoku = new SoruKokuListe();
+    if (aktifKonu) {
+      soruKoku.konuNo = aktifKonu.konuId;
+      soruKoku.dersNo = aktifKonu.dersNo;
+      bilgi = this.resolverBilgiService.bilgiKoy(soruKoku, 'iliskilisoru');
+      this.router.navigate([`sorudeposu/iliskilisoru/${bilgi.id}`]);
+    } else {
+      soruKoku.dersNo = aktifKonu.dersNo;
+      bilgi = this.resolverBilgiService.bilgiKoy(soruKoku, 'iliskilisoru');
+      this.router.navigate([`sorudeposu/iliskilisoru/${bilgi.id}`]);
+    }
   }
 }

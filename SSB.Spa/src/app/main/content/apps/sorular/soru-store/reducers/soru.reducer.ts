@@ -138,9 +138,13 @@ export function SorularReducer(state = SorularInitialState, action: SorularActio
             const arr = Object.keys(state.entities).map(k => state.entities[k]);
 
             let i = arr.length;
+            // tslint:disable-next-line:triple-equals
+            const suankiSoruSilindi = soruIdleri.filter(id => id == state.currentSoru.soruId).length > 0;
             while (i--) {
                 if (arr[i] && arr[i].hasOwnProperty('soruId') && soruIdleri.indexOf((arr[i]['soruId']).toString()) > -1) {
                     arr.splice(i, 1);
+
+
                 }
             }
 
@@ -151,11 +155,21 @@ export function SorularReducer(state = SorularInitialState, action: SorularActio
                         [soru.soruId]: soru
                     };
                 }, {});
-            return tassign(state, {
-                entities: entities,
-                loading: false,
-                loaded: arr
-            });
+
+            if (!suankiSoruSilindi) {
+                return tassign(state, {
+                    entities: entities,
+                    loading: false,
+                    loaded: arr
+                });
+            } else {
+                return tassign(state, {
+                    currentSoru: null,
+                    entities: entities,
+                    loading: false,
+                    loaded: arr
+                });
+            }
 
 
         }

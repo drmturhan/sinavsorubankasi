@@ -29,15 +29,15 @@ import { DersItem, KonuItem } from '../../models/birim-program-donem-ders';
 export class SoruListesiSatiriComponent implements OnInit, OnDestroy {
   @Input() soru: SoruListe;
   @HostBinding('class.selected') selected: boolean;
-  
+
   bitisTarihiGecerli: boolean;
   selectedSoruIds$: Observable<any>;
-  
+
   dialogRef: any;
-  
+
   bilgi: ResolveInfo;
   routerState: any;
-  
+
   constructor(
 
     public dialog: MatDialog,
@@ -156,6 +156,7 @@ export class SoruListesiSatiriComponent implements OnInit, OnDestroy {
                * Kaydete tıklandı
                */
               case 'kaydet':
+                kaydedilecekSoru.soruKokuNo = null;
                 this.soruDegisiklikKaydet(formData, kaydedilecekSoru);
                 break;
 

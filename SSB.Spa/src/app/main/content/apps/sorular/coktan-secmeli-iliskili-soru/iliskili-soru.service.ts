@@ -14,7 +14,7 @@ import { SoruTipItem, SoruZorlukItem, SoruBilisselDuzeyItem, DersItem, KonuItem 
 import { HttpClient } from '@angular/common/http';
 import { FuseUtils } from '@fuse/utils';
 import { environment } from 'environments/environment';
-import { KayitSonuc } from '../../../../../models/sonuclar';
+import { KayitSonuc, Sonuc } from '../../../../../models/sonuclar';
 import { SbMesajService } from '../../../../../core/services/sb-mesaj.service';
 import { SoruDepoVeriService } from '../soru-store/helpers/soru-depo-veri.service';
 import { SoruDepoResolverService } from '../soru-depo-resolver.service';
@@ -24,6 +24,7 @@ import { ResolveInfo } from '../../../../../models/resolve-model';
   providedIn: 'root'
 })
 export class IliskiliSoruService {
+
 
   baseUrl = environment.apiUrl;
   soruKokleriUrl = 'sorukokleri';
@@ -272,6 +273,10 @@ export class IliskiliSoruService {
     return this.http.put<KayitSonuc<SoruKokuListe>>(adres, { ...soruKoku });
   }
 
+  soruKokuSil(soruKokuNo: number): Observable<Sonuc> {
+    const adres = `${this.baseUrl}/${this.soruKokleriUrl}/${soruKokuNo}`;
+    return this.http.delete<Sonuc>(adres);
+  }
   toggleHepsiniSec() {
     if (this.secilmisSorular.length > 0) {
       this.deselectSorular();

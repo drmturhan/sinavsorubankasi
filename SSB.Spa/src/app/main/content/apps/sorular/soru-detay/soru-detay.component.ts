@@ -193,6 +193,7 @@ export class SoruDetayComponent implements OnInit, OnChanges {
 
       if (result) {
         this.store.dispatch(new fromStore.SoruSilindiIsaretle([this.soru.soruId.toString()]));
+        this.store.dispatch(new fromStore.SoruSilindiIsaretle([this.soru.soruId.toString()]));
       }
     });
   }

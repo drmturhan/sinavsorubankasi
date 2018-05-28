@@ -39,7 +39,7 @@ export class SoruDepoResolverService {
     }
 
   }
-  bilgiAl(key: string, sayfa: string): any {
+  bilgiAl(key: string, sayfa: string): ResolveInfo {
     if (this.history.length === 0) { return null; }
     const sonuc: ResolveInfo[] = this.history.filter(el => el.id === key && el.url === sayfa);
     // console.log('sonuc:', sonuc);

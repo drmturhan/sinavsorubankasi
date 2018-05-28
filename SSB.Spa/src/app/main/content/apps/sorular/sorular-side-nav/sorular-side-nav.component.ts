@@ -226,11 +226,25 @@ export class SorularSideNavComponent implements OnInit, AfterViewChecked {
   refresh() {
     this.cd.markForCheck();
   }
+  yeniSoruEkelenebilirmi() {
+    if (this.bilgi) {
+      const aktifKonu: KonuItem = this.bilgi.sayfaBilgisi.hasOwnProperty('konuId') ? this.bilgi.sayfaBilgisi : null;
+      const aktifDers: DersItem = aktifKonu ? this.sorularService.dersBul(aktifKonu.dersNo) : this.bilgi.sayfaBilgisi;
+      return aktifDers != null;
+    } else { return false; }
+
+  }
+
   yeniSoruYarat(islem) {
     switch (islem) {
       case 'iliskili':
+
         const aktifKonu: KonuItem = this.bilgi.sayfaBilgisi.hasOwnProperty('konuId') ? this.bilgi.sayfaBilgisi : null;
-        const aktifDers: DersItem = aktifKonu ? this.sorularService.dersBul(aktifKonu.dersNo) : this.bilgi.sayfaBilgisi;
+        const aktifDers = aktifKonu ? this.sorularService.dersBul(aktifKonu.dersNo) : this.bilgi.sayfaBilgisi;
+        if (aktifDers && !aktifKonu && aktifDers.konulari && aktifDers.konulari.length > 0) {
+          this.mesajService.goster(`${aktifDers.dersAdi} adlı dersin konuları mevcut. Lütfen bir konu seçin.`);
+          return;
+        }
         const soruKoku = new SoruKokuListe();
         if (aktifKonu) {
           soruKoku.konuNo = aktifKonu.konuId;
@@ -275,10 +289,5 @@ export class SorularSideNavComponent implements OnInit, AfterViewChecked {
     const bilgi = this.resolverBilgi.bilgiKoy(konu, 'soru');
     this.router.navigate(['sorudeposu/konusorulari/', bilgi.id]);
   }
-  yeniSoruEkelenebilirmi() {
-    if (this.bilgi === null || this.bilgi === undefined) {
-      return false;
-    }
-    return this.bilgi.sayfaBilgisi.hasOwnProperty('konuId') || this.bilgi.sayfaBilgisi.hasOwnProperty('dersId');
-  }
+
 }

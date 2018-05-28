@@ -2189,7 +2189,7 @@
       ]
     },
     "Microsoft.Extensions.Caching.Memory/2.0.0": {
-      "sha512": "6Z5RtOu6pIu0U8y67C7/31gldsLT2RVLMPC7WF5VQ1Ps/f4fYclqkPjQ0U7BUntF+2QEWtnjenKacPP13hxyGg==",
+      "sha512": "NqvVdYLbX7N2J2Wz9y3zjhE66JRdROiZZsGhA2u4a9IcIq/jzINC/cLM96BHA+TSOZFPxVdWneqB6/yt9u846A==",
       "type": "package",
       "path": "microsoft.extensions.caching.memory/2.0.0",
       "files": [
@@ -2233,7 +2233,7 @@
       ]
     },
     "Microsoft.Extensions.Configuration.Json/2.0.0": {
-      "sha512": "nAhSJmCVFL8z9JqvMpuwm1y21a+vtYhWhP13W5xIvTLbp/bkiDRKVeRUTXBmeg9IvJRUcNrLEp54pVs9KvKTkA==",
+      "sha512": "thPz4SckRGNqeLbdvJ619YxRFSkWuL1K5QqTMb3TVdEwjQj4O39yfUtjtI/XlWJiY7JKK4MUKAiQZVYc8ohKKg==",
       "type": "package",
       "path": "microsoft.extensions.configuration.json/2.0.0",
       "files": [
@@ -2266,7 +2266,7 @@
       ]
     },
     "Microsoft.Extensions.FileProviders.Abstractions/2.0.0": {
-      "sha512": "a+F6sFCy76XDHeaDLmntq1icVOKdkJTHf60wcpuRzQv94GH7Y5cKl83yYJ0PpKVc5issHd+uB1b3J0+0LNkzuQ==",
+      "sha512": "Z0AK+hmLO33WAXQ5P1uPzhH7z5yjDHX/XnUefXxE//SyvCb9x4cVjND24dT5566t/yzGp8/WLD7EG9KQKZZklQ==",
       "type": "package",
       "path": "microsoft.extensions.fileproviders.abstractions/2.0.0",
       "files": [
@@ -2277,7 +2277,7 @@
       ]
     },
     "Microsoft.Extensions.FileProviders.Physical/2.0.0": {
-      "sha512": "OvM1psoEUO9LOS7vCi+YMivlH6Lk5j7+1jWYui1Km5nD7QCTOjPNe1GIEbhAlUk6GfF3FMW5DgTDz+dPL+ORaw==",
+      "sha512": "DKO2j2socZbHNCCVEWsLVpB3AQIIzKYFNyITVeWdA1jQ829GJIQf4MUD04+1c+Q2kbK03pIKQZmEy4CGIfgDZw==",
       "type": "package",
       "path": "microsoft.extensions.fileproviders.physical/2.0.0",
       "files": [
@@ -2288,7 +2288,7 @@
       ]
     },
     "Microsoft.Extensions.FileSystemGlobbing/2.0.0": {
-      "sha512": "j9kn6330/x8ajsZD4ZwJpolYe1W/mLfXbp8woaX7bC+Nrt1b9hVQEd6NZebKhtyxoHmDzxvmuIJw91W69u4/Zw==",
+      "sha512": "UC87vRDUB7/vSaNY/FVhbdAyRkfFBTkYmcUoglxk6TyTojhSqYaG5pZsoP4e1ZuXktFXJXJBTvK8U/QwCo0z3g==",
       "type": "package",
       "path": "microsoft.extensions.filesystemglobbing/2.0.0",
       "files": [
@@ -2332,7 +2332,7 @@
       ]
     },
     "Microsoft.Extensions.Logging/2.0.0": {
-      "sha512": "Mu7CRntuqCKv5H0LWN/ccpAElINvRXLXxTnoBY+5jngoYO4tyw4T43hcjRMEaUzXXz15tasGgQSkeuD6ezXPlw==",
+      "sha512": "VP10syWV/vxYYMKgZ2eDESmUsz3gPxvBn5J6tkVN8lI4M+dF43RN8fWsEPbcAneDmZrHl3Pv23z05nmyGkJlpg==",
       "type": "package",
       "path": "microsoft.extensions.logging/2.0.0",
       "files": [
@@ -2376,7 +2376,7 @@
       ]
     },
     "Microsoft.Extensions.Primitives/2.0.0": {
-      "sha512": "Ms8ZXTqioONXr1tA6zeeL4p3Vt0B7ow3n6Dpr2DrPTT4WsCXYcOkDxq0ckCurMdasXqRsUuRVrhfjn59UzkDpQ==",
+      "sha512": "ukg53qNlqTrK38WA30b5qhw0GD7y3jdI9PHHASjdKyTcBHTevFM2o23tyk3pWCgAV27Bbkm+CPQ2zUe1ZOuYSA==",
       "type": "package",
       "path": "microsoft.extensions.primitives/2.0.0",
       "files": [
@@ -2409,7 +2409,7 @@
       ]
     },
     "Microsoft.NETCore.App/2.0.0": {
-      "sha512": "0XJAsnFOffPvO9WlmExxZe9oLtkkOpEsSKK/Wwwd4NlbGRt7Km3FurQhDdLyDSjZXp04yCWE1K6D8QjRAYA3Xw==",
+      "sha512": "/mzXF+UtZef+VpzzN88EpvFq5U6z4rj54ZMq/J968H6pcvyLOmcupmTRpJ3CJm8ILoCGh9WI7qpDdiKtuzswrQ==",
       "type": "package",
       "path": "microsoft.netcore.app/2.0.0",
       "files": [
@@ -2687,7 +2687,7 @@
       ]
     },
     "Microsoft.NETCore.DotNetAppHost/2.0.0": {
-      "sha512": "otfpsP097if4IxZof+FDWcPooDQKwldzD2IVhjWzkFrR1DuEkSAWb8sx9GZg+GlVYAn7QbDa10IhlPbkYlyaiA==",
+      "sha512": "L4GGkcI/Mxl8PKLRpFdGmLb5oI8sGIR05bDTGkzCoamAjdUl1Zhkov2swjEsZvKYT8kkdiz39LtwyGYuCJxm1A==",
       "type": "package",
       "path": "microsoft.netcore.dotnetapphost/2.0.0",
       "files": [
@@ -2699,7 +2699,7 @@
       ]
     },
     "Microsoft.NETCore.DotNetHostPolicy/2.0.0": {
-      "sha512": "OmbqKWrexLraj2B8CxSHOFTfOd8Eo9TSOZSelZMU3lzZ6XiNR15ik179aHkVE8FOhd480azBJg745UTeYSSYcA==",
+      "sha512": "rm7mMn0A93fwyAwVhbyOCcPuu2hZNL0A0dAur9sNG9pEkONPfCEQeF7m2mC8KpqZO0Ol6tpV5J0AF3HTXT3GXA==",
       "type": "package",
       "path": "microsoft.netcore.dotnethostpolicy/2.0.0",
       "files": [
@@ -2711,7 +2711,7 @@
       ]
     },
     "Microsoft.NETCore.DotNetHostResolver/2.0.0": {
-      "sha512": "Pn9flaGxcVEwZtIMsi9l+VdU8y8ZQIFFUQBm4hZOkPiiHrUJd1+1XyCTR6mYjTlE3Fq6CZ8hcfjrd3VQjSIDEg==",
+      "sha512": "uBbjpeSrwsaTCADZCzRk+3aBzNnMqkC4zftJWBsL+Zk+8u+W+/lMb2thM5Y4hiVrv1YQg9t6dKldXzOKkY+pQw==",
       "type": "package",
       "path": "microsoft.netcore.dotnethostresolver/2.0.0",
       "files": [
@@ -2723,7 +2723,7 @@
       ]
     },
     "Microsoft.NETCore.Platforms/2.0.0": {
-      "sha512": "2MVM6AikRV6ZtQFSzc1QCR0glbS/iNfItQDnUc7lfr6ywd5DacEW1WuOi4k91izfR9ggtmJzZjQt90PcwmQ11Q==",
+      "sha512": "VdLJOCXhZaEMY7Hm2GKiULmn7IEPFE4XC5LPSfBVCUIA8YLZVh846gtfBJalsPQF2PlzdD7ecX7DZEulJ402ZQ==",
       "type": "package",
       "path": "microsoft.netcore.platforms/2.0.0",
       "files": [
@@ -2789,7 +2789,7 @@
       ]
     },
     "NETStandard.Library/2.0.0": {
-      "sha512": "SSUEZGmFgFzjuv4qluJH28BcpR1KqnzD0TFWRqSkd6HIiYWgCq1f2pt026/M6OcIXwCjpHZhlWZkaGO9mICKNw==",
+      "sha512": "7jnbRU+L08FXKMxqUflxEXtVymWvNOrS8yHgu9s6EM8Anr6T/wIX4nZ08j/u3Asz+tCufp3YVwFSEvFTPYmBPA==",
       "type": "package",
       "path": "netstandard.library/2.0.0",
       "files": [
@@ -5060,7 +5060,7 @@
       ]
     },
     "System.Runtime.CompilerServices.Unsafe/4.4.0": {
-      "sha512": "WXw+73iIJh9GjDClb8tRQRYp9H4Oj4ZQ+wPh8Q6Nv69hJcPZRTcOsNXWffqrnZeWQemL6BVBGvI8BtA2KDendA==",
+      "sha512": "9dLLuBxr5GNmOfl2jSMcsHuteEg32BEfUotmmUkmZjpR3RpVHE8YQwt0ow3p6prwA1ME8WqDVZqrr8z6H8G+Kw==",
       "type": "package",
       "path": "system.runtime.compilerservices.unsafe/4.4.0",
       "files": [
@@ -6164,23 +6164,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Murat Turhan\\.nuget\\packages\\": {},
+    "C:\\Users\\mturhan\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\SSB2018\\sinavsorubankasi\\Core\\Identity.DataAccess\\Identity.DataAccess.csproj",
+      "projectUniqueName": "D:\\GitProjeleri\\sinavsorubankasi\\Core\\Identity.DataAccess\\Identity.DataAccess.csproj",
       "projectName": "Identity.DataAccess",
-      "projectPath": "D:\\SSB2018\\sinavsorubankasi\\Core\\Identity.DataAccess\\Identity.DataAccess.csproj",
-      "packagesPath": "C:\\Users\\Murat Turhan\\.nuget\\packages\\",
-      "outputPath": "D:\\SSB2018\\sinavsorubankasi\\Core\\Identity.DataAccess\\obj\\",
+      "projectPath": "D:\\GitProjeleri\\sinavsorubankasi\\Core\\Identity.DataAccess\\Identity.DataAccess.csproj",
+      "packagesPath": "C:\\Users\\mturhan\\.nuget\\packages\\",
+      "outputPath": "D:\\GitProjeleri\\sinavsorubankasi\\Core\\Identity.DataAccess\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\Murat Turhan\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\mturhan\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -6188,17 +6188,16 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "https://api.nuget.org/v3/index.json": {},
-        "https://www.myget.org/F/aspnet-contrib/api/v3/index.json": {}
+        "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "netcoreapp2.0": {
           "projectReferences": {
-            "D:\\SSB2018\\sinavsorubankasi\\Core\\Core.Base\\Core.Base.csproj": {
-              "projectPath": "D:\\SSB2018\\sinavsorubankasi\\Core\\Core.Base\\Core.Base.csproj"
+            "D:\\GitProjeleri\\sinavsorubankasi\\Core\\Core.Base\\Core.Base.csproj": {
+              "projectPath": "D:\\GitProjeleri\\sinavsorubankasi\\Core\\Core.Base\\Core.Base.csproj"
             },
-            "D:\\SSB2018\\sinavsorubankasi\\Core\\Core.EntityFramework\\Core.EntityFramework.csproj": {
-              "projectPath": "D:\\SSB2018\\sinavsorubankasi\\Core\\Core.EntityFramework\\Core.EntityFramework.csproj"
+            "D:\\GitProjeleri\\sinavsorubankasi\\Core\\Core.EntityFramework\\Core.EntityFramework.csproj": {
+              "projectPath": "D:\\GitProjeleri\\sinavsorubankasi\\Core\\Core.EntityFramework\\Core.EntityFramework.csproj"
             }
           }
         }
