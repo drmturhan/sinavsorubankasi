@@ -1,6 +1,6 @@
 <div *ngIf="!soru" fxLayout="column" fxLayoutAlign="center center" fxFlex>
     <mat-icon class="s-128 mb-16 select-message-icon hint-text" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'300ms',scale:'0.2'}}">
-        email
+        list
     </mat-icon>
     <span class="select-message-text hint-text" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'400ms'}}">
         <!-- <span>{{ 'MAIL.SELECT_A_MESSAGE_TO_READ' | translate }}</span> -->
@@ -44,7 +44,7 @@
                 </button>
 
 
-                <button mat-icon-button class="mat-icon-button" aria-label="Ders kurulu dersi">
+                <button mat-button class="mat-icon-button" aria-label="Ders kurulu dersi">
                     <mat-icon *ngIf="soru.onaylandi" matTooltip="Bu soru onaylanmış. Sınavlarda çıkabilir.">thumb_up</mat-icon>
                     <mat-icon *ngIf="!soru.onaylandi" matTooltip="Bu soru onaysız. Sınavlarda ÇIKMAZ!.">thumb_down</mat-icon>
                 </button>

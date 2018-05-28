@@ -24,7 +24,7 @@ export class SorularService {
   constructor(private http: HttpClient,
     private store: Store<fromRootStore.State>,
   ) {
-    
+
     this.store.select(fromSorularStore.getDersler).subscribe((dersler: DersItem[]) => {
       this.dersler = dersler;
     });
@@ -105,7 +105,7 @@ export class SorularService {
   // }
   dersKonuAdiniAl(dersAdi: string, konuAdi: string): string | null {
     let sonuc: string = null;
-    
+
     if (dersAdi) {
       if (konuAdi) {
         sonuc = `${dersAdi} : ${konuAdi}`;
@@ -117,12 +117,12 @@ export class SorularService {
   }
 
   formuNesneyeCevirKaydet(formData: FormGroup, degisecekSoru: SoruDegistir | SoruYarat) {
+  
     const kaydedilecekSoru = Object.assign({}, degisecekSoru, formData.getRawValue());
     kaydedilecekSoru.tekDogruluSecenekleri = formData.get('secenekler').value;
     kaydedilecekSoru.hemenElenebilirSecenekSayisi = formData.get('hemenElenebilirSecenekSayisi').value;
     kaydedilecekSoru.baslangic = formData.get('gecerlilik.baslangic').value;
     kaydedilecekSoru.bitis = formData.get('gecerlilik.bitis').value;
-
     this.store.dispatch(new fromSorularStore.UpdateSoru(kaydedilecekSoru));
 
   }

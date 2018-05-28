@@ -73,9 +73,13 @@ export class IliskiliSoruService {
         const arr = Object.keys(sonuc.entities).map(k => sonuc.entities[k]);
         // tslint:disable-next-line:triple-equals
         const eklenecekListe: SoruListe[] = arr.filter(soru => soru.soruKokuNo == this.soruKokuNo);
-
         this.sorular = eklenecekListe;
         this.onSorularDegisti.next(this.sorular);
+        if (this.aktifSoru) {
+          const yeniAktifSoru = this.sorular.find(soruListe => soruListe.soruId == this.aktifSoru.soruId);
+          this.onAktifSoruDegisti.next(yeniAktifSoru);
+        }
+
       }
 
     });

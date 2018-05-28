@@ -177,9 +177,12 @@ export class IliskiliSoruDetayComponent implements OnInit, OnDestroy {
   }
   soruyuFavoriYap() {
     this.soruStore.dispatch(new fromSoruStore.SoruFavoriDegistir({ soruNo: this.soru.soruId, favori: true }));
+    
   }
   soruyuSiradanYap() {
     this.soruStore.dispatch(new fromSoruStore.SoruFavoriDegistir({ soruNo: this.soru.soruId, favori: false }));
+    
+
   }
   soruyuSilindiYap() {
 
@@ -197,7 +200,6 @@ export class IliskiliSoruDetayComponent implements OnInit, OnDestroy {
 
       if (result) {
         this.soruStore.dispatch(new fromSoruStore.SoruSilindiIsaretle([this.soru.soruId.toString()]));
-        this.service.onAktifSoruDegisti.next(null);
       }
     });
   }

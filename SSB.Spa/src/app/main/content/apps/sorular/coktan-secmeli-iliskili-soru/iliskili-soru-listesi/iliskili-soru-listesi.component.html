@@ -77,7 +77,7 @@
     <fuse-iliskili-soru-item class="px-16" matRipple *ngFor="let soruItem of sorular" [soru]="soruItem" (click)="soruyuOku(soruItem.soruId)"
         [ngClass]="{'current-mail':soruItem?.soruId == aktifSoru?.soruId}" [@animate]="{value:'*',params:{y:'100%'}}">
     </fuse-iliskili-soru-item>
-    <div *ngIf="sorular.length === 0" fxLayout="column" fxLayoutAlign="center center" fxFlexFill>
+    <div *ngIf="sorular?.length === 0" fxLayout="column" fxLayoutAlign="center center" fxFlexFill>
         <span class="no-messages-text hint-text">İlişkili soru listesi boş</span>
     </div>
 

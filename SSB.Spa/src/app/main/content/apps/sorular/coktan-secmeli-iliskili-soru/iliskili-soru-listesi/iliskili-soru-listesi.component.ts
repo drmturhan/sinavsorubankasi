@@ -205,7 +205,7 @@ export class IliskiliSoruListesiComponent implements OnInit, AfterViewChecked, O
            */
           case 'kaydet':
             if (yeniSoru) {
-              this.yeniSoruEkle(yeniSoru, formData, ders);
+              this.yeniSoruEkle(yeniSoru, formData);
             }
             break;
 
@@ -221,9 +221,9 @@ export class IliskiliSoruListesiComponent implements OnInit, AfterViewChecked, O
 
 
   // Soru kokune yoksa yaratılacak yeni soru eklenecek, varsa yaratılmadan yeni sor eklenecek yani soru koku degistirilecek
-  yeniSoruEkle(yaratilacakSoru: SoruYarat, formData: FormGroup, ders: DersItem) {
+  yeniSoruEkle(yaratilacakSoru: SoruYarat, formData: FormGroup) {
 
-    let soruKokuId = 0;
+    
     // Soru koku var ve degismis
     if (this.soruKokuNo > 0 && this.soruKokuForm.dirty) {
       //  Soru koku fromu zaten valid yoksa buraya gelmez yeni soru ekrani acilmazdi
@@ -234,7 +234,8 @@ export class IliskiliSoruListesiComponent implements OnInit, AfterViewChecked, O
           // Yeni soruyu da kaydet
           this.service.onKayitGeldi(sonuc);
           this.soruKokuForm.patchValue({ soruKokuId: sonuc.donenNesne.soruKokuId, soruKokuMetni: sonuc.donenNesne.soruKokuMetni });
-          soruKokuId = sonuc.donenNesne.soruKokuId;
+          yaratilacakSoru.soruKokuNo = sonuc.donenNesne.soruKokuId;
+          this.soruyuKaydet(yaratilacakSoru, formData);
 
         } else {
           // Kayit yapilamaz ise ekrani tekrar ac
@@ -251,14 +252,14 @@ export class IliskiliSoruListesiComponent implements OnInit, AfterViewChecked, O
         });
     } else {
 
-      const yeniSoruKoku: SoruKokuYarat = Object.apply({}, this.soruKokuForm.getRawValue());
+      const yeniSoruKoku: SoruKokuYarat = Object.assign({}, this.soruKokuForm.getRawValue());
       this.service.soruKokuYarat(yeniSoruKoku).subscribe((sonuc: KayitSonuc<SoruKokuListe>) => {
         if (sonuc.basarili) {
           // Yeni soruyu da kaydet
           this.service.onKayitGeldi(sonuc);
           this.soruKokuForm.patchValue({ soruKokuId: sonuc.donenNesne.soruKokuId, soruKokuMetni: sonuc.donenNesne.soruKokuMetni });
-          soruKokuId = sonuc.donenNesne.soruKokuId;
-
+          yaratilacakSoru.soruKokuNo = sonuc.donenNesne.soruKokuId;
+          this.soruyuKaydet(yaratilacakSoru, formData);
         } else {
           // Kayit yapilamaz ise ekrani tekrar ac
           this.yeniSoruYaratmaEkrani(Object.assign({}, formData.getRawValue()));
@@ -275,23 +276,11 @@ export class IliskiliSoruListesiComponent implements OnInit, AfterViewChecked, O
     }
 
     // Yeni soru kaydı buarada yapılıyor;
+
+  }
+  private soruyuKaydet(yaratilacakSoru: SoruYarat, formData: FormGroup) {
     const yeniSoru: SoruYarat = Object.assign({}, yaratilacakSoru, formData.getRawValue());
-    yeniSoru.soruKokuNo = soruKokuId;
     this.sorularService.formuNesneyeCevirKaydet(formData, yeniSoru);
-
-    // yeniSoru.tekDogruluSecenekleri = formData.get('secenekler').value;
-    // yeniSoru.kabulEdilebilirlikIndeksi = formData.get('kabulEdilebilirlikIndeksi').value;
-    // yeniSoru.baslangic = formData.get('gecerlilik.baslangic').value;
-    // yeniSoru.bitis = formData.get('gecerlilik.bitis').value;
-
-    // if (yeniSoru.dersNo > 0) {
-    //   if (ders != null) {
-    //     yeniSoru.birimNo = ders.birimNo;
-    //     yeniSoru.programNo = ders.programNo;
-    //     yeniSoru.donemNo = ders.donemNo;
-    //     yeniSoru.dersGrubuNo = ders.dersGrubuNo;
-    //   }
-    // }
     this.sorularStore.dispatch(new fromSorularStore.UpdateSoru(yeniSoru));
   }
   soruKokunuDuzenle() {
