@@ -33,10 +33,10 @@ export class SorularSideNavComponent implements OnInit, AfterViewChecked {
 
   routerState: any;
   bilgi: ResolveInfo;
-  // birimSorulariGorunsun = !this.program 
-  //  && !this.donem 
-  //  && !this.dersGrubu 
-  //  && !this.ders 
+  // birimSorulariGorunsun = !this.program
+  //  && !this.donem
+  //  && !this.dersGrubu
+  //  && !this.ders
   //  && !this.konu;
   dialogRef: any;
   navigation: any;
@@ -211,14 +211,15 @@ export class SorularSideNavComponent implements OnInit, AfterViewChecked {
     yeniSoru.kabulEdilebilirlikIndeksi = formData.get('kabulEdilebilirlikIndeksi').value;
     yeniSoru.baslangic = formData.get('gecerlilik.baslangic').value;
     yeniSoru.bitis = formData.get('gecerlilik.bitis').value;
-    if (yeniSoru.dersNo > 0) {
-      if (ders != null) {
-        yeniSoru.birimNo = ders.birimNo;
-        yeniSoru.programNo = ders.programNo;
-        yeniSoru.donemNo = ders.donemNo;
-        yeniSoru.dersGrubuNo = ders.dersGrubuNo;
-      }
-    }
+    yeniSoru.soruKokuNo = null;
+    // if (yeniSoru.dersNo > 0) {
+    //   if (ders != null) {
+    //     yeniSoru.birimNo = ders.birimNo;
+    //     yeniSoru.programNo = ders.programNo;
+    //     yeniSoru.donemNo = ders.donemNo;
+    //     yeniSoru.dersGrubuNo = ders.dersGrubuNo;
+    //   }
+    // }
     this.store.dispatch(new fromSorularStore.UpdateSoru(yeniSoru));
 
   }

@@ -223,35 +223,41 @@ export class IliskiliSoruListesiComponent implements OnInit, AfterViewChecked, O
   // Soru kokune yoksa yaratılacak yeni soru eklenecek, varsa yaratılmadan yeni sor eklenecek yani soru koku degistirilecek
   yeniSoruEkle(yaratilacakSoru: SoruYarat, formData: FormGroup) {
 
-    
+
     // Soru koku var ve degismis
-    if (this.soruKokuNo > 0 && this.soruKokuForm.dirty) {
+    if (this.soruKokuNo > 0) {
       //  Soru koku fromu zaten valid yoksa buraya gelmez yeni soru ekrani acilmazdi
-      const degisecek: SoruKokuDuzenle = Object.assign({}, this.soruKokuForm.value);
-      this.uiStore.dispatch(new fromRootStore.StartLoading());
-      this.service.soruKokuKaydet(degisecek).subscribe((sonuc: KayitSonuc<SoruKokuListe>) => {
-        if (sonuc.basarili) {
-          // Yeni soruyu da kaydet
-          this.service.onKayitGeldi(sonuc);
-          this.soruKokuForm.patchValue({ soruKokuId: sonuc.donenNesne.soruKokuId, soruKokuMetni: sonuc.donenNesne.soruKokuMetni });
-          yaratilacakSoru.soruKokuNo = sonuc.donenNesne.soruKokuId;
-          this.soruyuKaydet(yaratilacakSoru, formData);
+      if (this.soruKokuForm.dirty) {
+        const degisecek: SoruKokuDuzenle = Object.assign({}, this.soruKokuForm.value);
+        this.uiStore.dispatch(new fromRootStore.StartLoading());
+        this.service.soruKokuKaydet(degisecek).subscribe((sonuc: KayitSonuc<SoruKokuListe>) => {
+          if (sonuc.basarili) {
+            // Yeni soruyu da kaydet
+            this.service.onKayitGeldi(sonuc);
+            this.soruKokuForm.patchValue({ soruKokuId: sonuc.donenNesne.soruKokuId, soruKokuMetni: sonuc.donenNesne.soruKokuMetni });
+            yaratilacakSoru.soruKokuNo = sonuc.donenNesne.soruKokuId;
+            this.soruyuKaydet(yaratilacakSoru, formData);
 
-        } else {
-          // Kayit yapilamaz ise ekrani tekrar ac
-          this.yeniSoruYaratmaEkrani(Object.assign({}, formData.getRawValue()));
-          return;
-        }
-      },
-        (hata) => {
-          this.yeniSoruYaratmaEkrani(Object.assign({}, formData.getRawValue()));
-          return;
+          } else {
+            // Kayit yapilamaz ise ekrani tekrar ac
+            this.yeniSoruYaratmaEkrani(Object.assign({}, formData.getRawValue()));
+            return;
+          }
         },
-        () => {
-          this.uiStore.dispatch(new fromRootStore.StopLoading());
-        });
+          (hata) => {
+            this.yeniSoruYaratmaEkrani(Object.assign({}, formData.getRawValue()));
+            return;
+          },
+          () => {
+            this.uiStore.dispatch(new fromRootStore.StopLoading());
+          });
+      } else {
+        // Sorukoku degismemis kaydetmeye gerek yok
+        yaratilacakSoru.soruKokuNo = this.soruKokuNo;
+        this.soruyuKaydet(yaratilacakSoru, formData);
+      }
     } else {
-
+      // Yeni soru koku yaratılacak
       const yeniSoruKoku: SoruKokuYarat = Object.assign({}, this.soruKokuForm.getRawValue());
       this.service.soruKokuYarat(yeniSoruKoku).subscribe((sonuc: KayitSonuc<SoruKokuListe>) => {
         if (sonuc.basarili) {

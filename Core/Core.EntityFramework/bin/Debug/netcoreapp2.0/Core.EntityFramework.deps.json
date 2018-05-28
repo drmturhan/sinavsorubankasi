@@ -535,7 +535,7 @@
     "Microsoft.Extensions.Caching.Memory/2.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-NqvVdYLbX7N2J2Wz9y3zjhE66JRdROiZZsGhA2u4a9IcIq/jzINC/cLM96BHA+TSOZFPxVdWneqB6/yt9u846A==",
+      "sha512": "sha512-6Z5RtOu6pIu0U8y67C7/31gldsLT2RVLMPC7WF5VQ1Ps/f4fYclqkPjQ0U7BUntF+2QEWtnjenKacPP13hxyGg==",
       "path": "microsoft.extensions.caching.memory/2.0.0",
       "hashPath": "microsoft.extensions.caching.memory.2.0.0.nupkg.sha512"
     },
@@ -563,7 +563,7 @@
     "Microsoft.Extensions.Logging/2.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-VP10syWV/vxYYMKgZ2eDESmUsz3gPxvBn5J6tkVN8lI4M+dF43RN8fWsEPbcAneDmZrHl3Pv23z05nmyGkJlpg==",
+      "sha512": "sha512-Mu7CRntuqCKv5H0LWN/ccpAElINvRXLXxTnoBY+5jngoYO4tyw4T43hcjRMEaUzXXz15tasGgQSkeuD6ezXPlw==",
       "path": "microsoft.extensions.logging/2.0.0",
       "hashPath": "microsoft.extensions.logging.2.0.0.nupkg.sha512"
     },
@@ -584,7 +584,7 @@
     "Microsoft.Extensions.Primitives/2.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-ukg53qNlqTrK38WA30b5qhw0GD7y3jdI9PHHASjdKyTcBHTevFM2o23tyk3pWCgAV27Bbkm+CPQ2zUe1ZOuYSA==",
+      "sha512": "sha512-Ms8ZXTqioONXr1tA6zeeL4p3Vt0B7ow3n6Dpr2DrPTT4WsCXYcOkDxq0ckCurMdasXqRsUuRVrhfjn59UzkDpQ==",
       "path": "microsoft.extensions.primitives/2.0.0",
       "hashPath": "microsoft.extensions.primitives.2.0.0.nupkg.sha512"
     },
@@ -836,7 +836,7 @@
     "System.Runtime.CompilerServices.Unsafe/4.4.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-9dLLuBxr5GNmOfl2jSMcsHuteEg32BEfUotmmUkmZjpR3RpVHE8YQwt0ow3p6prwA1ME8WqDVZqrr8z6H8G+Kw==",
+      "sha512": "sha512-WXw+73iIJh9GjDClb8tRQRYp9H4Oj4ZQ+wPh8Q6Nv69hJcPZRTcOsNXWffqrnZeWQemL6BVBGvI8BtA2KDendA==",
       "path": "system.runtime.compilerservices.unsafe/4.4.0",
       "hashPath": "system.runtime.compilerservices.unsafe.4.4.0.nupkg.sha512"
     },
