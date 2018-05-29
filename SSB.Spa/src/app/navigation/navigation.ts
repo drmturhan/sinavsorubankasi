@@ -31,18 +31,6 @@ export const navigation = [
                             'bg': '#EC0C8E',
                             'fg': '#FFFFFF'
                         }
-                    },
-                    {
-                        'id': 'ngrxmail',
-                        'title': 'Mails',
-                        'type': 'item',
-                        'icon': 'email',
-                        'url': 'mail',
-                        'badge': {
-                            'title': 13,
-                            'bg': '#EC0C8E',
-                            'fg': '#FFFFFF'
-                        }
                     }
                 ]
             }

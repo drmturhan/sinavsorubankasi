@@ -296,7 +296,7 @@ namespace SoruDeposu.DataAccess
 
 
 
-            builder.Entity<KontrolListeGrupTanim>(entity =>
+            builder.Entity<KontrolListesiGrupTanim>(entity =>
             {
 
                 entity.ToTable("KontrolListeGruplari", "Soru");
@@ -304,16 +304,16 @@ namespace SoruDeposu.DataAccess
             });
 
 
-            builder.Entity<KontrolListeTanim>(entity =>
+            builder.Entity<KontrolListesiMaddeTanim>(entity =>
             {
 
                 entity.ToTable("KontrolListeTanimlari", "Soru");
                 entity.HasKey(klt => klt.Id);
-                entity.HasOne(m => m.Grubu).WithMany(d => d.Listeleri).HasForeignKey(fk => fk.KontrolListeGrupNo);
-                entity.HasOne(m => m.DegerGrubu).WithMany(d => d.KontrolListesi).HasForeignKey(fk => fk.KontrolListeGrupNo);
+                entity.HasOne(m => m.ListeGrubu).WithMany(d => d.Listeleri).HasForeignKey(fk => fk.KontrolListeGrupNo);
+                entity.HasOne(m => m.DegerGrubu).WithMany(d => d.MaddeTanimListesi).HasForeignKey(fk => fk.KontrolListeGrupNo);
             });
 
-            builder.Entity<KontrolDegerGrupTanim>(entity =>
+            builder.Entity<KontrolListesiDegerGrupTanim>(entity =>
             {
                 entity.ToTable("KontrolDegerGruplari", "Soru");
                 entity.HasKey(kldt => kldt.Id);
@@ -321,7 +321,7 @@ namespace SoruDeposu.DataAccess
 
             });
 
-            builder.Entity<KontrolDegerTanim>(entity =>
+            builder.Entity<KontrolListesiDegerTanim>(entity =>
             {
 
                 entity.ToTable("KontrolListeDegerTanimlari", "Soru");

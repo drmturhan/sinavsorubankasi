@@ -167,7 +167,7 @@ namespace SoruDeposu.DataAccess.Mappers
             return entity == null ? null : Mapper.Map<BilisselDuzeyDto>(entity);
         }
 
-        public static SoruKontrolBelgeDto ToKontrolBelgeDto(this KontrolListeGrupTanim entity)
+        public static SoruKontrolBelgeDto ToKontrolBelgeDto(this KontrolListesiGrupTanim entity)
         {
 
             return entity == null ? null : Mapper.Map<SoruKontrolBelgeDto>(entity);

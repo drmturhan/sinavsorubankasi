@@ -1,0 +1,54 @@
+@import "src/@fuse/scss/fuse";
+
+:host {
+  
+    .baslik-programadi {
+        z-index: 999;
+        color: orange;
+        text-shadow:4px 4px 8px black;
+        font-size: 64px;
+        font-weight: 700;
+        margin-left: 60px;
+    }
+    .baslik-mesaj{
+        z-index: 999;
+        color: white;
+        text-shadow:2px 2px 4px black;
+        font-size: 16px;
+        font-weight: 300;
+        margin-left: 60px;
+    }
+    @include media-breakpoint-down('md') {
+        .baslik-programadi {
+            font-size: 32px;
+            text-shadow:2px 2px 4px black;
+            margin-left: 20px;
+        }
+        .baslik-mesaj {
+            display: none;
+            margin-left: 20px;
+        }
+    }
+    .content {
+        
+        .cards {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            align-items: flex-start;
+            
+            .card {
+                display: flex;
+                align-items: flex-start;
+                padding: 10px;
+                .card-preview {
+                    display: flex;
+                    text-align: justify;
+                    min-width:280px;
+                    min-height: 650px;
+                }
+            }
+        }
+    }
+}

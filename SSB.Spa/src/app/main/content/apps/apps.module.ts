@@ -8,7 +8,7 @@ import { MaterialModule } from '../../../material.module';
 const routes: Routes = [
     {
         path: 'anasayfa',
-        loadChildren: './dashboards/analytics/analytics.module#FuseAnalyticsDashboardModule'
+        loadChildren: './anasayfa/anasayfa.module#AnasayfaModule'
     },
 
     {

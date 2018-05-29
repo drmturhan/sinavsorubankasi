@@ -18,7 +18,7 @@ namespace SoruDeposu.DataAccess.Mappers
 
         private void CreateEntityToResourceMap()
         {
-            CreateMap<KontrolListeGrupTanim, SoruKontrolBelgeDto>()
+            CreateMap<KontrolListesiGrupTanim, SoruKontrolBelgeDto>()
                 .ForMember(d => d.Kontroller, islem => islem.Ignore())
                 .AfterMap((e, d) =>
                 {
@@ -34,7 +34,7 @@ namespace SoruDeposu.DataAccess.Mappers
 
 
 
-            CreateMap<KontrolListeTanim, SoruKontrolItemDto>()
+            CreateMap<KontrolListesiMaddeTanim, SoruKontrolItemDto>()
                 .ForMember(d => d.Degerleri, islem => islem.Ignore())
                 .AfterMap((e, d) =>
                 {
@@ -47,17 +47,17 @@ namespace SoruDeposu.DataAccess.Mappers
 
                 });
 
-            CreateMap<Entities.KontrolDegerTanim, SoruKontrolItemDetayDto>();
+            CreateMap<Entities.KontrolListesiDegerTanim, SoruKontrolItemDetayDto>();
 
 
         }
 
-        private SoruKontrolItemDetayDto CreateFromDegerGrubu(Entities.KontrolDegerTanim item)
+        private SoruKontrolItemDetayDto CreateFromDegerGrubu(Entities.KontrolListesiDegerTanim item)
         {
             return Mapper.Map<SoruKontrolItemDetayDto>(item);
         }
 
-        private SoruKontrolItemDto CreateFormItem(KontrolListeTanim item)
+        private SoruKontrolItemDto CreateFormItem(KontrolListesiMaddeTanim item)
         {
             return Mapper.Map<SoruKontrolItemDto>(item);
         }

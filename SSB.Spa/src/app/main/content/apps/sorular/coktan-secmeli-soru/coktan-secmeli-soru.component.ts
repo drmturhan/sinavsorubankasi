@@ -414,23 +414,25 @@ export class CoktanSecmeliSoruComponent implements OnInit, AfterViewInit, OnDest
 
       if (this.coktanSecmeliSoruSecenekService.soruForm.get('secenekler').errors.hicSecenekGirilmemis) {
         this.mesajService.hataStr('Hiç seçenek girilmemiş!');
-        this.defter.selectedIndex = 0;
+        this.aktifSayafayaGit(0);
         return;
       }
       if (this.coktanSecmeliSoruSecenekService.soruForm.get('secenekler').errors.dogruSecenekGirilmemis) {
         this.mesajService.hataStr('Doğru seçenek belirtilmemiş.');
-        this.defter.selectedIndex = 0;
+        this.aktifSayafayaGit(0);
         return;
       }
 
       if (this.coktanSecmeliSoruSecenekService.soruForm.get('secenekler').errors.tekDogruSecenekOlabilir) {
         this.mesajService.hataStr('Bu soru tipi için sadece tek seçenek doğru olarak işaretlenebilir!');
-        this.defter.selectedIndex = 0;
+        this.aktifSayafayaGit(0);
         return;
       }
       if (this.coktanSecmeliSoruSecenekService.soruForm.get('secenekler').errors.secenekMetniBos) {
         this.mesajService.hataStr('Seçeneklerin biri veya daha fazlasında SEÇENEK METNİ boş!');
-        this.defter.selectedIndex = 0;
+        
+        this.aktifSayafayaGit(0);
+        
         return;
       }
 
@@ -438,14 +440,15 @@ export class CoktanSecmeliSoruComponent implements OnInit, AfterViewInit, OnDest
     if (this.coktanSecmeliSoruSecenekService.soruForm.get('anahtarKelimeler').errors) {
 
       this.mesajService.hataStr('Anahtar kelimeler eksik!');
-      this.defter.selectedIndex = 3;
+      this.aktifSayafayaGit(3);
       return;
     }
 
 
 
+
     this.displayMessage = this.genericValidator.processMessages(this.coktanSecmeliSoruSecenekService.soruForm, true);
-    this.defter.selectedIndex = 1;
+    this.aktifSayafayaGit(1);
     this.mesajService.hataStr('Lütfen eksik bıraktığınız kırmızı alanları doldurun!');
   }
   getTekDogruluSecenekSayisi(): number {
@@ -455,7 +458,11 @@ export class CoktanSecmeliSoruComponent implements OnInit, AfterViewInit, OnDest
     return tekDoguruluSecenekler.length;
   }
 
-
+  private aktifSayafayaGit(sayfaIndeks: number) {
+    if (this.defter && (this.defter._tabs.length - 1) <= sayfaIndeks) {
+      this.defter.selectedIndex = sayfaIndeks;
+    }
+  }
 
   refresh() {
     this.cd.markForCheck();
