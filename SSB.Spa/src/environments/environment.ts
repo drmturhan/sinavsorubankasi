@@ -7,7 +7,7 @@ export const environment = {
     hmr: false,
     uygulamaAdi: 'SORU BANK',
     apiUrl: 'https://localhost:44366/api',
-    bosFotoUrl: '../assets/images/avatars/profile.jpg',
+    bosFotoUrl: 'https://ssbdepo.blob.core.windows.net/images/profil_bos_resim.jpg',
     whitelistedDomains: ['localhost:44366', 'res.cloudinary.com'],
     gorevKontrolSuresi: 5000,
     fbRedirectUri: 'http://localhost:50000'

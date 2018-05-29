@@ -3,7 +3,7 @@ export const environment = {
     hmr       : false,
     uygulamaAdi: 'SORU BANK',
     apiUrl: 'https://soru.azurewebsites.net/api',
-    bosFotoUrl: '../assets/images/avatars/profile.jpg',
+    bosFotoUrl: 'https://ssbdepo.blob.core.windows.net/images/profil_bos_resim.jpg',
     whitelistedDomains: ['soru.azurewebsites.net', 'res.cloudinary.com'],
     gorevKontrolSuresi: 5000,
     fbRedirectUri: 'http://soru.azurewebsites.net'
