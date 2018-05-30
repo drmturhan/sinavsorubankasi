@@ -3,11 +3,13 @@
 
 
 
-
+							
 "SqlServerConnectionString": "Server=tcp:sb.database.windows.net,1433;Initial Catalog=SB2018Db;Persist Security Info=False;User ID=mturhan;Password=Akd34630.;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
 
 "SqlServerConnectionString": "Data Source=.;Initial Catalog=PsgDb;Integrated Security=True;Persist Security Info=False;Pooling=False;MultipleActiveResultSets=False;Encrypt=False;TrustServerCertificate=True"
 
+
+ssbdb --> Server=tcp:ssbserver.database.windows.net,1433;Initial Catalog=ssbdb;Persist Security Info=False;User ID={mturhan};Password={gozde19Kasim1970};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;
 
 
 
@@ -42,6 +44,8 @@ https://soru.azurewebsites.net/api
     "JwtExpireDays": 1,
     "ValidFor": 1
   },
+
+
 
 
 
